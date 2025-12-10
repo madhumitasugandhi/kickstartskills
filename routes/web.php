@@ -7,11 +7,6 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
 
 Route::get('/', function () {
@@ -26,11 +21,37 @@ Route::get('/student-login', function () {
 Route::get('/student/forgot-password', function () {
     return view('frontend.studentPortal.auth.forgot_password');
 });
-
 Route::get('/student/register', function () {
     return view('frontend.studentPortal.auth.register');
 });
 
+/* 1. Student Dashboard (Home) */
+Route::get('/student/dashboard', function () {
+    // Points to: resources/views/frontend/studentPortal/dashboard/dashboardIndex.blade.php
+    return view('frontend.studentPortal.dashboard.dashboardIndex');
+})->name('student.dashboard');
+
+/* 2. Profile Section (Grouped Routes) */
+// This creates URLs like: /student/dashboard/profile/personal-info
+Route::prefix('student/dashboard/profile')->name('student.profile.')->group(function () {
+
+    // Route Name: student.profile.personal
+    Route::get('/personal-info', function () {
+        return view('frontend.studentPortal.dashboard.profile.profileIndex');
+    })->name('personal');
+
+    // Route Name: student.profile.academic (Placeholder)
+    Route::get('/academic', function () {
+       return view('frontend.studentPortal.dashboard.profile.academicIndex');
+    })->name('academic');
+
+    // Route Name: student.profile.portfolio (Placeholder)
+    Route::get('/portfolio', function () {
+       return view('frontend.studentPortal.dashboard.profile.portfolioIndex');
+    })->name('portfolio');
+});
+
+/*|------------------------------------------------End Student Portal Routes--------------------------------------------------|*/
 
 
 Route::get('/dashboard', function () {
@@ -43,4 +64,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -55,6 +55,7 @@
             background: var(--bg-gradient);
             color: var(--text-main);
             min-height: 100vh;
+            overflow-y: auto; overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
