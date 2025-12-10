@@ -18,6 +18,21 @@ Route::get('/', function () {
     return view('frontend.index');
 });
 
+/*|------------------------------------------------Student Portal Routes--------------------------------------------------|*/
+
+Route::get('/student-login', function () {
+    return view('frontend.studentPortal.auth.student_login');
+});
+Route::get('/student/forgot-password', function () {
+    return view('frontend.studentPortal.auth.forgot_password');
+});
+
+Route::get('/student/register', function () {
+    return view('frontend.studentPortal.auth.register');
+});
+
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
