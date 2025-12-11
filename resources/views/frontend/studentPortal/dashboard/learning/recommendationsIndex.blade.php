@@ -6,27 +6,51 @@
 <style>
     /* Theme Variables */
     :root {
+        --bg-body: #f8f9fa;
+        --bg-sidebar: #ffffff;
         --bg-card: #ffffff;
+        --bg-hover: #f8f9fa;
+
         --text-main: #343a40;
         --text-muted: #6c757d;
+
         --border-color: #e9ecef;
-        --soft-blue: #e7f1ff; --text-blue: #0d6efd;
-        --soft-green: #d1e7dd; --text-green: #0f5132;
-        --soft-orange: #ffecb5; --text-orange: #664d03;
-        --soft-red: #f8d7da; --text-red: #842029;
-        --soft-purple: #e0cffc; --text-purple: #6f42c1;
+
+        /* Soft Colors */
+        --soft-blue: #e7f1ff;
+        --text-blue: #0d6efd;
+        --soft-green: #d1e7dd;
+        --text-green: #0f5132;
+        --soft-orange: #ffecb5;
+        --text-orange: #664d03;
+        --soft-red: #f8d7da;
+        --text-red: #842029;
+        --soft-teal: #e0fbf6;
+        --text-teal: #107c6f;
     }
 
     [data-theme="dark"] {
-        --bg-card: #252525;
+        --bg-body: #0f1626;
+        --bg-sidebar: #1e293b;
+        --bg-card: #2e333f;
+        --bg-hover: #2e333f;
+
         --text-main: #e9ecef;
         --text-muted: #adb5bd;
-        --border-color: #2c2c2c;
-        --soft-blue: rgba(13, 110, 253, 0.15); --text-blue: #6ea8fe;
-        --soft-green: rgba(25, 135, 84, 0.15); --text-green: #75b798;
-        --soft-orange: rgba(255, 193, 7, 0.15); --text-orange: #ffda6a;
-        --soft-red: rgba(220, 53, 69, 0.15); --text-red: #ea868f;
-        --soft-purple: rgba(111, 66, 193, 0.15); --text-purple: #a370f7;
+
+        --border-color: #767677;
+
+        /* Dark Mode Transparencies */
+        --soft-blue: rgba(13, 110, 253, 0.15);
+        --text-blue: #6ea8fe;
+        --soft-green: rgba(25, 135, 84, 0.15);
+        --text-green: #75b798;
+        --soft-orange: rgba(255, 193, 7, 0.15);
+        --text-orange: #ffda6a;
+        --soft-red: rgba(220, 53, 69, 0.15);
+        --text-red: #ea868f;
+        --soft-teal: rgba(32, 201, 151, 0.15);
+        --text-teal: #a9e5d6;
     }
 
     /* AI Insight Banner */
@@ -59,6 +83,7 @@
         font-size: 0.85rem;
         transition: 0.2s;
     }
+
     .btn-preferences:hover {
         background: rgba(255, 255, 255, 0.3);
         color: white;
@@ -76,6 +101,7 @@
         color: var(--text-muted);
         transition: 0.2s;
     }
+
     .filter-pill.active {
         background-color: var(--text-blue);
         color: white;
@@ -93,7 +119,11 @@
         flex-direction: column;
         transition: transform 0.2s;
     }
-    .rec-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+
+    .rec-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
 
     .rec-header {
         display: flex;
@@ -112,18 +142,23 @@
 
     /* Reason Box */
     .reason-box {
-        background-color: var(--bg-hover); /* Light grey */
+        background-color: var(--bg-hover);
+        /* Light grey */
         padding: 12px;
         border-radius: 8px;
         margin: 16px 0;
         border-left: 3px solid var(--text-blue);
     }
-    [data-theme="dark"] .reason-box { background-color: rgba(255,255,255,0.05); }
+
+    [data-theme="dark"] .reason-box {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
 
     /* Match Score Bar */
     .match-container {
         margin-bottom: 20px;
     }
+
     .progress-match {
         height: 6px;
         background-color: var(--border-color);
@@ -133,9 +168,20 @@
     }
 
     /* Specific Priority Colors */
-    .priority-high { color: #dc3545; background-color: var(--soft-red); }
-    .priority-gap { color: #fd7e14; background-color: var(--soft-orange); }
-    .priority-trend { color: #0d6efd; background-color: var(--soft-blue); }
+    .priority-high {
+        color: #dc3545;
+        background-color: var(--soft-red);
+    }
+
+    .priority-gap {
+        color: #fd7e14;
+        background-color: var(--soft-orange);
+    }
+
+    .priority-trend {
+        color: #0d6efd;
+        background-color: var(--soft-blue);
+    }
 
     .btn-action {
         width: 100%;
@@ -149,6 +195,7 @@
         color: var(--text-main);
         transition: 0.2s;
     }
+
     .btn-action:hover {
         background-color: var(--soft-blue);
         color: var(--text-blue);
@@ -164,13 +211,15 @@
         <div class="row align-items-center position-relative">
             <div class="col-md-8">
                 <div class="d-flex align-items-center gap-3 mb-2">
-                    <div class="bg-white bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    <div class="bg-white bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center"
+                        style="width: 40px; height: 40px;">
                         <i class="bi bi-stars"></i>
                     </div>
                     <h5 class="fw-bold m-0">AI Learning Insight</h5>
                 </div>
                 <p class="mb-0 opacity-75" style="font-size: 0.95rem; line-height: 1.6;">
-                    Based on your recent performance in <strong>Flutter Development</strong>, we've curated these resources to help you master state management and improve your quiz scores.
+                    Based on your recent performance in <strong>Flutter Development</strong>, we've curated these
+                    resources to help you master state management and improve your quiz scores.
                 </p>
             </div>
             <div class="col-md-4 text-md-end mt-3 mt-md-0">
@@ -203,7 +252,8 @@
 
                 <div class="reason-box">
                     <small class="d-block fw-bold mb-1" style="color: var(--text-muted)">Why this?</small>
-                    <small class="text-main">Critical concept for large scale apps. Matches your "Mobile Dev" goal.</small>
+                    <small class="text-main">Critical concept for large scale apps. Matches your "Mobile Dev"
+                        goal.</small>
                 </div>
 
                 <div class="match-container">
@@ -283,4 +333,3 @@
     </div>
 </div>
 @endsection
-

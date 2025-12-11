@@ -6,24 +6,52 @@
 <style>
     /* Theme Variables */
     :root {
-        --bg-card: #ffffff;
-        --text-main: #343a40;
-        --text-muted: #6c757d;
-        --border-color: #e9ecef;
-        --soft-blue: #e7f1ff; --text-blue: #0d6efd;
-        --soft-orange: #ffecb5; --text-orange: #664d03;
-        --soft-green: #d1e7dd; --text-green: #0f5132;
-    }
+            --bg-body: #f8f9fa;
+            --bg-sidebar: #ffffff;
+            --bg-card: #ffffff;
+            --bg-hover: #f8f9fa;
 
-    [data-theme="dark"] {
-        --bg-card: #252525;
-        --text-main: #e9ecef;
-        --text-muted: #adb5bd;
-        --border-color: #2c2c2c;
-        --soft-blue: rgba(13, 110, 253, 0.15); --text-blue: #6ea8fe;
-        --soft-orange: rgba(255, 193, 7, 0.15); --text-orange: #ffda6a;
-        --soft-green: rgba(25, 135, 84, 0.15); --text-green: #75b798;
-    }
+            --text-main: #343a40;
+            --text-muted: #6c757d;
+
+            --border-color: #e9ecef;
+
+            /* Soft Colors */
+            --soft-blue: #e7f1ff;
+            --text-blue: #0d6efd;
+            --soft-green: #d1e7dd;
+            --text-green: #0f5132;
+            --soft-orange: #ffecb5;
+            --text-orange: #664d03;
+            --soft-red: #f8d7da;
+            --text-red: #842029;
+            --soft-teal: #e0fbf6;
+            --text-teal: #107c6f;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0f1626;
+            --bg-sidebar: #1e293b;
+            --bg-card: #2e333f;
+            --bg-hover: #2e333f;
+
+            --text-main: #e9ecef;
+            --text-muted: #adb5bd;
+
+            --border-color: #767677;
+
+            /* Dark Mode Transparencies */
+            --soft-blue: rgba(13, 110, 253, 0.15);
+            --text-blue: #6ea8fe;
+            --soft-green: rgba(25, 135, 84, 0.15);
+            --text-green: #75b798;
+            --soft-orange: rgba(255, 193, 7, 0.15);
+            --text-orange: #ffda6a;
+            --soft-red: rgba(220, 53, 69, 0.15);
+            --text-red: #ea868f;
+            --soft-teal: rgba(32, 201, 151, 0.15);
+            --text-teal: #a9e5d6;
+        }
 
     /* Search Bar */
     .search-container {
@@ -190,6 +218,19 @@
     }
     .enroll-btn:hover { background-color: var(--text-blue); color: white; }
 
+    .enroll-btn-free {
+        width: 100%;
+        background-color: var(--soft-green);
+        color: var(--text-green);
+        border: none;
+        padding: 10px;
+        font-weight: 600;
+        margin-top: 16px;
+        border-radius: 8px;
+        transition: 0.2s;
+    }
+    .enroll-btn-free:hover { background-color: var(--text-green); color: white; }
+
     .category-scroll::-webkit-scrollbar { display: none; }
 </style>
 
@@ -317,7 +358,7 @@
                     <div class="price-row">
                         <span class="text-success fw-bold fs-5">Free</span>
                     </div>
-                    <button class="enroll-btn" style="background-color: var(--soft-green); color: var(--text-green);">Enroll Free</button>
+                    <button class="enroll-btn-free">Enroll Free</button>
                 </div>
             </div>
         </div>

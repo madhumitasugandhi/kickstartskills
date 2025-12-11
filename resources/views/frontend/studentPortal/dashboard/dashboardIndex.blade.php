@@ -67,36 +67,36 @@
     <div class="row g-4 mb-4">
         <!-- Quick Actions -->
         <div class="col-lg-6">
-            <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="d-flex align-items-center gap-2 mb-4">
                 <i class="bi bi-lightning-charge text-primary"></i>
                 <h6 class="fw-bold m-0 text-main">Quick Actions</h6>
             </div>
-            <div class="row g-2">
-                <div class="col-6">
-                    <button class="btn-quick-action m-0 h-100">
-                        <div class="action-icon bg-soft-green mb-2"><i class="bi bi-check-circle"></i></div>
-                        <span class="fw-bold text-main d-block">Mark Attendance</span>
-                    </button>
-                </div>
-                <div class="col-6">
-                    <button class="btn-quick-action m-0 h-100">
-                        <div class="action-icon bg-soft-blue mb-2"><i class="bi bi-upload"></i></div>
-                        <span class="fw-bold text-main d-block">Submit Assignment</span>
-                    </button>
-                </div>
-                <div class="col-6">
-                    <button class="btn-quick-action m-0 h-100">
-                        <div class="action-icon bg-soft-orange mb-2"><i class="bi bi-calendar-plus"></i></div>
-                        <span class="fw-bold text-main d-block">Schedule Meeting</span>
-                    </button>
-                </div>
-                <div class="col-6">
-                    <button class="btn-quick-action m-0 h-100">
-                        <div class="action-icon bg-soft-teal mb-2"><i class="bi bi-book"></i></div>
-                        <span class="fw-bold text-main d-block">Access Resources</span>
-                    </button>
-                </div>
+
+            <div class="col-12 gap-2 mb-3">
+                <button class="btn-quick-action m-0 h-100">
+                    <div class="action-icon bg-soft-green mb-2"><i class="bi bi-check-circle"></i></div>
+                    <span class="fw-bold text-main d-block">Mark Attendance</span>
+                </button>
             </div>
+           <div class="col-12 gap-2 mb-3">
+                <button class="btn-quick-action m-0 h-100">
+                    <div class="action-icon bg-soft-blue mb-2"><i class="bi bi-upload"></i></div>
+                    <span class="fw-bold text-main d-block">Submit Assignment</span>
+                </button>
+            </div>
+            <div class="col-12 gap-2 mb-3">
+                <button class="btn-quick-action m-0 h-100">
+                    <div class="action-icon bg-soft-orange mb-2"><i class="bi bi-calendar-plus"></i></div>
+                    <span class="fw-bold text-main d-block">Schedule Meeting</span>
+                </button>
+            </div>
+            <div class="col-12 gap-2 mb-3">
+                <button class="btn-quick-action m-0 h-100">
+                    <div class="action-icon bg-soft-teal mb-2"><i class="bi bi-book"></i></div>
+                    <span class="fw-bold text-main d-block">Access Resources</span>
+                </button>
+            </div>
+
         </div>
 
         <!-- Upcoming Tasks -->

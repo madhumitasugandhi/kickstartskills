@@ -99,6 +99,30 @@ Route::prefix('student/dashboard/learning')->name('student.learning.')->group(fu
     })->name('recommendations');
 });
 
+/*Internship section Group Routes*/
+Route::prefix('student/dashboard/internship')->name('student.internship.')->group(function () {
+
+    // 1. Overview (The page we just created)
+    Route::get('/overview', function () {
+        return view('frontend.studentPortal.dashboard.internship.overview');
+    })->name('overview');
+
+    // 2. Tasks & Assignments (Placeholder)
+    Route::get('/tasks', function () {
+        return view('frontend.studentPortal.dashboard.internship.taskAndAssignments');
+    })->name('tasks');
+
+    // 3. Progress Tracking (Placeholder)
+    Route::get('/progress', function () {
+        return view('frontend.studentPortal.dashboard.internship.progressTracking');
+    })->name('progress');
+
+    // 4. Phase Details (Placeholder)
+    Route::get('/phases', function () {
+        return view('frontend.studentPortal.dashboard.internship.phaseDetails');
+    })->name('phases');
+});
+
 /*|------------------------------------------------End Student Portal Routes--------------------------------------------------|*/
 
 

@@ -6,23 +6,51 @@
 <style>
     /* Theme Variables */
     :root {
+        --bg-body: #f8f9fa;
+        --bg-sidebar: #ffffff;
         --bg-card: #ffffff;
+        --bg-hover: #f8f9fa;
+
         --text-main: #343a40;
         --text-muted: #6c757d;
+
         --border-color: #e9ecef;
-        --soft-blue: #e7f1ff; --text-blue: #0d6efd;
-        --soft-green: #d1e7dd; --text-green: #0f5132;
-        --soft-cyan: #cff4fc; --text-cyan: #055160;
+
+        /* Soft Colors */
+        --soft-blue: #e7f1ff;
+        --text-blue: #0d6efd;
+        --soft-green: #d1e7dd;
+        --text-green: #0f5132;
+        --soft-orange: #ffecb5;
+        --text-orange: #664d03;
+        --soft-red: #f8d7da;
+        --text-red: #842029;
+        --soft-teal: #e0fbf6;
+        --text-teal: #107c6f;
     }
 
     [data-theme="dark"] {
-        --bg-card: #252525;
+        --bg-body: #0f1626;
+        --bg-sidebar: #1e293b;
+        --bg-card: #2e333f;
+        --bg-hover: #2e333f;
+
         --text-main: #e9ecef;
         --text-muted: #adb5bd;
-        --border-color: #2c2c2c;
-        --soft-blue: rgba(13, 110, 253, 0.15); --text-blue: #6ea8fe;
-        --soft-green: rgba(25, 135, 84, 0.15); --text-green: #75b798;
-        --soft-cyan: rgba(13, 202, 240, 0.15); --text-cyan: #3dd5f3;
+
+        --border-color: #767677;
+
+        /* Dark Mode Transparencies */
+        --soft-blue: rgba(13, 110, 253, 0.15);
+        --text-blue: #6ea8fe;
+        --soft-green: rgba(25, 135, 84, 0.15);
+        --text-green: #75b798;
+        --soft-orange: rgba(255, 193, 7, 0.15);
+        --text-orange: #ffda6a;
+        --soft-red: rgba(220, 53, 69, 0.15);
+        --text-red: #ea868f;
+        --soft-teal: rgba(32, 201, 151, 0.15);
+        --text-teal: #a9e5d6;
     }
 
     /* Learning Progress Dashboard */
@@ -38,13 +66,30 @@
         border-right: 1px solid var(--border-color);
         padding-right: 24px;
     }
-    .stat-item:last-child { border-right: none; }
 
-    .stat-value { font-size: 1.25rem; font-weight: 700; color: var(--text-green); margin-bottom: 4px; }
-    .stat-value.blue { color: var(--text-blue); }
-    .stat-value.orange { color: #fd7e14; }
+    .stat-item:last-child {
+        border-right: none;
+    }
 
-    .stat-label { font-size: 0.85rem; color: var(--text-muted); }
+    .stat-value {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-green);
+        margin-bottom: 4px;
+    }
+
+    .stat-value.blue {
+        color: var(--text-blue);
+    }
+
+    .stat-value.orange {
+        color: #fd7e14;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
 
     /* Course Card */
     .course-card {
@@ -54,30 +99,44 @@
         overflow: hidden;
         transition: transform 0.2s;
     }
-    .course-card:hover { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+    .course-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
 
     .course-thumbnail {
         height: 160px;
-        background-color: #e0f2fe; /* Light Blue bg for placeholder */
+        background-color: #e0f2fe;
+        /* Light Blue bg for placeholder */
         position: relative;
-        display: flex; align-items: center; justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .play-btn {
-        width: 48px; height: 48px;
-        background-color: rgba(255,255,255,0.9);
+        width: 48px;
+        height: 48px;
+        background-color: rgba(255, 255, 255, 0.9);
         border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         color: var(--text-blue);
         font-size: 1.5rem;
         cursor: pointer;
         transition: 0.2s;
     }
-    .play-btn:hover { transform: scale(1.1); }
+
+    .play-btn:hover {
+        transform: scale(1.1);
+    }
 
     .status-badge {
         position: absolute;
-        top: 16px; right: 16px;
+        top: 16px;
+        right: 16px;
         background-color: #0ea5e9;
         color: white;
         font-size: 0.75rem;
@@ -86,9 +145,16 @@
         font-weight: 600;
     }
 
-    .course-body { padding: 20px; }
+    .course-body {
+        padding: 20px;
+    }
 
-    .instructor-link { font-size: 0.8rem; color: var(--text-blue); text-decoration: none; font-weight: 500; }
+    .instructor-link {
+        font-size: 0.8rem;
+        color: var(--text-blue);
+        text-decoration: none;
+        font-weight: 500;
+    }
 
     .tag-pill {
         background-color: var(--soft-green);
@@ -102,23 +168,45 @@
 
     /* Continue Button Area */
     .continue-area {
-        background-color: #f1f5f9; /* Light grey footer */
+        /* Light grey footer */
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
         padding: 12px 20px;
         color: var(--text-main);
         font-weight: 600;
         font-size: 0.9rem;
-        border-top: 1px solid var(--border-color);
+
         cursor: pointer;
         transition: 0.2s;
     }
-    .continue-area:hover { background-color: #e2e8f0; }
-    [data-theme="dark"] .continue-area { background-color: #333; }
-    [data-theme="dark"] .continue-area:hover { background-color: #444; }
+
+    .continue-area:hover {
+        background-color: #e2e8f0;
+    }
+
+    [data-theme="dark"] .continue-area {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+    }
+
+    [data-theme="dark"] .continue-area:hover {
+        background-color: var(--bg-body);
+    }
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
-        .stat-item { border-right: none; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; }
-        .stat-item:last-child { border-bottom: none; margin-bottom: 0; }
+        .stat-item {
+            border-right: none;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
     }
 </style>
 

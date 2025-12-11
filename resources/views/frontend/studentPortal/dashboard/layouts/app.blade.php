@@ -42,15 +42,15 @@
         }
 
         [data-theme="dark"] {
-            --bg-body: #121212;
-            --bg-sidebar: #1e1e1e;
-            --bg-card: #252525;
-            --bg-hover: #2c2c2c;
+            --bg-body: #0f1626;
+            --bg-sidebar: #1e293b;
+            --bg-card: #2e333f;
+            --bg-hover: #2e333f;
 
             --text-main: #e9ecef;
             --text-muted: #adb5bd;
 
-            --border-color: #2c2c2c;
+            --border-color: #767677;
 
             /* Dark Mode Transparencies */
             --soft-blue: rgba(13, 110, 253, 0.15);

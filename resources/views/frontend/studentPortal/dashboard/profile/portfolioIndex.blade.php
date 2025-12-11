@@ -6,26 +6,51 @@
 <style>
     /* Reusing Theme Variables */
     :root {
+        --bg-body: #f8f9fa;
+        --bg-sidebar: #ffffff;
         --bg-card: #ffffff;
+        --bg-hover: #f8f9fa;
+
         --text-main: #343a40;
         --text-muted: #6c757d;
+
         --border-color: #e9ecef;
 
         /* Soft Colors */
-        --soft-blue: #e7f1ff; --text-blue: #0d6efd;
-        --soft-green: #d1e7dd; --text-green: #0f5132;
-        --soft-orange: #ffecb5; --text-orange: #664d03;
-        --soft-red: #f8d7da; --text-red: #842029;
+        --soft-blue: #e7f1ff;
+        --text-blue: #0d6efd;
+        --soft-green: #d1e7dd;
+        --text-green: #0f5132;
+        --soft-orange: #ffecb5;
+        --text-orange: #664d03;
+        --soft-red: #f8d7da;
+        --text-red: #842029;
+        --soft-teal: #e0fbf6;
+        --text-teal: #107c6f;
     }
 
     [data-theme="dark"] {
-        --bg-card: #252525;
+        --bg-body: #0f1626;
+        --bg-sidebar: #1e293b;
+        --bg-card: #2e333f;
+        --bg-hover: #2e333f;
+
         --text-main: #e9ecef;
         --text-muted: #adb5bd;
-        --border-color: #2c2c2c;
-        --soft-blue: rgba(13, 110, 253, 0.15); --text-blue: #6ea8fe;
-        --soft-green: rgba(25, 135, 84, 0.15); --text-green: #75b798;
-        --soft-orange: rgba(255, 193, 7, 0.15); --text-orange: #ffda6a;
+
+        --border-color: #767677;
+
+        /* Dark Mode Transparencies */
+        --soft-blue: rgba(13, 110, 253, 0.15);
+        --text-blue: #6ea8fe;
+        --soft-green: rgba(25, 135, 84, 0.15);
+        --text-green: #75b798;
+        --soft-orange: rgba(255, 193, 7, 0.15);
+        --text-orange: #ffda6a;
+        --soft-red: rgba(220, 53, 69, 0.15);
+        --text-red: #ea868f;
+        --soft-teal: rgba(32, 201, 151, 0.15);
+        --text-teal: #a9e5d6;
     }
 
     /* Card Styling */
@@ -69,10 +94,12 @@
         background: var(--bg-card);
         transition: transform 0.2s;
     }
+
     .project-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
+
     .project-header {
         height: 140px;
         background-color: var(--soft-blue);
@@ -82,11 +109,14 @@
         color: var(--text-blue);
         font-size: 3rem;
     }
+
     .project-body {
         padding: 20px;
     }
+
     .badge-tech {
-        background-color: var(--border-color); /* Light grey for tags */
+        background-color: var(--border-color);
+        /* Light grey for tags */
         color: var(--text-main);
         font-size: 0.75rem;
         padding: 4px 8px;
@@ -104,6 +134,7 @@
         overflow: hidden;
         margin-top: 8px;
     }
+
     .skill-bar {
         height: 100%;
         border-radius: 4px;
@@ -111,7 +142,8 @@
 
     /* Achievement Items */
     .achievement-item {
-        background-color: var(--soft-green); /* Default, overridden inline */
+        background-color: var(--soft-green);
+        /* Default, overridden inline */
         border-radius: 12px;
         padding: 16px;
         display: flex;
@@ -119,6 +151,7 @@
         gap: 16px;
         margin-bottom: 12px;
     }
+
     .achievement-icon {
         width: 48px;
         height: 48px;
@@ -127,18 +160,38 @@
         align-items: center;
         justify-content: center;
         font-size: 1.5rem;
-        background-color: rgba(255,255,255,0.5); /* Semi-transparent white */
+        background-color: rgba(255, 255, 255, 0.5);
+        /* Semi-transparent white */
     }
 
     /* Utility for background colors based on image */
-    .bg-light-blue { background-color: #e0f2fe; } /* Pale Blue */
-    .bg-light-green { background-color: #dcfce7; } /* Pale Green */
-    .bg-light-orange { background-color: #ffedd5; } /* Pale Orange */
+    .bg-light-blue {
+        background-color: #e0f2fe;
+    }
 
-    [data-theme="dark"] .bg-light-blue { background-color: rgba(14, 165, 233, 0.15); }
-    [data-theme="dark"] .bg-light-green { background-color: rgba(34, 197, 94, 0.15); }
-    [data-theme="dark"] .bg-light-orange { background-color: rgba(249, 115, 22, 0.15); }
+    /* Pale Blue */
+    .bg-light-green {
+        background-color: #dcfce7;
+    }
 
+    /* Pale Green */
+    .bg-light-orange {
+        background-color: #ffedd5;
+    }
+
+    /* Pale Orange */
+
+    [data-theme="dark"] .bg-light-blue {
+        background-color: rgba(14, 165, 233, 0.15);
+    }
+
+    [data-theme="dark"] .bg-light-green {
+        background-color: rgba(34, 197, 94, 0.15);
+    }
+
+    [data-theme="dark"] .bg-light-orange {
+        background-color: rgba(249, 115, 22, 0.15);
+    }
 </style>
 
 <div class="content-body">
@@ -155,7 +208,8 @@
         <div class="mb-4">
             <label class="form-label small fw-bold" style="color: var(--text-muted)">Bio/Summary</label>
             <div class="p-3 rounded" style="color: var(--text-main); border: 1px solid var(--border-color); ">
-                Passionate Computer Engineering student with expertise in Flutter development and UI/UX design. Experienced in building mobile applications and web solutions.
+                Passionate Computer Engineering student with expertise in Flutter development and UI/UX design.
+                Experienced in building mobile applications and web solutions.
             </div>
         </div>
 
@@ -177,8 +231,8 @@
             <h6 class="fw-bold m-0 text-main fs-5">Social Links & Online Presence</h6>
         </div>
 
-                <div class="mb-3">
-                    <label class="form-label small fw-bold" style="color: var(--text-muted)">LinkedIn Profile</label>
+        <div class="mb-3">
+            <label class="form-label small fw-bold" style="color: var(--text-muted)">LinkedIn Profile</label>
             <div class="resume-box " style="color: var(--text-main);">https://linkedin.com/in/johndoe</div>
         </div>
         <div class="mb-3">
@@ -212,15 +266,18 @@
                             <h6 class="fw-bold text-main m-0">E-commerce Mobile App</h6>
                             <span class="badge bg-success rounded-pill" style="font-size: 0.65rem;">Completed</span>
                         </div>
-                        <p class=" small mb-3" style="color: var(--text-muted)">Flutter-based mobile application with complete shopping functionality, payment integration, and real-time order tracking.</p>
+                        <p class=" small mb-3" style="color: var(--text-muted)">Flutter-based mobile application with
+                            complete shopping functionality, payment integration, and real-time order tracking.</p>
                         <div class="mb-3">
                             <span class="badge-tech">Flutter</span>
                             <span class="badge-tech">Firebase</span>
                             <span class="badge-tech">Stripe API</span>
                         </div>
                         <div class="d-flex gap-2">
-                            <button class="btn btn-light btn-sm flex-grow-1 border"><i class="bi bi-box-arrow-up-right me-1"></i> Live</button>
-                            <button class="btn btn-light btn-sm flex-grow-1 border"><i class="bi bi-github me-1"></i> Code</button>
+                            <button class="btn btn-light btn-sm flex-grow-1 border"><i
+                                    class="bi bi-box-arrow-up-right me-1"></i> Live</button>
+                            <button class="btn btn-light btn-sm flex-grow-1 border"><i class="bi bi-github me-1"></i>
+                                Code</button>
                         </div>
                     </div>
                 </div>
@@ -237,7 +294,8 @@
                             <h6 class="fw-bold text-main m-0">Inventory Management System</h6>
                             <span class="badge bg-success rounded-pill" style="font-size: 0.65rem;">Completed</span>
                         </div>
-                        <p class=" small mb-3" style="color: var(--text-muted)">Java-based desktop application for managing inventory with barcode scanning, automated reordering, and detailed analytics.</p>
+                        <p class=" small mb-3" style="color: var(--text-muted)">Java-based desktop application for
+                            managing inventory with barcode scanning, automated reordering, and detailed analytics.</p>
                         <div class="mb-3">
                             <span class="badge-tech">Java</span>
                             <span class="badge-tech">JavaFX</span>
@@ -245,8 +303,10 @@
                         </div>
                         <div class="d-flex gap-2">
                             <!-- Only Code button enabled for desktop app typically -->
-                            <button class="btn btn-light btn-sm flex-grow-1 border" disabled><i class="bi bi-box-arrow-up-right me-1"></i> Live</button>
-                            <button class="btn btn-light btn-sm flex-grow-1 border"><i class="bi bi-github me-1"></i> Code</button>
+                            <button class="btn btn-light btn-sm flex-grow-1 border" disabled><i
+                                    class="bi bi-box-arrow-up-right me-1"></i> Live</button>
+                            <button class="btn btn-light btn-sm flex-grow-1 border"><i class="bi bi-github me-1"></i>
+                                Code</button>
                         </div>
                     </div>
                 </div>
@@ -337,7 +397,8 @@
             <div>
                 <h6 class="fw-bold text-main m-0">Winner - State Level Technical Competition</h6>
                 <small class="text-success fw-bold d-block my-1">Government of Maharashtra • March 2024</small>
-                <small class=" d-block" style="color: var(--text-muted)">First place in mobile app development category with innovative healthcare solution.</small>
+                <small class=" d-block" style="color: var(--text-muted)">First place in mobile app development category
+                    with innovative healthcare solution.</small>
             </div>
         </div>
 
@@ -347,7 +408,8 @@
             <div>
                 <h6 class="fw-bold text-main m-0">Microsoft Azure Fundamentals Certified</h6>
                 <small class="text-primary fw-bold d-block my-1">Microsoft • January 2024</small>
-                <small class=" d-block" style="color: var(--text-muted)">Successfully completed Microsoft Azure Fundamentals certification (AZ-900).</small>
+                <small class=" d-block" style="color: var(--text-muted)">Successfully completed Microsoft Azure
+                    Fundamentals certification (AZ-900).</small>
             </div>
         </div>
 

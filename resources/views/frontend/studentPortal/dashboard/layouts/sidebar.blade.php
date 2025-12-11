@@ -119,9 +119,51 @@
                     <i class="bi bi-star me-2"></i> Recommendations
                 </a>
             </div>
-            <a class="nav-link" href="#"><i class="bi bi-briefcase"></i> Internship</a>
+
+            <!-- Internship Dropdown -->
+            @php $isInternActive = request()->routeIs('student.internship.*'); @endphp
+
+            <a class="nav-link {{ $isInternActive ? 'text-primary' : '' }}" href="#internSubmenu"
+                data-bs-toggle="collapse" role="button" aria-expanded="{{ $isInternActive ? 'true' : 'false' }}"
+                aria-controls="internSubmenu">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <span><i class="bi bi-briefcase me-2"></i> Internship</span>
+                    <i class="bi bi-chevron-down" style="font-size: 0.8rem;"></i>
+                </div>
+            </a>
+
+            <div class="collapse {{ $isInternActive ? 'show' : '' }} ps-3 mb-1" id="internSubmenu">
+
+                <!-- 1. Overview -->
+                <a href="{{ route('student.internship.overview') }}"
+                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.internship.overview') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
+                    <i class="bi bi-eye me-2"></i> Overview
+                </a>
+
+                <!-- 2. Tasks -->
+                <a href="{{ route('student.internship.tasks') }}"
+                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.internship.tasks') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
+                    <i class="bi bi-list-task me-2"></i> Tasks & Assignments
+                </a>
+
+                <!-- 3. Progress -->
+                <a href="{{ route('student.internship.progress') }}"
+                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.internship.progress') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
+                    <i class="bi bi-graph-up-arrow me-2"></i> Progress Tracking
+                </a>
+
+                <!-- 4. Phases -->
+                <a href="{{ route('student.internship.phases') }}"
+                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.internship.phases') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
+                    <i class="bi bi-layers me-2"></i> Phase Details
+                </a>
+            </div>
             <a class="nav-link" href="#"><i class="bi bi-check-circle"></i> Attendance</a>
             <a class="nav-link" href="#"><i class="bi bi-chat-dots"></i> Communication</a>
+             <a class="nav-link" href="#"><i class="bi bi-bar-chart"></i>Performance</a>
+            <a class="nav-link" href="#"><i class="bi bi-trophy"></i> Achivements</a>
+             <a class="nav-link" href="#"><i class="bi bi-bell"></i>Notifications</a>
+            <a class="nav-link" href="#"><i class="bi bi-gear"></i>Setting</a>
         </nav>
     </div>
 

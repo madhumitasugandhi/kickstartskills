@@ -6,10 +6,17 @@
 <style>
     /* Theme Variables */
     :root {
+        --bg-body: #f8f9fa;
+        --bg-sidebar: #ffffff;
         --bg-card: #ffffff;
+        --bg-hover: #f8f9fa;
+
         --text-main: #343a40;
         --text-muted: #6c757d;
+
         --border-color: #e9ecef;
+
+        /* Soft Colors */
         --soft-blue: #e7f1ff;
         --text-blue: #0d6efd;
         --soft-green: #d1e7dd;
@@ -18,13 +25,22 @@
         --text-orange: #664d03;
         --soft-red: #f8d7da;
         --text-red: #842029;
+        --soft-teal: #e0fbf6;
+        --text-teal: #107c6f;
     }
 
     [data-theme="dark"] {
-        --bg-card: #252525;
+        --bg-body: #0f1626;
+        --bg-sidebar: #1e293b;
+        --bg-card: #2e333f;
+        --bg-hover: #2e333f;
+
         --text-main: #e9ecef;
         --text-muted: #adb5bd;
-        --border-color: #2c2c2c;
+
+        --border-color: #767677;
+
+        /* Dark Mode Transparencies */
         --soft-blue: rgba(13, 110, 253, 0.15);
         --text-blue: #6ea8fe;
         --soft-green: rgba(25, 135, 84, 0.15);
@@ -33,6 +49,8 @@
         --text-orange: #ffda6a;
         --soft-red: rgba(220, 53, 69, 0.15);
         --text-red: #ea868f;
+        --soft-teal: rgba(32, 201, 151, 0.15);
+        --text-teal: #a9e5d6;
     }
 
     /* Overview Section */
@@ -210,29 +228,30 @@
     }
 
     .download-btn {
-        margin-top: auto;
-        width: 100%;
-        background-color: #e2e8f0;
-        border: none;
-        color: #475569;
+        /* Light grey footer */
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 12px 20px;
+        color: var(--text-main);
         font-weight: 600;
-        padding: 10px;
-        border-radius: 8px;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
+
+        cursor: pointer;
         transition: 0.2s;
     }
 
     .download-btn:hover {
-        background-color: #cbd5e1;
+       background-color: #e2e8f0;
     }
 
     [data-theme="dark"] .download-btn {
-        background-color: #333;
-        color: #ccc;
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
     }
 
     [data-theme="dark"] .download-btn:hover {
-        background-color: #444;
+       background-color: var(--bg-body);
     }
 
     /* Colors specific to cards from image */
@@ -376,7 +395,7 @@
                         <span class="file-tag">Online</span>
                     </div>
 
-                    <div class="d-flex justify-content-between small text-muted mb-3">
+                    <div class="d-flex justify-content-between small  mb-3" style="color: var(--text-muted)">
                         <span class="text-warning"><i class="bi bi-star-fill"></i> 4.8 (203)</span>
                         <span><i class="bi bi-download"></i> 1456</span>
                     </div>
@@ -403,7 +422,7 @@
                         <span class="file-tag">12.4 MB</span>
                     </div>
 
-                    <div class="d-flex justify-content-between small text-muted mb-3">
+                   <div class="d-flex justify-content-between small  mb-3" style="color: var(--text-muted)">
                         <span class="text-warning"><i class="bi bi-star-fill"></i> 4.8 (245)</span>
                         <span><i class="bi bi-download"></i> 1250</span>
                     </div>
@@ -430,7 +449,7 @@
                         <span class="file-tag">8.7 MB</span>
                     </div>
 
-                    <div class="d-flex justify-content-between small text-muted mb-3">
+                    <div class="d-flex justify-content-between small  mb-3" style="color: var(--text-muted)">
                         <span class="text-warning"><i class="bi bi-star-fill"></i> 4.7 (412)</span>
                         <span><i class="bi bi-download"></i> 2150</span>
                     </div>
