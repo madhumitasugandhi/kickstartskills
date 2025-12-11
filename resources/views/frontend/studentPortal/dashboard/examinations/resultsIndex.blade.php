@@ -74,7 +74,7 @@
     }
     .modal-header { border-bottom: 1px solid var(--border-color); }
     .modal-footer { border-top: 1px solid var(--border-color); }
-    .btn-close { filter: var(--text-main) == '#e9ecef' ? invert(1) : none; }
+    .btn-close { filter: var(--text-muted) == '#e9ecef' ? invert(1) : none; }
 
     /* Bullet lists */
     .custom-list { list-style: none; padding-left: 0; }
@@ -154,18 +154,18 @@
             <div class="card-custom h-100 mb-0">
                 <h6 class="fw-bold text-main mb-4"><i class="bi bi-book me-2 text-primary"></i>Subject-wise Analysis</h6>
 
-                <div class="p-3 bg-light rounded mb-2 d-flex justify-content-between align-items-center">
+                <div class="p-3 rounded mb-2 d-flex justify-content-between align-items-center border" style="border-color: var(--border-color);">
                     <div>
                         <div class="fw-bold text-main">Mathematics</div>
-                        <small class="text-muted">Avg: 82.5%</small>
+                        <small class="" style="color: var(--text-muted)">Avg: 82.5%</small>
                     </div>
                     <span class="text-success small fw-bold"><i class="bi bi-arrow-up"></i> +8.2%</span>
                 </div>
 
-                <div class="p-3 bg-light rounded d-flex justify-content-between align-items-center">
+                <div class="p-3 rounded d-flex justify-content-between align-items-center border" style="border-color: var(--border-color);">
                     <div>
                         <div class="fw-bold text-main">Physics</div>
-                        <small class="text-muted">Avg: 68.3%</small>
+                        <small class="" style="color: var(--text-muted)">Avg: 68.3%</small>
                     </div>
                     <span class="text-danger small fw-bold"><i class="bi bi-arrow-down"></i> -2.1%</span>
                 </div>
@@ -203,17 +203,17 @@
         </div>
 
         <div class="text-center d-none d-md-block">
-            <small class="text-muted d-block">Score</small>
+            <small class=" d-block"  style="color: var(--text-muted)">Score</small>
             <span class="fw-bold text-main">38/50</span>
         </div>
 
         <div class="text-center d-none d-md-block">
-            <small class="text-muted d-block">Rank</small>
+            <small class="d-block"  style="color: var(--text-muted)">Rank</small>
             <span class="fw-bold text-main">22/94</span>
         </div>
 
         <div class="text-center d-none d-md-block">
-            <small class="text-muted d-block">Time</small>
+            <small class="d-block"  style="color: var(--text-muted)">Time</small>
             <span class="fw-bold text-main">38/65 min</span>
         </div>
 
@@ -231,7 +231,7 @@
         <div class="modal-content">
             <div class="modal-header border-0 pb-0">
                 <h5 class="modal-title fw-bold">Assignment: Calculus Intro</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close border border-primary" style="color: var(--text-muted)"  data-bs-dismiss="modal" aria-label=" Close"></button>
             </div>
             <div class="modal-body">
 

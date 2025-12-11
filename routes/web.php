@@ -37,7 +37,7 @@ Route::prefix('student/dashboard/profile')->name('student.profile.')->group(func
 
     // Route Name: student.profile.personal
     Route::get('/personal-info', function () {
-        return view('frontend.studentPortal.dashboard.profile.profileIndex');
+        return view('frontend.studentPortal.dashboard.profile.personalInfoIndex');
     })->name('personal');
 
     // Route Name: student.profile.academic (Placeholder)
@@ -73,6 +73,30 @@ Route::prefix('student/dashboard/examinations')->name('student.exam.')->group(fu
     Route::get('/practice', function () {
         return view('frontend.studentPortal.dashboard.examinations.practiceTestsIndex');
     })->name('practice');
+});
+
+/*Learning section Group Routes*/
+Route::prefix('student/dashboard/learning')->name('student.learning.')->group(function () {
+
+    // 1st Option: My Courses
+    Route::get('/my-courses', function () {
+        return view('frontend.studentPortal.dashboard.learning.myCoursesIndex');
+    })->name('my_courses');
+
+    // 2nd Option: Course Catalog (Placeholder)
+    Route::get('/catalog', function () {
+        return view('frontend.studentPortal.dashboard.learning.coursesCatalogIndex');
+    })->name('catalog');
+
+    // 3rd Option: Resources (Placeholder)
+    Route::get('/resources', function () {
+        return view('frontend.studentPortal.dashboard.learning.resourcesIndex');
+    })->name('resources');
+
+    // 4th Option: Recommendations (Placeholder)
+    Route::get('/recommendations', function () {
+       return view('frontend.studentPortal.dashboard.learning.recommendationsIndex');
+    })->name('recommendations');
 });
 
 /*|------------------------------------------------End Student Portal Routes--------------------------------------------------|*/

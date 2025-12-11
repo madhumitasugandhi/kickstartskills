@@ -170,7 +170,7 @@
     <!-- 2. Subject Performance Bars -->
     <h6 class="fw-bold text-main mb-3">Performance Analysis</h6>
     <div class="card-custom mb-5">
-        <h6 class="text-muted small fw-bold mb-4">Subject Performance</h6>
+        <h6 class=" small fw-bold mb-4" style="color: var(--text-muted)">Subject Performance</h6>
 
         <div class="subject-row">
             <div class="subject-header"><span>Computer Science</span> <span class="text-success fw-bold">94.2%</span></div>
@@ -228,7 +228,7 @@
             <div><div class="meta-val">78.5%</div><div class="meta-lbl">Class Avg</div></div>
         </div>
 
-        <div class="d-flex justify-content-between text-muted small mb-3 px-1">
+        <div class="d-flex justify-content-between small mb-3 px-1" style="color: var(--text-muted)">
             <span><i class="bi bi-calendar me-1"></i> 9/12/2025</span>
             <span>ID: TEST_001</span>
         </div>
@@ -273,7 +273,7 @@
             <div><div class="meta-val">68.2%</div><div class="meta-lbl">Class Avg</div></div>
         </div>
 
-        <div class="d-flex justify-content-between text-muted small mb-3 px-1">
+        <div class="d-flex justify-content-between small mb-3 px-1" style="color: var(--text-muted)">
             <span><i class="bi bi-calendar me-1"></i> 4/12/2025</span>
             <span>ID: TEST_002</span>
         </div>

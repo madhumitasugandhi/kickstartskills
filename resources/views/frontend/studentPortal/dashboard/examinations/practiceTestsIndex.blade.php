@@ -34,26 +34,33 @@
         margin-bottom: 24px;
     }
 
-    .search-input-group {
+   /* Search Bar */
+    .search-container {
         position: relative;
+        margin-bottom: 32px;
+    }
+    .search-input {
+        padding: 16px 16px 16px 48px;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        background-color: var(--bg-card);
+        color: var(--text-main);
+        width: 100%;
+        transition: 0.2s;
+    }
+    .search-input:focus {
+        border-color: var(--text-blue);
+        box-shadow: 0 0 0 4px var(--soft-blue);
+        outline: none;
     }
     .search-icon {
         position: absolute;
-        left: 16px;
+        left: 18px;
         top: 50%;
         transform: translateY(-50%);
         color: var(--text-muted);
+        font-size: 1.2rem;
     }
-    .form-control-search {
-        padding-left: 44px;
-        padding-top: 12px;
-        padding-bottom: 12px;
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-        background-color: #f8f9fa; /* Slight grey background for input */
-    }
-    [data-theme="dark"] .form-control-search { background-color: #2c2c2c; }
-
     /* Cards */
     .test-card {
         background: var(--bg-card);
@@ -123,15 +130,15 @@
         <h5 class="fw-bold text-main mb-4"><i class="bi bi-search me-2 text-primary"></i>Find Practice Tests</h5>
 
         <!-- Search Bar -->
-        <div class="search-input-group mb-4">
-            <i class="bi bi-search search-icon"></i>
-            <input type="text" class="form-control form-control-search" placeholder="Search tests by name, subject, or topic...">
-        </div>
+        <div class="search-container">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" class="search-input" placeholder="Search tests by name, subject, or topic...">
+    </div>
 
         <!-- Filters Row -->
         <div class="row g-3">
             <div class="col-md-4">
-                <label class="form-label text-muted small fw-bold">Subject</label>
+                <label class="form-label small fw-bold"  style="color: var(--text-muted)">Subject</label>
                 <select class="form-select border-light bg-light">
                     <option>All Subjects</option>
                     <option>Computer Science</option>
@@ -139,7 +146,7 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <label class="form-label text-muted small fw-bold">Difficulty</label>
+                <label class="form-label small fw-bold"  style="color: var(--text-muted)">Difficulty</label>
                 <select class="form-select border-light bg-light">
                     <option>All Levels</option>
                     <option>Beginner</option>
@@ -147,7 +154,7 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <label class="form-label text-muted small fw-bold">Type</label>
+                <label class="form-label small fw-bold"  style="color: var(--text-muted)">Type</label>
                 <select class="form-select border-light bg-light">
                     <option>All Types</option>
                     <option>Topic Wise</option>
