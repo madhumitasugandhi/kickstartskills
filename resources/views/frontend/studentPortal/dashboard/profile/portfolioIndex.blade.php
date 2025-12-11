@@ -153,14 +153,14 @@
         </div>
 
         <div class="mb-4">
-            <label class="form-label text-muted small fw-bold">Bio/Summary</label>
-            <div class="p-3 border rounded bg-light text-main">
+            <label class="form-label small fw-bold" style="color: var(--text-muted)">Bio/Summary</label>
+            <div class="p-3 rounded" style="color: var(--text-main); border: 1px solid var(--border-color); ">
                 Passionate Computer Engineering student with expertise in Flutter development and UI/UX design. Experienced in building mobile applications and web solutions.
             </div>
         </div>
 
         <div>
-            <label class="form-label text-muted small fw-bold">Resume/CV</label>
+            <label class="form-label small fw-bold" style="color: var(--text-muted)">Resume/CV</label>
             <div class="resume-box">
                 <i class="bi bi-file-earmark-pdf text-danger me-2"></i> john_doe_resume.pdf
                 <span class="ms-auto text-primary small fw-bold" style="cursor: pointer;">Download</span>
@@ -177,17 +177,17 @@
             <h6 class="fw-bold m-0 text-main fs-5">Social Links & Online Presence</h6>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label text-muted small fw-bold">LinkedIn Profile</label>
-            <div class="resume-box text-muted">https://linkedin.com/in/johndoe</div>
+                <div class="mb-3">
+                    <label class="form-label small fw-bold" style="color: var(--text-muted)">LinkedIn Profile</label>
+            <div class="resume-box " style="color: var(--text-main);">https://linkedin.com/in/johndoe</div>
         </div>
         <div class="mb-3">
-            <label class="form-label text-muted small fw-bold">GitHub Profile</label>
-            <div class="resume-box text-muted">https://github.com/johndoe</div>
+            <label class="form-label small fw-bold" style="color: var(--text-muted)">GitHub Profile</label>
+            <div class="resume-box " style="color: var(--text-main);">https://github.com/johndoe</div>
         </div>
         <div>
-            <label class="form-label text-muted small fw-bold">Portfolio Website</label>
-            <div class="resume-box text-muted">https://johndoe.dev</div>
+            <label class="form-label small fw-bold" style="color: var(--text-muted)">Portfolio Website</label>
+            <div class="resume-box " style="color: var(--text-main);">https://johndoe.dev</div>
         </div>
     </div>
 
@@ -212,7 +212,7 @@
                             <h6 class="fw-bold text-main m-0">E-commerce Mobile App</h6>
                             <span class="badge bg-success rounded-pill" style="font-size: 0.65rem;">Completed</span>
                         </div>
-                        <p class="text-muted small mb-3">Flutter-based mobile application with complete shopping functionality, payment integration, and real-time order tracking.</p>
+                        <p class=" small mb-3" style="color: var(--text-muted)">Flutter-based mobile application with complete shopping functionality, payment integration, and real-time order tracking.</p>
                         <div class="mb-3">
                             <span class="badge-tech">Flutter</span>
                             <span class="badge-tech">Firebase</span>
@@ -237,7 +237,7 @@
                             <h6 class="fw-bold text-main m-0">Inventory Management System</h6>
                             <span class="badge bg-success rounded-pill" style="font-size: 0.65rem;">Completed</span>
                         </div>
-                        <p class="text-muted small mb-3">Java-based desktop application for managing inventory with barcode scanning, automated reordering, and detailed analytics.</p>
+                        <p class=" small mb-3" style="color: var(--text-muted)">Java-based desktop application for managing inventory with barcode scanning, automated reordering, and detailed analytics.</p>
                         <div class="mb-3">
                             <span class="badge-tech">Java</span>
                             <span class="badge-tech">JavaFX</span>
@@ -337,7 +337,7 @@
             <div>
                 <h6 class="fw-bold text-main m-0">Winner - State Level Technical Competition</h6>
                 <small class="text-success fw-bold d-block my-1">Government of Maharashtra • March 2024</small>
-                <small class="text-muted d-block">First place in mobile app development category with innovative healthcare solution.</small>
+                <small class=" d-block" style="color: var(--text-muted)">First place in mobile app development category with innovative healthcare solution.</small>
             </div>
         </div>
 
@@ -347,7 +347,7 @@
             <div>
                 <h6 class="fw-bold text-main m-0">Microsoft Azure Fundamentals Certified</h6>
                 <small class="text-primary fw-bold d-block my-1">Microsoft • January 2024</small>
-                <small class="text-muted d-block">Successfully completed Microsoft Azure Fundamentals certification (AZ-900).</small>
+                <small class=" d-block" style="color: var(--text-muted)">Successfully completed Microsoft Azure Fundamentals certification (AZ-900).</small>
             </div>
         </div>
 
@@ -357,7 +357,7 @@
             <div>
                 <h6 class="fw-bold text-main m-0">Dean's List for Academic Excellence</h6>
                 <small class="text-warning fw-bold d-block my-1">MIT College • December 2023</small>
-                <small class="text-muted d-block">Recognized for maintaining CGPA above 9.0 for consecutive semesters.</small>
+                <small class=" d-block" style="color: var(--text-muted)">Recognized for maintaining CGPA above 9.0 for consecutive semesters.</small>
             </div>
         </div>
     </div>
