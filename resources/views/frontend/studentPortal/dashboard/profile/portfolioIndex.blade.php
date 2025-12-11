@@ -357,7 +357,8 @@
             <div>
                 <h6 class="fw-bold text-main m-0">Dean's List for Academic Excellence</h6>
                 <small class="text-warning fw-bold d-block my-1">MIT College • December 2023</small>
-                <small class=" d-block" style="color: var(--text-muted)">Recognized for maintaining CGPA above 9.0 for consecutive semesters.</small>
+                <small class=" d-block" style="color: var(--text-muted)
+                ">Recognized for maintaining CGPA above 9.0 for consecutive semesters.</small>
             </div>
         </div>
     </div>

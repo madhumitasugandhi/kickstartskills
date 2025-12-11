@@ -51,6 +51,30 @@ Route::prefix('student/dashboard/profile')->name('student.profile.')->group(func
     })->name('portfolio');
 });
 
+/* 3. Examinations Section (Grouped Routes) */
+Route::prefix('student/dashboard/examinations')->name('student.exam.')->group(function () {
+
+    // 1st Option: Take Test
+    Route::get('/take-test', function () {
+        return view('frontend.studentPortal.dashboard.examinations.takeTestIndex');
+    })->name('take');
+
+    // 2nd Option: Test History (Placeholder)
+    Route::get('/history', function () {
+        return view('frontend.studentPortal.dashboard.examinations.testHistoryIndex');
+    })->name('history');
+
+    // 3rd Option: Results (Placeholder)
+    Route::get('/results', function () {
+        return view('frontend.studentPortal.dashboard.examinations.resultsIndex');
+    })->name('results');
+
+    // 4th Option: Practice Tests (Placeholder)
+    Route::get('/practice', function () {
+        return view('frontend.studentPortal.dashboard.examinations.practiceTestsIndex');
+    })->name('practice');
+});
+
 /*|------------------------------------------------End Student Portal Routes--------------------------------------------------|*/
 
 
