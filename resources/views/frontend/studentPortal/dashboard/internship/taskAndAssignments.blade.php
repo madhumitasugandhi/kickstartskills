@@ -1,6 +1,7 @@
 @extends('frontend.studentPortal.dashboard.layouts.app')
 
 @section('title', 'Tasks & Assignments')
+@section('icon', 'bi bi-list-task fs-4 p-2 bg-primary bg-opacity-10 rounded-3 text-primary')
 
 @section('content')
 <style>
@@ -215,15 +216,6 @@
 
     <!-- WRAPPER FOR DARK THEME LOOK -->
     <div class="dark-wrapper">
-
-        <!-- Header -->
-        <div class="d-flex align-items-center gap-3 mb-4">
-            <div class="p-2 bg-primary bg-opacity-10 rounded-3 text-primary"><i class="bi bi-list-task fs-4"></i></div>
-            <div>
-                <h5 class="fw-bold m-0 text-white">Tasks & Assignments</h5>
-                <small class="text-secondary">Welcome back, John!</small>
-            </div>
-        </div>
 
         <!-- 1. Stats Row -->
         <div class="row g-4 mb-4">

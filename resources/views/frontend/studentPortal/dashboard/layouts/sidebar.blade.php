@@ -226,21 +226,63 @@
                 </div>
             </a>
 
-            <div class="collapse {{ $isPerfActive ? 'show' : '' }} ps-3 mb-1" id="perfSubmenu">
+            <div class="collapse {{ $isPerfActive ? 'show' : '' }} ps-3 " id="perfSubmenu">
                 <a href="{{ route('student.performance.analytics') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.performance.analytics') ? 'bg-soft-blue text-primary fw-bold' : 'text-muted' }}">
+                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.performance.analytics') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
                     <i class="bi bi-graph-up me-2"></i> Analytics
                 </a>
 
                 <a href="{{ route('student.performance.reports') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.performance.reports') ? 'bg-soft-blue text-primary fw-bold' : 'text-muted' }}">
+                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.performance.reports') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
                     <i class="bi bi-file-earmark-text me-2"></i> Reports
                 </a>
+
+                <a href="{{ route('student.performance.feedback') }}"
+                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.performance.feedback') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
+                    <i class="bi bi-chat-dots me-2"></i> Feedback
+                </a>
             </div>
-            
-            <a class="nav-link" href="#"><i class="bi bi-trophy"></i> Achivements</a>
-            <a class="nav-link" href="#"><i class="bi bi-bell"></i>Notifications</a>
-            <a class="nav-link" href="#"><i class="bi bi-gear"></i>Setting</a>
+            <!-- Achievements Dropdown -->
+            @php $isAchieveActive = request()->routeIs('student.achievements.*'); @endphp
+
+            <a class="nav-link {{ $isAchieveActive ? 'text-primary' : '' }}" href="#achieveSubmenu"
+                data-bs-toggle="collapse" role="button" aria-expanded="{{ $isAchieveActive ? 'true' : 'false' }}">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <span><i class="bi bi-trophy me-2"></i> Achievements</span>
+                    <i class="bi bi-chevron-down" style="font-size: 0.8rem;"></i>
+                </div>
+            </a>
+
+            <div class="collapse {{ $isAchieveActive ? 'show' : '' }} ps-3 mb-1" id="achieveSubmenu">
+                <a href="{{ route('student.achievements.certificates') }}"
+                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.achievements.certificates') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
+                    <i class="bi bi-award me-2"></i> Certificates
+                </a>
+
+                <a href="{{ route('student.achievements.badges') }}"
+                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.achievements.badges') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
+                    <i class="bi bi-patch-check me-2"></i> Badges
+                </a>
+
+                <a href="{{ route('student.achievements.portfolio') }}"
+                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.achievements.portfolio') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
+                    <i class="bi bi-briefcase me-2"></i> Portfolio
+                </a>
+            </div>
+
+            <a class="nav-link {{ request()->routeIs('student.notifications') ? 'active' : '' }}"
+                href="{{ route('student.notifications') }}">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <span><i class="bi bi-bell me-2"></i> Notifications</span>
+                    <span class="badge bg-danger rounded-pill">3</span>
+                </div>
+            </a>
+            <a class="nav-link {{ request()->routeIs('student.settings') ? 'active' : '' }}"
+                href="{{ route('student.settings') }}">
+                <div class="d-flex justify-content-between w-100 align-items-center">
+                    <span><i class="bi bi-gear me-2"></i> Settings</span>
+                </div>
+            </a>
         </nav>
     </div>
 
