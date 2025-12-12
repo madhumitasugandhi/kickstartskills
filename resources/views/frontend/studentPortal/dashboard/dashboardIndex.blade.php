@@ -1,5 +1,7 @@
 @extends('frontend.studentPortal.dashboard.layouts.app')
 @section('content')
+@section('title', 'Dashboard')
+@section('icon', 'bi bi-grid fs-4 p-2 bg-primary bg-opacity-10 rounded-3 text-primary')
 <div class="content-body">
 
     <!-- SECTION 1: Progress Overview -->
