@@ -276,6 +276,13 @@
 
 <div class="content-body">
 
+    <div class="d-flex align-items-center gap-3 mb-4">
+        <div class="p-2 bg-primary bg-opacity-10 rounded-3 text-primary"><i class="bi bi-folder2-open fs-4"></i></div>
+        <div>
+            <h5 class="fw-bold m-0 text-main">Resources</h5>
+            <small class="--text-muted">Welcome back, John!</small>
+        </div>
+    </div>
     <!-- 1. Resource Overview Stats -->
     <div class="overview-card">
         <div class="d-flex align-items-center gap-2 mb-4">

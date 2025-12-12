@@ -6,52 +6,53 @@
 <style>
     /* Reusing your Theme Variables */
     :root {
-            --bg-body: #f8f9fa;
-            --bg-sidebar: #ffffff;
-            --bg-card: #ffffff;
-            --bg-hover: #f8f9fa;
+        --bg-body: #f8f9fa;
+        --bg-sidebar: #ffffff;
+        --bg-card: #ffffff;
+        --bg-hover: #f8f9fa;
 
-            --text-main: #343a40;
-            --text-muted: #6c757d;
+        --text-main: #343a40;
+        --text-muted: #6c757d;
 
-            --border-color: #e9ecef;
+        --border-color: #e9ecef;
 
-            /* Soft Colors */
-            --soft-blue: #e7f1ff;
-            --text-blue: #0d6efd;
-            --soft-green: #d1e7dd;
-            --text-green: #0f5132;
-            --soft-orange: #ffecb5;
-            --text-orange: #664d03;
-            --soft-red: #f8d7da;
-            --text-red: #842029;
-            --soft-teal: #e0fbf6;
-            --text-teal: #107c6f;
-        }
+        /* Soft Colors */
+        --soft-blue: #e7f1ff;
+        --text-blue: #0d6efd;
+        --soft-green: #d1e7dd;
+        --text-green: #0f5132;
+        --soft-orange: #ffecb5;
+        --text-orange: #664d03;
+        --soft-red: #f8d7da;
+        --text-red: #842029;
+        --soft-teal: #e0fbf6;
+        --text-teal: #107c6f;
+    }
 
-        [data-theme="dark"] {
-            --bg-body: #0f1626;
-            --bg-sidebar: #1e293b;
-            --bg-card: #2e333f;
-            --bg-hover: #2e333f;
+    [data-theme="dark"] {
+        --bg-body: #0f1626;
+        --bg-sidebar: #1e293b;
+        --bg-card: #2e333f;
+        --bg-hover: #2e333f;
 
-            --text-main: #e9ecef;
-            --text-muted: #adb5bd;
+        --text-main: #e9ecef;
+        --text-muted: #adb5bd;
 
-            --border-color: #767677;
+        --border-color: #767677;
 
-            /* Dark Mode Transparencies */
-            --soft-blue: rgba(13, 110, 253, 0.15);
-            --text-blue: #6ea8fe;
-            --soft-green: rgba(25, 135, 84, 0.15);
-            --text-green: #75b798;
-            --soft-orange: rgba(255, 193, 7, 0.15);
-            --text-orange: #ffda6a;
-            --soft-red: rgba(220, 53, 69, 0.15);
-            --text-red: #ea868f;
-            --soft-teal: rgba(32, 201, 151, 0.15);
-            --text-teal: #a9e5d6;
-        }
+        /* Dark Mode Transparencies */
+        --soft-blue: rgba(13, 110, 253, 0.15);
+        --text-blue: #6ea8fe;
+        --soft-green: rgba(25, 135, 84, 0.15);
+        --text-green: #75b798;
+        --soft-orange: rgba(255, 193, 7, 0.15);
+        --text-orange: #ffda6a;
+        --soft-red: rgba(220, 53, 69, 0.15);
+        --text-red: #ea868f;
+        --soft-teal: rgba(32, 201, 151, 0.15);
+        --text-teal: #a9e5d6;
+    }
+
     /* Card Styling */
     .card-custom {
         border: 1px solid var(--border-color);
@@ -69,7 +70,8 @@
         font-size: 0.85rem;
     }
 
-    .form-control, .form-select {
+    .form-control,
+    .form-select {
         background-color: var(--bg-card);
         border-color: var(--border-color);
         color: var(--text-main);
@@ -78,7 +80,8 @@
         border-radius: 8px;
     }
 
-    .form-control:focus, .form-select:focus {
+    .form-control:focus,
+    .form-select:focus {
         box-shadow: none;
         border-color: var(--text-blue);
     }
@@ -100,8 +103,15 @@
         font-size: 1.2rem;
     }
 
-    .bg-soft-teal { background-color: #e0fbf6; color: #107c6f; }
-    [data-theme="dark"] .bg-soft-teal { background-color: rgba(32, 201, 151, 0.15); color: #a9e5d6; }
+    .bg-soft-teal {
+        background-color: #e0fbf6;
+        color: #107c6f;
+    }
+
+    [data-theme="dark"] .bg-soft-teal {
+        background-color: rgba(32, 201, 151, 0.15);
+        color: #a9e5d6;
+    }
 
     /* Readonly Box Style (for Previous Education) */
     .info-box {
@@ -116,6 +126,13 @@
 </style>
 
 <div class="content-body">
+    <div class="d-flex align-items-center gap-3 mb-4">
+        <div class="p-2 bg-primary bg-opacity-10 rounded-3 text-primary"><i class="bi bi-mortarboard fs-4"></i></div>
+        <div>
+            <h5 class="fw-bold m-0 text-main">Academic Details</h5>
+            <small class="--text-muted">Welcome back, John!</small>
+        </div>
+    </div>
 
     <!-- 1. Current Education Section -->
     <div class="card-custom">
@@ -244,7 +261,8 @@
     <!-- 4. Skills Section -->
     <div class="card-custom">
         <div class="d-flex align-items-center gap-3 mb-4">
-            <div class="section-icon bg-soft-teal text-teal"> <!-- Using custom teal color -->
+            <div class="section-icon bg-soft-teal text-teal">
+                <!-- Using custom teal color -->
                 <i class="bi bi-cpu-fill"></i>
             </div>
             <h6 class="fw-bold m-0 text-main fs-5">Skills & Expertise</h6>

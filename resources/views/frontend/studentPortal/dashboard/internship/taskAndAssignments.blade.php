@@ -6,29 +6,58 @@
 <style>
     /* Theme Variables */
     :root {
-        --bg-card: #ffffff;
-        --text-main: #343a40;
-        --text-muted: #6c757d;
-        --border-color: #e9ecef;
+            --bg-body: #f8f9fa;
+            --bg-sidebar: #ffffff;
+            --bg-card: #ffffff;
+            --bg-hover: #f8f9fa;
 
-        /* Dark Theme colors specific to this page design */
-        --dark-card-bg: #1e293b;
-        --dark-border: #334155;
-        --dark-text: #f8fafc;
-        --dark-muted: #94a3b8;
-    }
+            --text-main: #343a40;
+            --text-muted: #6c757d;
 
-    [data-theme="dark"] {
-        --bg-card: #252525;
-        --text-main: #e9ecef;
-        --text-muted: #adb5bd;
-        --border-color: #2c2c2c;
-    }
+            --border-color: #e9ecef;
+
+            /* Soft Colors */
+            --soft-blue: #e7f1ff;
+            --text-blue: #0d6efd;
+            --soft-green: #d1e7dd;
+            --text-green: #0f5132;
+            --soft-orange: #ffecb5;
+            --text-orange: #664d03;
+            --soft-red: #f8d7da;
+            --text-red: #842029;
+            --soft-teal: #e0fbf6;
+            --text-teal: #107c6f;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0f1626;
+            --bg-sidebar: #1e293b;
+            --bg-card: #2e333f;
+            --bg-hover: #2e333f;
+
+            --text-main: #e9ecef;
+            --text-muted: #adb5bd;
+
+            --border-color: #767677;
+
+            /* Dark Mode Transparencies */
+            --soft-blue: rgba(13, 110, 253, 0.15);
+            --text-blue: #6ea8fe;
+            --soft-green: rgba(25, 135, 84, 0.15);
+            --text-green: #75b798;
+            --soft-orange: rgba(255, 193, 7, 0.15);
+            --text-orange: #ffda6a;
+            --soft-red: rgba(220, 53, 69, 0.15);
+            --text-red: #ea868f;
+            --soft-teal: rgba(32, 201, 151, 0.15);
+            --text-teal: #a9e5d6;
+        }
+
 
     /* 1. Overview Stats (Dark Theme) */
     .stat-card-dark {
-        background-color: var(--dark-card-bg);
-        border: 1px solid var(--dark-border);
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
         border-radius: 8px;
         padding: 24px;
         text-align: center;
@@ -46,12 +75,12 @@
 
     /* 2. Progress Bar Section */
     .progress-header {
-        display: flex; justify-content: space-between; color: var(--dark-muted); font-size: 0.9rem; font-weight: 600; margin-bottom: 8px;
+        display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; margin-bottom: 8px;
     }
     .progress-track-dark {
         height: 6px;
-        background-color: var(--dark-card-bg);
-        border: 1px solid var(--dark-border);
+         background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
         border-radius: 4px;
         overflow: hidden;
     }
@@ -78,8 +107,8 @@
 
     /* 4. Task Card (Row Layout) */
     .task-card-row {
-        background-color: var(--dark-card-bg);
-        border: 1px solid var(--dark-border);
+         background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 24px;
         margin-bottom: 20px;
@@ -179,7 +208,7 @@
     }
 
     /* Override Wrapper Background for this specific page */
-    
+
 </style>
 
 <div class="content-body">

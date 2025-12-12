@@ -162,6 +162,13 @@
 </style>
 <div class="content-body">
 
+<div class="d-flex align-items-center gap-3 mb-4">
+        <div class="p-2 bg-primary bg-opacity-10 rounded-3 text-primary"><i class="bi bi-pencil-square fs-4"></i></div>
+        <div>
+            <h5 class="fw-bold m-0 text-main">Personal Info</h5>
+            <small class="--text-muted">Welcome back, John!</small>
+        </div>
+    </div>
     <!-- 1. Profile Header Card -->
     <div class="card-custom">
         <div class="d-flex flex-column flex-md-row align-items-center gap-4">
