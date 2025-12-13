@@ -235,7 +235,7 @@ Route::get('/student/settings', function () {
 /*|------------------------------------------------End Student Portal Routes--------------------------------------------------|*/
 
 
-// Institution Portal
+/*|------------------------------------------------Start Institution Portal Routes--------------------------------------------------|*/
 Route::get('/institution-login', function () {
     return view('frontend.institutionPortal.auth.institutelogin');
 });
@@ -247,12 +247,12 @@ Route::get('/institution/register', function () {
 });
 
 Route::prefix('institute')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('frontend.institutionPortal.dashboard.index');
-        })->name('institute.dashboard');
-    });
+    Route::get('/dashboard', function () {
+        return view('frontend.institutionPortal.dashboard.index');
+    })->name('institute.dashboard');
+});
 
-
+/*|------------------------------------------------End Institution Portal Routes--------------------------------------------------|*/
 
 
 

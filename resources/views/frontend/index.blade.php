@@ -31,7 +31,7 @@
             --bg-danger-light: rgba(220, 53, 69, 0.1);
             --bg-purple-light: rgba(156, 79, 217, 0.1);
             /* HR Purple opacity */
-            --bg-warning-light: rgba(255, 193, 7, 0.1);
+            --bg-warning-light: rgba(255, 127, 7, 0.1);
             /* Mentor Yellow opacity */
         }
 
@@ -53,7 +53,7 @@
             --bg-success-dark: rgba(25, 135, 84, 0.15);
             --bg-danger-dark: rgba(220, 53, 69, 0.15);
             --bg-purple-dark: rgba(156, 79, 217, 0.15);
-            --bg-warning-dark: rgba(255, 193, 7, 0.15);
+            --bg-warning-dark: rgba(255, 114, 7, 0.15);
         }
 
         /* ------------------ KEYFRAME ANIMATION ------------------ */
@@ -328,7 +328,7 @@
             background: var(--bg-purple-light);
         }
 
-        .portal-icon.text-warning {
+        .portal-icon.text-orange {
             background: var(--bg-warning-light);
         }
 
@@ -349,7 +349,7 @@
             background: var(--bg-purple-dark);
         }
 
-        body.dark-mode .portal-icon.text-warning {
+        body.dark-mode .portal-icon.text-orange {
             background: var(--bg-warning-dark);
         }
 
@@ -358,7 +358,7 @@
         .login-btn {
             border-radius: 30px;
             padding: 5px 18px;
-            width: 50%;
+            width: 100%;
             font-size: 1rem;
             border: 1px solid rgba(255, 255, 255, 0.22);
             background: rgba(255, 255, 255, 0.08);
@@ -577,7 +577,7 @@
                     <div class="portal-desc">Access courses, track progress, and develop your skills.</div>
 
                     <a href="{{ url('/student-login') }}" class="login-btn btn-primary">
-                        Student Login
+                        student-login
                     </a>
                 </div>
             </div>
@@ -595,13 +595,13 @@
 
             <div class="col-md-4">
                 <div class="portal-card">
-                    <div class="portal-icon text-warning"><i class="bi bi-person-check-fill"></i></div>
+                    <div class="portal-icon text-orange" style="color: #ff4500"><i class="bi bi-person-check-fill"></i></div>
 
-                    <div class="portal-title text-warning">Mentor Portal</div>
+                    <div class="portal-title text-orange" style="color: #ff4500">Mentor Portal</div>
                     <div class="portal-sub">Guide and inspire talent</div>
                     <div class="portal-desc">Provide guidance and mentorship to students.</div>
 
-                    <a href="/mentor-login" class="login-btn text-warning btn-warning">/mentor-login</a>
+                    <a href="/mentor-login" class="login-btn text-orange btn-warning" style="color: #ff4500">mentor-login</a>
                 </div>
             </div>
 
