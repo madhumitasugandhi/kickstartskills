@@ -9,6 +9,29 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+
+Route::get('cache:clear', function () {
+    Artisan::call('cache:clear');
+    return 'd';
+});
+
+Route::get('route:clear', function () {
+    Artisan::call('route:clear');
+    return 'done';
+});
+
+Route::get('config:clear', function () {
+    Artisan::call('config:clear');
+    return 'r';
+});
+Route::get('optimize', function () {
+    Artisan::call('optimize');
+    return 'done';
+});
+
+
+
+
 Route::get('/', function () {
     return view('frontend.index');
 });
@@ -124,6 +147,27 @@ Route::prefix('student/dashboard/internship')->name('student.internship.')->grou
 });
 
 /*|------------------------------------------------End Student Portal Routes--------------------------------------------------|*/
+
+
+// Institution Portal
+Route::get('/institution-login', function () {
+    return view('frontend.institutionPortal.auth.institutelogin');
+});
+Route::get('/institution/forgot-password', function () {
+    return view('frontend.institutionPortal.auth.institutefrgt-password');
+});
+Route::get('/institution/register', function () {
+    return view('frontend.institutionPortal.auth.instituteregister');
+});
+
+Route::prefix('institute')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('frontend.institutionPortal.dashboard.index');
+        })->name('institute.dashboard');
+    });
+
+
+
 
 
 Route::get('/dashboard', function () {
