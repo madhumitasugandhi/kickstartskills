@@ -1,42 +1,63 @@
 @extends('frontend.studentPortal.dashboard.layouts.app')
 
 @section('title', 'Phase Details')
+@section('icon', 'bi bi-layers-fill fs-4 p-2 bg-primary bg-opacity-10 rounded-3 text-primary')
 
 @section('content')
 <style>
     /* Theme Variables */
-    :root {
-        --bg-card: #ffffff;
-        --text-main: #343a40;
-        --text-muted: #6c757d;
-        --border-color: #e9ecef;
+   :root {
+            --bg-body: #f8f9fa;
+            --bg-sidebar: #ffffff;
+            --bg-card: #ffffff;
+            --bg-hover: #f8f9fa;
 
-        /* Dark Theme Specifics */
-        --dark-card-bg: #1e293b;
-        --dark-panel-bg: #0f172a;
-        --dark-border: #334155;
-    }
+            --text-main: #343a40;
+            --text-muted: #6c757d;
 
-    [data-theme="dark"] {
-        --bg-card: #252525;
-        --text-main: #e9ecef;
-        --text-muted: #adb5bd;
-        --border-color: #2c2c2c;
-    }
+            --border-color: #e9ecef;
 
-    /* Page Wrapper */
-    .dark-wrapper {
-        background-color: var(--dark-panel-bg);
-        min-height: 100vh;
-        padding: 24px;
-        border-radius: 12px;
-        color: #fff;
-    }
+            /* Soft Colors */
+            --soft-blue: #e7f1ff;
+            --text-blue: #0d6efd;
+            --soft-green: #d1e7dd;
+            --text-green: #0f5132;
+            --soft-orange: #ffecb5;
+            --text-orange: #664d03;
+            --soft-red: #f8d7da;
+            --text-red: #842029;
+            --soft-teal: #e0fbf6;
+            --text-teal: #107c6f;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0f1626;
+            --bg-sidebar: #1e293b;
+            --bg-card: #2e333f;
+            --bg-hover: #2e333f;
+
+            --text-main: #e9ecef;
+            --text-muted: #adb5bd;
+
+            --border-color: #767677;
+
+            /* Dark Mode Transparencies */
+            --soft-blue: rgba(13, 110, 253, 0.15);
+            --text-blue: #6ea8fe;
+            --soft-green: rgba(25, 135, 84, 0.15);
+            --text-green: #75b798;
+            --soft-orange: rgba(255, 193, 7, 0.15);
+            --text-orange: #ffda6a;
+            --soft-red: rgba(220, 53, 69, 0.15);
+            --text-red: #ea868f;
+            --soft-teal: rgba(32, 201, 151, 0.15);
+            --text-teal: #a9e5d6;
+        }
 
     /* 1. Header Card */
     .header-card {
-        background-color: var(--dark-card-bg);
-        border: 1px solid var(--dark-border);
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 24px;
         margin-bottom: 24px;
@@ -87,8 +108,8 @@
 
     /* 3. Phase Detail Card */
     .detail-card {
-        background-color: var(--dark-card-bg);
-        border: 1px solid var(--dark-border);
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 24px;
         margin-bottom: 24px;
@@ -159,15 +180,6 @@
 <div class="content-body">
 
     <div class="dark-wrapper">
-
-        <!-- Header -->
-        <div class="d-flex align-items-center gap-3 mb-4">
-            <div class="p-2 bg-primary bg-opacity-10 rounded-3 text-primary"><i class="bi bi-layers-fill fs-4"></i></div>
-            <div>
-                <h5 class="fw-bold m-0">Phase Details</h5>
-                <small class="text-secondary">Welcome back, John!</small>
-            </div>
-        </div>
 
         <!-- 1. Internship Header & Stepper -->
         <div class="header-card">
@@ -252,7 +264,7 @@
 
         <!-- 3. Skills, Criteria, Notes -->
         <div class="row g-4">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <!-- Skills -->
                 <div class="detail-card">
                     <h6 class="text-success fw-bold mb-3"><i class="bi bi-award me-2"></i>Skills Focus</h6>
@@ -295,7 +307,7 @@
             </div>
 
             <!-- Deliverables (Optional Side Column if needed, usually empty in screenshot) -->
-            <div class="col-lg-4">
+            <div class="col-lg-12">
                 <!-- If you need a right sidebar later, it goes here -->
             </div>
         </div>

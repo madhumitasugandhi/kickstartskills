@@ -1,6 +1,7 @@
 @extends('frontend.studentPortal.dashboard.layouts.app')
 
 @section('title', 'Practice Tests')
+@section('icon', 'bi bi-lightning-charge fs-4 p-2 bg-primary bg-opacity-10 rounded-3 text-primary')
 
 @section('content')
 <style>

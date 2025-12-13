@@ -65,12 +65,12 @@ Route::prefix('student/dashboard/profile')->name('student.profile.')->group(func
 
     // Route Name: student.profile.academic (Placeholder)
     Route::get('/academic', function () {
-       return view('frontend.studentPortal.dashboard.profile.academicIndex');
+        return view('frontend.studentPortal.dashboard.profile.academicIndex');
     })->name('academic');
 
     // Route Name: student.profile.portfolio (Placeholder)
     Route::get('/portfolio', function () {
-       return view('frontend.studentPortal.dashboard.profile.portfolioIndex');
+        return view('frontend.studentPortal.dashboard.profile.portfolioIndex');
     })->name('portfolio');
 });
 
@@ -118,7 +118,7 @@ Route::prefix('student/dashboard/learning')->name('student.learning.')->group(fu
 
     // 4th Option: Recommendations (Placeholder)
     Route::get('/recommendations', function () {
-       return view('frontend.studentPortal.dashboard.learning.recommendationsIndex');
+        return view('frontend.studentPortal.dashboard.learning.recommendationsIndex');
     })->name('recommendations');
 });
 
@@ -145,6 +145,92 @@ Route::prefix('student/dashboard/internship')->name('student.internship.')->grou
         return view('frontend.studentPortal.dashboard.internship.phaseDetails');
     })->name('phases');
 });
+
+// Attendance section Group routes
+Route::prefix('student/dashboard/attendance')->name('student.attendance.')->group(function () {
+
+    // 1. Mark Attendance (The page we just created)
+    Route::get('/mark', function () {
+        return view('frontend.studentPortal.dashboard.attendance.markAttendance');
+    })->name('mark');
+
+    // 2. History (Placeholder)
+    Route::get('/history', function () {
+        return view('frontend.studentPortal.dashboard.attendance.history');
+    })->name('history');
+
+    // 3. Leave Requests (Placeholder)
+    Route::get('/leave', function () {
+        return view('frontend.studentPortal.dashboard.attendance.leaveRequest');
+    })->name('leave');
+});
+
+// Communicationsection Group routes
+Route::prefix('student/dashboard/communication')->name('student.communication.')->group(function () {
+
+    // 1. Messages
+    Route::get('/messages', function () {
+        return view('frontend.studentPortal.dashboard.communication.message');
+    })->name('messages');
+
+    // 2. Announcements (Placeholder)
+    Route::get('/announcements', function () {
+        return view('frontend.studentPortal.dashboard.communication.announcements');
+    })->name('announcements');
+
+    // 3. Schedule Meeting (Placeholder)
+    Route::get('/schedule', function () {
+        return view('frontend.studentPortal.dashboard.communication.scheduleMeeting');
+    })->name('schedule');
+});
+
+// Performance section Group routes
+Route::prefix('student/dashboard/performance')->name('student.performance.')->group(function () {
+
+    // 1. Analytics
+    Route::get('/analytics', function () {
+        return view('frontend.studentPortal.dashboard.performance.analytics');
+    })->name('analytics');
+
+    // 2. Reports (Placeholder)
+    Route::get('/reports', function () {
+        return view('frontend.studentPortal.dashboard.performance.reports');
+    })->name('reports');
+
+    // 3. Feedback (Placeholder)
+    Route::get('/feedback', function () {
+        return view('frontend.studentPortal.dashboard.performance.feedback');
+    })->name('feedback');
+});
+
+// Achievements  section Group routes
+Route::prefix('student/dashboard/achievements')->name('student.achievements.')->group(function () {
+
+    // 1. Certificates
+    Route::get('/certificates', function () {
+        return view('frontend.studentPortal.dashboard.achievements.certificates');
+    })->name('certificates');
+
+    // 2. Badges (Placeholder)
+    Route::get('/badges', function () {
+        return view('frontend.studentPortal.dashboard.achievements.badges');
+    })->name('badges');
+
+    // 3. Portfolio (Placeholder)
+    Route::get('/portfolio', function () {
+        return view('frontend.studentPortal.dashboard.achievements.portfolio');
+    })->name('portfolio');
+});
+
+// Notifications
+Route::get('/student/notifications', function () {
+    return view('frontend.studentPortal.dashboard.notifications.notificationIndex');
+})->name('student.notifications');
+
+// Settings
+Route::get('/student/settings', function () {
+    return view('frontend.studentPortal.dashboard.settings.settingIndex');
+})->name('student.settings');
 
 /*|------------------------------------------------End Student Portal Routes--------------------------------------------------|*/
 

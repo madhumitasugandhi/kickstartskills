@@ -1,6 +1,7 @@
 @extends('frontend.studentPortal.dashboard.layouts.app')
 
 @section('title', 'Test Results')
+@section('icon', 'bi bi-bar-chart fs-4 p-2 bg-primary bg-opacity-10 rounded-3 text-primary')
 
 @section('content')
 <style>
@@ -122,7 +123,7 @@
 </style>
 
 <div class="content-body">
-
+    
     <!-- 1. Header Card -->
     <div class="card-custom d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center gap-3">

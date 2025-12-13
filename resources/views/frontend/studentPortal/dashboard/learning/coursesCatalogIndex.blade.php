@@ -1,6 +1,7 @@
 @extends('frontend.studentPortal.dashboard.layouts.app')
 
 @section('title', 'Course Catalog')
+@section('icon', 'bi bi-search fs-4 p-2 bg-primary bg-opacity-10 rounded-3 text-primary')
 
 @section('content')
 <style>
