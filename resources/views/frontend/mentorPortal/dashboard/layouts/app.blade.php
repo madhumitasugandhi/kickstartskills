@@ -1,40 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Portal | Dashboard</title>
+    <title>Mentor Portal | Dashboard</title>
 
-    <!-- 1. Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- 2. Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <!-- 3. Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 
     <style>
         /* ================= THEME VARIABLES ================= */
         :root {
+            /* LIGHT MODE */
             --bg-body: #f8f9fa;
             --bg-sidebar: #ffffff;
             --bg-card: #ffffff;
             --bg-hover: #f8f9fa;
-
             --text-main: #343a40;
             --text-muted: #6c757d;
-
             --border-color: #e9ecef;
 
-            /* Soft Colors */
+            /* ACCENT COLORS (ORANGE THEME) */
+            --accent-color: #ff8c00;
+            /* Primary Orange */
+            --soft-accent: #fff4e5;
+            /* Soft background for active/hover */
+
+            /* Utility Colors */
             --soft-blue: #e7f1ff;
             --text-blue: #0d6efd;
             --soft-green: #d1e7dd;
             --text-green: #0f5132;
-            --soft-orange: #ffecb5;
-            --text-orange: #664d03;
             --soft-red: #f8d7da;
             --text-red: #842029;
             --soft-teal: #e0fbf6;
@@ -42,23 +43,25 @@
         }
 
         [data-theme="dark"] {
+            /* DARK MODE */
             --bg-body: #0f1626;
             --bg-sidebar: #1e293b;
             --bg-card: #2e333f;
             --bg-hover: #2e333f;
-
             --text-main: #e9ecef;
             --text-muted: #adb5bd;
+            --border-color: #3b455b;
 
-            --border-color: #767677;
+            /* ACCENT COLORS (ORANGE THEME) */
+            --accent-color: #ff8c00;
+            --soft-accent: rgba(255, 140, 0, 0.15);
+            /* Transparent Orange */
 
             /* Dark Mode Transparencies */
             --soft-blue: rgba(13, 110, 253, 0.15);
             --text-blue: #6ea8fe;
             --soft-green: rgba(25, 135, 84, 0.15);
             --text-green: #75b798;
-            --soft-orange: rgba(255, 193, 7, 0.15);
-            --text-orange: #ffda6a;
             --soft-red: rgba(220, 53, 69, 0.15);
             --text-red: #ea868f;
             --soft-teal: rgba(32, 201, 151, 0.15);
@@ -73,7 +76,6 @@
             overflow-x: hidden;
             transition: background-color 0.3s, color 0.3s;
             font-size: 0.85rem;
-            /* Reduced base font size */
         }
 
         h5 {
@@ -84,10 +86,29 @@
             font-size: 0.95rem !important;
         }
 
+        .form-control::placeholder {
+            color: var(--text-muted) !important;
+            opacity: 0.6;
+            /* Optional: makes it slightly transparent */
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .hover-bg-soft:hover {
+            background-color: var(--bg-hover);
+            font-weight: bold;
+            color: var(--accent-color) !important;
+        }
+
+        .hover-accent:hover {
+            color: var(--accent-color) !important;
+        }
+
         /* --- Sidebar --- */
         .sidebar {
             width: 260px;
-            /* Slightly reduced width */
             height: 100vh;
             position: fixed;
             left: 0;
@@ -105,17 +126,15 @@
             align-items: center;
             padding: 0 20px;
             border-bottom: 1px solid var(--border-color);
-            color: #0d6efd;
+            color: var(--accent-color);
             font-weight: 700;
             font-size: 1rem;
-            /* Reduced */
         }
 
         .nav-link {
             color: var(--text-muted);
             font-weight: 500;
             padding: 10px 14px;
-            /* Reduced padding */
             border-radius: 10px;
             margin-bottom: 2px;
             display: flex;
@@ -123,17 +142,84 @@
             gap: 10px;
             transition: all 0.2s;
             font-size: 0.85rem;
-            /* Reduced */
         }
 
+        /* HOVER STATE: Force Orange Text & Light BG (No Blue) */
         .nav-link:hover {
             background-color: var(--bg-hover);
-            color: var(--text-main);
+            color: var(--accent-color) !important;
         }
 
+        .nav-link:focus {
+            /* background-color: var(--bg-hover); */
+            color: var(--accent-color) !important;
+        }
+
+        /* ACTIVE STATE: Orange Text & Soft Orange BG */
         .nav-link.active {
-            background-color: var(--soft-blue);
-            color: var(--text-blue);
+            background-color: var(--soft-accent) !important;
+            color: var(--accent-color) !important;
+        }
+
+        /* Dropdown Chevron styling */
+        .nav-link .bi-chevron-down {
+            transition: transform 0.3s ease;
+            margin-left: auto;
+        }
+
+        /* When Dropdown is Open */
+        .nav-link[aria-expanded="true"] {
+            background-color: var(--bg-hover);
+            color: var(--accent-color);
+        }
+
+        .nav-link[aria-expanded="true"] .bi-chevron-down {
+            transform: rotate(180deg);
+            color: var(--accent-color);
+        }
+
+        /* --- Sub-menu Styling (Simplified) --- */
+        .sub-link {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            /* Simple color transition only */
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .sub-link i {
+            margin-right: 10px;
+            font-size: 1rem;
+            opacity: 0.8;
+            transition: color 0.2s;
+        }
+
+        /* Sub-menu Hover - Background Only */
+        .sub-link:hover {
+            color: var(--accent-color);
+            background-color: var(--bg-hover);
+            /* Removed border-left and padding-left transition */
+        }
+
+        .sub-link:hover i {
+            color: var(--accent-color);
+            opacity: 1;
+        }
+
+        /* Sub-menu Active - Orange */
+        .sub-link.active {
+            color: var(--accent-color) !important;
+            background-color: var(--soft-accent) !important;
+            font-weight: 600;
+        }
+
+        .sub-link.active i {
+            color: var(--accent-color) !important;
+            opacity: 1;
         }
 
         .user-footer {
@@ -145,7 +231,6 @@
         /* --- Main Content --- */
         .main-content {
             margin-left: 260px;
-            /* Match new sidebar width */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -178,6 +263,7 @@
             transition: background-color 0.3s, border-color 0.3s;
         }
 
+        /* Utility Classes */
         .text-main {
             color: var(--text-main) !important;
         }
@@ -186,7 +272,10 @@
             color: var(--text-muted) !important;
         }
 
-        /* Soft Background Utilities */
+        .text-accent {
+            color: var(--accent-color) !important;
+        }
+
         .bg-soft-blue {
             background-color: var(--soft-blue);
             color: var(--text-blue);
@@ -197,11 +286,6 @@
             color: var(--text-green);
         }
 
-        .bg-soft-orange {
-            background-color: var(--soft-orange);
-            color: var(--text-orange);
-        }
-
         .bg-soft-red {
             background-color: var(--soft-red);
             color: var(--text-red);
@@ -210,6 +294,11 @@
         .bg-soft-teal {
             background-color: var(--soft-teal);
             color: var(--text-teal);
+        }
+
+        .bg-soft-orange {
+            background-color: var(--soft-accent);
+            color: var(--accent-color);
         }
 
         /* Quick Action Buttons */
@@ -276,13 +365,6 @@
             position: relative;
         }
 
-        .badge-custom {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.65rem;
-            font-weight: 600;
-        }
-
         /* Notification Item */
         .notification-item {
             display: flex;
@@ -309,6 +391,7 @@
             }
         }
 
+        /* Hide Scrollbar */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -320,29 +403,25 @@
     </style>
 
     <script>
-        const savedTheme = localStorage.getItem('theme') || 'light';
+        const savedTheme = localStorage.getItem('theme') || 'dark'; // Changed default to 'dark' for Mentor Portal
         document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
 </head>
 
 <body>
 
-    <!-- SIDEBAR -->
-    @include('frontend.studentPortal.dashboard.layouts.sidebar')
+    @include('frontend.mentorPortal.dashboard.layouts.sidebar')
 
-    <!-- MAIN CONTENT -->
     <main class="main-content">
-        @include('frontend.studentPortal.dashboard.layouts.header')
+        @include('frontend.mentorPortal.dashboard.layouts.header')
 
-        @yield('content')
-
-
+        <div class="content-body">
+            @yield('content')
+        </div>
     </main>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Theme Toggle Script -->
     <script>
         function toggleTheme() {
             const html = document.documentElement;
@@ -356,18 +435,21 @@
 
         function updateIcon(theme) {
             const icon = document.getElementById('themeIcon');
-            if (theme === 'dark') {
-                icon.classList.remove('bi-moon-stars');
-                icon.classList.add('bi-sun');
-            } else {
-                icon.classList.remove('bi-sun');
-                icon.classList.add('bi-moon');
+            if (icon) { // Check if the element exists
+                if (theme === 'dark') {
+                    icon.classList.remove('bi-moon');
+                    icon.classList.add('bi-sun');
+                } else {
+                    icon.classList.remove('bi-sun');
+                    icon.classList.add('bi-moon');
+                }
             }
         }
-        const currentTheme = localStorage.getItem('theme') || 'light';
+
+        // Initialize theme icon on load
+        const currentTheme = localStorage.getItem('theme') || 'dark';
         updateIcon(currentTheme);
     </script>
 </body>
 
 </html>
-

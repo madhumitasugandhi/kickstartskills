@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Mentor\MentorDashboardController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,13 +39,15 @@ Route::get('/', function () {
 });
 
 /*|------------------------------------------------Student Portal Routes--------------------------------------------------|*/
-
+//login
 Route::get('/student-login', function () {
     return view('frontend.studentPortal.auth.student_login');
 });
+//forgot password
 Route::get('/student/forgot-password', function () {
     return view('frontend.studentPortal.auth.forgot_password');
 });
+//register
 Route::get('/student/register', function () {
     return view('frontend.studentPortal.auth.register');
 });
@@ -254,8 +258,139 @@ Route::prefix('institute')->group(function () {
 
 /*|------------------------------------------------End Institution Portal Routes--------------------------------------------------|*/
 
+/*|------------------------------------------------Mentor Portal Routes--------------------------------------------------|*/
+//login
+Route::get('/mentor-login', function () {
+    return view('frontend.mentorPortal.auth.mentor_login');
+});
+//forgot password
+Route::get('/mentor/forgot-password', function () {
+    return view('frontend.mentorPortal.auth.forgot_password');
+});
+//register
+Route::get('/mentor/register', function () {
+    return view('frontend.mentorPortal.auth.register');
+});
 
+Route::prefix('mentor')->name('mentor.')->group(function () {
 
+    // 1. Dashboard Index
+    Route::get('/dashboard', function () {
+        return view('frontend.mentorPortal.dashboard.dashboardIndex');
+    })->name('dashboard');
+
+    // 2. Students Group
+    Route::prefix('students')->name('students.')->group(function () {
+        Route::get('/assigned', function () {
+            return view('frontend.mentorPortal.dashboard.students.assignedStudents');
+        })->name('assigned');
+
+        Route::get('/analytics', function () {
+            return view('frontend.mentorPortal.dashboard.students.analytics');
+        })->name('analytics');
+    });
+
+    // 3. Sessions Group
+    Route::prefix('sessions')->name('sessions.')->group(function () {
+        Route::get('/calendar', function () {
+            return view('frontend.mentorPortal.dashboard.sessions.calendar');
+        })->name('calendar');
+
+        Route::get('/schedule', function () {
+            return view('frontend.mentorPortal.dashboard.sessions.schedule');
+        })->name('schedule');
+
+        Route::get('/history', function () {
+            return view('frontend.mentorPortal.dashboard.sessions.history');
+        })->name('history');
+    });
+
+    // 4. Internship Group
+    Route::prefix('internship')->name('internship.')->group(function () {
+        Route::get('/overview', function () {
+            return view('frontend.mentorPortal.dashboard.internship.overview');
+        })->name('overview');
+
+        Route::get('/tasks', function () {
+            return view('frontend.mentorPortal.dashboard.internship.tasks');
+        })->name('tasks');
+
+        Route::get('/phases', function () {
+            return view('frontend.mentorPortal.dashboard.internship.phases');
+        })->name('phases');
+    });
+
+    // 5. Drive Management
+    Route::prefix('drive')->name('drive.')->group(function () {
+        Route::get('/manage', function () {
+            return view('frontend.mentorPortal.dashboard.drive.manage');
+        })->name('manage');
+
+        Route::get('/create', function () {
+            return view('frontend.mentorPortal.dashboard.drive.create');
+        })->name('create');
+    });
+
+    // 6. Communication
+    Route::prefix('communication')->name('communication.')->group(function () {
+        Route::get('/messages', function () {
+            return view('frontend.mentorPortal.dashboard.communication.messages');
+        })->name('messages');
+
+        Route::get('/groups', function () {
+            return view('frontend.mentorPortal.dashboard.communication.groups');
+        })->name('groups');
+    });
+
+    // 7. Resources
+    Route::prefix('resources')->name('resources.')->group(function () {
+        Route::get('/library', function () {
+            return view('frontend.mentorPortal.dashboard.resources.library');
+        })->name('library');
+
+        Route::get('/assignments', function () {
+            return view('frontend.mentorPortal.dashboard.resources.assignments');
+        })->name('assignments');
+    });
+
+    // 8. Performance
+    Route::prefix('performance')->name('performance.')->group(function () {
+        Route::get('/tracking', function () {
+            return view('frontend.mentorPortal.dashboard.performance.tracking');
+        })->name('tracking');
+
+        Route::get('/goals', function () {
+            return view('frontend.mentorPortal.dashboard.performance.goals');
+        })->name('goals');
+    });
+
+    // 9. Reports
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/mentoring', function () {
+            return view('frontend.mentorPortal.dashboard.reports.mentoring');
+        })->name('mentoring');
+
+        Route::get('/assessments', function () {
+            return view('frontend.mentorPortal.dashboard.reports.assessments');
+        })->name('assessments');
+    });
+
+    // 10. General Pages
+    Route::get('/notifications', function () {
+        return view('frontend.mentorPortal.dashboard.general.notifications');
+    })->name('notifications');
+
+    Route::get('/profile', function () {
+        return view('frontend.mentorPortal.dashboard.general.profile');
+    })->name('profile');
+
+    Route::get('/settings', function () {
+        return view('frontend.mentorPortal.dashboard.general.settings');
+    })->name('settings');
+
+});
+
+/*|------------------------------------------------End Mentor Portal Routes--------------------------------------------------|*/
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

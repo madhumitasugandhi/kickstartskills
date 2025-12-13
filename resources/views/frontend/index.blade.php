@@ -618,7 +618,7 @@
                     <div class="portal-sub">Discover top talent</div>
                     <div class="portal-desc">Recruit skilled professionals and manage talent.</div>
 
-                    <a href="/hr-login" class="login-btn btn-purple" style="color:#9c4fd9">/hr-login</a>
+                    <a href="/hr-login" class="login-btn btn-purple" style="color:#9c4fd9">hr-login</a>
                 </div>
             </div>
 
@@ -630,7 +630,7 @@
                     <div class="portal-sub">Platform administration</div>
                     <div class="portal-desc">Manage platform operations and oversee all activities.</div>
 
-                    <a href="/admin-login" class="login-btn text-danger btn-danger">/admin-login</a>
+                    <a href="/admin-login" class="login-btn text-danger btn-danger">admin-login</a>
                 </div>
             </div>
 
