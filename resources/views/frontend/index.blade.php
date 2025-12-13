@@ -589,7 +589,7 @@
                     <div class="portal-sub">Manage your educational programs</div>
                     <div class="portal-desc">Oversee student programs and institutional analytics.</div>
 
-                    <a href="/institution-login" class="login-btn text-success btn-success">/institution-login</a>
+                    <a href="/institution-login" class="login-btn text-success btn-success">institution-login</a>
                 </div>
             </div>
 
