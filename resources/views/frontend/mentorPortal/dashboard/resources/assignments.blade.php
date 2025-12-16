@@ -49,7 +49,7 @@
         font-size: 1.5rem;
         flex-shrink: 0;
     }
-    .icon-quiz { background-color: var(--soft-blue); color: var(--text-blue); }
+    .icon-quiz { background-color: var(--soft-orange); color: var(--accent-color); }
     .icon-project { background-color: var(--soft-green); color: var(--text-green); }
 
     .status-badge {
@@ -71,7 +71,7 @@
     .meta-val { font-size: 0.9rem; font-weight: 600; color: var(--text-main); }
 
     .val-due { color: #f59e0b; }
-    .val-active { color: var(--text-blue); }
+    .val-active { color: var(--accent-color); }
 
     /* Action Buttons */
     .btn-action {
@@ -84,14 +84,17 @@
     }
     .btn-view {
         background-color: transparent;
-        border: 1px solid var(--text-blue);
-        color: var(--text-blue);
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
     }
-    .btn-view:hover { background-color: var(--soft-blue); }
+    .btn-view:hover {
+        background-color: var(--accent-color);
+        color: white;
+    }
 
     .btn-grade {
-        background-color: var(--text-blue);
-        border: 1px solid var(--text-blue);
+        background-color: var(--accent-color);
+        border: 1px solid var(--accent-color);
         color: white;
     }
     .btn-grade:hover { opacity: 0.9; }
@@ -112,8 +115,8 @@
         display: flex; align-items: center; gap: 8px;
     }
     .nav-item-custom.active {
-        color: var(--text-blue);
-        border-bottom-color: var(--text-blue);
+        color: var(--accent-color);
+        border-bottom-color: var(--accent-color);
     }
 
     /* Responsive Tweaks */
@@ -137,7 +140,7 @@
                 </div>
             </div>
             <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-0"
-                    style="width: 40px; height: 40px; background-color: var(--text-blue); border: none;">
+                    style="width: 40px; height: 40px; background-color: var(--accent-color); border: none;">
                 <i class="bi bi-plus-lg fs-5"></i>
             </button>
         </div>
@@ -163,10 +166,10 @@
         </div>
 
         <div class="d-flex flex-wrap gap-2">
-            <button class="btn btn-sm btn-primary px-3 rounded-pill" style="background-color: var(--text-blue); border: none;">All Assignments</button>
-            <button class="btn btn-sm btn-outline-secondary px-3 rounded-pill text-muted-custom border-secondary-subtle">Published</button>
-            <button class="btn btn-sm btn-outline-secondary px-3 rounded-pill text-muted-custom border-secondary-subtle">Draft</button>
-            <button class="btn btn-sm btn-outline-secondary px-3 rounded-pill text-muted-custom border-secondary-subtle">Due Soon</button>
+            <button class="btn btn-sm btn-primary px-3 rounded-pill" style="background-color: var(--accent-color); border: none;">All Assignments</button>
+            <button class="btn btn-sm btn-outline-secondary px-3 rounded-pill">Published</button>
+            <button class="btn btn-sm btn-outline-secondary px-3 rounded-pill">Draft</button>
+            <button class="btn btn-sm btn-outline-secondary px-3 rounded-pill">Due Soon</button>
         </div>
     </div>
 

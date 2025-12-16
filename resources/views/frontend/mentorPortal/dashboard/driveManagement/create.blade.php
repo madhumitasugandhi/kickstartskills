@@ -57,15 +57,15 @@
         border-radius: 6px;
     }
     .step-item.active {
-        color: var(--text-blue);
-        background-color: var(--soft-blue);
+        color: var(--accent-color);
+        background-color: var(--soft-orange);
         font-weight: 600;
     }
     .step-icon { font-size: 1rem; }
 
     /* Section Headers */
     .section-title {
-        color: var(--text-blue);
+        color: var(--accent-color);
         font-size: 0.9rem;
         font-weight: 600;
         margin-bottom: 16px;
@@ -116,9 +116,9 @@
         background-color: var(--input-bg);
     }
     .tech-badge:hover, .tech-badge.selected {
-        border-color: var(--text-blue);
-        background-color: var(--soft-blue);
-        color: var(--text-blue);
+        border-color: var(--accent-color);
+        background-color: var(--soft-orange);
+        color: var(--accent-color);
     }
 
     /* Add Item Box */
@@ -134,7 +134,7 @@
         background-color: rgba(255,255,255,0.02);
     }
     .btn-add-mini {
-        color: var(--text-blue);
+        color: var(--accent-color);
         font-weight: 600;
         font-size: 0.8rem;
         cursor: pointer;
@@ -171,7 +171,7 @@
     <div class="mb-4 card-custom">
         <div class="d-flex align-items-center gap-3 mb-2">
             <div class="fs-4 p-2 bg-soft-orange rounded-3 text-accent">
-                <i class="bi bi-plus-lg fs-4"></i>
+                <i class="bi bi-plus-circle fs-4"></i>
             </div>
             <div>
                 <h4 class="fw-bold text-main m-0">Create New Drive</h4>
@@ -332,7 +332,7 @@
         <div class="form-footer">
             <button class="btn btn-outline-secondary px-4 fw-bold">Cancel</button>
             <div class="d-flex gap-2">
-                <button class="btn btn-primary fw-bold px-4" style="background-color: var(--text-blue); border: none;">
+                <button class="btn btn-primary fw-bold px-4" style="background-color: var(--accent-color); border: none;">
                     <i class="bi bi-save me-2"></i> Save Drive
                 </button>
                 <button class="btn btn-success fw-bold px-4">

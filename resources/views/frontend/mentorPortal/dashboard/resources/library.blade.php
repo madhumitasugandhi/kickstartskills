@@ -236,7 +236,7 @@
                 </div>
             </div>
             <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-0"
-                style="width: 40px; height: 40px; background-color: var(--text-blue); border: none;">
+                style="width: 40px; height: 40px; background-color: var(--accent-color); border: none;">
                 <i class="bi bi-upload fs-5"></i>
             </button>
         </div>
@@ -274,7 +274,7 @@
                 </select>
             </div>
             <div class="col-12 col-md-3">
-                <button class="btn btn-primary w-100 fw-bold" style="background-color: var(--text-blue); border: none;">
+                <button class="btn btn-primary w-100 fw-bold" style="background-color: var(--accent-color); border: none;">
                     <i class="bi bi-gear me-2"></i> Bulk Actions
                 </button>
             </div>
@@ -285,7 +285,7 @@
         <div class="col-6 col-md-4 col-xl">
             <div class="stat-card">
                 <i class="bi bi-folder stat-icon text-primary"></i>
-                <span class="stat-val">6</span>
+                <span class="stat-val text-primary">6</span>
                 <span class="stat-lbl">Total Resources</span>
             </div>
         </div>

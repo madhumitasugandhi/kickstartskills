@@ -64,7 +64,7 @@
         position: relative;
     }
     .group-item:hover { background-color: var(--bg-hover); }
-    .group-item.active { background-color: rgba(13, 110, 253, 0.05); border-left: 3px solid var(--text-blue); }
+    .group-item.active { background-color: var(--soft-orange); border-left: 3px solid var(--accent-color); }
 
     .group-icon {
         width: 48px; height: 48px;
@@ -74,12 +74,12 @@
         flex-shrink: 0;
     }
 
-    .bg-icon-blue { background-color: rgba(13, 110, 253, 0.1); color: var(--text-blue); }
+    .bg-icon-blue { background-color: rgba(253, 69, 13, 0.1); color: var(--accent-color); }
     .bg-icon-teal { background-color: rgba(32, 201, 151, 0.1); color: #20c997; }
     .bg-icon-purple { background-color: rgba(111, 66, 193, 0.1); color: #6f42c1; }
 
     .unread-badge {
-        background-color: var(--text-blue);
+        background-color: var(--accent-color);
         color: white;
         font-size: 0.75rem;
         padding: 2px 8px;
@@ -154,7 +154,7 @@
     }
 
     .msg-group.sent .msg-bubble {
-        background-color: var(--chat-sent-bg);
+        background-color: var(--accent-color);
         color: var(--chat-sent-text);
         border-top-right-radius: 2px;
     }
@@ -234,7 +234,7 @@
     <div class="card-custom mb-4" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; ">
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-3">
-                <div class="fs-4 p-2 bg-soft-orange rounded-3 text-accent'">
+                <div class=" fs-4 p-2 bg-soft-orange rounded-3 text-accent'">
                     <i class="bi bi-people-fill fs-3"></i>
                 </div>
                 <div>
@@ -243,7 +243,7 @@
                 </div>
             </div>
             <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-0"
-                    style="width: 40px; height: 40px; background-color: var(--text-blue); border: none;">
+                    style="width: 40px; height: 40px; background-color: var(--accent-color); border: none;">
                 <i class="bi bi-plus-lg fs-5"></i>
             </button>
         </div>
@@ -264,7 +264,7 @@
                     </div>
 
                     <div class="d-flex gap-2 overflow-auto" style="scrollbar-width: none;">
-                        <button class="btn btn-sm btn-primary rounded-pill px-3" style="background-color: var(--text-blue); border: none;">All Groups</button>
+                        <button class="btn btn-sm btn-primary rounded-pill px-3" style="background-color: var(--accent-color); border: none;">All Groups</button>
                         <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 ">Cohort Groups</button>
                         <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 ">General</button>
                         <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 ">Projects</button>
@@ -413,7 +413,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="msg-avatar" style="background-color: var(--text-blue); color: white;">Me</div>
+                        <div class="msg-avatar" style="background-color: var(--accent-color); color: white;">Me</div>
                     </div>
 
                     <div class="msg-group received">
@@ -446,7 +446,7 @@
                         </button>
                         <input type="text" class="form-control border-start-0 border-end-0" placeholder="Type your message to the group..."
                                style="background-color: var(--bg-hover); border-color: var(--border-color); color: var(--text-main);">
-                        <button class="btn btn-primary" style="background-color: var(--text-blue); border: none;" type="button">
+                        <button class="btn btn-primary" style="background-color: var(--accent-color); border: none;" type="button">
                             <i class="bi bi-send-fill"></i>
                         </button>
                     </div>

@@ -1,7 +1,7 @@
 @extends('frontend.mentorPortal.dashboard.layouts.app')
 
 @section('title', 'Goal Setting')
-@section('icon', 'bi bi-flag fs-4 p-2 bg-soft-blue rounded-3 text-primary')
+@section('icon', 'bi bi-flag fs-4 p-2 bg-soft-orange rounded-3 text-accent')
 
 @section('content')
 <style>
@@ -105,7 +105,7 @@
     <div class="card-custom mb-4" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px;">
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-3">
-                <div class="fs-4 p-2 bg-soft-blue rounded-3 text-primary">
+                <div class="fs-4 p-2 bg-soft-orange rounded-3 text-accent">
                     <i class="bi bi-flag fs-3"></i>
                 </div>
                 <div>
@@ -114,7 +114,7 @@
                 </div>
             </div>
             <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-0"
-                    style="width: 40px; height: 40px; background-color: var(--text-blue); border: none;">
+                    style="width: 40px; height: 40px; background-color: var(--accent-color); border: none;">
                 <i class="bi bi-plus-lg fs-5"></i>
             </button>
         </div>
@@ -175,8 +175,8 @@
         </div>
         <div class="col-6 col-xl-3">
             <div class="stat-card">
-                <div class="stat-icon text-primary"><i class="bi bi-clock-history"></i></div>
-                <div class="stat-val">5</div>
+                <div class="stat-icon text-accent"><i class="bi bi-clock-history"></i></div>
+                <div class="stat-val text-accent">5</div>
                 <div class="stat-lbl">In Progress</div>
             </div>
         </div>
@@ -247,7 +247,7 @@
                         </button>
                     </div>
                     <div class="col-12 col-md-6">
-                        <button class="btn btn-sm btn-primary w-100 fw-bold" style="background-color: var(--text-blue); border: none;">
+                        <button class="btn btn-sm btn-primary w-100 fw-bold" style="background-color: var(--accent-color); border: none;">
                             <i class="bi bi-pencil-square me-1"></i> Update Progress
                         </button>
                     </div>
@@ -297,7 +297,7 @@
                         </button>
                     </div>
                     <div class="col-12 col-md-6">
-                        <button class="btn btn-sm btn-primary w-100 fw-bold" style="background-color: var(--text-blue); border: none;">
+                        <button class="btn btn-sm btn-primary w-100 fw-bold" style="background-color: var(--accent-color); border: none;">
                             <i class="bi bi-pencil-square me-1"></i> Update Progress
                         </button>
                     </div>

@@ -111,7 +111,7 @@
                         <div class="position-relative">
                             <div class="rounded-circle bg-soft-blue text-blue d-flex align-items-center justify-content-center fw-bold fs-5"
                                  style="width: 56px; height: 56px;">JD</div>
-                            <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-2 border-white rounded-circle"></span>
+                            <span class="position-absolute bottom-0 end-0 p-1 bg-success  border-2 border-white rounded-circle"></span>
                         </div>
                         <div>
                             <h5 class="fw-bold text-main mb-1">John Doe</h5>
@@ -174,7 +174,7 @@
                         <div class="position-relative">
                             <div class="rounded-circle bg-soft-teal text-teal d-flex align-items-center justify-content-center fw-bold fs-5"
                                  style="width: 56px; height: 56px;">JS</div>
-                            <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-2 border-white rounded-circle"></span>
+                            <span class="position-absolute bottom-0 end-0 p-1 bg-success  border-2 border-white rounded-circle"></span>
                         </div>
                         <div>
                             <h5 class="fw-bold text-main mb-1">Jane Smith</h5>

@@ -183,7 +183,7 @@
 <div class="card-custom opacity-75">
     <div class="d-flex justify-content-between align-items-start">
         <div class="d-flex align-items-start gap-3">
-            <div class="bg-soft-blue text-blue p-3 rounded-3 d-flex align-items-center justify-content-center">
+            <div class="bg-soft-orange text-orange p-3 rounded-3 d-flex align-items-center justify-content-center">
                 <i class="bi bi-people fs-4"></i>
             </div>
             <div>

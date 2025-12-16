@@ -16,7 +16,7 @@
                 <p class="text-muted-custom mb-0 small">Assign, track, and manage intern tasks and projects</p>
             </div>
         </div>
-        <button class="btn btn-primary fw-bold w-100 w-md-auto" style="background-color: var(--text-blue); border: none;">
+        <button class="btn btn-primary fw-bold w-100 w-md-auto" style="background-color: var(--accent-color); border: none;">
             <i class="bi bi-plus-lg me-2"></i> New Task
         </button>
     </div>
@@ -145,7 +145,7 @@
     </div>
 </div>
 
-<div class="card-custom mb-3 border-start border-4 border-danger"
+<div class="card-custom mb-3 border-start border-4 "
     style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-left-color: var(--text-red) !important; border-radius: 12px; padding: 24px;">
 
     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start mb-2 gap-2">
@@ -220,14 +220,14 @@
         </div>
         <div class="col-4">
             <button class="btn btn-primary w-100 py-2 rounded-0 d-flex align-items-center justify-content-center gap-1"
-                style="background-color: var(--text-blue); border: none; font-size: 0.85rem;">
+                style="background-color: var(--accent-color); border: none; font-size: 0.85rem;">
                 <i class="bi bi-chat-left-text"></i> <span class="d-none d-sm-inline">Feedback</span>
             </button>
         </div>
     </div>
 </div>
 
-<div class="card-custom mb-3 border-start border-4 border-warning"
+<div class="card-custom mb-3 border-start border-4 "
     style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-left-color: var(--accent-color) !important; border-radius: 12px; padding: 24px;">
     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
         <div class="d-flex align-items-center gap-3 w-100">

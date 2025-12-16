@@ -1,7 +1,7 @@
 @extends('frontend.mentorPortal.dashboard.layouts.app')
 
 @section('title', 'Progress Tracking')
-@section('icon', 'bi bi-graph-up-arrow fs-4 p-2 bg-soft-blue rounded-3 text-primary')
+@section('icon', 'bi bi-graph-up-arrow fs-4 p-2 bg-soft-orange rounded-3 text-accent')
 
 @section('content')
 <style>
@@ -113,7 +113,7 @@
     <div class="card-custom mb-4" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px;">
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-3">
-                <div class="fs-4 p-2 bg-soft-blue rounded-3 text-primary">
+                <div class="fs-4 p-2 bg-soft-orange rounded-3 text-accent">
                     <i class="bi bi-graph-up-arrow fs-3"></i>
                 </div>
                 <div>
@@ -122,7 +122,7 @@
                 </div>
             </div>
             <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-0"
-                    style="width: 40px; height: 40px; background-color: var(--text-blue); border: none;">
+                    style="width: 40px; height: 40px; background-color: var(--accent-color); border: none;">
                 <i class="bi bi-download fs-5"></i>
             </button>
         </div>
@@ -177,8 +177,8 @@
         </div>
         <div class="col-6 col-xl-3">
             <div class="stat-card">
-                <div class="stat-icon text-primary mb-2"><i class="bi bi-calendar-check"></i></div>
-                <div class="stat-val text-primary">92.75%</div>
+                <div class="stat-icon text-accent mb-2"><i class="bi bi-calendar-check"></i></div>
+                <div class="stat-val text-accent">92.75%</div>
                 <div class="stat-label">Attendance Rate</div>
                 <div class="stat-trend text-success"><i class="bi bi-arrow-up"></i> +1.8%</div>
             </div>
@@ -296,7 +296,7 @@
                             <button class="btn btn-sm btn-outline-secondary w-100"><i class="bi bi-eye me-1"></i> View Details</button>
                         </div>
                         <div class="col-12 col-md-6">
-                            <button class="btn btn-sm btn-primary w-100" style="background-color: var(--text-blue); border: none;"><i class="bi bi-chat-left-text me-1"></i> Provide Support</button>
+                            <button class="btn btn-sm btn-primary w-100" style="background-color: var(--accent-color); border: none;"><i class="bi bi-chat-left-text me-1"></i> Provide Support</button>
                         </div>
                     </div>
                 </div>
@@ -360,7 +360,7 @@
                             <button class="btn btn-sm btn-outline-secondary w-100"><i class="bi bi-eye me-1"></i> View Details</button>
                         </div>
                         <div class="col-12 col-md-6">
-                            <button class="btn btn-sm btn-primary w-100" style="background-color: var(--text-blue); border: none;"><i class="bi bi-chat-left-text me-1"></i> Provide Support</button>
+                            <button class="btn btn-sm btn-primary w-100" style="background-color: var(--accent-color); border: none;"><i class="bi bi-chat-left-text me-1"></i> Provide Support</button>
                         </div>
                     </div>
                 </div>

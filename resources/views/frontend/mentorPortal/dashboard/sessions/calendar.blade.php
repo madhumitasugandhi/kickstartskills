@@ -171,7 +171,7 @@
                             <button class="btn btn-sm btn-outline-secondary flex-grow-1" style="font-size: 0.8rem;">
                                 <i class="bi bi-pencil-square me-1"></i> Edit
                             </button>
-                            <button class="btn btn-sm btn-primary flex-grow-1" style="font-size: 0.8rem; background-color: var(--text-blue); border: none;">
+                            <button class="btn btn-sm btn-primary flex-grow-1" style="font-size: 0.8rem; background-color: var(--accent-color); border: none;">
                                 <i class="bi bi-camera-video me-1"></i> Join
                             </button>
                         </div>
@@ -204,7 +204,7 @@
                             <button class="btn btn-sm btn-outline-secondary flex-grow-1" style="font-size: 0.8rem;">
                                 <i class="bi bi-pencil-square me-1"></i> Edit
                             </button>
-                            <button class="btn btn-sm btn-primary flex-grow-1" style="font-size: 0.8rem; background-color: var(--text-blue); border: none;">
+                            <button class="btn btn-sm btn-primary flex-grow-1" style="font-size: 0.8rem; background-color: var(--accent-color); border: none;">
                                 <i class="bi bi-camera-video me-1"></i> Join
                             </button>
                         </div>

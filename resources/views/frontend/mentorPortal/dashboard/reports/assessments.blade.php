@@ -1,7 +1,7 @@
 @extends('frontend.mentorPortal.dashboard.layouts.app')
 
 @section('title', 'Student Assessments')
-@section('icon', 'bi bi-clipboard-check fs-4 p-2 bg-soft-blue rounded-3 text-primary')
+@section('icon', 'bi bi-clipboard-check fs-4 p-2 bg-soft-orange rounded-3 text-accent')
 
 @section('content')
 <style>
@@ -102,16 +102,16 @@
     }
     .btn-view {
         background: transparent;
-        border: 1px solid var(--text-blue);
-        color: var(--text-blue);
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
     }
     .btn-grade {
-        background-color: var(--text-blue);
-        border: 1px solid var(--text-blue);
+        background-color: var(--accent-color);
+        border: 1px solid var(--accent-color);
         color: white;
     }
-    .btn-view:hover { background-color: var(--soft-blue); }
-    .btn-grade:hover { opacity: 0.9; }
+    .btn-view:hover { background-color: var(--soft-orange); color: var(--accent-color); border: 1px solid var(--accent-color);}
+    .btn-grade:hover {background-color: var(--soft-orange); color: var(--accent-color); border: 1px solid var(--accent-color); opacity: 0.9; }
 
     /* Responsive */
     @media (max-width: 768px) {
@@ -125,7 +125,7 @@
     <div class="card-custom mb-4" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px;">
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-3">
-                <div class="fs-4 p-2 bg-soft-blue rounded-3 text-primary">
+                <div class="fs-4 p-2 bg-soft-orange rounded-3 text-accent">
                     <i class="bi bi-clipboard-check fs-3"></i>
                 </div>
                 <div>
@@ -134,7 +134,7 @@
                 </div>
             </div>
             <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-0"
-                    style="width: 40px; height: 40px; background-color: var(--text-blue); border: none;">
+                    style="width: 40px; height: 40px; background-color: var(--accent-color); border: none;">
                 <i class="bi bi-plus-lg fs-5"></i>
             </button>
         </div>
@@ -299,7 +299,7 @@
                 </button>
             </div>
             <div class="col-12 col-md-6">
-                <button class="btn btn-sm btn-grade w-100 fw-bold py-2 rounded-3" style="background-color: var(--text-blue); border: none;">
+                <button class="btn btn-sm btn-grade w-100 fw-bold py-2 rounded-3">
                     <i class="bi bi-file-earmark-check me-1"></i> View Grading
                 </button>
             </div>

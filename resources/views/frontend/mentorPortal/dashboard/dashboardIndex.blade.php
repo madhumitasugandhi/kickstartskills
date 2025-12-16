@@ -256,7 +256,7 @@
                 </div>
 
                 <button class="btn btn-primary w-100 fw-bold"
-                        style="background-color: var(--text-blue); border: none;">
+                        style="background-color: var(--accent-color); border: none;">
                     <i class="bi bi-plus me-1"></i> Schedule Session
                 </button>
             </div>

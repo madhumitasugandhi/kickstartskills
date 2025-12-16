@@ -88,7 +88,7 @@
     .status-offline { background-color: #94a3b8; }
 
     .badge-unread {
-        background-color: var(--text-blue);
+        background-color: var(--accent-color);
         color: white;
         font-size: 0.7rem;
         padding: 2px 6px;
@@ -145,7 +145,7 @@
     }
 
     .msg-sent .msg-bubble {
-        background-color: var(--chat-sent-bg);
+        background-color: var(--accent-color);
         color: var(--chat-sent-text);
         border-bottom-right-radius: 2px;
     }
@@ -226,7 +226,7 @@
                 </div>
             </div>
             <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-0"
-                    style="width: 40px; height: 40px; background-color: var(--text-blue); border: none;">
+                    style="width: 40px; height: 40px; background-color: var(--accent-color); border: none;">
                 <i class="bi bi-pencil-square fs-5"></i>
             </button>
         </div>
@@ -246,7 +246,7 @@
                     </div>
 
                     <div class="d-flex gap-2 overflow-auto" style="scrollbar-width: none;">
-                        <button class="btn btn-sm btn-primary rounded-pill px-3" style="background-color: var(--text-blue); border: none;">All Messages</button>
+                        <button class="btn btn-sm btn-primary rounded-pill px-3" style="background-color: var(--accent-color); border: none;">All Messages</button>
                         <button class="btn btn-sm btn-outline-secondary rounded-pill px-3  ">Unread</button>
                         <button class="btn btn-sm btn-outline-secondary rounded-pill px-3  ">Direct</button>
                         <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 ">Groups</button>
@@ -356,7 +356,7 @@
                             Hi John! I'd be happy to help. Can you share your current component structure?
                             <span class="msg-time">1h ago</span>
                         </div>
-                        <div class="avatar-circle" style="width: 32px; height: 32px; font-size: 0.8rem; background-color: var(--text-blue); color: white;">Me</div>
+                        <div class="avatar-circle" style="width: 32px; height: 32px; font-size: 0.8rem; background-color: var(--accent-color); color: white;">Me</div>
                     </div>
 
                     <div class="msg-row msg-received">
@@ -381,7 +381,7 @@
                             I see the issue. You should lift the state up to the parent component and pass it down as props. Here is how you can refactor it...
                             <span class="msg-time">Just now</span>
                         </div>
-                        <div class="avatar-circle" style="width: 32px; height: 32px; font-size: 0.8rem; background-color: var(--text-blue); color: white;">Me</div>
+                        <div class="avatar-circle" style="width: 32px; height: 32px; font-size: 0.8rem; background-color: var(--accent-color); color: white;">Me</div>
                     </div>
                 </div>
 
@@ -392,7 +392,7 @@
                         </button>
                         <input type="text" class="form-control border-start-0 border-end-0" placeholder="Type your message..."
                                style="background-color: var(--bg-hover); border-color: var(--border-color); color: var(--text-main);">
-                        <button class="btn btn-primary" style="background-color: var(--text-blue); border: none;" type="button">
+                        <button class="btn btn-primary" style="background-color: var(--accent-color); border: none;" type="button">
                             <i class="bi bi-send-fill"></i>
                         </button>
                     </div>

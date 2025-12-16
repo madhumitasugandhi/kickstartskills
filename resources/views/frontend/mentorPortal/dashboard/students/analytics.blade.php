@@ -103,7 +103,7 @@
         <div class="card-custom h-100 mb-0" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
             <h6 class="fw-bold text-main mb-4">Performance Trends - Overall Performance</h6>
 
-            <div class="bg-soft-blue rounded-3 d-flex align-items-end justify-content-between px-4 pb-0 pt-5 position-relative"
+            <div class="bg-soft-orange rounded-3 d-flex align-items-end justify-content-between px-4 pb-0 pt-5 position-relative"
                 style="height: 300px; overflow: hidden; width: 100%;">
 
                 <div class="position-absolute w-100 h-100 start-0 top-0 d-flex flex-column justify-content-between text-muted-custom small p-3"
@@ -118,13 +118,13 @@
 
                 <svg viewBox="0 0 800 250" preserveAspectRatio="none" class="position-absolute start-0 top-0 w-100 h-100 p-3" style="z-index: 1;">
                     <polyline points="0,200 150,190 300,180 450,175 600,170 800,160" fill="none"
-                        stroke="var(--text-blue)" stroke-width="3" />
-                    <circle cx="0" cy="200" r="4" fill="var(--text-blue)" />
-                    <circle cx="150" cy="190" r="4" fill="var(--text-blue)" />
-                    <circle cx="300" cy="180" r="4" fill="var(--text-blue)" />
-                    <circle cx="450" cy="175" r="4" fill="var(--text-blue)" />
-                    <circle cx="600" cy="170" r="4" fill="var(--text-blue)" />
-                    <circle cx="800" cy="160" r="4" fill="var(--text-blue)" />
+                        stroke="var(--accent-color)" stroke-width="3" />
+                    <circle cx="0" cy="200" r="4" fill="var(--accent-color)" />
+                    <circle cx="150" cy="190" r="4" fill="var(--accent-color)" />
+                    <circle cx="300" cy="180" r="4" fill="var(--accent-color)" />
+                    <circle cx="450" cy="175" r="4" fill="var(--accent-color)" />
+                    <circle cx="600" cy="170" r="4" fill="var(--accent-color)" />
+                    <circle cx="800" cy="160" r="4" fill="var(--accent-color)" />
                 </svg>
 
                 <div class="w-100 d-flex justify-content-between position-relative"

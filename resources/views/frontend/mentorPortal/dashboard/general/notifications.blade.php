@@ -1,7 +1,7 @@
 @extends('frontend.mentorPortal.dashboard.layouts.app')
 
 @section('title', 'Notifications')
-@section('icon', 'bi bi-bell fs-4 p-2 bg-soft-blue rounded-3 text-primary')
+@section('icon', 'bi bi-bell fs-4 p-2 bg-soft-orange rounded-3 text-accent')
 
 @section('content')
 <style>
@@ -84,7 +84,7 @@
     <div class="card-custom mb-4" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px;">
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-3">
-                <div class="fs-4 p-2 bg-soft-blue rounded-3 text-primary position-relative">
+                <div class="fs-4 p-2 bg-soft-orange rounded-3 text-accent position-relative">
                     <i class="bi bi-bell-fill fs-3"></i>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">3</span>
                 </div>

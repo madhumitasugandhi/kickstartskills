@@ -120,7 +120,7 @@
                     </div>
                 </div>
 
-                <div class="alert bg-soft-blue border-0 d-flex align-items-center gap-2 mb-0 text-primary small">
+                <div class="alert bg-soft-orange border-0 d-flex align-items-center gap-2 mb-0 --text-accent-color small">
                     <i class="bi bi-info-circle-fill"></i>
                     <span>Meeting link will be generated automatically and sent to participants.</span>
                 </div>

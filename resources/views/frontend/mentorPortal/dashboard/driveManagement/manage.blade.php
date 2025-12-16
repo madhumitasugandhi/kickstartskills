@@ -65,7 +65,7 @@
         font-size: 1.2rem;
         margin-bottom: 12px;
     }
-    .stat-val { font-size: 1.8rem; font-weight: 700; color: var(--text-blue); line-height: 1; margin-bottom: 4px; }
+    .stat-val { font-size: 1.8rem; font-weight: 700; color: var(--accent-color); line-height: 1; margin-bottom: 4px; }
     .stat-lbl { font-size: 0.8rem; color: var(--text-muted); }
     .trend-icon { position: absolute; top: 20px; right: 20px; font-size: 1rem; }
 
@@ -87,10 +87,10 @@
         position: relative;
         white-space: nowrap;
     }
-    .filter-tab.active { color: var(--text-blue); font-weight: 600; }
+    .filter-tab.active { color: var(--accent-color); font-weight: 600; }
     .filter-tab.active::after {
         content: ''; position: absolute; bottom: -5px; left: 0; right: 0;
-        height: 2px; background-color: var(--text-blue);
+        height: 2px; background-color: var(--accent-color);
     }
     .tab-count {
         background-color: var(--soft-blue); color: var(--text-blue);
@@ -154,7 +154,7 @@
                 <h4 class="fw-bold text-main mb-1">Drive Management</h4>
                 <p class="text-muted-custom mb-0 small">Manage your internship drives and track applications</p>
             </div>
-            <button class="btn btn-primary fw-bold px-4 w-100 w-md-auto" style="background-color: var(--text-blue); border: none;">
+            <button class="btn btn-primary fw-bold px-4 w-100 w-md-auto" style="background-color: var(--accent-color); border: none;">
                 <i class="bi bi-plus-lg me-2"></i> Create Drive
             </button>
         </div>
@@ -213,7 +213,7 @@
 
     <div class="card-custom mb-4 p-0 border-0 bg-transparent">
         <div class="filter-tabs-container">
-            <button class="filter-tab active">All Drives <span class="tab-count">3</span></button>
+            <button class="filter-tab active">All Drives <span class="tab-count" style="background-color: var(--soft-orange); color: var(--accent-color);">3</span></button>
             <button class="filter-tab">Draft</button>
             <button class="filter-tab">Published</button>
             <button class="filter-tab">Active</button>

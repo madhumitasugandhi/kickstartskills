@@ -62,12 +62,12 @@
             <div class="card-custom mb-4" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div class="d-flex align-items-center gap-3">
-                        <div class="bg-soft-blue text-blue rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <div class="bg-soft-orange text-accent rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                             <i class="bi bi-play-fill fs-4"></i>
                         </div>
                         <div>
                             <h5 class="fw-bold text-main mb-0">Foundation Phase</h5>
-                            <small class="text-primary fw-bold">Duration: 8 weeks</small>
+                            <small class="text-accent fw-bold">Duration: 8 weeks</small>
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
 
                 <div class="row g-3">
                     <div class="col-12 col-md-6">
-                        <button class="btn btn-outline-primary w-100 fw-bold" style="border-color: var(--accent-color); color: var(--accent-color);">
+                        <button class="btn btn-outline-primary w-100 fw-bold">
                             <i class="bi bi-book me-2"></i> View Resources
                         </button>
                     </div>
@@ -125,9 +125,9 @@
                             <div class="progress-bar bg-success" style="width: 100%"></div>
                         </div>
                         <div class="d-flex gap-2 flex-wrap">
-                            <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">HTML Structure</span>
-                            <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">CSS Styling</span>
-                            <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">Responsive Layout</span>
+                            <span class="badge bg-soft-orange text-accent small fw-normal" style="border: 1px solid var(--accent-color)">HTML Structure</span>
+                            <span class="badge bg-soft-orange text-accent small fw-normal" style="border: 1px solid var(--accent-color)">CSS Styling</span>
+                            <span class="badge bg-soft-orange text-accent small fw-normal" style="border: 1px solid var(--accent-color)">Responsive Layout</span>
                         </div>
                     </div>
 
@@ -144,8 +144,8 @@
                             <div class="progress-bar bg-success" style="width: 85%"></div>
                         </div>
                         <div class="d-flex gap-2 flex-wrap">
-                            <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">Variables</span>
-                            <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">DOM Manipulation</span>
+                            <span class="badge bg-soft-orange text-accent small fw-normal" style="border: 1px solid var(--accent-color)">DOM Manipulation</span>
+                            <span class="badge bg-soft-orange text-accent small fw-normal" style="border: 1px solid var(--accent-color)">Variables</span>
                         </div>
                     </div>
 
@@ -162,8 +162,8 @@
                             <div class="progress-bar bg-soft-orange" style="width: 67%; background-color: var(--accent-color);"></div>
                         </div>
                         <div class="d-flex gap-2 flex-wrap">
-                            <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">Git Basics</span>
-                            <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">Branching</span>
+                            <span class="badge bg-soft-orange text-accent small fw-normal" style="border: 1px solid var(--accent-color)">Git Basics</span>
+                            <span class="badge bg-soft-orange text-accent small fw-normal" style="border: 1px solid var(--accent-color)">Branching</span>
                         </div>
                     </div>
 
@@ -180,8 +180,8 @@
                             <div class="progress-bar bg-warning" style="width: 25%"></div>
                         </div>
                         <div class="d-flex gap-2 flex-wrap">
-                            <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">Planning</span>
-                            <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">Deployment</span>
+                            <span class="badge bg-soft-orange text-accent small fw-normal" style="border: 1px solid var(--accent-color)">Planning</span>
+                            <span class="badge bg-soft-orange text-accent small fw-normal" style="border: 1px solid var(--accent-color)">Deployment</span>
                         </div>
                     </div>
                 </div>
