@@ -72,6 +72,7 @@
         font-size: 10rem;
         opacity: 0.1;
         transform: rotate(15deg);
+        pointer-events: none; /* Prevents interference */
     }
 
     .btn-preferences {
@@ -83,6 +84,7 @@
         border-radius: 8px;
         font-size: 0.85rem;
         transition: 0.2s;
+        white-space: nowrap;
     }
 
     .btn-preferences:hover {
@@ -101,6 +103,7 @@
         border: 1px solid var(--border-color);
         color: var(--text-muted);
         transition: 0.2s;
+        white-space: nowrap; /* Prevents text wrap inside pill */
     }
 
     .filter-pill.active {
@@ -115,7 +118,7 @@
         border: 1px solid var(--border-color);
         border-radius: 16px;
         padding: 24px;
-        height: 100%;
+        height: 100%; /* Important for equal height */
         display: flex;
         flex-direction: column;
         transition: transform 0.2s;
@@ -144,11 +147,11 @@
     /* Reason Box */
     .reason-box {
         background-color: var(--bg-hover);
-        /* Light grey */
         padding: 12px;
         border-radius: 8px;
         margin: 16px 0;
         border-left: 3px solid var(--text-blue);
+        flex-grow: 1; /* Pushes content to fill space, keeping buttons aligned */
     }
 
     [data-theme="dark"] .reason-box {
@@ -169,24 +172,13 @@
     }
 
     /* Specific Priority Colors */
-    .priority-high {
-        color: #dc3545;
-        background-color: var(--soft-red);
-    }
-
-    .priority-gap {
-        color: #fd7e14;
-        background-color: var(--soft-orange);
-    }
-
-    .priority-trend {
-        color: #0d6efd;
-        background-color: var(--soft-blue);
-    }
+    .priority-high { color: #dc3545; background-color: var(--soft-red); }
+    .priority-gap { color: #fd7e14; background-color: var(--soft-orange); }
+    .priority-trend { color: #0d6efd; background-color: var(--soft-blue); }
 
     .btn-action {
         width: 100%;
-        margin-top: auto;
+        margin-top: auto; /* Pushes button to bottom */
         padding: 10px;
         border-radius: 8px;
         font-weight: 600;
@@ -202,17 +194,22 @@
         color: var(--text-blue);
         border-color: var(--soft-blue);
     }
+
+    /* Mobile Tweaks */
+    @media (max-width: 768px) {
+        .ai-banner { padding: 24px; }
+        .btn-preferences { width: 100%; } /* Full width button on mobile */
+    }
 </style>
 
 <div class="content-body">
 
-    <!-- 1. AI Insight Banner -->
     <div class="ai-banner">
         <i class="bi bi-cpu-fill ai-icon-bg"></i>
         <div class="row align-items-center position-relative">
             <div class="col-md-8">
                 <div class="d-flex align-items-center gap-3 mb-2">
-                    <div class="bg-white bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center"
+                    <div class="bg-white bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
                         style="width: 40px; height: 40px;">
                         <i class="bi bi-stars"></i>
                     </div>
@@ -229,7 +226,6 @@
         </div>
     </div>
 
-    <!-- 2. Filter Tabs -->
     <div class="d-flex gap-3 mb-4 overflow-auto pb-2">
         <div class="filter-pill active">All</div>
         <div class="filter-pill">Courses</div>
@@ -237,11 +233,9 @@
         <div class="filter-pill">Resources</div>
     </div>
 
-    <!-- 3. Recommendations Grid -->
     <div class="row g-4">
 
-        <!-- Card 1: Course (High Priority) -->
-        <div class="col-md-6 col-lg-4">
+        <div class="col-12 col-md-6 col-lg-4">
             <div class="rec-card">
                 <div class="rec-header">
                     <div>
@@ -253,8 +247,7 @@
 
                 <div class="reason-box">
                     <small class="d-block fw-bold mb-1" style="color: var(--text-muted)">Why this?</small>
-                    <small class="text-main">Critical concept for large scale apps. Matches your "Mobile Dev"
-                        goal.</small>
+                    <small class="text-main">Critical concept for large scale apps. Matches your "Mobile Dev" goal.</small>
                 </div>
 
                 <div class="match-container">
@@ -271,8 +264,7 @@
             </div>
         </div>
 
-        <!-- Card 2: Practice (Skill Gap) -->
-        <div class="col-md-6 col-lg-4">
+        <div class="col-12 col-md-6 col-lg-4">
             <div class="rec-card">
                 <div class="rec-header">
                     <div>
@@ -301,8 +293,7 @@
             </div>
         </div>
 
-        <!-- Card 3: Resource (Trending) -->
-        <div class="col-md-6 col-lg-4">
+        <div class="col-12 col-md-6 col-lg-4">
             <div class="rec-card">
                 <div class="rec-header">
                     <div>

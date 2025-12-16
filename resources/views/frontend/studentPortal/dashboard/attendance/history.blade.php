@@ -23,7 +23,7 @@
         border-radius: 12px;
         padding: 24px;
         flex: 1;
-        min-width: 300px;
+        min-width: 280px; /* Reduced slightly for tablet safety */
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -50,9 +50,9 @@
     .stat-cards-grid {
         flex: 2;
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, 1fr); /* Default 3 cols */
         gap: 16px;
-        min-width: 300px;
+        min-width: 280px;
     }
     .info-card {
         padding: 20px;
@@ -60,6 +60,7 @@
         text-align: center;
         border: 1px solid transparent;
         display: flex; flex-direction: column; justify-content: center;
+        height: 100%; /* Ensure equal height */
     }
 
     /* Specific Card Colors */
@@ -103,7 +104,7 @@
         padding: 24px;
         margin-bottom: 32px;
     }
-    .trend-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+    .trend-header { display: flex; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
 
     .heatmap-row {
         display: flex; gap: 4px; margin-top: 20px; height: 60px;
@@ -112,6 +113,7 @@
         flex: 1;
         border-radius: 4px;
         position: relative;
+        min-width: 0; /* Fix flex overflow */
     }
     .heat-block::after {
         content: attr(data-day);
@@ -191,18 +193,55 @@
     .pb-orange { background-color: var(--soft-orange); color: var(--text-orange); }
     .pb-red { background-color: var(--soft-red); color: var(--text-red); }
 
+    /* --- RESPONSIVE MEDIA QUERIES --- */
     @media(max-width: 991px) {
-        .stat-cards-grid { grid-template-columns: 1fr; }
+        /* Tablet: Stack chart and grid */
+        .stats-container { flex-direction: column; }
+        .chart-card, .stat-cards-grid { width: 100%; min-width: 0; }
+
+        /* Grid becomes 2x2 on tablet/mobile instead of 1x4 or 3x1 */
+        .stat-cards-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media(max-width: 768px) {
+        /* Mobile adjustments */
+        .meta-bar {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 16px;
+            gap: 0;
+        }
+
+        /* Transform meta items into a vertical list with dividers */
+        .meta-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: right; /* Reset */
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .meta-item:last-child { border-bottom: none; }
+        .meta-item:first-child { text-align: right; } /* Reset override */
+        .meta-title { margin-bottom: 0; } /* Align cleanly */
+
+        /* Trend Header */
+        .trend-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        /* Card Padding reduction */
+        .history-card { padding: 16px; }
+        .percent-badge { top: 16px; right: 16px; }
     }
 </style>
 
 <div class="content-body">
-    
-    <!-- 1. Top Statistics Section -->
+
     <h6 class="fw-bold text-main mb-3">Attendance Statistics</h6>
 
     <div class="stats-container">
-        <!-- Circle Chart -->
         <div class="chart-card">
             <div class="circle-chart">
                 <div class="circle-chart-inner">
@@ -212,7 +251,6 @@
             </div>
         </div>
 
-        <!-- Cards Grid -->
         <div class="stat-cards-grid">
             <div class="info-card card-green">
                 <span class="info-val">92.5%</span>
@@ -226,14 +264,13 @@
                 <span class="info-val">12 days</span>
                 <span class="info-lbl">Current Streak</span>
             </div>
-            <div class="info-card card-teal"> <!-- Added 4th card based on image layout logic -->
+            <div class="info-card card-teal">
                 <span class="info-val">28 days</span>
                 <span class="info-lbl">Best Streak</span>
             </div>
         </div>
     </div>
 
-    <!-- Meta Bar -->
     <div class="meta-bar">
         <div class="meta-item">
             <span class="meta-title">Total Classes Attended</span>
@@ -241,15 +278,14 @@
         </div>
         <div class="meta-item">
             <span class="meta-title">Best Subject</span>
-            <span class="meta-data text-green">Data Structures & Algorithms</span>
+            <span class="meta-data text-green">DSA</span>
         </div>
         <div class="meta-item">
             <span class="meta-title">Best Month</span>
-            <span class="meta-data text-blue">September 2024 (98.5%)</span>
+            <span class="meta-data text-blue">Sept 2024 (98.5%)</span>
         </div>
     </div>
 
-    <!-- 2. Attendance Trend -->
     <div class="trend-section">
         <div class="trend-header">
             <h6 class="fw-bold text-main m-0"><i class="bi bi-graph-up me-2 text-warning"></i>Attendance Trend</h6>
@@ -263,7 +299,6 @@
             <span>100%</span> <span>Last 7 Days Trend</span> <span>0%</span>
         </div>
 
-        <!-- Heatmap Blocks -->
         <div class="heatmap-row">
             <div class="heat-block hb-green" data-day="Mon"></div>
             <div class="heat-block hb-green" data-day="Tue"></div>
@@ -275,11 +310,9 @@
         </div>
     </div>
 
-    <!-- 3. Recent History List -->
     <h6 class="fw-bold text-main mb-3"><i class="bi bi-list-ul me-2 text-primary"></i>Recent History</h6>
     <div class="history-list">
 
-        <!-- Item 1: Today (Partial/Warning) -->
         <div class="history-card partial">
             <div class="percent-badge pb-orange">66%</div>
             <div class="history-header">
@@ -300,11 +333,11 @@
             </div>
 
             <div class="warning-box">
-                <i class="bi bi-exclamation-circle"></i> Missed morning class due to medical appointment
+                <i class="bi bi-exclamation-circle flex-shrink-0"></i>
+                <span>Missed morning class due to medical appointment</span>
             </div>
         </div>
 
-        <!-- Item 2: Yesterday (Full) -->
         <div class="history-card all-present">
             <div class="percent-badge pb-green">100%</div>
             <div class="history-header">
@@ -325,7 +358,6 @@
             </div>
         </div>
 
-        <!-- Item 3: 2d ago (Full) -->
         <div class="history-card all-present">
             <div class="percent-badge pb-green">100%</div>
             <div class="history-header">
@@ -344,7 +376,6 @@
             </div>
         </div>
 
-        <!-- Item 4: 3d ago (Full) -->
         <div class="history-card all-present">
             <div class="percent-badge pb-green">100%</div>
             <div class="history-header">
@@ -366,7 +397,6 @@
             </div>
         </div>
 
-        <!-- Item 5: 5 Dec (Partial) -->
         <div class="history-card partial">
             <div class="percent-badge pb-orange">80%</div>
             <div class="history-header">
@@ -393,4 +423,3 @@
 
 </div>
 @endsection
-

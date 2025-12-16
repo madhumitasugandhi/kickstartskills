@@ -379,7 +379,7 @@
             <div class="circle-progress-container">
                 <div class="circle-progress">
                     <div class="circle-inner">
-                        <span class="circle-val">22%</span><span class="circle-lbl">Complete</span>
+                        <span class="circle-val text-white">22%</span><span class="circle-lbl">Complete</span>
                     </div>
                 </div>
             </div>

@@ -57,6 +57,7 @@
         object-fit: cover;
         border: 3px solid var(--bg-card);
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        flex-shrink: 0;
     }
 
     .role-text { color: #0ea5e9; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; display: block; }
@@ -76,6 +77,7 @@
         display: flex; align-items: center; gap: 8px;
         color: var(--text-blue); text-decoration: none; font-size: 0.85rem;
         margin-top: 12px;
+        word-break: break-all; /* Ensures long links wrap */
     }
     .portfolio-link:hover { text-decoration: underline; }
 
@@ -88,6 +90,8 @@
         border-radius: 12px;
         text-align: center;
         border: 1px solid transparent;
+        height: 100%;
+        display: flex; flex-direction: column; justify-content: center;
     }
     .an-blue { background-color: var(--soft-blue); border-color: rgba(59, 130, 246, 0.2); }
     .an-green { background-color: var(--soft-green); border-color: rgba(16, 185, 129, 0.2); }
@@ -105,8 +109,12 @@
 
     /* 3. Preview Section */
     .preview-tabs {
-        display: flex; gap: 12px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 4px;
+        display: flex; gap: 12px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px;
+        scrollbar-width: thin;
     }
+    .preview-tabs::-webkit-scrollbar { height: 4px; }
+    .preview-tabs::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+
     .p-tab {
         padding: 8px 16px;
         border-radius: 20px;
@@ -158,9 +166,7 @@
         background-color: var(--border-color); border: none;
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
     }
-    .form-check-input:checked {
-        background-color: #10b981; /* Green when active */
-    }
+    .form-check-input:checked { background-color: #10b981; }
     .form-check-input:focus { box-shadow: none; }
 
     /* Customize Button */
@@ -174,20 +180,39 @@
     }
     .btn-customize:hover { transform: translateY(-2px); background-color: #0284c7; }
 
+    /* --- RESPONSIVE MEDIA QUERIES --- */
     @media(max-width: 991px) {
-        .analytics-grid, .summary-stats-row { grid-template-columns: 1fr 1fr; }
+        /* Tablet: 2 cols for analytics */
+        .analytics-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media(max-width: 768px) {
+        /* Mobile: Header Centering */
+        .portfolio-link { justify-content: center; }
+
+        /* Stats on mobile can stay 2 cols or stack. 2 cols (1fr 1fr) is usually fine. */
+        .analytics-grid { gap: 12px; }
+        .analytic-box { padding: 16px; }
+
+        /* Summary Stats Stack */
+        .summary-stats-row { grid-template-columns: 1fr; gap: 12px; }
+
+        /* Section List Padding */
+        .section-item { padding: 12px 16px; }
+
+        /* Customize Button */
+        .btn-customize { bottom: 20px; right: 20px; }
     }
 </style>
 
 <div class="content-body">
 
-    <!-- 1. Profile Header -->
     <div class="profile-header-card">
-        <div class="d-flex flex-column flex-md-row gap-4 align-items-start">
+        <div class="d-flex flex-column flex-md-row gap-4 align-items-center align-items-md-start text-center text-md-start">
             <img src="https://ui-avatars.com/api/?name=John+Doe&background=random" class="profile-avatar-lg" alt="Profile">
 
             <div class="flex-grow-1">
-                <div class="d-flex align-items-center gap-2 mb-1">
+                <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2 mb-1">
                     <h4 class="fw-bold text-main m-0">John Doe</h4>
                 </div>
                 <span class="role-text">Full Stack Developer & AI Enthusiast</span>
@@ -201,7 +226,7 @@
                 </p>
 
                 <a href="#" class="portfolio-link">
-                    <i class="bi bi-link-45deg"></i> kickstartskills.edu/portfolio/johndoe-portfolio
+                    <i class="bi bi-link-45deg flex-shrink-0"></i> kickstartskills.edu/portfolio/johndoe-portfolio
                     <i class="bi bi-files ms-2 --text-muted" style="cursor: pointer;"></i>
                 </a>
 
@@ -210,7 +235,6 @@
         </div>
     </div>
 
-    <!-- 2. Portfolio Analytics -->
     <h6 class="fw-bold text-main mb-3">Portfolio Analytics</h6>
     <div class="analytics-grid">
         <div class="analytic-box an-blue">
@@ -235,7 +259,6 @@
         </div>
     </div>
 
-    <!-- 3. Portfolio Preview Section -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h6 class="fw-bold text-main m-0">Portfolio Preview</h6>
         <button class="btn btn-primary btn-sm rounded-pill px-3"><i class="bi bi-eye me-1"></i> Full Preview</button>
@@ -252,7 +275,7 @@
             <div class="p-tab"><i class="bi bi-envelope"></i> Contact</div>
         </div>
 
-        <div class=" p-4 rounded-3 border border-light shadow-sm">
+        <div class="p-4 rounded-3 border border-light shadow-sm bg-white" style="background-color: var(--bg-card) !important; border-color: var(--border-color) !important;">
             <h6 class="fw-bold text-main mb-2">Professional Summary</h6>
             <p class="--text-muted small mb-0">
                 Passionate software developer with expertise in Flutter, React, and machine learning. Always eager to learn new technologies and solve complex problems.
@@ -275,7 +298,6 @@
         </div>
     </div>
 
-    <!-- 4. Section Management -->
     <h6 class="fw-bold text-main mb-3">Section Management</h6>
     <div class="section-list">
 
@@ -317,8 +339,7 @@
         <div class="section-item">
             <span class="sec-title"><i class="bi bi-briefcase sec-icon"></i> Experience</span>
             <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox"> <!-- Off by default -->
-            </div>
+                <input class="form-check-input" type="checkbox"> </div>
         </div>
 
         <div class="section-item">
@@ -339,10 +360,8 @@
 
 </div>
 
-<!-- Floating Customize Button -->
 <button class="btn-customize">
     <i class="bi bi-pencil-square"></i> Customize
 </button>
 
 @endsection
-

@@ -72,6 +72,7 @@
         font-weight: 700;
         font-size: 0.85rem;
         display: inline-block;
+        white-space: nowrap;
     }
 
     .points-text {
@@ -99,8 +100,10 @@
 
     .level-steps {
         display: flex;
-        gap: 20px;
+        justify-content: space-between; /* Better spacing */
+        gap: 10px;
         margin-top: 24px;
+        flex-wrap: wrap; /* Allow wrapping on very small screens */
     }
 
     .step-circle {
@@ -109,6 +112,7 @@
         flex-direction: column;
         align-items: center;
         gap: 8px;
+        flex-shrink: 0;
     }
 
     .circle-icon {
@@ -124,10 +128,7 @@
         transition: 0.2s;
     }
 
-    .circle-icon.completed {
-        color: white;
-    }
-
+    .circle-icon.completed { color: white; }
     .circle-icon.active {
         border-color: #f5c639;
         color: #f5c639;
@@ -138,70 +139,29 @@
         font-size: 0.75rem;
         color: var(--text-muted);
         font-weight: 600;
+        text-align: center;
     }
 
     /* 2. Badge Stats */
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
-        margin-bottom: 32px;
-    }
-
     .stat-box {
         background-color: var(--bg-card);
         border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 20px;
         text-align: center;
+        height: 100%;
     }
 
-    .bg-green-soft {
-        background-color: var(--soft-green);
-        color: var(--text-green);
-    }
+    .bg-green-soft { background-color: var(--soft-green); color: var(--text-green); }
+    .bg-blue-soft { background-color: var(--soft-blue); color: var(--text-blue); }
+    .bg-orange-soft { background-color: var(--soft-orange); color: var(--text-orange); }
+    .bg-teal-soft { background-color: var(--soft-teal); color: var(--text-teal); }
 
-    .bg-blue-soft {
-        background-color: var(--soft-blue);
-        color: var(--text-blue);
-    }
+    .sb-icon { font-size: 1.5rem; margin-bottom: 4px; display: block; }
+    .sb-val { font-size: 1.5rem; font-weight: 700; line-height: 1.2; }
+    .sb-lbl { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
 
-    .bg-orange-soft {
-        background-color: var(--soft-orange);
-        color: var(--text-orange);
-    }
-
-    .bg-teal-soft {
-        background-color: var(--soft-teal);
-        color: var(--text-teal);
-    }
-
-    .sb-icon {
-        font-size: 1.5rem;
-        margin-bottom: 4px;
-        display: block;
-    }
-
-    .sb-val {
-        font-size: 1.5rem;
-        font-weight: 700;
-        line-height: 1.2;
-    }
-
-    .sb-lbl {
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-    }
-
-    /* 3. Badge Cards (Gradient Backgrounds) */
-    .badges-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 24px;
-        margin-bottom: 32px;
-    }
-
+    /* 3. Badge Cards */
     .badge-card {
         border-radius: 16px;
         padding: 24px;
@@ -215,70 +175,37 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        height: 100%; /* Ensure equal height in row */
     }
 
-    .badge-card:hover {
-        transform: translateY(-5px);
-    }
+    .badge-card:hover { transform: translateY(-5px); }
 
-    /* Gradient Backgrounds from image */
-    .grad-blue {
-        background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 100%);
-    }
-
-    .grad-green {
-        background: linear-gradient(135deg, #34d399 0%, #6ee7b7 100%);
-    }
-
-    .grad-purple {
-        background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%);
-    }
-
-    .grad-orange {
-        background: linear-gradient(135deg, #fbbf24 0%, #fcd34d 100%);
-    }
-
-    /* Dark mode adjustments for gradients if needed, usually they stay bright */
+    .grad-blue { background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 100%); }
+    .grad-green { background: linear-gradient(135deg, #34d399 0%, #6ee7b7 100%); }
+    .grad-purple { background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%); }
+    .grad-orange { background: linear-gradient(135deg, #fbbf24 0%, #fcd34d 100%); }
 
     .b-icon-box {
-        width: 64px;
-        height: 64px;
+        width: 64px; height: 64px;
         background-color: rgba(255, 255, 255, 0.25);
         backdrop-filter: blur(4px);
         border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: flex; align-items: center; justify-content: center;
         font-size: 2rem;
         margin-bottom: 16px;
         border: 2px solid rgba(255, 255, 255, 0.4);
     }
 
-    .b-title {
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin-bottom: 4px;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
+    .b-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
     .b-rank {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        font-weight: 700;
+        font-size: 0.7rem; text-transform: uppercase; font-weight: 700;
         background-color: rgba(0, 0, 0, 0.2);
-        padding: 4px 10px;
-        border-radius: 12px;
-        margin-bottom: 8px;
-        display: inline-block;
+        padding: 4px 10px; border-radius: 12px;
+        margin-bottom: 8px; display: inline-block;
     }
+    .b-pts { font-size: 0.85rem; font-weight: 600; opacity: 0.9; }
 
-    .b-pts {
-        font-size: 0.85rem;
-        font-weight: 600;
-        opacity: 0.9;
-    }
-
-    /* Available Badges (Lighter style) */
+    /* Available Badges */
     .avail-card {
         background-color: var(--bg-card);
         border: 1px solid var(--border-color);
@@ -286,55 +213,28 @@
         padding: 24px;
         text-align: center;
         position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .avail-icon {
-        width: 56px;
-        height: 56px;
+        width: 56px; height: 56px;
         margin: 0 auto 16px;
         border-radius: 50%;
         border: 1px solid var(--border-color);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: flex; align-items: center; justify-content: center;
         font-size: 1.5rem;
     }
 
-    .av-blue {
-        background-color: var(--soft-blue);
-        color: var(--text-blue);
-    }
+    .av-blue { background-color: var(--soft-blue); color: var(--text-blue); }
+    .av-red { background-color: var(--soft-red); color: var(--text-red); }
+    .av-green { background-color: var(--soft-green); color: var(--text-green); }
+    .av-orange { background-color: var(--soft-orange); color: var(--text-orange); }
 
-    .av-red {
-        background-color: var(--soft-red);
-        color: var(--text-red);
-    }
-
-    .av-green {
-        background-color: var(--soft-green);
-        color: var(--text-green);
-    }
-
-    .av-orange {
-        background-color: var(--soft-orange);
-        color: var(--text-orange);
-    }
-
-    .av-title {
-        font-weight: 600;
-        color: var(--text-main);
-        font-size: 0.95rem;
-        margin-bottom: 4px;
-    }
-
-    .av-rank {
-        font-size: 0.7rem;
-        font-weight: 700;
-        opacity: 0.7;
-        margin-bottom: 12px;
-        display: block;
-        color: var(--text-muted);
-    }
+    .av-title { font-weight: 600; color: var(--text-main); font-size: 0.95rem; margin-bottom: 4px; }
+    .av-rank { font-size: 0.7rem; font-weight: 700; opacity: 0.7; margin-bottom: 12px; display: block; color: var(--text-muted); }
 
     .progress-mini {
         height: 6px;
@@ -342,18 +242,10 @@
         border-radius: 4px;
         overflow: hidden;
         margin-bottom: 4px;
+        width: 100%;
     }
-
-    .progress-mini-bar {
-        height: 100%;
-        border-radius: 4px;
-    }
-
-    .progress-text {
-        font-size: 0.7rem;
-        font-weight: 700;
-        display: block;
-    }
+    .progress-mini-bar { height: 100%; border-radius: 4px; }
+    .progress-text { font-size: 0.7rem; font-weight: 700; display: block; }
 
     /* Start Quest Button */
     .btn-quest {
@@ -367,33 +259,24 @@
         border-radius: 30px;
         font-weight: 600;
         box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
-        display: flex;
-        align-items: center;
-        gap: 8px;
+        display: flex; align-items: center; gap: 8px;
         z-index: 100;
         transition: 0.2s;
     }
+    .btn-quest:hover { transform: translateY(-2px); background-color: #0284c7; }
 
-    .btn-quest:hover {
-        transform: translateY(-2px);
-        background-color: #0284c7;
-    }
-
-    @media(max-width: 991px) {
-
-        .stats-grid,
-        .badges-grid {
-            grid-template-columns: 1fr 1fr;
-        }
+    /* Mobile Tweaks */
+    @media (max-width: 576px) {
+        .level-steps { justify-content: center; } /* Center steps on mobile */
+        .btn-quest { bottom: 20px; right: 20px; padding: 10px 20px; font-size: 0.9rem; }
     }
 </style>
 
 <div class="content-body">
 
-    <!-- 1. Progress Overview -->
     <h6 class="fw-bold text-main mb-3">Progress Overview</h6>
     <div class="progress-card">
-        <div class="d-flex justify-content-between align-items-end mb-2">
+        <div class="d-flex justify-content-between align-items-end mb-2 flex-wrap gap-2">
             <span class="points-text">Skill Points: 2850 / 3500</span>
             <span class="level-badge">Level: Intermediate</span>
         </div>
@@ -417,8 +300,7 @@
                 <span class="step-label">Advanced</span>
             </div>
             <div class="step-circle">
-                <div class="circle-icon completed bg-danger border border-danger"><i class="bi bi-lock-fill"></i>
-                </div>
+                <div class="circle-icon completed bg-danger border border-danger"><i class="bi bi-lock-fill"></i></div>
                 <span class="step-label">Expert</span>
             </div>
             <div class="step-circle">
@@ -428,118 +310,133 @@
         </div>
     </div>
 
-    <!-- 2. Badge Statistics -->
     <h6 class="fw-bold text-main mb-3">Badge Statistics</h6>
-    <div class="stats-grid">
-        <div class="stat-box bg-green-soft">
-            <i class="bi bi-award sb-icon"></i>
-            <span class="sb-val ">18</span>
-            <span class="sb-lbl">Earned</span>
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="stat-box bg-green-soft">
+                <i class="bi bi-award sb-icon"></i>
+                <span class="sb-val">18</span>
+                <span class="sb-lbl">Earned</span>
+            </div>
         </div>
-        <div class="stat-box bg-blue-soft">
-            <i class="bi bi-bullseye sb-icon"></i>
-            <span class="sb-val">45</span>
-            <span class="sb-lbl">Available</span>
+        <div class="col-6 col-md-3">
+            <div class="stat-box bg-blue-soft">
+                <i class="bi bi-bullseye sb-icon"></i>
+                <span class="sb-val">45</span>
+                <span class="sb-lbl">Available</span>
+            </div>
         </div>
-        <div class="stat-box bg-orange-soft">
-            <i class="bi bi-graph-up-arrow sb-icon"></i>
-            <span class="sb-val">#15</span>
-            <span class="sb-lbl">Rank</span>
+        <div class="col-6 col-md-3">
+            <div class="stat-box bg-orange-soft">
+                <i class="bi bi-graph-up-arrow sb-icon"></i>
+                <span class="sb-val">#15</span>
+                <span class="sb-lbl">Rank</span>
+            </div>
         </div>
-        <div class="stat-box bg-teal-soft">
-            <i class="bi bi-calendar-check sb-icon text-teal"></i>
-            <span class="sb-val">4</span>
-            <span class="sb-lbl">This Month</span>
+        <div class="col-6 col-md-3">
+            <div class="stat-box bg-teal-soft">
+                <i class="bi bi-calendar-check sb-icon text-teal"></i>
+                <span class="sb-val">4</span>
+                <span class="sb-lbl">This Month</span>
+            </div>
         </div>
     </div>
 
-    <!-- 3. Earned Badges -->
     <h6 class="fw-bold text-main mb-3">Earned Badges</h6>
-    <div class="badges-grid">
-        <!-- Badge 1 -->
-        <div class="badge-card grad-blue">
-            <div class="b-icon-box"><i class="bi bi-phone"></i></div>
-            <h6 class="b-title">Flutter Master</h6>
-            <span class="b-rank">Legendary</span>
-            <span class="b-pts"><i class="bi bi-lightning-fill"></i> 500 pts</span>
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="badge-card grad-blue">
+                <div class="b-icon-box"><i class="bi bi-phone"></i></div>
+                <h6 class="b-title">Flutter Master</h6>
+                <span class="b-rank">Legendary</span>
+                <span class="b-pts"><i class="bi bi-lightning-fill"></i> 500 pts</span>
+            </div>
         </div>
 
-        <!-- Badge 2 -->
-        <div class="badge-card grad-green">
-            <div class="b-icon-box"><i class="bi bi-bar-chart-fill"></i></div>
-            <h6 class="b-title">Data Analyst Pro</h6>
-            <span class="b-rank">Epic</span>
-            <span class="b-pts"><i class="bi bi-lightning-fill"></i> 350 pts</span>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="badge-card grad-green">
+                <div class="b-icon-box"><i class="bi bi-bar-chart-fill"></i></div>
+                <h6 class="b-title">Data Analyst Pro</h6>
+                <span class="b-rank">Epic</span>
+                <span class="b-pts"><i class="bi bi-lightning-fill"></i> 350 pts</span>
+            </div>
         </div>
 
-        <!-- Badge 3 -->
-        <div class="badge-card grad-purple">
-            <div class="b-icon-box"><i class="bi bi-cloud-check"></i></div>
-            <h6 class="b-title">Cloud Native</h6>
-            <span class="b-rank">Epic</span>
-            <span class="b-pts"><i class="bi bi-lightning-fill"></i> 400 pts</span>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="badge-card grad-purple">
+                <div class="b-icon-box"><i class="bi bi-cloud-check"></i></div>
+                <h6 class="b-title">Cloud Native</h6>
+                <span class="b-rank">Epic</span>
+                <span class="b-pts"><i class="bi bi-lightning-fill"></i> 400 pts</span>
+            </div>
         </div>
 
-        <!-- Badge 4 -->
-        <div class="badge-card grad-orange">
-            <div class="b-icon-box"><i class="bi bi-people-fill"></i></div>
-            <h6 class="b-title">Team Leader</h6>
-            <span class="b-rank">Rare</span>
-            <span class="b-pts"><i class="bi bi-lightning-fill"></i> 250 pts</span>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="badge-card grad-orange">
+                <div class="b-icon-box"><i class="bi bi-people-fill"></i></div>
+                <h6 class="b-title">Team Leader</h6>
+                <span class="b-rank">Rare</span>
+                <span class="b-pts"><i class="bi bi-lightning-fill"></i> 250 pts</span>
+            </div>
         </div>
     </div>
 
-    <!-- 4. Available Badges -->
     <h6 class="fw-bold text-main mb-3">Available Badges</h6>
-    <div class="badges-grid">
+    <div class="row g-4 mb-5">
 
-        <div class="avail-card">
-            <div class="avail-icon av-blue"><i class="bi bi-cpu"></i></div>
-            <h6 class="av-title">AI/ML Specialist</h6>
-            <span class="av-rank text-blue">Legendary</span>
-            <div class="progress-mini">
-                <div class="progress-mini-bar bg-primary" style="width: 25%;"></div>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="avail-card">
+                <div class="avail-icon av-blue"><i class="bi bi-cpu"></i></div>
+                <h6 class="av-title">AI/ML Specialist</h6>
+                <span class="av-rank text-blue">Legendary</span>
+                <div class="progress-mini">
+                    <div class="progress-mini-bar bg-primary" style="width: 25%;"></div>
+                </div>
+                <span class="progress-text text-blue">25%</span>
             </div>
-            <span class="progress-text text-blue">25%</span>
         </div>
 
-        <div class="avail-card">
-            <div class="avail-icon av-red"><i class="bi bi-shield-lock"></i></div>
-            <h6 class="av-title">Cybersecurity Guardian</h6>
-            <span class="av-rank text-danger">Epic</span>
-            <div class="progress-mini">
-                <div class="progress-mini-bar bg-danger" style="width: 0%;"></div>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="avail-card">
+                <div class="avail-icon av-red"><i class="bi bi-shield-lock"></i></div>
+                <h6 class="av-title">Cybersecurity Guardian</h6>
+                <span class="av-rank text-danger">Epic</span>
+                <div class="progress-mini">
+                    <div class="progress-mini-bar bg-danger" style="width: 0%;"></div>
+                </div>
+                <span class="progress-text text-danger">0%</span>
             </div>
-            <span class="progress-text text-danger">0%</span>
         </div>
 
-        <div class="avail-card">
-            <div class="avail-icon av-green"><i class="bi bi-phone"></i></div>
-            <h6 class="av-title">Mobile App Master</h6>
-            <span class="av-rank text-success">Epic</span>
-            <div class="progress-mini">
-                <div class="progress-mini-bar bg-success" style="width: 60%;"></div>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="avail-card">
+                <div class="avail-icon av-green"><i class="bi bi-phone"></i></div>
+                <h6 class="av-title">Mobile App Master</h6>
+                <span class="av-rank text-success">Epic</span>
+                <div class="progress-mini">
+                    <div class="progress-mini-bar bg-success" style="width: 60%;"></div>
+                </div>
+                <span class="progress-text text-success">60%</span>
             </div>
-            <span class="progress-text text-success">60%</span>
         </div>
 
-        <div class="avail-card">
-            <div class="avail-icon av-orange"><i class="bi bi-link"></i></div>
-            <h6 class="av-title">Blockchain Pioneer</h6>
-            <span class="av-rank text-warning">Legendary</span>
-            <div class="progress-mini">
-                <div class="progress-mini-bar bg-warning" style="width: 10%;"></div>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="avail-card">
+                <div class="avail-icon av-orange"><i class="bi bi-link"></i></div>
+                <h6 class="av-title">Blockchain Pioneer</h6>
+                <span class="av-rank text-warning">Legendary</span>
+                <div class="progress-mini">
+                    <div class="progress-mini-bar bg-warning" style="width: 10%;"></div>
+                </div>
+                <span class="progress-text text-warning">10%</span>
             </div>
-            <span class="progress-text text-warning">10%</span>
         </div>
 
     </div>
 
 </div>
 
-<!-- Floating Action Button -->
 <button class="btn-quest">
     <i class="bi bi-play-circle-fill"></i> Start Quest
 </button>
-
 @endsection

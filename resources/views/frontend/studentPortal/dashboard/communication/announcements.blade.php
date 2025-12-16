@@ -7,52 +7,52 @@
 <style>
     /* Theme Variables */
     :root {
-            --bg-body: #f8f9fa;
-            --bg-sidebar: #ffffff;
-            --bg-card: #ffffff;
-            --bg-hover: #f8f9fa;
+        --bg-body: #f8f9fa;
+        --bg-sidebar: #ffffff;
+        --bg-card: #ffffff;
+        --bg-hover: #f8f9fa;
 
-            --text-main: #343a40;
-            --text-muted: #6c757d;
+        --text-main: #343a40;
+        --text-muted: #6c757d;
 
-            --border-color: #e9ecef;
+        --border-color: #e9ecef;
 
-            /* Soft Colors */
-            --soft-blue: #e7f1ff;
-            --text-blue: #0d6efd;
-            --soft-green: #d1e7dd;
-            --text-green: #0f5132;
-            --soft-orange: #ffecb5;
-            --text-orange: #664d03;
-            --soft-red: #f8d7da;
-            --text-red: #842029;
-            --soft-teal: #e0fbf6;
-            --text-teal: #107c6f;
-        }
+        /* Soft Colors */
+        --soft-blue: #e7f1ff;
+        --text-blue: #0d6efd;
+        --soft-green: #d1e7dd;
+        --text-green: #0f5132;
+        --soft-orange: #ffecb5;
+        --text-orange: #664d03;
+        --soft-red: #f8d7da;
+        --text-red: #842029;
+        --soft-teal: #e0fbf6;
+        --text-teal: #107c6f;
+    }
 
-        [data-theme="dark"] {
-            --bg-body: #0f1626;
-            --bg-sidebar: #1e293b;
-            --bg-card: #2e333f;
-            --bg-hover: #2e333f;
+    [data-theme="dark"] {
+        --bg-body: #0f1626;
+        --bg-sidebar: #1e293b;
+        --bg-card: #2e333f;
+        --bg-hover: #2e333f;
 
-            --text-main: #e9ecef;
-            --text-muted: #adb5bd;
+        --text-main: #e9ecef;
+        --text-muted: #adb5bd;
 
-            --border-color: #767677;
+        --border-color: #767677;
 
-            /* Dark Mode Transparencies */
-            --soft-blue: rgba(13, 110, 253, 0.15);
-            --text-blue: #6ea8fe;
-            --soft-green: rgba(25, 135, 84, 0.15);
-            --text-green: #75b798;
-            --soft-orange: rgba(255, 193, 7, 0.15);
-            --text-orange: #ffda6a;
-            --soft-red: rgba(220, 53, 69, 0.15);
-            --text-red: #ea868f;
-            --soft-teal: rgba(32, 201, 151, 0.15);
-            --text-teal: #a9e5d6;
-        }
+        /* Dark Mode Transparencies */
+        --soft-blue: rgba(13, 110, 253, 0.15);
+        --text-blue: #6ea8fe;
+        --soft-green: rgba(25, 135, 84, 0.15);
+        --text-green: #75b798;
+        --soft-orange: rgba(255, 193, 7, 0.15);
+        --text-orange: #ffda6a;
+        --soft-red: rgba(220, 53, 69, 0.15);
+        --text-red: #ea868f;
+        --soft-teal: rgba(32, 201, 151, 0.15);
+        --text-teal: #a9e5d6;
+    }
 
     /* 1. Overview Stats Panel */
     .stats-panel {
@@ -74,47 +74,21 @@
         border-radius: 8px;
         text-align: center;
         border: 1px solid transparent;
+        /* Flex ensures contents center vertically if height varies */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
-    .sb-red {
-        background-color: rgba(220, 53, 69, 0.1);
-        border-color: rgba(220, 53, 69, 0.2);
-        color: #dc3545;
-    }
+    .sb-red { background-color: rgba(220, 53, 69, 0.1); border-color: rgba(220, 53, 69, 0.2); color: #dc3545; }
+    .sb-blue { background-color: rgba(13, 110, 253, 0.1); border-color: rgba(13, 110, 253, 0.2); color: #0d6efd; }
+    .sb-green { background-color: rgba(25, 135, 84, 0.1); border-color: rgba(25, 135, 84, 0.2); color: #198754; }
+    .sb-cyan { background-color: rgba(13, 202, 240, 0.1); border-color: rgba(13, 202, 240, 0.2); color: #0dcaf0; }
 
-    .sb-blue {
-        background-color: rgba(13, 110, 253, 0.1);
-        border-color: rgba(13, 110, 253, 0.2);
-        color: #0d6efd;
-    }
-
-    .sb-green {
-        background-color: rgba(25, 135, 84, 0.1);
-        border-color: rgba(25, 135, 84, 0.2);
-        color: #198754;
-    }
-
-    .sb-cyan {
-        background-color: rgba(13, 202, 240, 0.1);
-        border-color: rgba(13, 202, 240, 0.2);
-        color: #0dcaf0;
-    }
-
-    [data-theme="dark"] .sb-red {
-        color: #ea868f;
-    }
-
-    [data-theme="dark"] .sb-blue {
-        color: #6ea8fe;
-    }
-
-    [data-theme="dark"] .sb-green {
-        color: #75b798;
-    }
-
-    [data-theme="dark"] .sb-cyan {
-        color: #3dd5f3;
-    }
+    [data-theme="dark"] .sb-red { color: #ea868f; }
+    [data-theme="dark"] .sb-blue { color: #6ea8fe; }
+    [data-theme="dark"] .sb-green { color: #75b798; }
+    [data-theme="dark"] .sb-cyan { color: #3dd5f3; }
 
     .sb-num {
         font-size: 1.5rem;
@@ -148,14 +122,18 @@
         display: flex;
         gap: 12px;
         overflow-x: auto;
+        padding-bottom: 8px; /* Space for scrollbar */
+        scrollbar-width: thin;
     }
+
+    .cat-scroll::-webkit-scrollbar { height: 4px; }
+    .cat-scroll::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
 
     .cat-pill {
         padding: 8px 16px;
         border-radius: 8px;
         border: 1px solid var(--border-color);
         background-color: var(--bg-card);
-        /* Should contrast slightly if needed */
         color: var(--text-main);
         font-size: 0.85rem;
         font-weight: 500;
@@ -167,17 +145,8 @@
         white-space: nowrap;
     }
 
-    .cat-pill:hover {
-        background-color: var(--soft-blue);
-        border-color: var(--text-blue);
-        color: var(--text-blue);
-    }
-
-    .cat-pill.active {
-        background-color: var(--text-blue);
-        color: white;
-        border-color: var(--text-blue);
-    }
+    .cat-pill:hover { background-color: var(--soft-blue); border-color: var(--text-blue); color: var(--text-blue); }
+    .cat-pill.active { background-color: var(--text-blue); color: white; border-color: var(--text-blue); }
 
     .cat-count {
         background: rgba(0, 0, 0, 0.1);
@@ -187,32 +156,20 @@
         font-weight: 700;
     }
 
-    /* Specific pill accents from image */
-    .border-l-blue {
-        border-left: 3px solid #0d6efd;
-    }
-
-    .border-l-orange {
-        border-left: 3px solid #fd7e14;
-    }
-
-    .border-l-green {
-        border-left: 3px solid #198754;
-    }
-
-    .border-l-purple {
-        border-left: 3px solid #6f42c1;
-    }
-
-    .border-l-red {
-        border-left: 3px solid #dc3545;
-    }
+    /* Specific pill accents */
+    .border-l-blue { border-left: 3px solid #0d6efd; }
+    .border-l-orange { border-left: 3px solid #fd7e14; }
+    .border-l-green { border-left: 3px solid #198754; }
+    .border-l-purple { border-left: 3px solid #6f42c1; }
+    .border-l-red { border-left: 3px solid #dc3545; }
 
     /* 3. Filter Bar */
     .filter-bar {
         display: flex;
         gap: 12px;
         margin-bottom: 20px;
+        flex-wrap: wrap; /* Allow wrapping */
+        align-items: center;
     }
 
     .btn-filter {
@@ -246,85 +203,47 @@
         position: relative;
     }
 
-    .ann-card.priority-high {
-        border-left: 4px solid #dc3545;
-    }
-
-    .ann-card.priority-med {
-        border-left: 4px solid #0d6efd;
-    }
-
-    .ann-card.priority-info {
-        border-left: 4px solid #198754;
-    }
+    .ann-card.priority-high { border-left: 4px solid #dc3545; }
+    .ann-card.priority-med { border-left: 4px solid #0d6efd; }
+    .ann-card.priority-info { border-left: 4px solid #198754; }
 
     .ann-header {
         display: flex;
         align-items: flex-start;
         gap: 12px;
         margin-bottom: 12px;
+        flex-wrap: wrap; /* Handle long titles */
     }
 
-    .ann-icon {
-        font-size: 1.1rem;
-        margin-top: 2px;
-    }
+    .ann-icon { font-size: 1.1rem; margin-top: 2px; flex-shrink: 0; }
 
-    .text-p-red {
-        color: #dc3545;
-    }
-
-    .text-p-blue {
-        color: #0d6efd;
-    }
-
-    .text-p-green {
-        color: #198754;
-    }
-
-    .text-p-orange {
-        color: #fd7e14;
-    }
+    .text-p-red { color: #dc3545; }
+    .text-p-blue { color: #0d6efd; }
+    .text-p-green { color: #198754; }
+    .text-p-orange { color: #fd7e14; }
 
     .ann-title {
         font-weight: 700;
         font-size: 1rem;
         color: var(--text-main);
         margin-bottom: 4px;
+        line-height: 1.4;
     }
 
-    .ann-badges {
-        display: flex;
-        gap: 8px;
-    }
-
+    .ann-badges { display: flex; gap: 8px; flex-wrap: wrap; }
     .badge-tag {
         font-size: 0.65rem;
         padding: 3px 8px;
         border-radius: 4px;
         font-weight: 600;
         text-transform: uppercase;
+        white-space: nowrap;
     }
 
-    .bg-t-red {
-        background-color: rgba(220, 53, 69, 0.1);
-        color: #dc3545;
-    }
-
-    .bg-t-blue {
-        background-color: rgba(13, 110, 253, 0.1);
-        color: #0d6efd;
-    }
-
-    .bg-t-orange {
-        background-color: rgba(253, 126, 20, 0.1);
-        color: #fd7e14;
-    }
-
-    .bg-t-green {
-        background-color: rgba(25, 135, 84, 0.1);
-        color: #198754;
-    }
+    .bg-t-red { background-color: rgba(220, 53, 69, 0.1); color: #dc3545; }
+    .bg-t-blue { background-color: rgba(13, 110, 253, 0.1); color: #0d6efd; }
+    .bg-t-orange { background-color: rgba(253, 126, 20, 0.1); color: #fd7e14; }
+    .bg-t-green { background-color: rgba(25, 135, 84, 0.1); color: #198754; }
 
     .ann-content {
         color: var(--text-muted);
@@ -341,17 +260,17 @@
         margin-bottom: 16px;
         padding-bottom: 12px;
         border-bottom: 1px solid var(--border-color);
+        flex-wrap: wrap; /* Responsive wrapping */
+        gap: 8px;
     }
 
-    .meta-l {
-        display: flex;
-        gap: 16px;
-    }
+    .meta-l { display: flex; gap: 16px; flex-wrap: wrap; }
 
     .attach-box {
         display: flex;
         gap: 12px;
         margin-bottom: 20px;
+        flex-wrap: wrap; /* Ensure files wrap */
     }
 
     .file-chip {
@@ -365,16 +284,20 @@
         font-size: 0.8rem;
         text-decoration: none;
         border: 1px solid transparent;
+        white-space: nowrap;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    .file-chip:hover {
-        border-color: var(--text-blue);
-    }
+    .file-chip:hover { border-color: var(--text-blue); }
 
     .ann-footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap; /* Footer wrap */
+        gap: 12px;
     }
 
     .btn-action {
@@ -386,44 +309,56 @@
         transition: 0.2s;
     }
 
-    .btn-view {
-        background-color: var(--text-blue);
-        color: white;
-        margin-right: 8px;
-    }
+    .btn-view { background-color: var(--text-blue); color: white; margin-right: 8px; }
+    .btn-view:hover { opacity: 0.9; }
+    .btn-dl { background-color: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); }
+    .btn-dl:hover { background-color: var(--bg-body); }
 
-    .btn-view:hover {
-        opacity: 0.9;
-    }
-
-    .btn-dl {
-        background-color: var(--bg-card);
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
-    }
-
-    .btn-dl:hover {
-        background-color: var(--bg-body);
-    }
-
+    /* --- RESPONSIVE MEDIA QUERIES --- */
     @media(max-width: 991px) {
+        /* Tablet: 2 cols for stats */
         .stats-grid {
             grid-template-columns: 1fr 1fr;
         }
+    }
+
+    @media(max-width: 576px) {
+        /* Mobile: Stats still 2x2 looks good, no change needed there */
+
+        .ann-card { padding: 16px; }
 
         .ann-meta {
             flex-direction: column;
+            align-items: flex-start;
             gap: 8px;
         }
+
+        .meta-l {
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .ann-footer {
+            flex-direction: column;
+            align-items: stretch; /* Stretch buttons */
+        }
+
+        .ann-footer > div {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action { flex: 1; margin-right: 0; }
+
+        /* Adjust small text in footer to right */
+        .ann-footer small { text-align: right; }
     }
 </style>
 
 <div class="content-body">
 
-    <!-- 1. Announcement Overview -->
     <div class="stats-panel">
-        <h6 class="fw-bold text-main mb-3"><i class="bi bi-bar-chart-fill me-2 text-primary"></i>Announcement Overview
-        </h6>
+        <h6 class="fw-bold text-main mb-3"><i class="bi bi-bar-chart-fill me-2 text-primary"></i>Announcement Overview</h6>
 
         <div class="stats-grid">
             <div class="stat-box sb-red">
@@ -446,7 +381,6 @@
         <small class="last-update"><i class="bi bi-clock-history me-1"></i> Last updated: 15m ago</small>
     </div>
 
-    <!-- 2. Categories -->
     <div class="categories-panel">
         <h6 class="fw-bold text-main mb-3"><i class="bi bi-grid-fill me-2 text-success"></i>Categories</h6>
         <div class="cat-scroll">
@@ -471,18 +405,14 @@
         </div>
     </div>
 
-    <!-- 3. Filter Bar -->
     <div class="filter-bar">
         <select class="btn-filter">
             <option>All</option>
         </select>
         <button class="btn-unread"><i class="bi bi-eye"></i> Unread Only</button>
-        <div class="ms-auto --text-muted cursor-pointer"><i class="bi bi-arrow-repeat fs-5"></i></div>
+        <div class="ms-auto --text-muted cursor-pointer d-none d-sm-block"><i class="bi bi-arrow-repeat fs-5"></i></div>
     </div>
 
-    <!-- 4. Announcement Feed -->
-
-    <!-- Card 1: High Priority -->
     <div class="ann-card priority-high">
         <div class="d-flex justify-content-between">
             <div class="ann-header">
@@ -526,7 +456,6 @@
         </div>
     </div>
 
-    <!-- Card 2: Medium Priority -->
     <div class="ann-card priority-med">
         <div class="d-flex justify-content-between">
             <div class="ann-header">
@@ -561,7 +490,6 @@
         </div>
     </div>
 
-    <!-- Card 3: Events -->
     <div class="ann-card priority-info">
         <div class="d-flex justify-content-between">
             <div class="ann-header">
@@ -604,7 +532,6 @@
         </div>
     </div>
 
-    <!-- Card 4: Administrative (Warning) -->
     <div class="ann-card priority-high" style="border-left-color: #fd7e14;">
         <div class="d-flex justify-content-between">
             <div class="ann-header">

@@ -72,6 +72,7 @@
         align-items: center;
         justify-content: center;
         font-size: 1.2rem;
+        flex-shrink: 0; /* Prevents shrinking on mobile */
     }
 
     /* Resume Box */
@@ -84,6 +85,7 @@
         align-items: center;
         color: var(--text-main);
         font-family: monospace;
+        overflow: hidden; /* Contains overflow */
     }
 
     /* Project Cards */
@@ -94,6 +96,8 @@
         height: 100%;
         background: var(--bg-card);
         transition: transform 0.2s;
+        display: flex;
+        flex-direction: column;
     }
 
     .project-card:hover {
@@ -113,11 +117,17 @@
 
     .project-body {
         padding: 20px;
+        flex-grow: 1; /* Pushes footer buttons down */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .project-actions {
+        margin-top: auto; /* Ensures buttons stick to bottom */
     }
 
     .badge-tech {
         background-color: var(--border-color);
-        /* Light grey for tags */
         color: var(--text-main);
         font-size: 0.75rem;
         padding: 4px 8px;
@@ -144,11 +154,10 @@
     /* Achievement Items */
     .achievement-item {
         background-color: var(--soft-green);
-        /* Default, overridden inline */
         border-radius: 12px;
         padding: 16px;
         display: flex;
-        align-items: center;
+        align-items: flex-start; /* Align top for better mobile view */
         gap: 16px;
         margin-bottom: 12px;
     }
@@ -162,42 +171,31 @@
         justify-content: center;
         font-size: 1.5rem;
         background-color: rgba(255, 255, 255, 0.5);
-        /* Semi-transparent white */
+        flex-shrink: 0; /* Critical for responsiveness */
     }
 
-    /* Utility for background colors based on image */
-    .bg-light-blue {
-        background-color: #e0f2fe;
-    }
+    /* Background Utilities */
+    .bg-light-blue { background-color: #e0f2fe; }
+    .bg-light-green { background-color: #dcfce7; }
+    .bg-light-orange { background-color: #ffedd5; }
 
-    /* Pale Blue */
-    .bg-light-green {
-        background-color: #dcfce7;
-    }
+    [data-theme="dark"] .bg-light-blue { background-color: rgba(14, 165, 233, 0.15); }
+    [data-theme="dark"] .bg-light-green { background-color: rgba(34, 197, 94, 0.15); }
+    [data-theme="dark"] .bg-light-orange { background-color: rgba(249, 115, 22, 0.15); }
 
-    /* Pale Green */
-    .bg-light-orange {
-        background-color: #ffedd5;
-    }
-
-    /* Pale Orange */
-
-    [data-theme="dark"] .bg-light-blue {
-        background-color: rgba(14, 165, 233, 0.15);
-    }
-
-    [data-theme="dark"] .bg-light-green {
-        background-color: rgba(34, 197, 94, 0.15);
-    }
-
-    [data-theme="dark"] .bg-light-orange {
-        background-color: rgba(249, 115, 22, 0.15);
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .card-custom {
+            padding: 16px; /* Smaller padding on mobile */
+        }
+        .project-header {
+            height: 120px; /* Slightly shorter banner */
+        }
     }
 </style>
 
 <div class="content-body">
 
-    <!-- 1. Professional Summary & Resume -->
     <div class="card-custom">
         <div class="d-flex align-items-center gap-3 mb-4">
             <div class="section-icon bg-soft-blue text-primary">
@@ -208,7 +206,7 @@
 
         <div class="mb-4">
             <label class="form-label small fw-bold" style="color: var(--text-muted)">Bio/Summary</label>
-            <div class="p-3 rounded" style="color: var(--text-main); border: 1px solid var(--border-color); ">
+            <div class="p-3 rounded" style="color: var(--text-main); border: 1px solid var(--border-color);">
                 Passionate Computer Engineering student with expertise in Flutter development and UI/UX design.
                 Experienced in building mobile applications and web solutions.
             </div>
@@ -217,13 +215,13 @@
         <div>
             <label class="form-label small fw-bold" style="color: var(--text-muted)">Resume/CV</label>
             <div class="resume-box">
-                <i class="bi bi-file-earmark-pdf text-danger me-2"></i> john_doe_resume.pdf
-                <span class="ms-auto text-primary small fw-bold" style="cursor: pointer;">Download</span>
+                <i class="bi bi-file-earmark-pdf text-danger me-2 flex-shrink-0"></i>
+                <span class="text-truncate me-2">john_doe_cv_2025_updated_version.pdf</span>
+                <span class="ms-auto text-primary small fw-bold flex-shrink-0" style="cursor: pointer;">Download</span>
             </div>
         </div>
     </div>
 
-    <!-- 2. Social Links -->
     <div class="card-custom">
         <div class="d-flex align-items-center gap-3 mb-4">
             <div class="section-icon bg-soft-blue text-primary">
@@ -234,19 +232,18 @@
 
         <div class="mb-3">
             <label class="form-label small fw-bold" style="color: var(--text-muted)">LinkedIn Profile</label>
-            <div class="resume-box " style="color: var(--text-main);">https://linkedin.com/in/johndoe</div>
+            <div class="resume-box text-break" style="color: var(--text-main);">https://linkedin.com/in/johndoe</div>
         </div>
         <div class="mb-3">
             <label class="form-label small fw-bold" style="color: var(--text-muted)">GitHub Profile</label>
-            <div class="resume-box " style="color: var(--text-main);">https://github.com/johndoe</div>
+            <div class="resume-box text-break" style="color: var(--text-main);">https://github.com/johndoe</div>
         </div>
         <div>
             <label class="form-label small fw-bold" style="color: var(--text-muted)">Portfolio Website</label>
-            <div class="resume-box " style="color: var(--text-main);">https://johndoe.dev</div>
+            <div class="resume-box text-break" style="color: var(--text-main);">https://johndoe.dev</div>
         </div>
     </div>
 
-    <!-- 3. Projects Showcase (Grid) -->
     <div class="mb-4">
         <div class="d-flex align-items-center gap-3 mb-3">
             <div class="section-icon bg-soft-orange text-warning">
@@ -256,58 +253,51 @@
         </div>
 
         <div class="row g-4">
-            <!-- Project 1 -->
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
                 <div class="project-card">
                     <div class="project-header bg-light-blue">
-                        <i class="bi bi-phone"></i> <!-- Placeholder Icon -->
+                        <i class="bi bi-phone"></i>
                     </div>
                     <div class="project-body">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <h6 class="fw-bold text-main m-0">E-commerce Mobile App</h6>
                             <span class="badge bg-success rounded-pill" style="font-size: 0.65rem;">Completed</span>
                         </div>
-                        <p class=" small mb-3" style="color: var(--text-muted)">Flutter-based mobile application with
+                        <p class="small mb-3 flex-grow-1" style="color: var(--text-muted)">Flutter-based mobile application with
                             complete shopping functionality, payment integration, and real-time order tracking.</p>
                         <div class="mb-3">
                             <span class="badge-tech">Flutter</span>
                             <span class="badge-tech">Firebase</span>
                             <span class="badge-tech">Stripe API</span>
                         </div>
-                        <div class="d-flex gap-2">
-                            <button class="btn btn-light btn-sm flex-grow-1 border"><i
-                                    class="bi bi-box-arrow-up-right me-1"></i> Live</button>
-                            <button class="btn btn-light btn-sm flex-grow-1 border"><i class="bi bi-github me-1"></i>
-                                Code</button>
+                        <div class="d-flex gap-2 project-actions">
+                            <button class="btn btn-light btn-sm flex-grow-1 border"><i class="bi bi-box-arrow-up-right me-1"></i> Live</button>
+                            <button class="btn btn-light btn-sm flex-grow-1 border"><i class="bi bi-github me-1"></i> Code</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Project 2 -->
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
                 <div class="project-card">
                     <div class="project-header bg-light-green">
-                        <i class="bi bi-kanban"></i> <!-- Placeholder Icon -->
+                        <i class="bi bi-kanban"></i>
                     </div>
                     <div class="project-body">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h6 class="fw-bold text-main m-0">Inventory Management System</h6>
+                            <h6 class="fw-bold text-main m-0">Inventory System</h6>
                             <span class="badge bg-success rounded-pill" style="font-size: 0.65rem;">Completed</span>
                         </div>
-                        <p class=" small mb-3" style="color: var(--text-muted)">Java-based desktop application for
-                            managing inventory with barcode scanning, automated reordering, and detailed analytics.</p>
+                        <p class="small mb-3 flex-grow-1" style="color: var(--text-muted)">Java-based desktop application for
+                            managing inventory with barcode scanning and automated reordering.</p>
                         <div class="mb-3">
                             <span class="badge-tech">Java</span>
                             <span class="badge-tech">JavaFX</span>
                             <span class="badge-tech">MySQL</span>
                         </div>
-                        <div class="d-flex gap-2">
-                            <!-- Only Code button enabled for desktop app typically -->
-                            <button class="btn btn-light btn-sm flex-grow-1 border" disabled><i
-                                    class="bi bi-box-arrow-up-right me-1"></i> Live</button>
-                            <button class="btn btn-light btn-sm flex-grow-1 border"><i class="bi bi-github me-1"></i>
-                                Code</button>
+                        <div class="d-flex gap-2 project-actions">
+                            <button class="btn btn-light btn-sm flex-grow-1 border" disabled><i class="bi bi-box-arrow-up-right me-1"></i> Live</button>
+                            <button class="btn btn-light btn-sm flex-grow-1 border"><i class="bi bi-github me-1"></i> Code</button>
                         </div>
                     </div>
                 </div>
@@ -315,7 +305,6 @@
         </div>
     </div>
 
-    <!-- 4. Skills Overview -->
     <div class="card-custom">
         <div class="d-flex align-items-center gap-3 mb-4">
             <div class="section-icon bg-soft-green text-success">
@@ -325,8 +314,7 @@
         </div>
 
         <div class="row g-4">
-            <!-- Left Column -->
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
                 <div class="mb-4">
                     <div class="d-flex justify-content-between small fw-bold text-main">
                         <span>Flutter</span> <span>90%</span>
@@ -353,8 +341,7 @@
                 </div>
             </div>
 
-            <!-- Right Column -->
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
                 <div class="mb-4">
                     <div class="d-flex justify-content-between small fw-bold text-main">
                         <span>Java</span> <span>85%</span>
@@ -383,7 +370,6 @@
         </div>
     </div>
 
-    <!-- 5. Achievements -->
     <div class="card-custom">
         <div class="d-flex align-items-center gap-3 mb-4">
             <div class="section-icon bg-soft-teal text-success">
@@ -392,36 +378,30 @@
             <h6 class="fw-bold m-0 text-main fs-5">Achievements & Recognition</h6>
         </div>
 
-        <!-- Item 1 -->
         <div class="achievement-item bg-light-green">
-            <div class="achievement-icon text-success"><i class="bi bi-award"></i></div>
+            <div class="achievement-icon text-success flex-shrink-0"><i class="bi bi-award"></i></div>
             <div>
-                <h6 class="fw-bold text-main m-0">Winner - State Level Technical Competition</h6>
+                <h6 class="fw-bold text-main m-0">Winner - State Level Tech Comp.</h6>
                 <small class="text-success fw-bold d-block my-1">Government of Maharashtra • March 2024</small>
-                <small class=" d-block" style="color: var(--text-muted)">First place in mobile app development category
-                    with innovative healthcare solution.</small>
+                <small class="d-block" style="color: var(--text-muted)">First place in mobile app development category with innovative solution.</small>
             </div>
         </div>
 
-        <!-- Item 2 -->
         <div class="achievement-item bg-light-blue">
-            <div class="achievement-icon text-primary"><i class="bi bi-shield-check"></i></div>
+            <div class="achievement-icon text-primary flex-shrink-0"><i class="bi bi-shield-check"></i></div>
             <div>
-                <h6 class="fw-bold text-main m-0">Microsoft Azure Fundamentals Certified</h6>
+                <h6 class="fw-bold text-main m-0">Azure Fundamentals Certified</h6>
                 <small class="text-primary fw-bold d-block my-1">Microsoft • January 2024</small>
-                <small class=" d-block" style="color: var(--text-muted)">Successfully completed Microsoft Azure
-                    Fundamentals certification (AZ-900).</small>
+                <small class="d-block" style="color: var(--text-muted)">Successfully completed Microsoft Azure Fundamentals (AZ-900).</small>
             </div>
         </div>
 
-        <!-- Item 3 -->
         <div class="achievement-item bg-light-orange">
-            <div class="achievement-icon text-warning"><i class="bi bi-star"></i></div>
+            <div class="achievement-icon text-warning flex-shrink-0"><i class="bi bi-star"></i></div>
             <div>
-                <h6 class="fw-bold text-main m-0">Dean's List for Academic Excellence</h6>
+                <h6 class="fw-bold text-main m-0">Dean's List</h6>
                 <small class="text-warning fw-bold d-block my-1">MIT College • December 2023</small>
-                <small class=" d-block" style="color: var(--text-muted)
-                ">Recognized for maintaining CGPA above 9.0 for consecutive semesters.</small>
+                <small class="d-block" style="color: var(--text-muted)">Recognized for maintaining CGPA above 9.0 for consecutive semesters.</small>
             </div>
         </div>
     </div>

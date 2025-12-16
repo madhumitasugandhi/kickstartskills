@@ -7,52 +7,52 @@
 <style>
     /* Theme Variables */
     :root {
-            --bg-body: #f8f9fa;
-            --bg-sidebar: #ffffff;
-            --bg-card: #ffffff;
-            --bg-hover: #f8f9fa;
+        --bg-body: #f8f9fa;
+        --bg-sidebar: #ffffff;
+        --bg-card: #ffffff;
+        --bg-hover: #f8f9fa;
 
-            --text-main: #343a40;
-            --text-muted: #6c757d;
+        --text-main: #343a40;
+        --text-muted: #6c757d;
 
-            --border-color: #e9ecef;
+        --border-color: #e9ecef;
 
-            /* Soft Colors */
-            --soft-blue: #e7f1ff;
-            --text-blue: #0d6efd;
-            --soft-green: #d1e7dd;
-            --text-green: #0f5132;
-            --soft-orange: #ffecb5;
-            --text-orange: #664d03;
-            --soft-red: #f8d7da;
-            --text-red: #842029;
-            --soft-teal: #e0fbf6;
-            --text-teal: #107c6f;
-        }
+        /* Soft Colors */
+        --soft-blue: #e7f1ff;
+        --text-blue: #0d6efd;
+        --soft-green: #d1e7dd;
+        --text-green: #0f5132;
+        --soft-orange: #ffecb5;
+        --text-orange: #664d03;
+        --soft-red: #f8d7da;
+        --text-red: #842029;
+        --soft-teal: #e0fbf6;
+        --text-teal: #107c6f;
+    }
 
-        [data-theme="dark"] {
-            --bg-body: #0f1626;
-            --bg-sidebar: #1e293b;
-            --bg-card: #2e333f;
-            --bg-hover: #2e333f;
+    [data-theme="dark"] {
+        --bg-body: #0f1626;
+        --bg-sidebar: #1e293b;
+        --bg-card: #2e333f;
+        --bg-hover: #2e333f;
 
-            --text-main: #e9ecef;
-            --text-muted: #adb5bd;
+        --text-main: #e9ecef;
+        --text-muted: #adb5bd;
 
-            --border-color: #767677;
+        --border-color: #767677;
 
-            /* Dark Mode Transparencies */
-            --soft-blue: rgba(13, 110, 253, 0.15);
-            --text-blue: #6ea8fe;
-            --soft-green: rgba(25, 135, 84, 0.15);
-            --text-green: #75b798;
-            --soft-orange: rgba(255, 193, 7, 0.15);
-            --text-orange: #ffda6a;
-            --soft-red: rgba(220, 53, 69, 0.15);
-            --text-red: #ea868f;
-            --soft-teal: rgba(32, 201, 151, 0.15);
-            --text-teal: #a9e5d6;
-        }
+        /* Dark Mode Transparencies */
+        --soft-blue: rgba(13, 110, 253, 0.15);
+        --text-blue: #6ea8fe;
+        --soft-green: rgba(25, 135, 84, 0.15);
+        --text-green: #75b798;
+        --soft-orange: rgba(255, 193, 7, 0.15);
+        --text-orange: #ffda6a;
+        --soft-red: rgba(220, 53, 69, 0.15);
+        --text-red: #ea868f;
+        --soft-teal: rgba(32, 201, 151, 0.15);
+        --text-teal: #a9e5d6;
+    }
 
 
     /* 1. Overview Stats (Dark Theme) */
@@ -88,6 +88,13 @@
     .progress-fill-green { background-color: #10b981; height: 100%; border-radius: 4px; }
 
     /* 3. Filter Bar */
+    .filter-bar-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+
     .filter-btn {
         background-color: var(--dark-card-bg);
         border: 1px solid var(--dark-border);
@@ -128,6 +135,7 @@
         display: flex; align-items: center; justify-content: center;
         border-radius: 6px;
         font-size: 1rem;
+        flex-shrink: 0; /* Prevent icon shrinking */
     }
     .icon-danger { background: rgba(239,68,68,0.1); color: #ef4444; }
     .icon-success { background: rgba(16,185,129,0.1); color: #10b981; }
@@ -135,7 +143,7 @@
     .task-title-group h6 { color: var(--dark-text); font-weight: 700; margin: 0; font-size: 1rem; }
     .task-phase { color: #60a5fa; font-size: 0.8rem; margin-top: 2px; display: block; }
 
-    .task-badges { margin-left: auto; display: flex; gap: 8px; }
+    .task-badges { margin-left: auto; display: flex; gap: 8px; flex-shrink: 0; }
     .badge-status { font-size: 0.7rem; padding: 4px 8px; border-radius: 4px; font-weight: 600; }
     .badge-low { background: rgba(56,189,248,0.1); color: #38bdf8; }
     .badge-overdue { background: rgba(239,68,68,0.1); color: #ef4444; }
@@ -170,6 +178,7 @@
         align-items: center;
         gap: 16px;
         margin-bottom: 20px;
+        flex-wrap: wrap; /* Allow wrapping */
     }
     .tag-pill {
         background-color: #334155;
@@ -178,6 +187,7 @@
         padding: 4px 10px;
         border-radius: 4px;
         font-weight: 500;
+        white-space: nowrap;
     }
     .tag-pill.green { color: #86efac; background-color: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); }
 
@@ -189,6 +199,7 @@
         border-radius: 6px;
         font-size: 0.85rem;
         display: flex; align-items: center; gap: 6px;
+        white-space: nowrap;
     }
 
     /* Row 5: Footer Alert */
@@ -208,36 +219,67 @@
         color: #86efac;
     }
 
-    /* Override Wrapper Background for this specific page */
+    /* --- RESPONSIVE ADJUSTMENTS --- */
+    @media (max-width: 768px) {
+        /* Remove indentation on mobile so content fits better */
+        .task-desc,
+        .task-meta-grid,
+        .task-action-row,
+        .task-footer-alert {
+            padding-left: 0;
+        }
+
+        .task-card-row { padding: 16px; }
+
+        /* Stack header elements if needed */
+        .task-header { flex-wrap: wrap; }
+        .task-badges { margin-left: 0; margin-top: 4px; width: 100%; }
+
+        /* Adjust meta grid spacing */
+        .task-meta-grid { gap: 20px; }
+
+        /* Filter bar stacking */
+        .filter-bar-container {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+        }
+        .btn-add-task { width: 100%; }
+
+        /* Action buttons expand */
+        .task-action-row .d-flex.gap-2 {
+            flex-grow: 1;
+            margin-left: 0 !important;
+        }
+        .btn-details { flex-grow: 1; justify-content: center; }
+    }
 
 </style>
 
 <div class="content-body">
 
-    <!-- WRAPPER FOR DARK THEME LOOK -->
     <div class="dark-wrapper">
 
-        <!-- 1. Stats Row -->
         <div class="row g-4 mb-4">
-            <div class="col-md-3">
+            <div class="col-6 col-md-3">
                 <div class="stat-card-dark">
                     <span class="stat-num blue">39</span>
                     <span class="stat-lbl">Total Tasks</span>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-6 col-md-3">
                 <div class="stat-card-dark">
                     <span class="stat-num green">13</span>
                     <span class="stat-lbl">Completed</span>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-6 col-md-3">
                 <div class="stat-card-dark">
                     <span class="stat-num info">6</span>
                     <span class="stat-lbl">In Progress</span>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-6 col-md-3">
                 <div class="stat-card-dark">
                     <span class="stat-num red">2</span>
                     <span class="stat-lbl">Overdue</span>
@@ -245,7 +287,6 @@
             </div>
         </div>
 
-        <!-- 2. Progress Bar -->
         <div class="mb-4">
             <div class="progress-header">
                 <span>Overall Progress</span>
@@ -256,8 +297,7 @@
             </div>
         </div>
 
-        <!-- 3. Filter Bar -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="filter-bar-container">
             <div class="d-flex gap-2">
                 <select class="filter-btn"><option>All</option></select>
                 <select class="filter-btn"><option>Due Date</option></select>
@@ -265,14 +305,11 @@
             <button class="btn-add-task"><i class="bi bi-plus-lg me-1"></i> Add Task</button>
         </div>
 
-        <!-- 4. TASK LIST (Full Width Rows) -->
         <div class="row">
 
-            <!-- TASK CARD 1: Code Documentation -->
             <div class="col-12">
                 <div class="task-card-row">
 
-                    <!-- Row 1: Header -->
                     <div class="task-header">
                         <div class="task-icon icon-danger"><i class="bi bi-exclamation-triangle-fill"></i></div>
                         <div class="task-title-group">
@@ -285,12 +322,10 @@
                         </div>
                     </div>
 
-                    <!-- Row 2: Description -->
                     <div class="task-desc">
                         Create comprehensive documentation for all developed features including API docs and user guides
                     </div>
 
-                    <!-- Row 3: Meta Data -->
                     <div class="task-meta-grid">
                         <div class="meta-point">
                             <span class="meta-lbl">Due Date</span>
@@ -306,28 +341,27 @@
                         </div>
                     </div>
 
-                    <!-- Row 4: Tags & Buttons -->
                     <div class="task-action-row">
                         <span class="tag-pill">Markdown</span>
                         <span class="tag-pill">JSDoc</span>
                         <span class="tag-pill">Swagger</span>
-                        <button class="btn-details ms-2"><i class="bi bi-info-circle"></i> Details</button>
+
+                        <div class="d-flex gap-2 ms-md-2 flex-grow-1 flex-md-grow-0">
+                            <button class="btn-details w-100 w-md-auto"><i class="bi bi-info-circle"></i> Details</button>
+                        </div>
                     </div>
 
-                    <!-- Row 5: Footer -->
                     <div class="task-footer-alert">
-                        <i class="bi bi-chat-left-text-fill"></i>
+                        <i class="bi bi-chat-left-text-fill flex-shrink-0"></i>
                         <span>Please prioritize this - documentation is important for project handover.</span>
                     </div>
 
                 </div>
             </div>
 
-            <!-- TASK CARD 2: User Authentication -->
             <div class="col-12">
                 <div class="task-card-row">
 
-                    <!-- Row 1: Header -->
                     <div class="task-header">
                         <div class="task-icon icon-success"><i class="bi bi-check-circle-fill"></i></div>
                         <div class="task-title-group">
@@ -340,12 +374,10 @@
                         </div>
                     </div>
 
-                    <!-- Row 2: Description -->
                     <div class="task-desc">
                         Implement secure user login/logout functionality with JWT tokens and session management
                     </div>
 
-                    <!-- Row 3: Meta Data -->
                     <div class="task-meta-grid">
                         <div class="meta-point">
                             <span class="meta-lbl">Due Date</span>
@@ -361,23 +393,23 @@
                         </div>
                     </div>
 
-                    <!-- Row 4: Tags & Buttons -->
                     <div class="task-action-row">
-                        <span class="tag-pill green">React</span>
-                        <span class="tag-pill green">Node.js</span>
-                        <span class="tag-pill green">JWT</span>
-                        <span class="tag-pill green">bcrypt</span>
-
-                        <div class="d-flex gap-2 ms-2">
-                            <button class="btn-details"><i class="bi bi-eye"></i> View</button>
-                            <button class="btn-details"><i class="bi bi-info-circle"></i> Details</button>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <span class="tag-pill green">React</span>
+                            <span class="tag-pill green">Node.js</span>
+                            <span class="tag-pill green">JWT</span>
+                            <span class="tag-pill green">bcrypt</span>
                         </div>
-                        <div class="ms-auto text-warning small fw-bold"><i class="bi bi-star-fill"></i> 9.2</div>
+
+                        <div class="d-flex gap-2 ms-md-2 flex-grow-1 flex-md-grow-0 mt-2 mt-md-0">
+                            <button class="btn-details w-100 w-md-auto"><i class="bi bi-eye"></i> View</button>
+                            <button class="btn-details w-100 w-md-auto"><i class="bi bi-info-circle"></i> Details</button>
+                        </div>
+                        <div class="ms-auto text-warning small fw-bold d-none d-md-block"><i class="bi bi-star-fill"></i> 9.2</div>
                     </div>
 
-                    <!-- Row 5: Footer -->
                     <div class="task-footer-alert alert-success-custom">
-                        <i class="bi bi-chat-left-quote-fill"></i>
+                        <i class="bi bi-chat-left-quote-fill flex-shrink-0"></i>
                         <span>Excellent implementation! Clean code and good security practices.</span>
                     </div>
 

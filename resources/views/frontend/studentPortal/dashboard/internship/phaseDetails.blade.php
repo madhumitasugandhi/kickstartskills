@@ -6,53 +6,53 @@
 @section('content')
 <style>
     /* Theme Variables */
-   :root {
-            --bg-body: #f8f9fa;
-            --bg-sidebar: #ffffff;
-            --bg-card: #ffffff;
-            --bg-hover: #f8f9fa;
+    :root {
+        --bg-body: #f8f9fa;
+        --bg-sidebar: #ffffff;
+        --bg-card: #ffffff;
+        --bg-hover: #f8f9fa;
 
-            --text-main: #343a40;
-            --text-muted: #6c757d;
+        --text-main: #343a40;
+        --text-muted: #6c757d;
 
-            --border-color: #e9ecef;
+        --border-color: #e9ecef;
 
-            /* Soft Colors */
-            --soft-blue: #e7f1ff;
-            --text-blue: #0d6efd;
-            --soft-green: #d1e7dd;
-            --text-green: #0f5132;
-            --soft-orange: #ffecb5;
-            --text-orange: #664d03;
-            --soft-red: #f8d7da;
-            --text-red: #842029;
-            --soft-teal: #e0fbf6;
-            --text-teal: #107c6f;
-        }
+        /* Soft Colors */
+        --soft-blue: #e7f1ff;
+        --text-blue: #0d6efd;
+        --soft-green: #d1e7dd;
+        --text-green: #0f5132;
+        --soft-orange: #ffecb5;
+        --text-orange: #664d03;
+        --soft-red: #f8d7da;
+        --text-red: #842029;
+        --soft-teal: #e0fbf6;
+        --text-teal: #107c6f;
+    }
 
-        [data-theme="dark"] {
-            --bg-body: #0f1626;
-            --bg-sidebar: #1e293b;
-            --bg-card: #2e333f;
-            --bg-hover: #2e333f;
+    [data-theme="dark"] {
+        --bg-body: #0f1626;
+        --bg-sidebar: #1e293b;
+        --bg-card: #2e333f;
+        --bg-hover: #2e333f;
 
-            --text-main: #e9ecef;
-            --text-muted: #adb5bd;
+        --text-main: #e9ecef;
+        --text-muted: #adb5bd;
 
-            --border-color: #767677;
+        --border-color: #767677;
 
-            /* Dark Mode Transparencies */
-            --soft-blue: rgba(13, 110, 253, 0.15);
-            --text-blue: #6ea8fe;
-            --soft-green: rgba(25, 135, 84, 0.15);
-            --text-green: #75b798;
-            --soft-orange: rgba(255, 193, 7, 0.15);
-            --text-orange: #ffda6a;
-            --soft-red: rgba(220, 53, 69, 0.15);
-            --text-red: #ea868f;
-            --soft-teal: rgba(32, 201, 151, 0.15);
-            --text-teal: #a9e5d6;
-        }
+        /* Dark Mode Transparencies */
+        --soft-blue: rgba(13, 110, 253, 0.15);
+        --text-blue: #6ea8fe;
+        --soft-green: rgba(25, 135, 84, 0.15);
+        --text-green: #75b798;
+        --soft-orange: rgba(255, 193, 7, 0.15);
+        --text-orange: #ffda6a;
+        --soft-red: rgba(220, 53, 69, 0.15);
+        --text-red: #ea868f;
+        --soft-teal: rgba(32, 201, 151, 0.15);
+        --text-teal: #a9e5d6;
+    }
 
     /* 1. Header Card */
     .header-card {
@@ -70,6 +70,7 @@
         border-radius: 10px;
         display: flex; align-items: center; justify-content: center;
         font-size: 1.5rem;
+        flex-shrink: 0;
     }
 
     /* 2. Phase Stepper */
@@ -78,12 +79,22 @@
         gap: 16px;
         margin-top: 24px;
         overflow-x: auto;
+        padding-bottom: 8px; /* Space for scrollbar */
+        scrollbar-width: thin; /* Firefox thin scrollbar */
     }
+    .stepper-container::-webkit-scrollbar {
+        height: 6px;
+    }
+    .stepper-container::-webkit-scrollbar-thumb {
+        background-color: var(--border-color);
+        border-radius: 4px;
+    }
+
     .phase-step {
         flex: 1;
         min-width: 140px;
         background-color: rgba(255,255,255,0.03);
-        border: 1px solid var(--dark-border);
+        border: 1px solid var(--border-color);
         border-radius: 8px;
         padding: 16px;
         cursor: pointer;
@@ -103,7 +114,7 @@
 
     .step-icon { margin-bottom: 8px; font-size: 1.1rem; color: #64748b; }
     .phase-step.active .step-icon { color: #38bdf8; }
-    .step-title { font-size: 0.8rem; font-weight: 600; color: #fff; display: block; }
+    .step-title { font-size: 0.8rem; font-weight: 600; color: var(--text-main); display: block; }
     .step-dur { font-size: 0.7rem; color: #94a3b8; }
 
     /* 3. Phase Detail Card */
@@ -116,7 +127,7 @@
     }
 
     .phase-header-row {
-        display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;
+        display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; gap: 12px;
     }
     .phase-badge {
         background-color: #0ea5e9;
@@ -126,6 +137,7 @@
         border-radius: 6px;
         font-weight: 700;
         text-transform: uppercase;
+        white-space: nowrap;
     }
 
     .progress-section { margin: 24px 0; }
@@ -135,12 +147,13 @@
     .prog-bar-fill { height: 100%; background-color: #0ea5e9; width: 35%; }
 
     .meta-row {
-        display: flex; gap: 40px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--dark-border);
+        display: flex; gap: 40px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border-color);
+        flex-wrap: wrap; /* Allows wrapping on mobile */
     }
-    .meta-col { display: flex; align-items: center; gap: 12px; }
+    .meta-col { display: flex; align-items: center; gap: 12px; min-width: 140px; }
     .meta-icon { font-size: 1.2rem; color: #38bdf8; }
     .meta-lbl { font-size: 0.75rem; color: #94a3b8; display: block; }
-    .meta-val { font-size: 0.95rem; font-weight: 600; color: #fff; }
+    .meta-val { font-size: 0.95rem; font-weight: 600; color: var(--text-main); }
 
     /* 4. Skills & Criteria */
     .skills-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
@@ -157,9 +170,9 @@
     .criteria-list { list-style: none; padding: 0; margin: 0; }
     .criteria-item {
         display: flex; align-items: start; gap: 12px; margin-bottom: 12px;
-        font-size: 0.9rem; color: #cbd5e1;
+        font-size: 0.9rem; color: var(--text-muted);
     }
-    .check-icon { color: #f59e0b; font-size: 1rem; margin-top: 2px; } /* Orange Check */
+    .check-icon { color: #f59e0b; font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
 
     /* 5. Mentor & Resources */
     .mentor-box {
@@ -168,49 +181,52 @@
         border-radius: 8px;
         padding: 16px;
         margin-bottom: 24px;
-        color: #bae6fd;
+        color: #0d6efd;
         font-size: 0.9rem;
     }
     .resource-list { list-style: none; padding: 0; margin: 0; }
     .resource-item { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
     .resource-link { color: #f87171; text-decoration: none; font-size: 0.9rem; transition: 0.2s; border-bottom: 1px dashed #f87171;}
     .resource-link:hover { color: #fca5a5; border-bottom-style: solid; }
+
+    /* Mobile Tweaks */
+    @media (max-width: 768px) {
+        .header-card, .detail-card { padding: 16px; }
+        .meta-row { gap: 20px; } /* Smaller gap on mobile */
+        .phase-header-row { flex-wrap: wrap; }
+        .phase-badge { margin-left: auto; } /* Push badge to right on wrap */
+    }
 </style>
 
 <div class="content-body">
 
     <div class="dark-wrapper">
 
-        <!-- 1. Internship Header & Stepper -->
         <div class="header-card">
-            <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center gap-3 flex-wrap">
                 <div class="intern-icon"><i class="bi bi-briefcase"></i></div>
                 <div>
-                    <h6 class="fw-bold text-white m-0 fs-5">Full-Stack Development Internship</h6>
+                    <h6 class="fw-bold text-main m-0 fs-5">Full-Stack Development Internship</h6>
                     <span class="--text-muted small">120 days • 4 phases</span>
                 </div>
             </div>
 
             <div class="stepper-container">
-                <!-- Phase 1 -->
                 <div class="phase-step">
                     <div class="step-icon"><i class="bi bi-check-circle-fill text-success"></i></div>
                     <span class="step-title">Phase 1</span>
                     <span class="step-dur">15d</span>
                 </div>
-                <!-- Phase 2 (Active) -->
                 <div class="phase-step active">
                     <div class="step-icon"><i class="bi bi-code-slash"></i></div>
                     <span class="step-title">Phase 2</span>
                     <span class="step-dur">45d</span>
                 </div>
-                <!-- Phase 3 -->
                 <div class="phase-step">
                     <div class="step-icon"><i class="bi bi-layers"></i></div>
                     <span class="step-title">Phase 3</span>
                     <span class="step-dur">30d</span>
                 </div>
-                <!-- Phase 4 -->
                 <div class="phase-step">
                     <div class="step-icon"><i class="bi bi-box-seam"></i></div>
                     <span class="step-title">Phase 4</span>
@@ -219,7 +235,6 @@
             </div>
         </div>
 
-        <!-- 2. Main Phase Detail -->
         <div class="detail-card">
 
             <div class="phase-header-row">
@@ -262,10 +277,8 @@
             </div>
         </div>
 
-        <!-- 3. Skills, Criteria, Notes -->
         <div class="row g-4">
             <div class="col-lg-12">
-                <!-- Skills -->
                 <div class="detail-card">
                     <h6 class="text-success fw-bold mb-3"><i class="bi bi-award me-2"></i>Skills Focus</h6>
                     <div class="skills-row">
@@ -277,7 +290,6 @@
                         <span class="skill-pill">Code Review & Collaboration</span>
                     </div>
 
-                    <!-- Criteria -->
                     <h6 class="text-warning fw-bold mb-3 mt-4"><i class="bi bi-clipboard-check me-2"></i>Assessment Criteria</h6>
                     <ul class="criteria-list">
                         <li class="criteria-item"><i class="bi bi-check-circle-fill check-icon"></i> Code quality and adherence to standards (≥8/10)</li>
@@ -288,7 +300,6 @@
                     </ul>
                 </div>
 
-                <!-- Mentor Notes -->
                 <div class="detail-card">
                     <div class="mentor-box">
                         <strong class="d-block mb-2 text-info"><i class="bi bi-chat-quote-fill me-2"></i>Mentor Notes</strong>
@@ -304,11 +315,6 @@
                         <li class="resource-item"><i class="bi bi-link-45deg text-danger"></i> <a href="#" class="resource-link">Security Implementation Checklist</a></li>
                     </ul>
                 </div>
-            </div>
-
-            <!-- Deliverables (Optional Side Column if needed, usually empty in screenshot) -->
-            <div class="col-lg-12">
-                <!-- If you need a right sidebar later, it goes here -->
             </div>
         </div>
 

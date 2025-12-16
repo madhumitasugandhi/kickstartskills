@@ -1,7 +1,7 @@
 @extends('frontend.studentPortal.dashboard.layouts.app')
 
 @section('title', 'Internship Overview')
-@section('icon', 'bi bi-eye fs-4 p-2 bg-primary bg-opacity-10 rounded-3 text-primary')
+@section('icon', 'bi bi-briefcase fs-4 p-2 bg-primary bg-opacity-10 rounded-3 text-primary')
 
 @section('content')
 <style>
@@ -73,6 +73,7 @@
         align-items: center;
         justify-content: center;
         font-size: 1.6rem;
+        flex-shrink: 0; /* Prevents icon squashing on mobile */
     }
 
     .badge-remote {
@@ -82,11 +83,13 @@
         border-radius: 20px;
         font-size: 0.75rem;
         font-weight: 600;
+        white-space: nowrap; /* Prevents text wrap inside badge */
     }
 
     .meta-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        /* Responsive grid: min 140px wide, fills space */
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
         gap: 20px;
         margin-top: 24px;
         margin-bottom: 24px;
@@ -119,22 +122,12 @@
         border-radius: 20px;
         margin-right: 6px;
         font-weight: 500;
+        margin-bottom: 6px; /* Spacing for wrap */
     }
 
-    .pill-react {
-        background-color: #e0f7fa;
-        color: #006064;
-    }
-
-    .pill-node {
-        background-color: #e8f5e9;
-        color: #1b5e20;
-    }
-
-    .pill-mongo {
-        background-color: #f3e5f5;
-        color: #4a148c;
-    }
+    .pill-react { background-color: #e0f7fa; color: #006064; }
+    .pill-node { background-color: #e8f5e9; color: #1b5e20; }
+    .pill-mongo { background-color: #f3e5f5; color: #4a148c; }
 
     /* 2. Phase & Stats Styles */
     .phase-icon {
@@ -147,6 +140,7 @@
         align-items: center;
         justify-content: center;
         font-size: 1.2rem;
+        flex-shrink: 0;
     }
 
     .phase-name {
@@ -183,33 +177,14 @@
         margin-right: 8px;
     }
 
-    .dot-green {
-        background-color: #198754;
-    }
+    .dot-green { background-color: #198754; }
+    .dot-blue { background-color: #0d6efd; }
+    .dot-orange { background-color: #fd7e14; }
 
-    .dot-blue {
-        background-color: #0d6efd;
-    }
-
-    .dot-orange {
-        background-color: #fd7e14;
-    }
-
-    .stats-val {
-        font-weight: 700;
-    }
-
-    .stats-val.green {
-        color: #198754;
-    }
-
-    .stats-val.blue {
-        color: #0d6efd;
-    }
-
-    .stats-val.orange {
-        color: #fd7e14;
-    }
+    .stats-val { font-weight: 700; }
+    .stats-val.green { color: #198754; }
+    .stats-val.blue { color: #0d6efd; }
+    .stats-val.orange { color: #fd7e14; }
 
     /* 3. Timeline Styles */
     .timeline-container {
@@ -243,21 +218,12 @@
         margin-top: 6px;
         border: 2px solid white;
         box-shadow: 0 0 0 2px white;
+        flex-shrink: 0;
     }
 
-    .tl-completed {
-        background-color: #198754;
-        box-shadow: 0 0 0 4px #d1e7dd;
-    }
-
-    .tl-current {
-        background-color: #0d6efd;
-        box-shadow: 0 0 0 4px #cfe2ff;
-    }
-
-    .tl-pending {
-        background-color: #adb5bd;
-    }
+    .tl-completed { background-color: #198754; box-shadow: 0 0 0 4px #d1e7dd; }
+    .tl-current { background-color: #0d6efd; box-shadow: 0 0 0 4px #cfe2ff; }
+    .tl-pending { background-color: #adb5bd; }
 
     .tl-content h6 {
         font-weight: 600;
@@ -279,12 +245,10 @@
         background: var(--soft-blue);
         padding: 2px 8px;
         border-radius: 4px;
+        display: inline-block;
     }
 
-    .tl-meta.green {
-        color: #198754;
-        background: #d1e7dd;
-    }
+    .tl-meta.green { color: #198754; background: #d1e7dd; }
 
     /* 4. Recent Activity Styles */
     .activity-item {
@@ -309,22 +273,12 @@
         align-items: center;
         justify-content: center;
         font-size: 1rem;
+        flex-shrink: 0;
     }
 
-    .bg-act-blue {
-        background: var(--soft-blue);
-        color: var(--text-blue);
-    }
-
-    .bg-act-green {
-        background: var(--soft-green);
-        color: var(--text-green);
-    }
-
-    .bg-act-teal {
-        background: var(--soft-teal);
-        color: var(--text-teal);
-    }
+    .bg-act-blue { background: var(--soft-blue); color: var(--text-blue); }
+    .bg-act-green { background: var(--soft-green); color: var(--text-green); }
+    .bg-act-teal { background: var(--soft-teal); color: var(--text-teal); }
 
     /* 5. Quick Actions Styles */
     .action-card {
@@ -339,27 +293,11 @@
         border: 1px solid transparent;
     }
 
-    .action-card:hover {
-        transform: translateX(4px);
-    }
+    .action-card:hover { transform: translateX(4px); }
 
-    .ac-blue {
-        background-color: var(--soft-blue);
-        color: var(--text-main);
-        border-color: #cfe2ff;
-    }
-
-    .ac-green {
-        background-color: var(--soft-green);
-        color: var(--text-main);
-        border-color: #d1e7dd;
-    }
-
-    .ac-orange {
-        background-color: var(--soft-orange);
-        color: var(--text-main);
-        border-color: #ffe69c;
-    }
+    .ac-blue { background-color: var(--soft-blue); color: var(--text-main); border-color: #cfe2ff; }
+    .ac-green { background-color: var(--soft-green); color: var(--text-main); border-color: #d1e7dd; }
+    .ac-orange { background-color: var(--soft-orange); color: var(--text-main); border-color: #ffe69c; }
 
     .action-icon-box {
         width: 32px;
@@ -370,29 +308,27 @@
         align-items: center;
         justify-content: center;
         margin-right: 12px;
+        flex-shrink: 0;
     }
 
-    .action-title {
-        font-size: 0.9rem;
-        font-weight: 700;
-        display: block;
-    }
+    .action-title { font-size: 0.9rem; font-weight: 700; display: block; }
+    .action-sub { font-size: 0.75rem; opacity: 0.7; }
 
-    .action-sub {
-        font-size: 0.75rem;
-        opacity: 0.7;
+    /* Mobile Tweaks */
+    @media (max-width: 768px) {
+        .card-custom { padding: 16px; }
+        .meta-grid { grid-template-columns: 1fr 1fr; } /* Force 2 columns on mobile */
     }
 </style>
 
 <div class="content-body">
 
-    <!-- 1. Header Card -->
     <div class="card-custom">
-        <div class="d-flex justify-content-between align-items-start mb-2">
+        <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap gap-2">
             <div class="d-flex gap-3">
                 <div class="intern-icon"><i class="bi bi-briefcase"></i></div>
                 <div>
-                    <h5 class="fw-bold text-main mb-1">Full-Stack Development Internship</h5>
+                    <h5 class="fw-bold text-main mb-1">Full-Stack Dev Internship</h5>
                     <p class="--text-muted mb-0">at TechCorp Solutions Pvt Ltd</p>
                 </div>
             </div>
@@ -426,7 +362,7 @@
             </div>
         </div>
 
-        <div class="d-flex align-items-center gap-2">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
             <span class="--text-muted small fw-bold me-2">Technologies:</span>
             <span class="tech-pill pill-react">React</span>
             <span class="tech-pill pill-node">Node.js</span>
@@ -435,7 +371,6 @@
         </div>
     </div>
 
-    <!-- 2. Middle Row: Current Phase & Stats -->
     <div class="row g-4 mb-4">
         <div class="col-lg-8">
             <div class="card-custom h-100 mb-0">
@@ -458,7 +393,7 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="card-custom h-100 mb-0  border-0">
+            <div class="card-custom h-100 mb-0 border-0">
                 <div class="d-flex align-items-center gap-2 mb-4">
                     <i class="bi bi-graph-up-arrow text-success"></i>
                     <h6 class="fw-bold text-main m-0">Progress Statistics</h6>
@@ -476,10 +411,8 @@
     </div>
 
     <div class="row g-4">
-        <!-- LEFT COL: Timeline & Recent Activity -->
         <div class="col-lg-8">
 
-            <!-- 3. Internship Timeline -->
             <div class="card-custom">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div class="d-flex align-items-center gap-2">
@@ -516,7 +449,6 @@
                 </div>
             </div>
 
-            <!-- 4. Recent Activities (ADDED) -->
             <div class="card-custom">
                 <div class="d-flex align-items-center gap-2 mb-4">
                     <i class="bi bi-activity text-primary fs-5"></i>
@@ -525,32 +457,40 @@
                 <div class="activity-item">
                     <div class="act-icon bg-act-green"><i class="bi bi-check-lg"></i></div>
                     <div class="flex-grow-1">
-                        <div class="d-flex justify-content-between"><span class="fw-bold text-main small">Completed User
-                                Auth Module</span><small class="--text-muted">3h ago</small></div>
+                        <div class="d-flex justify-content-between flex-wrap">
+                            <span class="fw-bold text-main small">Completed User Auth Module</span>
+                            <small class="--text-muted">3h ago</small>
+                        </div>
                         <small class="--text-muted">Implemented secure login/logout with JWT</small>
                     </div>
                 </div>
                 <div class="activity-item">
                     <div class="act-icon bg-act-blue"><i class="bi bi-eye"></i></div>
                     <div class="flex-grow-1">
-                        <div class="d-flex justify-content-between"><span class="fw-bold text-main small">Code Review
-                                Session</span><small class="--text-muted">8h ago</small></div>
+                        <div class="d-flex justify-content-between flex-wrap">
+                            <span class="fw-bold text-main small">Code Review Session</span>
+                            <small class="--text-muted">8h ago</small>
+                        </div>
                         <small class="--text-muted">Reviewed authentication logic and feedback</small>
                     </div>
                 </div>
                 <div class="activity-item">
                     <div class="act-icon bg-act-blue"><i class="bi bi-people"></i></div>
                     <div class="flex-grow-1">
-                        <div class="d-flex justify-content-between"><span class="fw-bold text-main small">Weekly
-                                Progress Meeting</span><small class="--text-muted">1d ago</small></div>
+                        <div class="d-flex justify-content-between flex-wrap">
+                            <span class="fw-bold text-main small">Weekly Progress Meeting</span>
+                            <small class="--text-muted">1d ago</small>
+                        </div>
                         <small class="--text-muted">Discussed current progress and next objectives</small>
                     </div>
                 </div>
                 <div class="activity-item mb-0">
                     <div class="act-icon bg-act-teal"><i class="bi bi-award"></i></div>
                     <div class="flex-grow-1">
-                        <div class="d-flex justify-content-between"><span class="fw-bold text-main small">Mastered React
-                                Hooks</span><small class="--text-muted">2d ago</small></div>
+                        <div class="d-flex justify-content-between flex-wrap">
+                            <span class="fw-bold text-main small">Mastered React Hooks</span>
+                            <small class="--text-muted">2d ago</small>
+                        </div>
                         <small class="--text-muted">Successfully implemented custom hooks</small>
                     </div>
                 </div>
@@ -558,7 +498,6 @@
 
         </div>
 
-        <!-- RIGHT COL: Quick Actions (ADDED) -->
         <div class="col-lg-4">
             <h6 class="fw-bold text-main mb-3">Quick Actions</h6>
 

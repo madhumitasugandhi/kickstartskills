@@ -47,6 +47,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap; /* Wraps on mobile */
+        gap: 16px;
     }
 
     .icon-bell-lg {
@@ -55,6 +57,7 @@
         border-radius: 12px;
         display: flex; align-items: center; justify-content: center;
         font-size: 1.6rem;
+        flex-shrink: 0;
     }
 
     .badge-urgent-lg {
@@ -63,6 +66,7 @@
         padding: 6px 16px; border-radius: 20px;
         font-size: 0.8rem; font-weight: 600;
         display: flex; align-items: center; gap: 6px;
+        white-space: nowrap;
     }
 
     /* 2. Filter Bar */
@@ -88,6 +92,7 @@
         border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 20px;
+        padding-right: 40px; /* Space for absolute menu dots */
         margin-bottom: 16px;
         position: relative;
         transition: transform 0.2s;
@@ -103,13 +108,13 @@
     .bg-icon-red { background-color: var(--soft-red); color: var(--text-red); }
     .bg-icon-green { background-color: var(--soft-green); color: var(--text-green); }
 
-    .n-title { font-weight: 600; color: var(--text-main); font-size: 0.95rem; margin-bottom: 2px; }
+    .n-title { font-weight: 600; color: var(--text-main); font-size: 0.95rem; margin-bottom: 2px; line-height: 1.4; }
     .n-meta { font-size: 0.75rem; color: var(--text-muted); }
     .n-link { color: var(--text-blue); text-decoration: none; font-weight: 500; }
 
     .n-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5; padding-left: 56px; }
 
-    .n-badges { padding-left: 56px; display: flex; gap: 8px; }
+    .n-badges { padding-left: 56px; display: flex; gap: 8px; flex-wrap: wrap; }
     .chip {
         font-size: 0.7rem; padding: 4px 10px; border-radius: 6px; font-weight: 600;
         display: flex; align-items: center; gap: 4px;
@@ -119,7 +124,7 @@
     .chip-tag { background-color: var(--soft-blue); color: var(--text-blue); }
 
     .priority-badge {
-        position: absolute; top: 20px; right: 20px;
+        position: absolute; top: 20px; right: 45px; /* Moved left of dots */
         font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;
     }
     .p-low { background-color: #d1fae5; color: #059669; }
@@ -127,29 +132,50 @@
 
     .menu-dots { position: absolute; top: 20px; right: 20px; color: var(--text-muted); cursor: pointer; }
 
+    /* Responsive Tweaks */
     @media(max-width: 768px) {
         .filter-section { flex-direction: column; gap: 12px; }
-        .n-desc, .n-badges { padding-left: 0; }
+
+        .n-desc, .n-badges { padding-left: 0; } /* Remove indent on mobile */
+
+        .priority-badge {
+            position: static; /* Move into flow */
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .notif-top {
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* Ensure title area takes full width minus icon */
+        .notif-top > div:last-child {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Adjust header gap */
+        .notif-header { gap: 12px; }
+        .icon-bell-lg { width: 48px; height: 48px; font-size: 1.4rem; }
     }
 </style>
 
 <div class="content-body">
 
-    <!-- 1. Header Card -->
     <div class="notif-header">
-        <div class="d-flex align-items-center gap-4">
+        <div class="d-flex align-items-center gap-3">
             <div class="icon-bell-lg"><i class="bi bi-bell-fill"></i></div>
             <div>
                 <h5 class="fw-bold text-main m-0">Notification Center</h5>
                 <small class="--text-muted">28 unread of 50 total</small>
             </div>
         </div>
-        <div class="badge-urgent-lg">
+        <div class="badge-urgent-lg ms-auto ms-sm-0">
             <i class="bi bi-exclamation-circle-fill"></i> 9 urgent
         </div>
     </div>
 
-    <!-- 2. Filters -->
     <div class="filter-section">
         <div class="filter-group">
             <label class="filter-label">Filter</label>
@@ -169,11 +195,9 @@
         </div>
     </div>
 
-    <!-- 3. Notification List -->
-
-    <!-- Item 1 -->
     <div class="notif-card">
         <span class="priority-badge p-low">Low</span>
+
         <div class="notif-top">
             <div class="n-icon bg-icon-blue"><i class="bi bi-chat-left-text-fill"></i></div>
             <div>
@@ -183,14 +207,13 @@
                 </div>
             </div>
         </div>
-        <p class="n-desc">You have received a new message. Click to view and respond.</p>
+        <p class="n-desc">You have received a new message. Click to view and respond to the query regarding your project.</p>
         <div class="n-badges">
             <span class="chip chip-attach"><i class="bi bi-paperclip"></i> Attachment</span>
         </div>
-        <i class="bi bi-three-dots-vertical menu-dots" style="top: 50px;"></i>
+        <i class="bi bi-three-dots-vertical menu-dots"></i>
     </div>
 
-    <!-- Item 2 -->
     <div class="notif-card">
         <span class="priority-badge p-low">Low</span>
         <div class="notif-top">
@@ -202,15 +225,14 @@
                 </div>
             </div>
         </div>
-        <p class="n-desc">Your examination is scheduled. Review the syllabus and prepare accordingly.</p>
+        <p class="n-desc">Your examination is scheduled for tomorrow. Please review the syllabus and prepare accordingly.</p>
         <div class="n-badges">
             <span class="chip chip-attach"><i class="bi bi-paperclip"></i> Attachment</span>
             <span class="chip chip-action"><i class="bi bi-exclamation-triangle"></i> Action Required</span>
         </div>
-        <i class="bi bi-three-dots-vertical menu-dots" style="top: 50px;"></i>
+        <i class="bi bi-three-dots-vertical menu-dots"></i>
     </div>
 
-    <!-- Item 3 -->
     <div class="notif-card">
         <span class="priority-badge p-high">High</span>
         <div class="notif-top">
@@ -226,7 +248,7 @@
         <div class="n-badges">
             <span class="chip chip-tag">Flutter Development</span>
         </div>
-        <i class="bi bi-three-dots-vertical menu-dots" style="top: 50px;"></i>
+        <i class="bi bi-three-dots-vertical menu-dots"></i>
     </div>
 
 </div>

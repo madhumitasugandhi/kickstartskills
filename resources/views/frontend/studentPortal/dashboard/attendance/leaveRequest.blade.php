@@ -24,7 +24,7 @@
         --soft-teal: #e0fbf6;
         --text-teal: #20c997;
 
-        /* Dark Card for Balance Section (Always Dark style in screenshot) */
+        /* Dark Card for Balance Section */
         --balance-card-bg: #1e293b;
         --balance-text: #ffffff;
         --balance-border: #334155;
@@ -51,7 +51,6 @@
     /* 1. Leave Balance Section */
     .balance-card {
         background-color: var(--bg-card);
-        /* Matching dark theme from screenshot */
         border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 24px;
@@ -67,7 +66,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 20px;
+        margin: 0 auto;
     }
 
     .circle-inner-lg {
@@ -108,38 +107,16 @@
         text-align: center;
     }
 
-    .bs-val {
-        font-size: 1.2rem;
-        font-weight: 700;
-        display: block;
-        margin-bottom: 2px;
-    }
-
-    .bs-val.red {
-        color: #f87171;
-    }
-
-    .bs-val.orange {
-        color: #fb923c;
-    }
-
-    .bs-val.green {
-        color: #4ade80;
-    }
-
-    .bs-val.blue {
-        color: #60a5fa;
-    }
-
-    .bs-lbl {
-        font-size: 0.75rem;
-        opacity: 0.7;
-    }
+    .bs-val { font-size: 1.2rem; font-weight: 700; display: block; margin-bottom: 2px; }
+    .bs-val.red { color: #f87171; }
+    .bs-val.orange { color: #fb923c; }
+    .bs-val.green { color: #4ade80; }
+    .bs-val.blue { color: #60a5fa; }
+    .bs-lbl { font-size: 0.75rem; opacity: 0.7; }
 
     /* 2. Quick Apply Section */
     .quick-apply-card {
         background-color: var(--bg-card);
-        /* Matching dark theme from screenshot */
         border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 24px;
@@ -167,44 +144,15 @@
         color: #94a3b8;
     }
 
-    .qa-btn:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-        color: white;
-    }
+    .qa-btn:hover { background-color: rgba(255, 255, 255, 0.05); color: white; }
 
-    .qa-btn.sick {
-        border-color: rgba(239, 68, 68, 0.3);
-        color: #fca5a5;
-        background: rgba(239, 68, 68, 0.05);
-    }
+    .qa-btn.sick { border-color: rgba(239, 68, 68, 0.3); color: #fca5a5; background: rgba(239, 68, 68, 0.05); }
+    .qa-btn.personal { border-color: rgba(249, 115, 22, 0.3); color: #fdba74; background: rgba(249, 115, 22, 0.05); }
+    .qa-btn.emergency { border-color: rgba(220, 38, 38, 0.3); color: #fecaca; background: rgba(220, 38, 38, 0.05); }
+    .qa-btn.custom { border-color: rgba(59, 130, 246, 0.3); color: #93c5fd; background: rgba(59, 130, 246, 0.05); }
 
-    .qa-btn.personal {
-        border-color: rgba(249, 115, 22, 0.3);
-        color: #fdba74;
-        background: rgba(249, 115, 22, 0.05);
-    }
-
-    .qa-btn.emergency {
-        border-color: rgba(220, 38, 38, 0.3);
-        color: #fecaca;
-        background: rgba(220, 38, 38, 0.05);
-    }
-
-    .qa-btn.custom {
-        border-color: rgba(59, 130, 246, 0.3);
-        color: #93c5fd;
-        background: rgba(59, 130, 246, 0.05);
-    }
-
-    .qa-icon {
-        font-size: 1.2rem;
-        margin-bottom: 8px;
-    }
-
-    .qa-text {
-        font-size: 0.85rem;
-        font-weight: 600;
-    }
+    .qa-icon { font-size: 1.2rem; margin-bottom: 8px; }
+    .qa-text { font-size: 0.85rem; font-weight: 600; }
 
     /* 3. Leave Requests List */
     .filter-row {
@@ -214,11 +162,7 @@
         margin-bottom: 16px;
     }
 
-    .filter-tabs {
-        display: flex;
-        gap: 8px;
-    }
-
+    .filter-tabs { display: flex; gap: 8px; }
     .f-tab {
         background: transparent;
         border: none;
@@ -227,12 +171,9 @@
         font-weight: 500;
         padding: 6px 12px;
         border-radius: 6px;
+        white-space: nowrap;
     }
-
-    .f-tab.active {
-        background-color: var(--soft-blue);
-        color: var(--text-blue);
-    }
+    .f-tab.active { background-color: var(--soft-blue); color: var(--text-blue); }
 
     /* Request Item Card */
     .req-card {
@@ -253,47 +194,22 @@
     }
 
     .req-icon {
-        width: 36px;
-        height: 36px;
+        width: 36px; height: 36px;
         border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: flex; align-items: center; justify-content: center;
         font-size: 1rem;
+        flex-shrink: 0;
     }
 
-    .icon-sick {
-        background-color: var(--soft-green);
-        color: var(--text-green);
-    }
+    .icon-sick { background-color: var(--soft-green); color: var(--text-green); }
+    .icon-personal { background-color: var(--soft-orange); color: var(--text-orange); }
+    .icon-emergency { background-color: var(--soft-red); color: var(--text-red); }
+    .icon-academic { background-color: var(--soft-blue); color: var(--text-blue); }
 
-    .icon-personal {
-        background-color: var(--soft-orange);
-        color: var(--text-orange);
-    }
+    .req-title { font-weight: 600; color: var(--text-main); font-size: 0.95rem; display: block; }
+    .req-sub { font-size: 0.75rem; color: var(--text-muted); }
 
-    .icon-emergency {
-        background-color: var(--soft-red);
-        color: var(--text-red);
-    }
-
-    .icon-academic {
-        background-color: var(--soft-blue);
-        color: var(--text-blue);
-    }
-
-    .req-title {
-        font-weight: 600;
-        color: var(--text-main);
-        font-size: 0.95rem;
-        display: block;
-    }
-
-    .req-sub {
-        font-size: 0.75rem;
-        color: var(--text-muted);
-    }
-
+    /* Default Desktop Status Badge (Absolute) */
     .req-status {
         position: absolute;
         top: 20px;
@@ -305,20 +221,9 @@
         text-transform: uppercase;
     }
 
-    .st-approved {
-        color: #10b981;
-        background: rgba(16, 185, 129, 0.1);
-    }
-
-    .st-pending {
-        color: #f59e0b;
-        background: rgba(245, 158, 11, 0.1);
-    }
-
-    .st-rejected {
-        color: #ef4444;
-        background: rgba(239, 68, 68, 0.1);
-    }
+    .st-approved { color: #10b981; background: rgba(16, 185, 129, 0.1); }
+    .st-pending { color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+    .st-rejected { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
 
     .req-meta-grid {
         display: grid;
@@ -328,17 +233,8 @@
         font-size: 0.85rem;
     }
 
-    .meta-l {
-        color: var(--text-muted);
-        font-size: 0.7rem;
-        display: block;
-        margin-bottom: 2px;
-    }
-
-    .meta-v {
-        color: var(--text-main);
-        font-weight: 500;
-    }
+    .meta-l { color: var(--text-muted); font-size: 0.7rem; display: block; margin-bottom: 2px; }
+    .meta-v { color: var(--text-main); font-weight: 500; }
 
     .req-desc {
         background-color: var(--bg-hover);
@@ -358,23 +254,8 @@
         gap: 4px;
     }
 
-    .approval-info {
-        font-size: 0.75rem;
-        color: #10b981;
-        margin-top: 8px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .rejection-info {
-        font-size: 0.75rem;
-        color: #ef4444;
-        margin-top: 8px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
+    .approval-info { font-size: 0.75rem; color: #10b981; margin-top: 8px; display: flex; align-items: center; gap: 6px; }
+    .rejection-info { font-size: 0.75rem; color: #ef4444; margin-top: 8px; display: flex; align-items: center; gap: 6px; }
 
     .action-row {
         display: flex;
@@ -393,41 +274,70 @@
         background: transparent;
     }
 
-    .btn-cancel {
-        border-color: var(--text-red);
-        color: var(--text-red);
-    }
+    .btn-cancel { border-color: var(--text-red); color: var(--text-red); }
+    .btn-cancel:hover { background-color: var(--soft-red); }
+    .btn-edit { background-color: var(--text-blue); color: white; }
+    .btn-edit:hover { opacity: 0.9; }
 
-    .btn-cancel:hover {
-        background-color: var(--soft-red);
-    }
-
-    .btn-edit {
-        background-color: var(--text-blue);
-        color: white;
-    }
-
-    .btn-edit:hover {
-        opacity: 0.9;
-    }
-
+    /* --- RESPONSIVE MEDIA QUERIES --- */
     @media(max-width: 768px) {
 
+        /* 1. Header/Chart Stacking */
+        .circle-progress-lg { margin-bottom: 24px; }
+
+        /* 2. Grids become 2x2 on mobile */
         .balance-stats-grid,
         .qa-btn-grid {
             grid-template-columns: 1fr 1fr;
         }
 
+        /* 3. Filter Bar Stacking */
+        .filter-row {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+        }
+        .filter-tabs {
+            overflow-x: auto; /* Scrollable tabs */
+            padding-bottom: 4px;
+        }
+        .btn-new-request {
+            width: 100%; /* Full width button */
+        }
+
+        /* 4. Request Card Adjustments */
+        .req-card {
+            padding: 16px;
+        }
+
+        /* Move Status Badge into flow on mobile to prevent overlap */
+        .req-status {
+            position: static; /* Remove absolute */
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .req-header {
+            flex-direction: column; /* Stack Icon and Title */
+            gap: 8px;
+        }
+
+        .req-header > div {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Meta Grid becomes vertical stack */
         .req-meta-grid {
             grid-template-columns: 1fr;
-            gap: 8px;
+            gap: 10px;
         }
     }
 </style>
 
 <div class="content-body">
-    
-    <!-- 1. Leave Balance Dashboard (Dark Themed) -->
+
     <div class="balance-card">
         <div class="d-flex align-items-center gap-2 mb-4">
             <i class="bi bi-calendar4-week text-primary"></i>
@@ -435,7 +345,7 @@
         </div>
 
         <div class="row align-items-center">
-            <div class="col-md-4 text-center">
+            <div class="col-12 col-md-4 text-center">
                 <div class="circle-progress-lg">
                     <div class="circle-inner-lg">
                         <span class="circle-num">22</span>
@@ -443,7 +353,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-12 col-md-8">
                 <div class="balance-stats-grid">
                     <div class="balance-stat-box">
                         <span class="bs-val red">8</span><span class="bs-lbl">Used</span>
@@ -462,7 +372,6 @@
         </div>
     </div>
 
-    <!-- 2. Quick Apply Section -->
     <div class="quick-apply-card">
         <div class="d-flex align-items-center gap-2 mb-3">
             <i class="bi bi-plus-circle text-primary"></i>
@@ -490,7 +399,6 @@
         </div>
     </div>
 
-    <!-- 3. Filter & Add Button -->
     <div class="filter-row">
         <div class="filter-tabs">
             <button class="f-tab active">All</button>
@@ -498,12 +406,9 @@
             <button class="f-tab">Approved</button>
             <button class="f-tab">Rejected</button>
         </div>
-        <button class="btn btn-primary btn-sm fw-bold"><i class="bi bi-plus-lg me-1"></i> New Request</button>
+        <button class="btn btn-primary btn-sm fw-bold btn-new-request"><i class="bi bi-plus-lg me-1"></i> New Request</button>
     </div>
 
-    <!-- 4. Requests List -->
-
-    <!-- Item 1: Sick Leave (Approved) -->
     <div class="req-card" style="border-left-color: #10b981;">
         <span class="req-status st-approved">Approved</span>
 
@@ -532,7 +437,6 @@
         </div>
     </div>
 
-    <!-- Item 2: Personal Leave (Pending) -->
     <div class="req-card" style="border-left-color: #f59e0b;">
         <span class="req-status st-pending">Pending</span>
 
@@ -560,7 +464,6 @@
         </div>
     </div>
 
-    <!-- Item 3: Emergency Leave (Approved) -->
     <div class="req-card" style="border-left-color: #10b981;">
         <span class="req-status st-approved">Approved</span>
 
@@ -587,7 +490,6 @@
         </div>
     </div>
 
-    <!-- Item 4: Festival Leave (Rejected) -->
     <div class="req-card" style="border-left-color: #ef4444;">
         <span class="req-status st-rejected">Rejected</span>
 
