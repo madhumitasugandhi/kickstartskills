@@ -5,9 +5,8 @@
 
 @section('content')
 
-<div class="card-custom mb-4">
-    <div
-        class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
+<div class="card-custom mb-4" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
         <div>
             <h4 class="fw-bold text-main mb-1">Student Analytics</h4>
             <p class="text-muted-custom mb-0 small">Comprehensive performance insights and trends</p>
@@ -17,44 +16,46 @@
     <div class="row g-3">
         <div class="col-lg-6">
             <label class="form-label small text-muted-custom fw-bold">Time Period</label>
-            <div class="btn-group w-100 w-md-auto" role="group">
+            <div class="btn-group w-100 w-md-auto d-flex flex-wrap" role="group">
                 <input type="radio" class="btn-check" name="timePeriod" id="tpWeek">
-                <label class="btn btn-outline-secondary btn-sm" for="tpWeek">This Week</label>
+                <label class="btn btn-outline-secondary btn-sm flex-grow-1 flex-md-grow-0" for="tpWeek">This Week</label>
 
                 <input type="radio" class="btn-check" name="timePeriod" id="tpMonth" checked>
-                <label class="btn btn-outline-secondary btn-sm" for="tpMonth">This Month</label>
+                <label class="btn btn-outline-secondary btn-sm flex-grow-1 flex-md-grow-0" for="tpMonth">This Month</label>
 
                 <input type="radio" class="btn-check" name="timePeriod" id="tp3Months">
-                <label class="btn btn-outline-secondary btn-sm" for="tp3Months">Last 3 Months</label>
+                <label class="btn btn-outline-secondary btn-sm flex-grow-1 flex-md-grow-0" for="tp3Months">Last 3 Months</label>
 
                 <input type="radio" class="btn-check" name="timePeriod" id="tpYear">
-                <label class="btn btn-outline-secondary btn-sm" for="tpYear">This Year</label>
+                <label class="btn btn-outline-secondary btn-sm flex-grow-1 flex-md-grow-0" for="tpYear">This Year</label>
             </div>
         </div>
 
         <div class="col-lg-6">
-            <label class="form-label small text-muted-custom fw-bold">Metric Type</label>
-            <div class="btn-group w-100 w-md-auto float-lg-end" role="group">
-                <input type="radio" class="btn-check" name="metricType" id="mtOverall" checked>
-                <label class="btn btn-outline-primary btn-sm" for="mtOverall">Overall Performance</label>
+            <div class="d-flex flex-column align-items-start align-items-lg-end">
+                <label class="form-label small text-muted-custom fw-bold text-start text-lg-end w-100">Metric Type</label>
+                <div class="btn-group w-100 w-md-auto d-flex flex-wrap" role="group">
+                    <input type="radio" class="btn-check" name="metricType" id="mtOverall" checked>
+                    <label class="btn btn-outline-primary btn-sm flex-grow-1 flex-md-grow-0" for="mtOverall">Overall</label>
 
-                <input type="radio" class="btn-check" name="metricType" id="mtAttendance">
-                <label class="btn btn-outline-secondary btn-sm" for="mtAttendance">Attendance</label>
+                    <input type="radio" class="btn-check" name="metricType" id="mtAttendance">
+                    <label class="btn btn-outline-secondary btn-sm flex-grow-1 flex-md-grow-0" for="mtAttendance">Attendance</label>
 
-                <input type="radio" class="btn-check" name="metricType" id="mtTasks">
-                <label class="btn btn-outline-secondary btn-sm" for="mtTasks">Task Completion</label>
+                    <input type="radio" class="btn-check" name="metricType" id="mtTasks">
+                    <label class="btn btn-outline-secondary btn-sm flex-grow-1 flex-md-grow-0" for="mtTasks">Tasks</label>
 
-                <input type="radio" class="btn-check" name="metricType" id="mtSkills">
-                <label class="btn btn-outline-secondary btn-sm" for="mtSkills">Skill Progress</label>
+                    <input type="radio" class="btn-check" name="metricType" id="mtSkills">
+                    <label class="btn btn-outline-secondary btn-sm flex-grow-1 flex-md-grow-0" for="mtSkills">Skills</label>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row g-4 mb-4">
-    <div class="col-md-6 col-xl-3">
-        <div class="card-custom text-center py-4 mb-0 h-100 position-relative overflow-hidden">
-            <span class="badge bg-soft-green text-green position-absolute top-0 end-0 m-3">+4%</span>
+<div class="row g-3 g-md-4 mb-4">
+    <div class="col-6 col-xl-3">
+        <div class="card-custom text-center py-4 mb-0 h-100 position-relative overflow-hidden" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;">
+            <span class="badge bg-soft-green text-green position-absolute top-0 end-0 m-2 m-md-3 small">+4%</span>
             <div class="mb-3">
                 <i class="bi bi-graph-up-arrow fs-3 text-success"></i>
             </div>
@@ -63,9 +64,9 @@
         </div>
     </div>
 
-    <div class="col-md-6 col-xl-3">
-        <div class="card-custom text-center py-4 mb-0 h-100 position-relative overflow-hidden">
-            <span class="badge bg-soft-green text-green position-absolute top-0 end-0 m-3">+2%</span>
+    <div class="col-6 col-xl-3">
+        <div class="card-custom text-center py-4 mb-0 h-100 position-relative overflow-hidden" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;">
+            <span class="badge bg-soft-green text-green position-absolute top-0 end-0 m-2 m-md-3 small">+2%</span>
             <div class="mb-3">
                 <i class="bi bi-check2-circle fs-3 text-primary"></i>
             </div>
@@ -74,9 +75,9 @@
         </div>
     </div>
 
-    <div class="col-md-6 col-xl-3">
-        <div class="card-custom text-center py-4 mb-0 h-100 position-relative overflow-hidden">
-            <span class="badge bg-soft-green text-green position-absolute top-0 end-0 m-3">+8%</span>
+    <div class="col-6 col-xl-3">
+        <div class="card-custom text-center py-4 mb-0 h-100 position-relative overflow-hidden" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;">
+            <span class="badge bg-soft-green text-green position-absolute top-0 end-0 m-2 m-md-3 small">+8%</span>
             <div class="mb-3">
                 <i class="bi bi-activity fs-3 text-accent"></i>
             </div>
@@ -85,9 +86,9 @@
         </div>
     </div>
 
-    <div class="col-md-6 col-xl-3">
-        <div class="card-custom text-center py-4 mb-0 h-100 position-relative overflow-hidden">
-            <span class="badge bg-soft-red text-red position-absolute top-0 end-0 m-3">-2</span>
+    <div class="col-6 col-xl-3">
+        <div class="card-custom text-center py-4 mb-0 h-100 position-relative overflow-hidden" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;">
+            <span class="badge bg-soft-red text-red position-absolute top-0 end-0 m-2 m-md-3 small">-2</span>
             <div class="mb-3">
                 <i class="bi bi-exclamation-triangle fs-3 text-warning"></i>
             </div>
@@ -99,13 +100,14 @@
 
 <div class="row g-4 mb-4">
     <div class="col-lg-8">
-        <div class="card-custom h-100 mb-0">
+        <div class="card-custom h-100 mb-0" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
             <h6 class="fw-bold text-main mb-4">Performance Trends - Overall Performance</h6>
 
             <div class="bg-soft-blue rounded-3 d-flex align-items-end justify-content-between px-4 pb-0 pt-5 position-relative"
-                style="height: 300px; overflow: hidden;">
+                style="height: 300px; overflow: hidden; width: 100%;">
+
                 <div class="position-absolute w-100 h-100 start-0 top-0 d-flex flex-column justify-content-between text-muted-custom small p-3"
-                    style="opacity: 0.3; z-index: 0;">
+                    style="opacity: 0.3; z-index: 0; pointer-events: none;">
                     <div class="border-bottom w-100">100%</div>
                     <div class="border-bottom w-100">80%</div>
                     <div class="border-bottom w-100">60%</div>
@@ -114,7 +116,7 @@
                     <div class="w-100">0%</div>
                 </div>
 
-                <svg class="position-absolute start-0 top-0 w-100 h-100 p-3" style="z-index: 1;">
+                <svg viewBox="0 0 800 250" preserveAspectRatio="none" class="position-absolute start-0 top-0 w-100 h-100 p-3" style="z-index: 1;">
                     <polyline points="0,200 150,190 300,180 450,175 600,170 800,160" fill="none"
                         stroke="var(--text-blue)" stroke-width="3" />
                     <circle cx="0" cy="200" r="4" fill="var(--text-blue)" />
@@ -138,12 +140,12 @@
     </div>
 
     <div class="col-lg-4">
-        <div class="card-custom h-100 mb-0">
+        <div class="card-custom h-100 mb-0" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
             <h6 class="fw-bold text-main mb-4">Top Performers</h6>
 
             <div class="d-flex flex-column gap-3">
                 <div class="d-flex align-items-center gap-3 p-2 rounded bg-soft-green border border-success-subtle">
-                    <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center fw-bold"
+                    <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center fw-bold flex-shrink-0"
                         style="width: 32px; height: 32px; font-size: 0.8rem;">1</div>
                     <div class="flex-grow-1">
                         <div class="d-flex justify-content-between mb-1">
@@ -155,7 +157,7 @@
                 </div>
 
                 <div class="d-flex align-items-center gap-3 p-2 rounded bg-soft-blue border border-primary-subtle">
-                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold"
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold flex-shrink-0"
                         style="width: 32px; height: 32px; font-size: 0.8rem;">2</div>
                     <div class="flex-grow-1">
                         <div class="d-flex justify-content-between mb-1">
@@ -167,7 +169,7 @@
                 </div>
 
                 <div class="d-flex align-items-center gap-3 p-2 rounded bg-soft-orange border border-warning-subtle">
-                    <div class="rounded-circle bg-warning text-dark d-flex align-items-center justify-content-center fw-bold"
+                    <div class="rounded-circle bg-warning text-dark d-flex align-items-center justify-content-center fw-bold flex-shrink-0"
                         style="width: 32px; height: 32px; font-size: 0.8rem;">3</div>
                     <div class="flex-grow-1">
                         <div class="d-flex justify-content-between mb-1">
@@ -179,7 +181,7 @@
                 </div>
 
                 <div class="d-flex align-items-center gap-3 p-2 rounded bg-bg-hover">
-                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center fw-bold"
+                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center fw-bold flex-shrink-0"
                         style="width: 32px; height: 32px; font-size: 0.8rem;">4</div>
                     <div class="flex-grow-1">
                         <div class="d-flex justify-content-between mb-1">
@@ -191,7 +193,7 @@
                 </div>
 
                 <div class="d-flex align-items-center gap-3 p-2 rounded bg-bg-hover">
-                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center fw-bold"
+                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center fw-bold flex-shrink-0"
                         style="width: 32px; height: 32px; font-size: 0.8rem;">5</div>
                     <div class="flex-grow-1">
                         <div class="d-flex justify-content-between mb-1">
@@ -208,7 +210,7 @@
 
 <div class="row g-4">
     <div class="col-lg-8">
-        <div class="card-custom h-100 mb-0">
+        <div class="card-custom h-100 mb-0" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
             <h6 class="fw-bold text-main mb-4">Skill Performance Analysis</h6>
 
             <div class="d-flex flex-column gap-4">
@@ -282,7 +284,7 @@
     </div>
 
     <div class="col-lg-4">
-        <div class="card-custom h-100 mb-0">
+        <div class="card-custom h-100 mb-0" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
             <h6 class="fw-bold text-main mb-4">Phase Distribution</h6>
 
             <div class="mt-2">
@@ -332,8 +334,6 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>

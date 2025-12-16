@@ -88,7 +88,7 @@
                href="#driveMenu" data-bs-toggle="collapse" role="button" aria-expanded="{{ $isDriveActive ? 'true' : 'false' }}">
                 <div class="d-flex align-items-center">
                     <i class="bi bi-briefcase fs-5"></i>
-                    <span class="nav-label ms-3">Drive Mgmt</span>
+                    <span class="nav-label ms-3">Drive Management</span>
                 </div>
                 <i class="bi bi-chevron-down dropdown-arrow" style="font-size: 0.8rem;"></i>
             </a>
@@ -98,7 +98,7 @@
                     <i class="bi bi-hdd-network"></i> <span class="nav-label ms-3">Manage Drives</span>
                 </a>
                 <a href="{{ route('mentor.drive.create') }}" class="nav-link small sub-link {{ request()->routeIs('mentor.drive.create') ? 'active' : '' }} d-flex align-items-center">
-                    <i class="bi bi-folder-plus"></i> <span class="nav-label ms-3">Create Drive</span>
+                    <i class="bi bi-plus-circle"></i> <span class="nav-label ms-3">Create Drive</span>
                 </a>
             </div>
 

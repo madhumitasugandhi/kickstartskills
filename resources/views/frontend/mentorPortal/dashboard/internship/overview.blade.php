@@ -5,7 +5,7 @@
 
 @section('content')
 
-    <div class="card-custom mb-4">
+    <div class="card-custom mb-4" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
         <div class="d-flex align-items-center gap-3">
             <div class="fs-4 p-2 bg-soft-orange rounded-3 text-accent">
                 <i class="bi bi-info-circle fs-3"></i>
@@ -17,9 +17,9 @@
         </div>
     </div>
 
-    <div class="card-custom mb-4 p-3">
+    <div class="card-custom mb-4 p-3" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;">
         <div class="row g-3 align-items-end">
-            <div class="col-md-4">
+            <div class="col-12 col-md-4">
                 <label class="form-label small text-muted-custom fw-bold mb-1">Select Cohort</label>
                 <div class="input-group">
                     <span class="input-group-text border-end-0" style="background-color: var(--bg-hover); border-color: var(--border-color); color: var(--text-muted);">
@@ -32,7 +32,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-12 col-md-4">
                 <label class="form-label small text-muted-custom fw-bold mb-1">Select Phase</label>
                 <div class="input-group">
                     <span class="input-group-text border-end-0" style="background-color: var(--bg-hover); border-color: var(--border-color); color: var(--text-muted);">
@@ -45,7 +45,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-4 text-end">
+            <div class="col-12 col-md-4 text-end">
                 <button class="btn btn-primary w-100 fw-bold" style="background-color: var(--text-blue); border: none;">
                     <i class="bi bi-download me-2"></i> Export Report
                 </button>
@@ -53,9 +53,8 @@
         </div>
     </div>
 
-    <div class="row g-4 mb-4">
-        <div class="col-md-2 col-6" style="width: 20%;">
-            <div class="card-custom text-center py-4 mb-0 h-100">
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-4 col-xl-2"> <div class="card-custom text-center py-4 mb-0 h-100" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;">
                 <div class="mb-2">
                     <i class="bi bi-people fs-3 text-primary"></i>
                 </div>
@@ -63,8 +62,8 @@
                 <span class="text-muted-custom small fw-bold">Total Interns</span>
             </div>
         </div>
-        <div class="col-md-2 col-6" style="width: 20%;">
-            <div class="card-custom text-center py-4 mb-0 h-100">
+        <div class="col-6 col-md-4 col-xl-2">
+            <div class="card-custom text-center py-4 mb-0 h-100" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;">
                 <div class="mb-2">
                     <i class="bi bi-activity fs-3 text-success"></i>
                 </div>
@@ -72,8 +71,8 @@
                 <span class="text-muted-custom small fw-bold">Active Interns</span>
             </div>
         </div>
-        <div class="col-md-2 col-6" style="width: 20%;">
-            <div class="card-custom text-center py-4 mb-0 h-100">
+        <div class="col-6 col-md-4 col-xl-2">
+            <div class="card-custom text-center py-4 mb-0 h-100" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;">
                 <div class="mb-2">
                     <i class="bi bi-exclamation-triangle fs-3 text-accent"></i>
                 </div>
@@ -81,8 +80,8 @@
                 <span class="text-muted-custom small fw-bold">At Risk</span>
             </div>
         </div>
-        <div class="col-md-2 col-6" style="width: 20%;">
-            <div class="card-custom text-center py-4 mb-0 h-100">
+        <div class="col-6 col-md-6 col-xl-2">
+            <div class="card-custom text-center py-4 mb-0 h-100" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;">
                 <div class="mb-2">
                     <i class="bi bi-star fs-3 text-info"></i>
                 </div>
@@ -90,8 +89,8 @@
                 <span class="text-muted-custom small fw-bold">Excellent</span>
             </div>
         </div>
-        <div class="col-md-2 col-6" style="width: 20%;">
-            <div class="card-custom text-center py-4 mb-0 h-100">
+        <div class="col-12 col-md-6 col-xl-2">
+            <div class="card-custom text-center py-4 mb-0 h-100" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;">
                 <div class="mb-2">
                     <i class="bi bi-graph-up-arrow fs-3 text-primary"></i>
                 </div>
@@ -104,7 +103,7 @@
     <div class="row g-4">
 
         <div class="col-xl-4">
-            <div class="card-custom h-100 mb-0">
+            <div class="card-custom h-100 mb-0" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h6 class="fw-bold text-main m-0">Active Cohorts</h6>
                     <i class="bi bi-box-arrow-up-right text-muted-custom cursor-pointer"></i>
@@ -163,7 +162,7 @@
         </div>
 
         <div class="col-xl-8">
-            <div class="card-custom h-100 mb-0">
+            <div class="card-custom h-100 mb-0" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h6 class="fw-bold text-main m-0">Interns (4)</h6>
                     <div class="d-flex gap-2">
@@ -188,19 +187,19 @@
                         </div>
 
                         <div class="row g-2 mb-3">
-                            <div class="col-3">
+                            <div class="col-6 col-md-3">
                                 <small class="text-muted-custom d-block" style="font-size: 0.7rem;">Progress</small>
                                 <span class="fw-bold text-main h6"><i class="bi bi-graph-up me-1 text-primary"></i> 72%</span>
                             </div>
-                            <div class="col-3">
+                            <div class="col-6 col-md-3">
                                 <small class="text-muted-custom d-block" style="font-size: 0.7rem;">Tasks</small>
                                 <span class="fw-bold text-main h6"><i class="bi bi-check2-square me-1 text-info"></i> 18/25</span>
                             </div>
-                            <div class="col-3">
+                            <div class="col-6 col-md-3">
                                 <small class="text-muted-custom d-block" style="font-size: 0.7rem;">Rating</small>
                                 <span class="fw-bold text-main h6"><i class="bi bi-star me-1 text-accent"></i> 4.2/5.0</span>
                             </div>
-                            <div class="col-3">
+                            <div class="col-6 col-md-3">
                                 <small class="text-muted-custom d-block" style="font-size: 0.7rem;">Attendance</small>
                                 <span class="fw-bold text-main h6"><i class="bi bi-calendar-check me-1 text-success"></i> 95%</span>
                             </div>
@@ -217,7 +216,7 @@
 
                         <div class="mb-3">
                             <small class="text-muted-custom fw-bold mb-2 d-block">Current Projects:</small>
-                            <div class="d-flex gap-2">
+                            <div class="d-flex flex-wrap gap-2">
                                 <span class="badge bg-soft-blue text-blue border border-primary-subtle fw-normal">E-commerce Dashboard</span>
                                 <span class="badge bg-soft-blue text-blue border border-primary-subtle fw-normal">React Components Library</span>
                             </div>
@@ -247,19 +246,19 @@
                         </div>
 
                         <div class="row g-2 mb-3">
-                            <div class="col-3">
+                            <div class="col-6 col-md-3">
                                 <small class="text-muted-custom d-block" style="font-size: 0.7rem;">Progress</small>
                                 <span class="fw-bold text-main h6"><i class="bi bi-graph-up me-1 text-success"></i> 85%</span>
                             </div>
-                            <div class="col-3">
+                            <div class="col-6 col-md-3">
                                 <small class="text-muted-custom d-block" style="font-size: 0.7rem;">Tasks</small>
                                 <span class="fw-bold text-main h6"><i class="bi bi-check2-square me-1 text-info"></i> 21/25</span>
                             </div>
-                            <div class="col-3">
+                            <div class="col-6 col-md-3">
                                 <small class="text-muted-custom d-block" style="font-size: 0.7rem;">Rating</small>
                                 <span class="fw-bold text-main h6"><i class="bi bi-star me-1 text-accent"></i> 4.7/5.0</span>
                             </div>
-                            <div class="col-3">
+                            <div class="col-6 col-md-3">
                                 <small class="text-muted-custom d-block" style="font-size: 0.7rem;">Attendance</small>
                                 <span class="fw-bold text-main h6"><i class="bi bi-calendar-check me-1 text-success"></i> 98%</span>
                             </div>
@@ -276,7 +275,7 @@
 
                         <div class="mb-3">
                             <small class="text-muted-custom fw-bold mb-2 d-block">Current Projects:</small>
-                            <div class="d-flex gap-2">
+                            <div class="d-flex flex-wrap gap-2">
                                 <span class="badge bg-soft-blue text-blue border border-primary-subtle fw-normal">Portfolio Website</span>
                             </div>
                         </div>

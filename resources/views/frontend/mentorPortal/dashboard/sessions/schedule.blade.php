@@ -7,8 +7,8 @@
 
 <div class="card-custom mb-4">
     <div class="d-flex align-items-center gap-3">
-        <div class="bg-soft-blue p-3 rounded-3 text-primary">
-            <i class="bi bi-calendar-plus fs-3"></i>
+        <div class="bg-soft-orange p-3 rounded-3 text-accent">
+            <i class="bi bi-plus-circle fs-3"></i>
         </div>
         <div>
             <h4 class="fw-bold text-main mb-1">Schedule New Session</h4>

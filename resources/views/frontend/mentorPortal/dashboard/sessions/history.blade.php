@@ -7,8 +7,7 @@
 
 <div class="card-custom mb-4">
     <div class="d-flex align-items-center gap-3">
-        <div class="bg-soft-blue p-3 rounded-3 text-primary"
-            style="background-color: rgba(13, 110, 253, 0.1) !important;">
+        <div class="fs-4 p-2 bg-soft-orange rounded-3 text-accent">
             <i class="bi bi-clock-history fs-3"></i>
         </div>
         <div>
@@ -168,8 +167,7 @@
 
     <div class="row g-2">
         <div class="col-md-6">
-            <button class="btn btn-outline-primary w-100 fw-bold"
-                style="border-color: var(--accent-color); color: var(--accent-color);">
+            <button class="btn btn-outline-primary w-100 fw-bold">
                 <i class="bi bi-eye me-2"></i> View Details
             </button>
         </div>

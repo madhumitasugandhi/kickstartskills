@@ -5,7 +5,7 @@
 
 @section('content')
 
-    <div class="card-custom mb-4">
+    <div class="card-custom mb-4" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
         <div class="d-flex align-items-center gap-3">
             <div class="fs-4 p-2 bg-soft-orange rounded-3 text-accent">
                 <i class="bi bi-map fs-3"></i>
@@ -17,47 +17,49 @@
         </div>
     </div>
 
-    <div class="row g-4 card-custom my-4 mx-1">
-
-        <h6 class="fw-bold text-main mt-2">Select Phase</h6>
-
-        <div class="col-md-4">
-            <div class="card-custom text-center p-4 cursor-pointer position-relative h-100"
-                 style="border: 2px solid var(--accent-color); background-color: var(--soft-accent);">
-                <div class="mb-2 text-accent">
-                    <i class="bi bi-play-circle-fill fs-3"></i>
+    <div class="card-custom my-4 mx-0 mx-md-1 p-3" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;">
+        <h6 class="fw-bold text-main mt-2 mb-3">Select Phase</h6>
+        <div class="row g-4">
+            <div class="col-12 col-md-4">
+                <div class="card-custom text-center p-4 cursor-pointer position-relative h-100"
+                     style="border: 2px solid var(--accent-color); background-color: var(--soft-accent); border-radius: 12px;">
+                    <div class="mb-2 text-accent">
+                        <i class="bi bi-play-circle-fill fs-3"></i>
+                    </div>
+                    <h6 class="fw-bold text-accent mb-1">Phase 1</h6>
+                    <small class="text-accent opacity-75">Foundation</small>
                 </div>
-                <h6 class="fw-bold text-accent mb-1">Phase 1</h6>
-                <small class="text-accent opacity-75">Foundation</small>
             </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="card-custom text-center p-4 cursor-pointer h-100 bg-bg-hover opacity-75">
-                <div class="mb-2 text-muted-custom">
-                    <i class="bi bi-code-slash fs-3"></i>
+            <div class="col-12 col-md-4">
+                <div class="card-custom text-center p-4 cursor-pointer h-100 bg-bg-hover opacity-75"
+                     style="background-color: var(--bg-hover); border: 1px solid var(--border-color); border-radius: 12px;">
+                    <div class="mb-2 text-muted-custom">
+                        <i class="bi bi-code-slash fs-3"></i>
+                    </div>
+                    <h6 class="fw-bold text-muted-custom mb-1">Phase 2</h6>
+                    <small class="text-muted-custom">Development</small>
                 </div>
-                <h6 class="fw-bold text-muted-custom mb-1">Phase 2</h6>
-                <small class="text-muted-custom">Development</small>
             </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="card-custom text-center p-4 cursor-pointer h-100 bg-bg-hover opacity-75">
-                <div class="mb-2 text-muted-custom">
-                    <i class="bi bi-star fs-3"></i>
+            <div class="col-12 col-md-4">
+                <div class="card-custom text-center p-4 cursor-pointer h-100 bg-bg-hover opacity-75"
+                     style="background-color: var(--bg-hover); border: 1px solid var(--border-color); border-radius: 12px;">
+                    <div class="mb-2 text-muted-custom">
+                        <i class="bi bi-star fs-3"></i>
+                    </div>
+                    <h6 class="fw-bold text-muted-custom mb-1">Phase 3</h6>
+                    <small class="text-muted-custom">Specialization</small>
                 </div>
-                <h6 class="fw-bold text-muted-custom mb-1">Phase 3</h6>
-                <small class="text-muted-custom">Specialization</small>
             </div>
         </div>
     </div>
 
     <div class="row g-4">
 
-        <div class="col-xl-8">
+        <div class="col-12 col-xl-8">
 
-            <div class="card-custom mb-4">
+            <div class="card-custom mb-4" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div class="d-flex align-items-center gap-3">
                         <div class="bg-soft-blue text-blue rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
@@ -93,12 +95,12 @@
                 </div>
 
                 <div class="row g-3">
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6">
                         <button class="btn btn-outline-primary w-100 fw-bold" style="border-color: var(--accent-color); color: var(--accent-color);">
                             <i class="bi bi-book me-2"></i> View Resources
                         </button>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6">
                         <button class="btn btn-primary w-100 fw-bold" style="background-color: var(--accent-color); border: none;">
                             <i class="bi bi-pencil-square me-2"></i> Edit Guide
                         </button>
@@ -106,7 +108,7 @@
                 </div>
             </div>
 
-            <div class="card-custom mb-0">
+            <div class="card-custom mb-0" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
                 <h6 class="fw-bold text-main mb-4">Phase Milestones</h6>
 
                 <div class="d-flex flex-column gap-3">
@@ -122,7 +124,7 @@
                         <div class="progress mb-3" style="height: 4px; background-color: rgba(255,255,255,0.1);">
                             <div class="progress-bar bg-success" style="width: 100%"></div>
                         </div>
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 flex-wrap">
                             <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">HTML Structure</span>
                             <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">CSS Styling</span>
                             <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">Responsive Layout</span>
@@ -141,7 +143,7 @@
                         <div class="progress mb-3" style="height: 4px; background-color: rgba(255,255,255,0.1);">
                             <div class="progress-bar bg-success" style="width: 85%"></div>
                         </div>
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 flex-wrap">
                             <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">Variables</span>
                             <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">DOM Manipulation</span>
                         </div>
@@ -159,7 +161,7 @@
                         <div class="progress mb-3" style="height: 4px; background-color: rgba(255,255,255,0.1);">
                             <div class="progress-bar bg-soft-orange" style="width: 67%; background-color: var(--accent-color);"></div>
                         </div>
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 flex-wrap">
                             <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">Git Basics</span>
                             <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">Branching</span>
                         </div>
@@ -177,7 +179,7 @@
                         <div class="progress mb-3" style="height: 4px; background-color: rgba(255,255,255,0.1);">
                             <div class="progress-bar bg-warning" style="width: 25%"></div>
                         </div>
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 flex-wrap">
                             <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">Planning</span>
                             <span class="badge bg-soft-blue text-blue border border-primary-subtle small fw-normal">Deployment</span>
                         </div>
@@ -187,8 +189,8 @@
 
         </div>
 
-        <div class="col-xl-4">
-            <div class="card-custom h-100 mb-0">
+        <div class="col-12 col-xl-4">
+            <div class="card-custom h-100 mb-0" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h6 class="fw-bold text-main m-0">Intern Progress</h6>
                     <i class="bi bi-box-arrow-up-right text-muted-custom cursor-pointer"></i>

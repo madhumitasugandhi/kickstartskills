@@ -323,11 +323,11 @@ Route::prefix('mentor')->name('mentor.')->group(function () {
     // 5. Drive Management
     Route::prefix('drive')->name('drive.')->group(function () {
         Route::get('/manage', function () {
-            return view('frontend.mentorPortal.dashboard.drive.manage');
+            return view('frontend.mentorPortal.dashboard.driveManagement.manage');
         })->name('manage');
 
         Route::get('/create', function () {
-            return view('frontend.mentorPortal.dashboard.drive.create');
+            return view('frontend.mentorPortal.dashboard.driveManagement.create');
         })->name('create');
     });
 

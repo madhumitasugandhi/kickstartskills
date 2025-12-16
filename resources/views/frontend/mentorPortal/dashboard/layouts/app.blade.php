@@ -273,7 +273,7 @@
         }
 
         .content-body {
-            padding: 24px;
+            padding: 12px;
         }
 
         /* --- Cards & Components --- */
