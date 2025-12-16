@@ -106,6 +106,30 @@
             color: var(--accent-color) !important;
         }
 
+        /* --- Fix for Date & Time Picker Icons in Dark Mode --- */
+        [data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator,
+        [data-theme="dark"] input[type="time"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            /* Turns the black icon white */
+            opacity: 0.7;
+            /* Makes it slightly subtle (optional) */
+            cursor: pointer;
+        }
+
+        /*btn-primay-outline custom*/
+        .btn-outline-primary {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+            background-color: transparent;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #fff;
+        }
+
         /* --- Sidebar --- */
         .sidebar {
             width: 260px;

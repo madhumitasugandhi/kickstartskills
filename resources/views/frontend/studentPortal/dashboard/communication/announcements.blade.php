@@ -477,7 +477,7 @@
             <option>All</option>
         </select>
         <button class="btn-unread"><i class="bi bi-eye"></i> Unread Only</button>
-        <div class="ms-auto text-muted cursor-pointer"><i class="bi bi-arrow-repeat fs-5"></i></div>
+        <div class="ms-auto --text-muted cursor-pointer"><i class="bi bi-arrow-repeat fs-5"></i></div>
     </div>
 
     <!-- 4. Announcement Feed -->

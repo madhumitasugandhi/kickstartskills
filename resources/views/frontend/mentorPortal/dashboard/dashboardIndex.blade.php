@@ -1,6 +1,6 @@
 @extends('frontend.mentorPortal.dashboard.layouts.app')
 
-@section('title', 'Mentor Dashboard')
+@section('title', 'Dashboard')
 
 @section('icon', 'bi bi-house-door fs-4 p-2 bg-soft-orange rounded-3 text-accent')
 
@@ -11,7 +11,7 @@
             <div class="d-flex align-items-center gap-3">
                 <div class="bg-soft-orange p-3 rounded-4 d-flex align-items-center justify-content-center"
                      style="width: 56px; height: 56px;">
-                    <i class="bi bi-people-fill fs-3 text-accent"></i>
+                    <i class="bi bi-person-fill fs-3 text-accent"></i>
                 </div>
                 <div>
                     <h5 class="fw-bold mb-1 text-main">Welcome back, Sarah!</h5>

@@ -1,33 +1,180 @@
 <header class="top-header">
-    <!-- Sidebar Toggle (Mobile) -->
-    <button class="btn btn-link text-dark d-lg-none me-2" onclick="document.getElementById('sidebar').classList.toggle('show')">
+    <button class="btn btn-link me-2" id="headerToggleBtn" style="color: var(--text-main); text-decoration: none;">
         <i class="bi bi-list fs-4"></i>
     </button>
 
-    <!-- Title & Icon Area -->
     <div class="d-flex align-items-center">
         <div class="me-3 d-none d-md-block">
-             <!-- Icon Section: Default to 'bi-app' if not defined -->
             <i class="bi @yield('icon', 'bi-app') fs-2 text-primary"></i>
         </div>
         <div>
             <h5 class="fw-bold m-0">@yield('title', 'Student Portal')</h5>
-            <small class="--text-muted">Welcome back, John!</small>
+            <small class="text-muted-custom">Welcome back, John!</small>
         </div>
     </div>
 
-    <!-- Right Side Actions -->
-    <div class="d-flex align-items-center gap-2">
+    <div class="d-flex align-items-center gap-2 ms-auto">
 
-        <!-- Notification Bell (Linked) -->
-        <a href="{{ route('student.notifications') }}" class="btn btn-light position-relative rounded-circle px-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+        <a href="{{ route('student.notifications') }}" class="btn btn-light position-relative rounded-circle px-2"
+            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
             <i class="bi bi-bell" style="font-size: 1.2rem;"></i>
-            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="padding: 0.3rem !important;"></span>
+            <span
+                class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
+                style="padding: 0.3rem !important;"></span>
         </a>
 
-        <!-- Theme Toggle -->
-        <button class="btn btn-light rounded-circle p-2" onclick="toggleTheme()" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+        <button class="btn btn-light rounded-circle p-2" onclick="toggleTheme()"
+            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
             <i class="bi bi-moon" id="themeIcon" style="font-size: 1.2rem;"></i>
         </button>
     </div>
 </header>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const body = document.body;
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const headerToggle = document.getElementById('headerToggleBtn');
+
+    // --- NEW: Select the Close Button ---
+    const sidebarClose = document.getElementById('sidebarCloseBtn');
+
+    // 1. Open Sidebar (Existing Logic)
+    if (headerToggle) {
+        headerToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (window.innerWidth >= 992) {
+                body.classList.toggle('desktop-minimized');
+            } else {
+                sidebar.classList.toggle('mobile-active');
+                if(overlay) overlay.classList.toggle('active');
+            }
+        });
+    }
+
+    // 2. Close Sidebar via "X" Button (NEW Logic)
+    if (sidebarClose) {
+        sidebarClose.addEventListener('click', function() {
+            sidebar.classList.remove('mobile-active');
+            if(overlay) overlay.classList.remove('active');
+        });
+    }
+
+    // 3. Close on Overlay Click (Existing Logic)
+    if (overlay) {
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('mobile-active');
+            overlay.classList.remove('active');
+        });
+    }
+
+    // Reset layout if resizing window
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 992) {
+            sidebar.classList.remove('mobile-active');
+            if(overlay) overlay.classList.remove('active');
+        } else {
+            body.classList.remove('desktop-minimized');
+        }
+    });
+});
+</script>
+
+<style>
+/* =========================================================
+   FINAL SIDEBAR TOGGLE LOGIC
+   ========================================================= */
+
+/* DEFAULT SIDEBAR STYLE (EXPANDED) */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+/* MAIN CONTENT ADJUSTMENT */
+.main-content {
+    margin-left: 250px;
+    transition: all 0.3s ease;
+    width: calc(100% - 250px);
+}
+
+/* --- SCENARIO A: DESKTOP TOGGLED (> 992px) --- */
+@media (min-width: 992px) {
+
+    /* 1. Shrink Sidebar Width */
+    body.desktop-minimized .sidebar {
+        width: 80px;
+    }
+
+    /* 2. Adjust Main Content Margin */
+    body.desktop-minimized .main-content {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+
+    /* 3. HIDE TEXT LABELS & EXTRAS */
+    body.desktop-minimized .nav-label,        /* The Text */
+    body.desktop-minimized .brand-text,       /* The Logo Text */
+    body.desktop-minimized .dropdown-arrow,   /* The Chevron */
+    body.desktop-minimized .user-info {       /* Footer Text */
+        display: none !important;
+    }
+
+    /* 4. CENTER ICONS */
+    body.desktop-minimized .nav-link {
+        justify-content: center !important;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    body.desktop-minimized .nav-link i {
+        margin: 0 !important; /* Removes margins */
+        font-size: 1.4rem; /* Icons slightly larger */
+    }
+
+    /* 5. Center Brand Logo */
+    body.desktop-minimized .sidebar-brand {
+        justify-content: center;
+        padding: 0;
+    }
+
+    /* 6. Center Footer Avatar */
+    body.desktop-minimized .user-footer {
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+    }
+
+    /* 7. Hide Collapse content entirely when minimized to prevent ugly overflow */
+    body.desktop-minimized .collapse.show {
+        display: none;
+    }
+}
+
+/* --- SCENARIO B: TABLET & MOBILE (< 992px) --- */
+@media (max-width: 991.98px) {
+    /* 1. Hide Sidebar Completely initially */
+    .sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+    }
+
+    /* 2. Content is Full Width */
+    .main-content {
+        margin-left: 0 !important;
+        width: 100%;
+    }
+
+    /* 3. Show Sidebar When Active */
+    .sidebar.mobile-active {
+        transform: translateX(0);
+        box-shadow: 0 0 100px rgba(0,0,0,0.5);
+    }
+}
+</style>

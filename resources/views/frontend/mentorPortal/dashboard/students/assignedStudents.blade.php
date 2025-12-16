@@ -160,7 +160,7 @@
                 <div class="border-top pt-3 d-flex justify-content-between align-items-center"
                      style="border-color: var(--border-color) !important;">
                      <small class="text-muted-custom">Last seen: 5h ago</small>
-                     <button class="btn btn-sm btn-outline-primary rounded-pill px-3" style="border-color: var(--accent-color); color: var(--accent-color);">
+                     <button class="btn btn-sm btn-outline-primary rounded-pill px-3">
                         View Details
                      </button>
                 </div>
@@ -223,7 +223,7 @@
                 <div class="border-top pt-3 d-flex justify-content-between align-items-center"
                      style="border-color: var(--border-color) !important;">
                      <small class="text-muted-custom">Last seen: 6h ago</small>
-                     <button class="btn btn-sm btn-outline-primary rounded-pill px-3" style="border-color: var(--accent-color); color: var(--accent-color);">
+                     <button class="btn btn-sm btn-outline-primary rounded-pill px-3" >
                         View Details
                      </button>
                 </div>
@@ -285,7 +285,7 @@
                 <div class="border-top pt-3 d-flex justify-content-between align-items-center"
                      style="border-color: var(--border-color) !important;">
                      <small class="text-muted-custom">Last seen: 1 day ago</small>
-                     <button class="btn btn-sm btn-outline-primary rounded-pill px-3" style="border-color: var(--accent-color); color: var(--accent-color);">
+                     <button class="btn btn-sm btn-outline-primary rounded-pill px-3">
                         View Details
                      </button>
                 </div>

@@ -1,299 +1,192 @@
-<!-- 1. SIDEBAR -->
 <aside class="sidebar d-flex flex-column no-scrollbar" id="sidebar">
-    <div class="sidebar-brand">
-        <i class="bi bi-journal-text me-2 fs-5"></i> <span>Student Portal</span>
+    <div class="sidebar-brand d-flex align-items-center justify-content-between px-3 mt-3 mb-2">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-journal-text fs-4 text-primary"></i>
+            <span class="brand-text fw-bold ms-2" style="font-size: 1.2rem;">Student Portal</span>
+        </div>
+        <div class="d-lg-none --text-muted" id="sidebarCloseBtn" style="cursor: pointer;">
+            <i class="bi bi-x-lg border rounded-2 d-flex align-items-center justify-content-center"
+                style="width: 32px; height: 32px; font-size: 16px; margin-top: -5px;"></i>
+        </div>
     </div>
 
     <div class="p-3 flex-grow-1">
-        <nav class="nav flex-column">
-            <!-- Dashboard Link -->
-            <a class="nav-link {{ request()->routeIs('student.dashboard') ? 'active' : '' }}"
-                href="{{ route('student.dashboard') }}">
-                <i class="bi bi-grid"></i> Dashboard
-            </a>
 
-            <!-- Profile Dropdown Trigger -->
-            @php $isProfileActive = request()->routeIs('student.profile.*'); @endphp
+        <div class="p-3 flex-grow-1">
+            <nav class="nav flex-column gap-1">
+                <a class="nav-link {{ request()->routeIs('student.dashboard') ? 'active' : '' }} d-flex align-items-center"
+                    href="{{ route('student.dashboard') }}">
+                    <i class="bi bi-grid fs-5"></i>
+                    <span class="nav-label ms-3">Dashboard</span>
+                </a>
 
-            <a class="nav-link {{ $isProfileActive ? 'text-primary' : '' }}" href="#profileSubmenu"
-                data-bs-toggle="collapse" role="button" aria-expanded="{{ $isProfileActive ? 'true' : 'false' }}"
-                aria-controls="profileSubmenu">
-                <div class="d-flex justify-content-between w-100 align-items-center">
-                    <span><i class="bi bi-person"></i> Profile</span>
-                    <i class="bi bi-chevron-down" style="font-size: 0.8rem;"></i>
+                @php $isProfileActive = request()->routeIs('student.profile.*'); @endphp
+                <a class="nav-link {{ $isProfileActive ? 'text-primary' : '' }} d-flex align-items-center justify-content-between"
+                    href="#profileSubmenu" data-bs-toggle="collapse" role="button"
+                    aria-expanded="{{ $isProfileActive ? 'true' : 'false' }}">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-person fs-5"></i>
+                        <span class="nav-label ms-3">Profile</span>
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-arrow" style="font-size: 0.8rem;"></i>
+                </a>
+
+                <div class="collapse {{ $isProfileActive ? 'show' : '' }} ps-3 mb-1" id="profileSubmenu">
+                    <a href="{{ route('student.profile.personal') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.profile.personal') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-pencil-square"></i> <span class="nav-label ms-3">Personal Info</span>
+                    </a>
+                    <a href="{{ route('student.profile.academic') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.profile.academic') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-mortarboard"></i> <span class="nav-label ms-3">Academic Details</span>
+                    </a>
+                    <a href="{{ route('student.profile.portfolio') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.profile.portfolio') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-briefcase"></i> <span class="nav-label ms-3">Portfolio</span>
+                    </a>
                 </div>
-            </a>
 
-            <!-- Profile Dropdown Content -->
-            <div class="collapse {{ $isProfileActive ? 'show' : '' }} ps-3 mb-1" id="profileSubmenu">
-                <!-- Personal Info -->
-                <a href="{{ route('student.profile.personal') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.profile.personal') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-pencil-square me-2"></i> Personal Info
+                @php $isExamActive = request()->routeIs('student.exam.*'); @endphp
+                <a class="nav-link {{ $isExamActive ? 'text-primary' : '' }} d-flex align-items-center justify-content-between"
+                    href="#examSubmenu" data-bs-toggle="collapse" role="button"
+                    aria-expanded="{{ $isExamActive ? 'true' : 'false' }}">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-file-earmark-text fs-5"></i>
+                        <span class="nav-label ms-3">Examinations</span>
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-arrow" style="font-size: 0.8rem;"></i>
                 </a>
 
-                <!-- Academic Details -->
-                <a href="{{ route('student.profile.academic') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.profile.academic') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-mortarboard me-2"></i> Academic Details
-                </a>
-
-                <!-- Portfolio -->
-                <a href="{{ route('student.profile.portfolio') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.profile.portfolio') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-briefcase me-2"></i> Portfolio
-                </a>
-            </div>
-
-
-            <!-- Examinations Dropdown -->
-            @php $isExamActive = request()->routeIs('student.exam.*'); @endphp
-
-            <a class="nav-link {{ $isExamActive ? 'text-primary' : '' }}" href="#examSubmenu" data-bs-toggle="collapse"
-                role="button" aria-expanded="{{ $isExamActive ? 'true' : 'false' }}" aria-controls="examSubmenu">
-                <div class="d-flex justify-content-between w-100 align-items-center">
-                    <span><i class="bi bi-file-earmark-text me-2"></i> Examinations</span>
-                    <i class="bi bi-chevron-down" style="font-size: 0.8rem;"></i>
+                <div class="collapse {{ $isExamActive ? 'show' : '' }} ps-3 mb-1" id="examSubmenu">
+                    <a href="{{ route('student.exam.take') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.exam.take') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-play-circle"></i> <span class="nav-label ms-3">Take Test</span>
+                    </a>
+                    <a href="{{ route('student.exam.history') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.exam.history') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-clock-history"></i> <span class="nav-label ms-3">Test History</span>
+                    </a>
+                    <a href="{{ route('student.exam.results') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.exam.results') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-bar-chart"></i> <span class="nav-label ms-3">Results</span>
+                    </a>
+                    <a href="{{ route('student.exam.practice') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.exam.practice') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-lightning-charge"></i> <span class="nav-label ms-3">Practice Tests</span>
+                    </a>
                 </div>
-            </a>
 
-            <div class="collapse {{ $isExamActive ? 'show' : '' }} ps-3 mb-1" id="examSubmenu">
-                <!-- Take Test -->
-                <a href="{{ route('student.exam.take') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.exam.take') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-play-circle me-2"></i> Take Test
+                @php $isLearningActive = request()->routeIs('student.learning.*'); @endphp
+                <a class="nav-link {{ $isLearningActive ? 'text-primary' : '' }} d-flex align-items-center justify-content-between"
+                    href="#learningSubmenu" data-bs-toggle="collapse" role="button"
+                    aria-expanded="{{ $isLearningActive ? 'true' : 'false' }}">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-book fs-5"></i>
+                        <span class="nav-label ms-3">Learning</span>
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-arrow" style="font-size: 0.8rem;"></i>
                 </a>
 
-                <!-- Test History -->
-                <a href="{{ route('student.exam.history') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.exam.history') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-clock-history me-2"></i> Test History
-                </a>
-
-                <!-- Results -->
-                <a href="{{ route('student.exam.results') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.exam.results') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-bar-chart me-2"></i> Results
-                </a>
-
-                <a href="{{ route('student.exam.practice') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.exam.practice') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-lightning-charge me-2"></i> Practice Tests
-                </a>
-            </div>
-
-            <!-- Learning Dropdown -->
-            @php $isLearningActive = request()->routeIs('student.learning.*'); @endphp
-
-            <a class="nav-link {{ $isLearningActive ? 'text-primary' : '' }}" href="#learningSubmenu"
-                data-bs-toggle="collapse" role="button" aria-expanded="{{ $isLearningActive ? 'true' : 'false' }}"
-                aria-controls="learningSubmenu">
-                <div class="d-flex justify-content-between w-100 align-items-center">
-                    <span><i class="bi bi-book me-2"></i> Learning</span>
-                    <i class="bi bi-chevron-down" style="font-size: 0.8rem;"></i>
+                <div class="collapse {{ $isLearningActive ? 'show' : '' }} ps-3 mb-1" id="learningSubmenu">
+                    <a href="{{ route('student.learning.my_courses') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.learning.my_courses') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-play-circle"></i> <span class="nav-label ms-3">My Courses</span>
+                    </a>
+                    <a href="{{ route('student.learning.catalog') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.learning.catalog') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-search"></i> <span class="nav-label ms-3">Course Catalog</span>
+                    </a>
+                    <a href="{{ route('student.learning.resources') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.learning.resources') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-folder2-open"></i> <span class="nav-label ms-3">Resources</span>
+                    </a>
+                    <a href="{{ route('student.learning.recommendations') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.learning.recommendations') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-star"></i> <span class="nav-label ms-3">Recommendations</span>
+                    </a>
                 </div>
-            </a>
 
-            <div class="collapse {{ $isLearningActive ? 'show' : '' }} ps-3 mb-1" id="learningSubmenu">
-                <!-- My Courses -->
-                <a href="{{ route('student.learning.my_courses') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.learning.my_courses') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-play-circle me-2"></i> My Courses
+                @php $isInternActive = request()->routeIs('student.internship.*'); @endphp
+                <a class="nav-link {{ $isInternActive ? 'text-primary' : '' }} d-flex align-items-center justify-content-between"
+                    href="#internSubmenu" data-bs-toggle="collapse" role="button"
+                    aria-expanded="{{ $isInternActive ? 'true' : 'false' }}">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-briefcase fs-5"></i>
+                        <span class="nav-label ms-3">Internship</span>
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-arrow" style="font-size: 0.8rem;"></i>
                 </a>
 
-                <!-- Course Catalog -->
-                <a href="{{ route('student.learning.catalog') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.learning.catalog') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-search me-2"></i> Course Catalog
-                </a>
-
-                <!-- Resources -->
-                <a href="{{ route('student.learning.resources') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.learning.resources') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-folder2-open me-2"></i> Resources
-                </a>
-
-                <!-- Recommendations -->
-                <a href="{{ route('student.learning.recommendations') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.learning.recommendations') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-star me-2"></i> Recommendations
-                </a>
-            </div>
-
-            <!-- Internship Dropdown -->
-            @php $isInternActive = request()->routeIs('student.internship.*'); @endphp
-
-            <a class="nav-link {{ $isInternActive ? 'text-primary' : '' }}" href="#internSubmenu"
-                data-bs-toggle="collapse" role="button" aria-expanded="{{ $isInternActive ? 'true' : 'false' }}"
-                aria-controls="internSubmenu">
-                <div class="d-flex justify-content-between w-100 align-items-center">
-                    <span><i class="bi bi-briefcase me-2"></i> Internship</span>
-                    <i class="bi bi-chevron-down" style="font-size: 0.8rem;"></i>
+                <div class="collapse {{ $isInternActive ? 'show' : '' }} ps-3 mb-1" id="internSubmenu">
+                    <a href="{{ route('student.internship.overview') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.internship.overview') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-eye"></i> <span class="nav-label ms-3">Overview</span>
+                    </a>
+                    <a href="{{ route('student.internship.tasks') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.internship.tasks') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-list-task"></i> <span class="nav-label ms-3">Tasks & Assignments</span>
+                    </a>
+                    <a href="{{ route('student.internship.progress') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.internship.progress') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-graph-up-arrow"></i> <span class="nav-label ms-3">Progress Tracking</span>
+                    </a>
+                    <a href="{{ route('student.internship.phases') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.internship.phases') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-layers"></i> <span class="nav-label ms-3">Phase Details</span>
+                    </a>
                 </div>
-            </a>
 
-            <div class="collapse {{ $isInternActive ? 'show' : '' }} ps-3 mb-1" id="internSubmenu">
-
-                <!-- 1. Overview -->
-                <a href="{{ route('student.internship.overview') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.internship.overview') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-eye me-2"></i> Overview
+                @php $isAttActive = request()->routeIs('student.attendance.*'); @endphp
+                <a class="nav-link {{ $isAttActive ? 'text-primary' : '' }} d-flex align-items-center justify-content-between"
+                    href="#attSubmenu" data-bs-toggle="collapse" role="button"
+                    aria-expanded="{{ $isAttActive ? 'true' : 'false' }}">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-check-circle fs-5"></i>
+                        <span class="nav-label ms-3">Attendance</span>
+                    </div>
+                    <i class="bi bi-chevron-down dropdown-arrow" style="font-size: 0.8rem;"></i>
                 </a>
 
-                <!-- 2. Tasks -->
-                <a href="{{ route('student.internship.tasks') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.internship.tasks') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-list-task me-2"></i> Tasks & Assignments
-                </a>
-
-                <!-- 3. Progress -->
-                <a href="{{ route('student.internship.progress') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.internship.progress') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-graph-up-arrow me-2"></i> Progress Tracking
-                </a>
-
-                <!-- 4. Phases -->
-                <a href="{{ route('student.internship.phases') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.internship.phases') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-layers me-2"></i> Phase Details
-                </a>
-            </div>
-
-            <!-- Attendance Dropdown -->
-            @php $isAttActive = request()->routeIs('student.attendance.*'); @endphp
-
-            <a class="nav-link {{ $isAttActive ? 'text-primary' : '' }}" href="#attSubmenu" data-bs-toggle="collapse"
-                role="button" aria-expanded="{{ $isAttActive ? 'true' : 'false' }}">
-                <div class="d-flex justify-content-between w-100 align-items-center">
-                    <span><i class="bi bi-check-circle me-2"></i> Attendance</span>
-                    <i class="bi bi-chevron-down" style="font-size: 0.8rem;"></i>
+                <div class="collapse {{ $isAttActive ? 'show' : '' }} ps-3 mb-1" id="attSubmenu">
+                    <a href="{{ route('student.attendance.mark') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.attendance.mark') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-geo-alt"></i> <span class="nav-label ms-3">Mark Attendance</span>
+                    </a>
+                    <a href="{{ route('student.attendance.history') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.attendance.history') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-clock-history"></i> <span class="nav-label ms-3">History</span>
+                    </a>
+                    <a href="{{ route('student.attendance.leave') }}"
+                        class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.attendance.leave') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+                        <i class="bi bi-calendar-x"></i> <span class="nav-label ms-3">Leave Requests</span>
+                    </a>
                 </div>
-            </a>
 
-            <div class="collapse {{ $isAttActive ? 'show' : '' }} ps-3 mb-1" id="attSubmenu">
-                <a href="{{ route('student.attendance.mark') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.attendance.mark') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-geo-alt me-2"></i> Mark Attendance
+                <a class="nav-link {{ request()->routeIs('student.notifications') ? 'active' : '' }} d-flex align-items-center justify-content-between"
+                    href="{{ route('student.notifications') }}">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-bell fs-5"></i>
+                        <span class="nav-label ms-3">Notifications</span>
+                    </div>
+                    <span class="badge bg-danger rounded-pill nav-label">3</span>
                 </a>
 
-                <a href="{{ route('student.attendance.history') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.attendance.history') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-clock-history me-2"></i> History
+                <a class="nav-link {{ request()->routeIs('student.settings') ? 'active' : '' }} d-flex align-items-center"
+                    href="{{ route('student.settings') }}">
+                    <i class="bi bi-gear fs-5"></i>
+                    <span class="nav-label ms-3">Settings</span>
                 </a>
+            </nav>
+        </div>
 
-                <a href="{{ route('student.attendance.leave') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.attendance.leave') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-calendar-x me-2"></i> Leave Requests
-                </a>
-            </div>
-
-            <!-- Communication Dropdown -->
-            @php $isCommActive = request()->routeIs('student.communication.*'); @endphp
-
-            <a class="nav-link {{ $isCommActive ? 'text-primary' : '' }}" href="#commSubmenu" data-bs-toggle="collapse"
-                role="button" aria-expanded="{{ $isCommActive ? 'true' : 'false' }}">
-                <div class="d-flex justify-content-between w-100 align-items-center">
-                    <span><i class="bi bi-chat-left-text me-2"></i> Communication</span>
-                    <i class="bi bi-chevron-down" style="font-size: 0.8rem;"></i>
+        <div class="user-footer p-2 m-2">
+            <div class="d-flex align-items-center gap-2 p-2 rounded bg-soft-light">
+                <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold flex-shrink-0"
+                    style="width: 32px; height: 32px; font-size: 0.8rem;">JD</div>
+                <div class="user-info flex-grow-1" style="line-height: 1.2;">
+                    <div class="fw-bold small">John Doe</div>
+                    <div class="text-muted small" style="font-size: 0.7rem;">ID: STU001</div>
                 </div>
-            </a>
-
-            <div class="collapse {{ $isCommActive ? 'show' : '' }} ps-3 mb-1" id="commSubmenu">
-                <a href="{{ route('student.communication.messages') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.communication.messages') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-envelope me-2"></i> Messages
-                </a>
-
-                <a href="{{ route('student.communication.announcements') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.communication.announcements') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-megaphone me-2"></i> Announcements
-                </a>
-
-                <a href="{{ route('student.communication.schedule') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.communication.schedule') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-calendar-event me-2"></i> Schedule Meeting
-                </a>
-            </div>
-
-            <!-- Performance Dropdown -->
-            @php $isPerfActive = request()->routeIs('student.performance.*'); @endphp
-
-            <a class="nav-link {{ $isPerfActive ? 'text-primary' : '' }}" href="#perfSubmenu" data-bs-toggle="collapse"
-                role="button" aria-expanded="{{ $isPerfActive ? 'true' : 'false' }}">
-                <div class="d-flex justify-content-between w-100 align-items-center">
-                    <span><i class="bi bi-bar-chart-line me-2"></i> Performance</span>
-                    <i class="bi bi-chevron-down" style="font-size: 0.8rem;"></i>
-                </div>
-            </a>
-
-            <div class="collapse {{ $isPerfActive ? 'show' : '' }} ps-3 " id="perfSubmenu">
-                <a href="{{ route('student.performance.analytics') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.performance.analytics') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-graph-up me-2"></i> Analytics
-                </a>
-
-                <a href="{{ route('student.performance.reports') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.performance.reports') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-file-earmark-text me-2"></i> Reports
-                </a>
-
-                <a href="{{ route('student.performance.feedback') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.performance.feedback') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-chat-dots me-2"></i> Feedback
-                </a>
-            </div>
-            <!-- Achievements Dropdown -->
-            @php $isAchieveActive = request()->routeIs('student.achievements.*'); @endphp
-
-            <a class="nav-link {{ $isAchieveActive ? 'text-primary' : '' }}" href="#achieveSubmenu"
-                data-bs-toggle="collapse" role="button" aria-expanded="{{ $isAchieveActive ? 'true' : 'false' }}">
-                <div class="d-flex justify-content-between w-100 align-items-center">
-                    <span><i class="bi bi-trophy me-2"></i> Achievements</span>
-                    <i class="bi bi-chevron-down" style="font-size: 0.8rem;"></i>
-                </div>
-            </a>
-
-            <div class="collapse {{ $isAchieveActive ? 'show' : '' }} ps-3 mb-1" id="achieveSubmenu">
-                <a href="{{ route('student.achievements.certificates') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.achievements.certificates') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-award me-2"></i> Certificates
-                </a>
-
-                <a href="{{ route('student.achievements.badges') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.achievements.badges') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-patch-check me-2"></i> Badges
-                </a>
-
-                <a href="{{ route('student.achievements.portfolio') }}"
-                    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.achievements.portfolio') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }}">
-                    <i class="bi bi-briefcase me-2"></i> Portfolio
-                </a>
-            </div>
-
-            <a class="nav-link {{ request()->routeIs('student.notifications') ? 'active' : '' }}"
-                href="{{ route('student.notifications') }}">
-                <div class="d-flex justify-content-between w-100 align-items-center">
-                    <span><i class="bi bi-bell me-2"></i> Notifications</span>
-                    <span class="badge bg-danger rounded-pill">3</span>
-                </div>
-            </a>
-            <a class="nav-link {{ request()->routeIs('student.settings') ? 'active' : '' }}"
-                href="{{ route('student.settings') }}">
-                <div class="d-flex justify-content-between w-100 align-items-center">
-                    <span><i class="bi bi-gear me-2"></i> Settings</span>
-                </div>
-            </a>
-        </nav>
-    </div>
-
-    <div class="user-footer">
-        <div class="d-flex align-items-center gap-2 p-2 rounded">
-            <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold"
-                style="width: 32px; height: 32px; font-size: 0.8rem;">JD</div>
-            <div class="flex-grow-1" style="line-height: 1.2;">
-                <div class="fw-bold small">John Doe</div>
-                <div class="text-muted small" style="font-size: 0.7rem;">ID: STU001</div>
             </div>
         </div>
-    </div>
 </aside>
