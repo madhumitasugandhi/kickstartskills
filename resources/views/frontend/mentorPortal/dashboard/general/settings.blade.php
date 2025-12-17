@@ -1,7 +1,7 @@
 @extends('frontend.mentorPortal.dashboard.layouts.app')
 
 @section('title', 'Settings')
-@section('icon', 'bi bi-gear fs-4 p-2 bg-soft-blue rounded-3 text-primary')
+@section('icon', 'bi bi-gear fs-4 p-2 bg-soft-orange rounded-3 text-accent')
 
 @section('content')
 <style>
@@ -143,9 +143,8 @@
         font-size: 1.1rem;
     }
 
-    .icon-blue {
-        color: var(--text-blue);
-        background-color: var(--soft-blue);
+    .icon-orange {
+        color: var(--accent-color);
     }
 
     .icon-red {
@@ -192,7 +191,7 @@
 
     <div class="card-custom mb-4" style="padding: 20px;">
         <div class="d-flex align-items-center gap-3">
-            <div class="fs-4 p-2 bg-soft-blue rounded-3 text-primary">
+            <div class="fs-4 p-2 bg-soft-orange rounded-3 text-accent">
                 <i class="bi bi-gear fs-3"></i>
             </div>
             <div>
@@ -203,7 +202,7 @@
     </div>
 
     <div class="card-custom">
-        <div class="settings-header text-primary">
+        <div class="settings-header text-accent">
             <i class="bi bi-sliders"></i> General Settings
         </div>
         <span class="settings-sub">Customize your dashboard experience</span>
@@ -253,7 +252,7 @@
     </div>
 
     <div class="card-custom">
-        <div class="settings-header text-primary">
+        <div class="settings-header text-accent">
             <i class="bi bi-bell"></i> Notification Settings
         </div>
         <span class="settings-sub">Choose how you want to be notified</span>
@@ -345,7 +344,7 @@
     </div>
 
     <div class="card-custom mb-0">
-        <div class="settings-header text-primary">
+        <div class="settings-header text-accent">
             <i class="bi bi-person-gear"></i> Account Actions
         </div>
         <span class="settings-sub">Manage your account details</span>
@@ -353,7 +352,7 @@
         <div class="action-list">
             <a href="#" class="action-item">
                 <div class="d-flex align-items-center">
-                    <div class="action-icon icon-blue"><i class="bi bi-pencil"></i></div>
+                    <div class="action-icon icon-orange bg-soft-orange"><i class="bi bi-pencil"></i></div>
                     <div class="action-text">
                         <h6>Edit Profile</h6>
                         <small>Update your profile information</small>
@@ -364,7 +363,7 @@
 
             <a href="#" class="action-item">
                 <div class="d-flex align-items-center">
-                    <div class="action-icon icon-blue"><i class="bi bi-question-circle"></i></div>
+                    <div class="action-icon icon-orange bg-soft-orange"><i class="bi bi-question-circle"></i></div>
                     <div class="action-text">
                         <h6>Help & Support</h6>
                         <small>Get help or contact support</small>
@@ -375,7 +374,7 @@
 
             <a href="#" class="action-item">
                 <div class="d-flex align-items-center">
-                    <div class="action-icon icon-blue"><i class="bi bi-file-text"></i></div>
+                    <div class="action-icon icon-orange bg-soft-orange"><i class="bi bi-file-text"></i></div>
                     <div class="action-text">
                         <h6>Terms of Service</h6>
                         <small>Read our terms of service</small>

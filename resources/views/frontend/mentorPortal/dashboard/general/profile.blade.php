@@ -1,7 +1,7 @@
 @extends('frontend.mentorPortal.dashboard.layouts.app')
 
 @section('title', 'Profile Management')
-@section('icon', 'bi bi-person-badge fs-4 p-2 bg-soft-blue rounded-3 text-primary')
+@section('icon', 'bi bi-person-circle fs-4 p-2 bg-soft-orange rounded-3 text-accent')
 
 @section('content')
 <style>
@@ -51,12 +51,12 @@
         width: 80px; height: 80px;
         border-radius: 50%;
         object-fit: cover;
-        border: 3px solid var(--text-blue);
+        border: 3px solid var(--accent-color);
         padding: 2px;
     }
     .camera-icon {
         position: absolute; bottom: 0; right: 0;
-        background-color: var(--text-blue); color: white;
+        background-color: var(--accent-color); color: white;
         width: 24px; height: 24px; border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
         font-size: 0.8rem; cursor: pointer; border: 2px solid var(--bg-card);
@@ -104,7 +104,7 @@
         cursor: pointer;
         transition: 0.2s;
     }
-    .upload-box:hover { border-color: var(--text-blue); color: var(--text-blue); }
+    .upload-box:hover { border-color: var(--accent-color); color: var(--accent-color); }
 
     /* Footer Actions */
     .action-footer {
@@ -136,9 +136,9 @@
                 <h4 class="fw-bold text-main mb-1">Sarah Johnson</h4>
                 <p class="text-blue mb-2">Full-Stack Development</p>
                 <div class="d-flex gap-3 justify-content-center justify-content-lg-start flex-wrap">
-                    <span class="badge bg-soft-blue text-blue"><i class="bi bi-star-fill me-1"></i> 4.8</span>
-                    <span class="badge bg-soft-blue text-blue"><i class="bi bi-camera-video me-1"></i> 156 sessions</span>
-                    <span class="badge bg-soft-blue text-blue"><i class="bi bi-briefcase me-1"></i> 8 years exp.</span>
+                    <span class="badge bg-soft-orange text-accent-color"><i class="bi bi-star-fill me-1"></i> 4.8</span>
+                    <span class="badge bg-soft-orange text-accent-color"><i class="bi bi-camera-video me-1"></i> 156 sessions</span>
+                    <span class="badge bg-soft-orange text-accent-color"><i class="bi bi-briefcase me-1"></i> 8 years exp.</span>
                 </div>
             </div>
         </div>
@@ -246,7 +246,7 @@
             <div class="card-custom mb-0">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h6 class="fw-bold text-main m-0"><i class="bi bi-award me-2"></i> Skills & Expertise</h6>
-                    <button class="btn btn-sm btn-link text-decoration-none"><i class="bi bi-plus"></i> Add Skill</button>
+                    <button class="btn btn-sm btn-link text-decoration-none text-accent"><i class="bi bi-plus"></i> Add Skill</button>
                 </div>
 
                 <div class="mb-4">
@@ -276,7 +276,7 @@
                         <span class="skill-badge text-success border-success-subtle">AWS Solutions Architect <i class="bi bi-x ms-1"></i></span>
                         <span class="skill-badge text-success border-success-subtle">Google Cloud Professional <i class="bi bi-x ms-1"></i></span>
                     </div>
-                    <button class="btn btn-sm btn-warning fw-bold text-dark"><i class="bi bi-patch-check me-1"></i> Skill Verification</button>
+                    <button class="btn btn-sm  fw-bold text-white" style="background-color: var(--accent-color);"><i class="bi bi-patch-check me-1"></i> Skill Verification</button>
                 </div>
             </div>
 
@@ -287,10 +287,10 @@
             <div class="card-custom">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6 class="fw-bold text-main m-0"><i class="bi bi-file-earmark-arrow-up me-2"></i> Documents</h6>
-                    <button class="btn btn-sm btn-link text-decoration-none"><i class="bi bi-upload"></i> Upload</button>
+                    <button class="btn btn-sm btn-link text-decoration-none text-accent"><i class="bi bi-upload text-accent"></i> Upload</button>
                 </div>
                 <div class="upload-box">
-                    <i class="bi bi-cloud-upload fs-1 text-warning d-block mb-2"></i>
+                    <i class="bi bi-cloud-upload fs-1 text-accent d-block mb-2"></i>
                     <h6 class="fw-bold text-main small mb-1">Upload Documents</h6>
                     <small class="d-block" style="font-size: 0.7rem;">Resume, certificates, and credentials</small>
                 </div>
@@ -353,13 +353,13 @@
             <div class="card-custom mb-0">
                 <h6 class="fw-bold text-main mb-3"><i class="bi bi-shield-check me-2"></i> Profile Verification</h6>
 
-                <div class="bg-bg-hover p-3 rounded text-center border border-warning-subtle mb-3">
-                    <i class="bi bi-clock-history fs-3 text-warning d-block mb-2"></i>
-                    <h6 class="fw-bold text-warning small mb-1">Verification Pending</h6>
+                <div class="bg-bg-hover p-3 rounded text-center border border-accent mb-3">
+                    <i class="bi bi-clock-history fs-3 text-accent d-block mb-2"></i>
+                    <h6 class="fw-bold text-accent small mb-1">Verification Pending</h6>
                     <small class="text-muted d-block" style="font-size: 0.7rem;">Your profile is under review. You'll be notified once verified.</small>
                 </div>
 
-                <button class="btn btn-warning w-100 fw-bold text-dark btn-sm"><i class="bi bi-send me-1"></i> Request Verification</button>
+                <button class="btn btn-accent w-100 fw-bold text-dark btn-sm"><i class="bi bi-send me-1"></i> Request Verification</button>
             </div>
 
         </div>
@@ -370,7 +370,7 @@
         <div class="d-flex justify-content-between align-items-center container-fluid px-0">
             <div class="d-flex gap-2 w-100 justify-content-end">
                 <button class="btn btn-outline-primary fw-bold px-4"><i class="bi bi-eye me-1"></i> Preview</button>
-                <button class="btn btn-primary fw-bold px-4" style="background-color: var(--text-blue); border: none;"><i class="bi bi-save me-1"></i> Save Profile</button>
+                <button class="btn btn-primary fw-bold px-4" style="background-color: var(--accent-color); border: none;"><i class="bi bi-save me-1"></i> Save Profile</button>
             </div>
         </div>
     </div>

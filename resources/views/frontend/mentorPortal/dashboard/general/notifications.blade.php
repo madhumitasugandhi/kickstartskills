@@ -102,10 +102,10 @@
 
     <div class="card-custom mb-4 p-4" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;">
         <h6 class="fw-bold text-main mb-3">Filters & Actions</h6>
-
-        <div class="d-flex justify-content-between align-items-center filter-row">
+<label class="form-label small text-muted-custom fw-bold mb-1">Filter by Type</label>
+        <div class="d-flex justify-content-between align-items-center filter-row gap-3">
             <div style="flex: 2;">
-                <label class="form-label small text-muted-custom fw-bold mb-1">Filter by Type</label>
+
                 <div class="input-group">
                     <span class="input-group-text border-end-0" style="background-color: var(--bg-hover); border-color: var(--border-color); color: var(--text-muted);">
                         <i class="bi bi-funnel"></i>
@@ -118,7 +118,7 @@
                 </div>
             </div>
 
-            <div class="d-flex align-items-center gap-3 bg-bg-hover p-2 rounded border border-secondary-subtle" style="flex: 1; justify-content: space-between;">
+            <div class="d-flex align-items-center gap-3 bg-bg-hover p-2  rounded border border-secondary-subtle" style="flex: 1; justify-content: space-between;">
                 <div class="form-check form-switch m-0">
                     <input class="form-check-input" type="checkbox" role="switch">
                     <label class="form-check-label small text-muted-custom ms-2">Show only unread</label>
