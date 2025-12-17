@@ -22,8 +22,8 @@
     </div>
 
     <div class="input-group-custom">
-        <i class="bi bi-book-half input-icon"></i>
-        <input type="text" class="custom-input" value="Student" readonly style="background: rgba(255,255,255,0.7); cursor: not-allowed;">
+        <i class="bi bi-briefcase input-icon"></i>
+        <input type="text" class="custom-input" value="HR" readonly style="background: rgba(255,255,255,0.7); cursor: not-allowed;">
     </div>
 
     <div class="row g-2">
@@ -51,7 +51,7 @@
     <button type="button" class="btn-action" onclick="switchStep(2)">Continue</button>
 
     <div class="text-center mt-3">
-        <a href="{{ url('/mentor-login') }}" class="small text-white text-decoration-none opacity-75 hover:opacity-100">
+        <a href="{{ url('/hr-login') }}" class="small text-white text-decoration-none opacity-75 hover:opacity-100">
             Already have an account? <b>Sign In</b>
         </a>
     </div>

@@ -391,6 +391,22 @@ Route::prefix('mentor')->name('mentor.')->group(function () {
 });
 
 /*|------------------------------------------------End Mentor Portal Routes--------------------------------------------------|*/
+
+/*|------------------------------------------------Start HR Portal Routes--------------------------------------------------|*/
+//login
+Route::get('/hr-login', function () {
+    return view('frontend.hrPortal.auth.hr_login');
+});
+//forgot password
+Route::get('/hr/forgot-password', function () {
+    return view('frontend.hrPortal.auth.forgot_password');
+});
+//register
+Route::get('/hr/register', function () {
+    return view('frontend.hrPortal.auth.register');
+});
+/*|------------------------------------------------End HR Portal Routes--------------------------------------------------|*/
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
