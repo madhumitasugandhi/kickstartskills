@@ -405,6 +405,59 @@ Route::get('/hr/forgot-password', function () {
 Route::get('/hr/register', function () {
     return view('frontend.hrPortal.auth.register');
 });
+Route::prefix('hr')->name('hr.')->group(function () {
+
+    // 1. Dashboard
+    Route::get('/dashboard', function () {
+        return view('frontend.hrPortal.dashboard.dashboardIndex');
+    })->name('dashboard');
+
+    // 2. Employee Management
+    Route::get('/employees', function () {
+        return view('frontend.hrPortal.dashboard.employees');
+    })->name('employees');
+
+    // 3. Recruitment Pipeline
+    Route::get('/recruitment', function () {
+        return view('frontend.hrPortal.dashboard.recruitment');
+    })->name('recruitment');
+
+    // 4. Corporate Drives
+    Route::get('/drives', function () {
+        return view('frontend.hrPortal.dashboard.corporateDrives');
+    })->name('drives');
+
+    // 5. Drive Analytics (Matches sidebar: route('hr.analytics'))
+    Route::get('/drive-analytics', function () {
+        return view('frontend.hrPortal.dashboard.driveAnalytics');
+    })->name('analytics');
+
+    // 6. Performance Reviews
+    Route::get('/performance', function () {
+        return view('frontend.hrPortal.dashboard.performance');
+    })->name('performance');
+
+    // 7. Attendance Management
+    Route::get('/attendance', function () {
+        return view('frontend.hrPortal.dashboard.attendance');
+    })->name('attendance');
+
+    // 8. HR Analytics (Reports)
+    Route::get('/reports', function () {
+        return view('frontend.hrPortal.dashboard.reports');
+    })->name('reports');
+
+    // 9. Notifications
+    Route::get('/notifications', function () {
+        return view('frontend.hrPortal.dashboard.notifications');
+    })->name('notifications');
+
+    // 10. Settings
+    Route::get('/settings', function () {
+        return view('frontend.hrPortal.dashboard.settings');
+    })->name('settings');
+
+});
 /*|------------------------------------------------End HR Portal Routes--------------------------------------------------|*/
 
 Route::get('/dashboard', function () {
