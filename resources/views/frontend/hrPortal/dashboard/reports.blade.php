@@ -2,43 +2,67 @@
 
 @section('title', 'HR Analytics')
 
-@section('icon', 'bi bi-bar-chart-fill fs-4 p-2 bg-soft-purple-custom rounded-3 text-purple-custom')
+@section('icon', 'bi bi-bar-chart-fill fs-4 p-2 bg-soft-orange rounded-3 text-accent')
 
 @section('content')
 <style>
     /* --- Page Specific Styles --- */
 
-    /* Header Banner */
+    /* Header Banner - Responsive Update */
     .analytics-header {
-        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); /* Deep Indigo/Purple */
+        background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%);
         border-radius: 16px;
         padding: 24px;
         margin-bottom: 24px;
         color: white;
         border: 1px solid rgba(255,255,255,0.1);
-        display: flex; justify-content: space-between; align-items: center;
+        display: flex;
+        /* Mobile Layout: Stack vertically */
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
     }
+
+    /* Desktop Layout: Side by side */
+    @media (min-width: 768px) {
+        .analytics-header {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+
     .badge-live {
         background-color: rgba(16, 185, 129, 0.2); color: #34d399;
         border: 1px solid rgba(16, 185, 129, 0.3);
         padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
         display: flex; align-items: center; gap: 6px;
+        white-space: nowrap; /* Prevent text wrap */
     }
     .badge-live::before {
         content: ''; width: 8px; height: 8px; background-color: #34d399; border-radius: 50%;
         box-shadow: 0 0 8px #34d399;
     }
 
-    /* Filter Bar */
-    .filter-bar { display: flex; gap: 16px; margin-bottom: 24px; }
+    /* Filter Bar - Responsive Update */
+    .filter-bar {
+        display: flex;
+        flex-wrap: wrap; /* Allow wrapping on mobile */
+        gap: 16px;
+        margin-bottom: 24px;
+    }
     .filter-select {
         background-color: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main);
-        padding: 10px 16px; border-radius: 8px; flex-grow: 1; outline: none;
+        padding: 10px 16px; border-radius: 8px;
+        flex-grow: 1; /* Expand to fill space */
+        min-width: 200px; /* Ensure not too small on mobile */
+        outline: none;
     }
     .btn-download {
         background-color: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted);
         width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
         border-radius: 8px; transition: 0.2s;
+        flex-shrink: 0; /* Prevent shrinking */
     }
     .btn-download:hover { color: var(--text-main); border-color: var(--accent-color); }
 
@@ -62,19 +86,24 @@
 
     /* --- CHARTS (CSS Only) --- */
 
-    /* 1. Headcount Trend (Line Chart Area) */
+    /* 1. Headcount Trend */
     .chart-container {
         background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;
         padding: 24px; margin-bottom: 24px;
     }
-    .line-chart-svg { width: 100%; height: 200px; }
+    .line-chart-svg { width: 100%; height: auto; min-height: 200px; }
     .chart-line { fill: none; stroke: #8b5cf6; stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 4px 6px rgba(139, 92, 246, 0.4)); }
     .chart-grid { stroke: var(--border-color); stroke-width: 1; stroke-dasharray: 4; opacity: 0.3; }
     .chart-dot { fill: var(--bg-card); stroke: #8b5cf6; stroke-width: 2; }
 
-    /* 2. Recruitment Funnel (Bar Chart) */
+    /* 2. Recruitment Funnel (Bar Chart) - Responsive Container */
     .funnel-container {
-        display: flex; justify-content: space-around; align-items: flex-end; height: 180px; padding-top: 20px;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+        height: 180px;
+        padding-top: 20px;
+        overflow-x: auto; /* Allow scroll if very narrow */
     }
     .funnel-bar { width: 12px; border-radius: 6px 6px 0 0; position: relative; transition: height 1s; }
     .funnel-label { font-size: 0.7rem; color: var(--text-muted); text-align: center; margin-top: 8px; }
@@ -82,7 +111,8 @@
     /* Floating Stats in Funnel */
     .funnel-stat-box {
         background-color: rgba(255,255,255,0.03); border: 1px solid var(--border-color);
-        padding: 8px 12px; border-radius: 8px; text-align: center; margin-bottom: 12px;
+        padding: 8px 12px; border-radius: 8px; text-align: center; margin-bottom: 12px; height: 100%;
+        display: flex; flex-direction: column; justify-content: center;
     }
 
     /* 3. Diversity Donut */
@@ -91,6 +121,7 @@
         background: conic-gradient(#3b82f6 0% 42%, #8b5cf6 42% 100%);
         position: relative; margin: 0 auto;
         display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
     }
     .donut-lg::after {
         content: ""; position: absolute; width: 110px; height: 110px;
@@ -126,8 +157,22 @@
 </div>
 
 <div class="filter-bar">
-    <select class="filter-select"><option>This Month</option><option>Last Quarter</option><option>This Year</option></select>
-    <select class="filter-select"><option>All Departments</option><option>Engineering</option><option>Sales</option></select>
+    <select class="filter-select">
+        <option>This Week</option>
+        <option>This Month</option>
+        <option>LAst Month</option>
+        <option>This Quarter</option>
+        <option>This Year</option>
+    </select>
+    <select class="filter-select">
+         <option>All Departments</option>
+        <option>Engineering</option>
+        <option>Sales</option>
+        <option>HR</option>
+        <option>Finance</option>
+        <option>Operations</option>
+        <option>Marketing</option>
+    </select>
     <button class="btn-download"><i class="bi bi-download"></i></button>
 </div>
 
@@ -140,7 +185,7 @@
             </div>
             <h3 class="fw-bold text-main mb-1">247</h3>
             <div class="d-flex justify-content-between align-items-end">
-                <small class="--text-muted">Total Headcount</small>
+                <small class="dd--text-muted">Total Headcount</small>
                 <span class="trend-badge trend-up">+8.5%</span>
             </div>
         </div>
@@ -153,8 +198,8 @@
             </div>
             <h3 class="fw-bold text-main mb-1">4.2</h3>
             <div class="d-flex justify-content-between align-items-end">
-                <small class="--text-muted">Avg Performance</small>
-                <span class="small --text-muted">Out of 5.0</span>
+                <small class="dd--text-muted">Avg Performance</small>
+                <span class="small dd--text-muted">Out of 5.0</span>
             </div>
         </div>
     </div>
@@ -166,7 +211,7 @@
             </div>
             <h3 class="fw-bold text-main mb-1">94.2%</h3>
             <div class="d-flex justify-content-between align-items-end">
-                <small class="--text-muted">Attendance Rate</small>
+                <small class="dd--text-muted">Attendance Rate</small>
                 <span class="trend-badge trend-up">+2.1%</span>
             </div>
         </div>
@@ -179,7 +224,7 @@
             </div>
             <h3 class="fw-bold text-main mb-1">12.8%</h3>
             <div class="d-flex justify-content-between align-items-end">
-                <small class="--text-muted">Turnover Rate</small>
+                <small class="dd--text-muted">Turnover Rate</small>
                 <span class="trend-badge trend-down">-1.2%</span>
             </div>
         </div>
@@ -190,7 +235,7 @@
     <div class="col-12 col-lg-8">
         <div class="chart-container h-100">
             <h6 class="fw-bold text-main mb-4">Headcount Trend</h6>
-            <svg class="line-chart-svg" viewBox="0 0 500 200">
+            <svg class="line-chart-svg" viewBox="0 0 500 200" preserveAspectRatio="none">
                 <line x1="0" y1="150" x2="500" y2="150" class="chart-grid" />
                 <line x1="0" y1="100" x2="500" y2="100" class="chart-grid" />
                 <line x1="0" y1="50" x2="500" y2="50" class="chart-grid" />
@@ -201,7 +246,7 @@
                 <circle cx="250" cy="100" r="4" class="chart-dot" />
                 <circle cx="500" cy="50" r="4" class="chart-dot" />
             </svg>
-            <div class="d-flex justify-content-between mt-2 --text-muted small" style="font-size: 0.7rem;">
+            <div class="d-flex justify-content-between mt-2 dd--text-muted small" style="font-size: 0.7rem;">
                 <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
             </div>
         </div>
@@ -229,7 +274,7 @@
                     <i class="bi bi-trophy-fill text-warning"></i>
                     <span class="fw-bold text-main small">Top Performers</span>
                 </div>
-                <small class="--text-muted">15 employees achieved 'Exceeds Expectations'</small>
+                <small class="dd--text-muted">15 employees achieved 'Exceeds Expectations'</small>
             </div>
         </div>
     </div>
@@ -241,28 +286,28 @@
             <h6 class="fw-bold text-main mb-4">Recruitment Pipeline</h6>
 
             <div class="row g-3 mb-4">
-                <div class="col-md-3">
+                <div class="col-6 col-md-3">
                     <div class="funnel-stat-box">
                         <h5 class="fw-bold text-blue mb-0">1243</h5>
-                        <small class="--text-muted" style="font-size: 0.7rem;">Total Applications</small>
+                        <small class="dd--text-muted" style="font-size: 0.7rem;">Applications</small>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-6 col-md-3">
                     <div class="funnel-stat-box">
                         <h5 class="fw-bold text-green mb-0">18</h5>
-                        <small class="--text-muted" style="font-size: 0.7rem;">Successful Hires</small>
+                        <small class="dd--text-muted" style="font-size: 0.7rem;">Hires</small>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-6 col-md-3">
                     <div class="funnel-stat-box">
                         <h5 class="fw-bold text-warning mb-0">1.4%</h5>
-                        <small class="--text-muted" style="font-size: 0.7rem;">Conversion Rate</small>
+                        <small class="dd--text-muted" style="font-size: 0.7rem;">Conversion</small>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-6 col-md-3">
                     <div class="funnel-stat-box">
                         <h5 class="fw-bold text-purple-custom mb-0">21.5d</h5>
-                        <small class="--text-muted" style="font-size: 0.7rem;">Avg Time to Hire</small>
+                        <small class="dd--text-muted" style="font-size: 0.7rem;">Time to Hire</small>
                     </div>
                 </div>
             </div>
@@ -314,7 +359,7 @@
             </div>
 
             <h6 class="fw-bold text-main mt-4 mb-3">Diversity Analysis</h6>
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center justify-content-center justify-content-md-start">
                 <div class="donut-lg me-3">
                     <span class="donut-text">42%<br><small style="font-size:0.7rem; font-weight:normal;">Female</small></span>
                 </div>

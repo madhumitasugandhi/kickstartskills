@@ -2,7 +2,7 @@
 
 @section('title', 'Notifications')
 
-@section('icon', 'bi bi-bell-fill fs-4 p-2 bg-soft-purple-custom rounded-3 text-purple-custom')
+@section('icon', 'bi bi-bell-fill fs-4 p-2 bg-soft-orange rounded-3 text-accent')
 
 @section('content')
 <style>
@@ -30,6 +30,7 @@
         border-radius: 8px;
         flex-grow: 1;
         outline: none;
+        width: 100%; /* Full width on mobile */
     }
     .btn-refresh {
         background-color: var(--bg-card);
@@ -39,6 +40,7 @@
         display: flex; align-items: center; justify-content: center;
         border-radius: 8px;
         transition: 0.2s;
+        flex-shrink: 0; /* Prevent shrinking */
     }
     .btn-refresh:hover { border-color: var(--accent-color); color: var(--accent-color); }
 
@@ -64,7 +66,7 @@
 
     /* Icons inside Card */
     .notify-icon {
-        font-size: 1.2rem; margin-right: 12px;
+        font-size: 1.2rem; margin-right: 12px; flex-shrink: 0; /* Icon shouldn't shrink */
     }
     .text-blue { color: #3b82f6; }
     .text-red { color: #ef4444; }
@@ -100,21 +102,28 @@
         background-color: rgba(239, 68, 68, 0.15); color: #ef4444;
         border: 1px solid rgba(239, 68, 68, 0.2);
         padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+        white-space: nowrap;
     }
 
     .mark-read-btn {
-        color: var(--text-muted); font-size: 0.8rem; text-decoration: none; transition: 0.2s;
+        color: var(--text-muted); font-size: 0.8rem; text-decoration: none; transition: 0.2s; white-space: nowrap;
     }
     .mark-read-btn:hover { color: var(--accent-color); }
 
     /* Utilities */
     .text-purple-custom { color: #8b5cf6; }
     .bg-soft-purple-custom { background-color: rgba(139, 92, 246, 0.1); }
+
+    /* Responsive Media Queries handled via Bootstrap classes mostly,
+       but ensure select inputs scale correctly */
+    @media (min-width: 768px) {
+        .filter-select { width: auto; }
+    }
 </style>
 
-<div class="header-card">
-    <div class="d-flex align-items-center gap-3">
-        <div class="rounded-circle bg-soft-purple-custom d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+<div class="header-card flex-column flex-sm-row text-center text-sm-start gap-3">
+    <div class="d-flex flex-column flex-sm-row align-items-center gap-3">
+        <div class="rounded-circle bg-soft-purple-custom d-flex align-items-center justify-content-center flex-shrink-0" style="width: 48px; height: 48px;">
             <i class="bi bi-bell-fill text-purple-custom fs-4"></i>
         </div>
         <div>
@@ -122,106 +131,109 @@
             <small class="--text-muted">Stay updated with important HR activities and alerts</small>
         </div>
     </div>
-    <div class="text-end">
+    <div class="text-center text-sm-end w-100 w-sm-auto mt-2 mt-sm-0">
         <span class="badge-unread-main mb-1 d-inline-block">4 Unread</span>
         <br>
         <a href="#" class="mark-read-btn">Mark all read</a>
     </div>
 </div>
 
-<div class="filter-bar">
+<div class="filter-bar flex-column flex-md-row">
     <select class="filter-select">
-        <option>All Types</option>
+        <option>All</option>
         <option>Applications</option>
         <option>Interviews</option>
+        <otiion>Performance</otiion>
+        <option>Attendance</option>
         <option>System</option>
+        <option>Urgent</option>
     </select>
     <select class="filter-select">
-        <option>All Priorities</option>
-        <option>Urgent</option>
-        <option>High</option>
-        <option>Medium</option>
+        <option>All</option>
+        <option>Unread</option>
+        <option>Read</option>
+        <option>Archived</option>
     </select>
-    <button class="btn-refresh"><i class="bi bi-arrow-clockwise"></i></button>
+    <button class="btn-refresh w-100 w-md-auto"><i class="bi bi-arrow-clockwise"></i></button>
 </div>
 
 <div class="d-flex flex-column">
 
     <div class="notify-card notify-blue">
-        <div class="d-flex justify-content-between align-items-start">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start gap-2">
             <div class="d-flex">
-                <i class="bi bi-file-earmark-text-fill notify-icon text-blue"></i>
+                <i class="bi bi-file-earmark-text-fill notify-icon text-blue mt-1"></i>
                 <div>
                     <h6 class="fw-bold text-main mb-1">New Job Application Received</h6>
                     <p class="--text-muted small mb-0">Sarah Martinez has applied for Senior Software Engineer position</p>
                 </div>
             </div>
-            <div class="text-end">
+            <div class="text-start text-sm-end w-100 w-sm-auto ps-4 ps-sm-0">
                 <div class="priority-badge text-orange mb-1"><span class="dot dot-orange"></span> High</div>
                 <small class="--text-muted" style="font-size: 0.7rem;">5m ago</small>
             </div>
         </div>
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center mt-2">
             <a href="#" class="action-link text-blue"><i class="bi bi-arrow-return-right"></i> View Application</a>
             <i class="bi bi-three-dots-vertical card-menu small"></i>
         </div>
     </div>
 
     <div class="notify-card notify-red">
-        <div class="d-flex justify-content-between align-items-start">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start gap-2">
             <div class="d-flex">
-                <i class="bi bi-calendar-event-fill notify-icon text-red"></i>
+                <i class="bi bi-calendar-event-fill notify-icon text-red mt-1"></i>
                 <div>
                     <h6 class="fw-bold text-main mb-1">Interview Reminder</h6>
                     <p class="--text-muted small mb-0">Interview with David Chen scheduled in 30 minutes</p>
                 </div>
             </div>
-            <div class="text-end">
+            <div class="text-start text-sm-end w-100 w-sm-auto ps-4 ps-sm-0">
                 <div class="priority-badge text-red mb-1"><span class="dot dot-red"></span> Urgent</div>
                 <small class="--text-muted" style="font-size: 0.7rem;">10m ago</small>
             </div>
         </div>
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center mt-2">
             <a href="#" class="action-link text-red"><i class="bi bi-camera-video"></i> Join Interview</a>
             <i class="bi bi-three-dots-vertical card-menu small"></i>
         </div>
     </div>
 
     <div class="notify-card notify-green">
-        <div class="d-flex justify-content-between align-items-start">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start gap-2">
             <div class="d-flex">
-                <i class="bi bi-star-fill notify-icon text-green"></i>
+                <i class="bi bi-star-fill notify-icon text-green mt-1"></i>
                 <div>
                     <h6 class="fw-bold text-main mb-1">Performance Review Due</h6>
                     <p class="--text-muted small mb-0">5 employees have performance reviews due this week</p>
                 </div>
             </div>
-            <div class="text-end">
+            <div class="text-start text-sm-end w-100 w-sm-auto ps-4 ps-sm-0">
                 <div class="priority-badge text-blue mb-1"><span class="dot dot-blue"></span> Medium</div>
                 <small class="--text-muted" style="font-size: 0.7rem;">2h ago</small>
             </div>
         </div>
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center mt-2">
             <a href="#" class="action-link text-green"><i class="bi bi-clipboard-check"></i> Review Performance</a>
             <i class="bi bi-three-dots-vertical card-menu small"></i>
         </div>
     </div>
 
     <div class="notify-card notify-orange">
-        <div class="d-flex justify-content-between align-items-start">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start gap-2">
             <div class="d-flex">
-                <i class="bi bi-clock-history notify-icon text-orange"></i>
+                <i class="bi bi-clock-history notify-icon text-orange mt-1"></i>
                 <div>
                     <h6 class="fw-bold text-main mb-1">Attendance Alert</h6>
                     <p class="--text-muted small mb-0">Emma Wilson has been marked absent for 3 consecutive days</p>
                 </div>
             </div>
-            <div class="text-end">
+            <div class="text-start text-sm-end w-100 w-sm-auto ps-4 ps-sm-0">
                 <div class="priority-badge text-orange mb-1"><span class="dot dot-orange"></span> High</div>
                 <small class="--text-muted" style="font-size: 0.7rem;">4h ago</small>
             </div>
         </div>
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center mt-2">
             <a href="#" class="action-link text-orange"><i class="bi bi-person-check"></i> Check Attendance</a>
             <i class="bi bi-three-dots-vertical card-menu small"></i>
         </div>

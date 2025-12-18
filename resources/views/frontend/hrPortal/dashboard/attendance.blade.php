@@ -2,7 +2,7 @@
 
 @section('title', 'Attendance Management')
 
-@section('icon', 'bi bi-calendar-check-fill fs-4 p-2 bg-soft-accent rounded-3 text-accent')
+@section('icon', 'bi bi-calendar-check-fill fs-4 p-2 bg-soft-orange rounded-3 text-accent')
 
 @section('content')
 <style>
@@ -17,32 +17,72 @@
         text-align: center;
         transition: transform 0.2s;
         height: 100%;
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
-    .stat-card-attend:hover { transform: translateY(-3px); }
 
-    .stat-icon { font-size: 1.5rem; margin-bottom: 8px; }
+    .stat-card-attend:hover {
+        transform: translateY(-3px);
+    }
 
-    .attend-green { color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); background-color: rgba(16, 185, 129, 0.05); }
-    .attend-red { color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); background-color: rgba(239, 68, 68, 0.05); }
-    .attend-orange { color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); background-color: rgba(245, 158, 11, 0.05); }
-    .attend-blue { color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); background-color: rgba(59, 130, 246, 0.05); }
+    .stat-icon {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+    }
+
+    .attend-green {
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        background-color: rgba(16, 185, 129, 0.05);
+    }
+
+    .attend-red {
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        background-color: rgba(239, 68, 68, 0.05);
+    }
+
+    .attend-orange {
+        color: #f59e0b;
+        border: 1px solid rgba(245, 158, 11, 0.2);
+        background-color: rgba(245, 158, 11, 0.05);
+    }
+
+    .attend-blue {
+        color: #3b82f6;
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        background-color: rgba(59, 130, 246, 0.05);
+    }
 
     /* Filter Bar */
     .filter-bar {
-        display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px;
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
     }
+
     .search-container {
         background-color: var(--bg-card);
         border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 12px 16px;
         flex-grow: 1;
-        display: flex; align-items: center; gap: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
     }
+
     .search-input {
-        background: transparent; border: none; color: var(--text-main); width: 100%; outline: none;
+        background: transparent;
+        border: none;
+        color: var(--text-main);
+        width: 100%;
+        outline: none;
     }
+
     .date-select {
         background-color: var(--bg-card);
         border: 1px solid var(--border-color);
@@ -61,62 +101,101 @@
         padding: 20px 24px;
         margin-bottom: 16px;
         transition: border-color 0.2s, transform 0.2s;
-        cursor: pointer; /* Makes it look clickable */
+        cursor: pointer;
+        /* Makes it look clickable */
     }
+
     .attendance-card:hover {
         border-color: var(--accent-color);
         transform: scale(1.002);
     }
 
     .avatar-md {
-        width: 48px; height: 48px;
+        width: 48px;
+        height: 48px;
         border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        font-weight: bold; font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1rem;
         background-color: var(--bg-body);
         border: 2px solid var(--border-color);
     }
 
     /* Status Badge */
     .status-badge {
-        padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
     }
-    .bg-status-present { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }
+
+    .bg-status-present {
+        background-color: rgba(16, 185, 129, 0.15);
+        color: #10b981;
+    }
 
     /* Toast Notification (Initially Hidden) */
     .toast-custom {
         position: fixed;
-        bottom: 24px; left: 24px; right: 24px;
-        background-color: #3b82f6; /* Blue background */
+        bottom: 24px;
+        left: 24px;
+        right: 24px;
+        background-color: #3b82f6;
+        /* Blue background */
         color: white;
         padding: 16px 24px;
         border-radius: 8px;
         z-index: 1050;
         box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
-        display: none; /* HIDDEN BY DEFAULT */
-        align-items: center; justify-content: space-between;
+        display: none;
+        /* HIDDEN BY DEFAULT */
+        align-items: center;
+        justify-content: space-between;
         animation: slideUp 0.3s ease-out;
     }
 
     @media(min-width: 992px) {
-        .toast-custom { left: 284px; }
+        .toast-custom {
+            left: 284px;
+        }
     }
 
     @keyframes slideUp {
-        from { transform: translateY(100%); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+        from {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
 
     /* Utilities */
-    .text-purple-custom { color: #8b5cf6; }
-    .bg-soft-purple-custom { background-color: rgba(139, 92, 246, 0.1); }
-    .text-teal-custom { color: #14b8a6; }
-    .bg-soft-teal-custom { background-color: rgba(20, 184, 166, 0.1); }
+    .text-purple-custom {
+        color: #8b5cf6;
+    }
+
+    .bg-soft-purple-custom {
+        background-color: rgba(139, 92, 246, 0.1);
+    }
+
+    .text-teal-custom {
+        color: #14b8a6;
+    }
+
+    .bg-soft-teal-custom {
+        background-color: rgba(20, 184, 166, 0.1);
+    }
 </style>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h5 class="fw-bold m-0 text-main">Attendance Overview</h5>
-    <span class="text-muted small">17/12/2025</span>
+    <span class="--text-muted small">17/12/2025</span>
 </div>
 
 <div class="row g-4 mb-4">
@@ -156,14 +235,31 @@
         <input type="text" class="search-input" placeholder="Search employees...">
     </div>
     <select class="date-select">
-        <option>This Week</option>
         <option>Today</option>
+        <option>This Week</option>
+        <option>This Month</option>
+        <option>Last Month</option>
     </select>
 </div>
 
 <div class="d-flex gap-3 mb-4">
-    <select class="date-select flex-grow-1" style="min-width: auto;"><option>All</option></select>
-    <select class="date-select flex-grow-1" style="min-width: auto;"><option>All</option></select>
+    <select class="date-select flex-grow-1" style="min-width: auto;">
+        <option>All</option>
+        <option>Engineering</option>
+        <option>Sales</option>
+        <option>HR</option>
+        <option>Finance</option>
+        <option>Operations</option>
+        <option>Marketing</option>
+    </select>
+    <select class="date-select flex-grow-1" style="min-width: auto;">
+        <option>All</option>
+        <option>Present</option>
+        <option>Absent</option>
+        <option>Late</option>
+        <option>Half Day</option>
+        <option>Remote</option>
+    </select>
 </div>
 
 <div class="d-flex flex-column">

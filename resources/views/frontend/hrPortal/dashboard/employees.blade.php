@@ -2,7 +2,7 @@
 
 @section('title', 'Employee Management')
 
-@section('icon', 'bi bi-people-fill fs-4 p-2 bg-soft-accent rounded-3 text-accent')
+@section('icon', 'bi bi-people-fill fs-4 p-2 bg-soft-orange rounded-3 text-accent')
 
 @section('content')
 <style>
@@ -192,20 +192,33 @@
 <div class="filter-container mb-4">
     <div class="d-flex align-items-center flex-grow-1 gap-2 w-100 w-md-auto">
         <i class="bi bi-search text-muted-custom fs-5"></i>
-        <input type="text" class="search-input" placeholder="Search employees...">
+        <input type="text w-50" class="search-input" placeholder="Search employees...">
+        <select class="filter-select">
+            <option>All</option>
+            <option>Engineering</option>
+            <option>Sales</option>
+            <option>HR</option>
+            <option>Finance</option>
+            <option>Operations</option>
+            <option>Marketing</option>
+        </select>
     </div>
 
     <div class="d-flex gap-3 w-100 w-md-auto overflow-auto">
         <select class="filter-select">
-            <option>All Departments</option>
-            <option>Engineering</option>
-            <option>Design</option>
-            <option>Marketing</option>
+            <option>All</option>
+            <option>Active</option>
+            <option>Inactive</option>
+            <option>On Leave</option>
+            <option>Probation</option>
         </select>
         <select class="filter-select">
-            <option>All Status</option>
-            <option>Active</option>
-            <option>On Leave</option>
+            <option>All</option>
+            <option>Manager</option>
+            <option>Senior</option>
+            <option>Junior</option>
+            <option>Intern</option>
+            <option>Mid-level</option>
         </select>
 
         <button class="btn-add flex-shrink-0">

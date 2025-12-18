@@ -2,7 +2,7 @@
 
 @section('title', 'Performance Reviews')
 
-@section('icon', 'bi bi-star-fill fs-4 p-2 bg-soft-purple-custom rounded-3 text-purple-custom')
+@section('icon', 'bi bi-star fs-4 p-2 bg-soft-orange rounded-3 text-accent')
 
 @section('content')
 <style>
@@ -14,41 +14,80 @@
         border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 20px;
-        display: flex; align-items: center; gap: 16px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
         transition: transform 0.2s;
         height: 100%;
     }
-    .stat-card-perf:hover { transform: translateY(-3px); }
+
+    .stat-card-perf:hover {
+        transform: translateY(-3px);
+    }
 
     .stat-icon-box {
-        width: 48px; height: 48px;
+        width: 48px;
+        height: 48px;
         border-radius: 10px;
-        display: flex; align-items: center; justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 1.2rem;
         flex-shrink: 0;
     }
 
     /* Color Variants */
-    .accent-purple { color: #8b5cf6; background-color: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.2); }
-    .accent-green { color: #10b981; background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); }
-    .accent-blue { color: #3b82f6; background-color: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); }
-    .accent-red { color: #ef4444; background-color: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
+    .accent-purple {
+        color: #8b5cf6;
+        background-color: rgba(139, 92, 246, 0.1);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .accent-green {
+        color: #10b981;
+        background-color: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .accent-blue {
+        color: #3b82f6;
+        background-color: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .accent-red {
+        color: #ef4444;
+        background-color: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+    }
 
     /* Filter Bar */
     .filter-container {
-        display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px;
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
     }
+
     .search-box {
         background-color: var(--bg-card);
         border: 1px solid var(--border-color);
         border-radius: 8px;
         padding: 10px 16px;
         flex-grow: 1;
-        display: flex; align-items: center; gap: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
+
     .search-input {
-        background: transparent; border: none; color: var(--text-main); width: 100%; outline: none;
+        background: transparent;
+        border: none;
+        color: var(--text-main);
+        width: 100%;
+        outline: none;
     }
+
     .filter-select {
         background-color: var(--bg-card);
         border: 1px solid var(--border-color);
@@ -69,16 +108,21 @@
         transition: border-color 0.2s, transform 0.2s;
         cursor: pointer;
     }
+
     .review-card:hover {
         border-color: var(--accent-color);
         transform: scale(1.005);
     }
 
     .avatar-md {
-        width: 48px; height: 48px;
+        width: 48px;
+        height: 48px;
         border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        font-weight: bold; font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1rem;
         background-color: var(--bg-body);
         border: 2px solid var(--border-color);
     }
@@ -92,6 +136,7 @@
         margin-top: 8px;
         margin-bottom: 12px;
     }
+
     .progress-fill {
         height: 100%;
         background-color: #f59e0b;
@@ -110,32 +155,58 @@
 
     /* Status Badge */
     .status-badge {
-        font-size: 0.75rem; padding: 4px 12px; border-radius: 12px; font-weight: 600;
+        font-size: 0.75rem;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-weight: 600;
     }
-    .status-progress { background-color: rgba(59, 130, 246, 0.15); color: #3b82f6; }
-    .status-pending { background-color: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+
+    .status-progress {
+        background-color: rgba(59, 130, 246, 0.15);
+        color: #3b82f6;
+    }
+
+    .status-pending {
+        background-color: rgba(245, 158, 11, 0.15);
+        color: #f59e0b;
+    }
 
     /* Action Icons */
     .action-btn {
-        background: none; border: none; color: #10b981; font-size: 1.1rem; padding: 4px; transition: 0.2s;
+        background: none;
+        border: none;
+        color: #10b981;
+        font-size: 1.1rem;
+        padding: 4px;
+        transition: 0.2s;
     }
-    .action-btn:hover { color: white; }
+
+    .action-btn:hover {
+        color: white;
+    }
 
     /* Utilities */
-    .text-purple-custom { color: #8b5cf6; }
-    .bg-soft-purple-custom { background-color: rgba(139, 92, 246, 0.1); }
+    .text-purple-custom {
+        color: #8b5cf6;
+    }
+
+    .bg-soft-purple-custom {
+        background-color: rgba(139, 92, 246, 0.1);
+    }
 
     /* --- MODAL STYLES (Added) --- */
     .modal-content-custom {
         background-color: var(--bg-card);
         border: 1px solid var(--border-color);
         border-radius: 16px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     }
+
     .modal-header-custom {
         border-bottom: 1px solid var(--border-color);
         padding: 20px 24px;
     }
+
     .modal-body-custom {
         padding: 24px;
         color: var(--text-main);
@@ -151,10 +222,20 @@
     }
 
     .info-row {
-        display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
     }
-    .info-label { color: var(--text-muted); }
-    .info-value { color: var(--text-main); font-weight: 500; }
+
+    .info-label {
+        color: var(--text-muted);
+    }
+
+    .info-value {
+        color: var(--text-main);
+        font-weight: 500;
+    }
 
     /* Modal Goal Item */
     .goal-item {
@@ -164,18 +245,38 @@
         margin-bottom: 12px;
         border: 1px solid var(--border-color);
     }
+
     .badge-track {
-        background-color: rgba(16, 185, 129, 0.1); color: #10b981; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px;
+        background-color: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        border-radius: 4px;
     }
 
     /* Modal Pills */
     .pill-strength {
-        background-color: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2);
-        padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; display: inline-block; margin-right: 6px; margin-bottom: 6px;
+        background-color: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        display: inline-block;
+        margin-right: 6px;
+        margin-bottom: 6px;
     }
+
     .pill-improvement {
-        background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2);
-        padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; display: inline-block; margin-right: 6px; margin-bottom: 6px;
+        background-color: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+        border: 1px solid rgba(245, 158, 11, 0.2);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        display: inline-block;
+        margin-right: 6px;
+        margin-bottom: 6px;
     }
 </style>
 
@@ -183,7 +284,9 @@
     <div class="d-flex justify-content-between align-items-center mb-4 filter-container m-0">
         <h5 class="fw-bold m-0 text-main">Performance Overview</h5>
         <div class="d-flex align-items-center gap-3">
-            <span class="badge bg-soft-purple-custom text-accent px-3 py-2 rounded-pill border border-light border-opacity-10">Q4 2024</span>
+            <span
+                class="badge bg-soft-purple-custom text-accent px-3 py-2 rounded-pill border border-light border-opacity-10">Q4
+                2024</span>
         </div>
     </div>
 
@@ -241,15 +344,31 @@
         <input type="text" class="search-input" placeholder="Search employees...">
     </div>
     <select class="filter-select">
-        <option>All Departments</option>
-        <option>Engineering</option>
-        <option>Marketing</option>
+        <option>All</option>
+        <option>Not Started</option>
+        <option>In Progress</option>
+        <option>Pending Review</option>
+        <option>Completed</option>
+        <option>Overdue</option>
+    </select>
+</div>
+<div class="d-flex gap-3 w-100 w-md-auto overflow-auto mb-2">
+    <select class="filter-select">
+        <option>All</option>
+        <option>Q1 2024</option>
+        <option>Q2 2024</option>
+        <option>Q3 2024</option>
+        <option>Q4 2024</option>
+        <option>Annual</option>
     </select>
     <select class="filter-select">
-        <option>All Status</option>
-        <option>In Progress</option>
-        <option>Pending</option>
-        <option>Completed</option>
+        <option>All</option>
+        <option>Engineering</option>
+        <option>Sales</option>
+        <option>HR</option>
+        <option>Finance</option>
+        <option>Operations</option>
+        <option>Marketing</option>
     </select>
 </div>
 
@@ -290,8 +409,10 @@
                         <small class="text-danger"><i class="bi bi-calendar-event me-1"></i> Due 367 days ago</small>
                         <div class="d-flex gap-2">
                             <button class="action-btn"><i class="bi bi-play-circle"></i></button>
-                            <button class="action-btn" style="color: #3b82f6;"><i class="bi bi-calendar-check"></i></button>
-                            <button class="action-btn" style="color: var(--text-muted);"><i class="bi bi-three-dots-vertical"></i></button>
+                            <button class="action-btn" style="color: #3b82f6;"><i
+                                    class="bi bi-calendar-check"></i></button>
+                            <button class="action-btn" style="color: var(--text-muted);"><i
+                                    class="bi bi-three-dots-vertical"></i></button>
                         </div>
                     </div>
                 </div>
@@ -333,8 +454,10 @@
                         <small class="text-danger"><i class="bi bi-calendar-event me-1"></i> Due 370 days ago</small>
                         <div class="d-flex gap-2">
                             <button class="action-btn"><i class="bi bi-play-circle"></i></button>
-                            <button class="action-btn" style="color: #3b82f6;"><i class="bi bi-calendar-check"></i></button>
-                            <button class="action-btn" style="color: var(--text-muted);"><i class="bi bi-three-dots-vertical"></i></button>
+                            <button class="action-btn" style="color: #3b82f6;"><i
+                                    class="bi bi-calendar-check"></i></button>
+                            <button class="action-btn" style="color: var(--text-muted);"><i
+                                    class="bi bi-three-dots-vertical"></i></button>
                         </div>
                     </div>
                 </div>
@@ -350,14 +473,16 @@
 
             <div class="modal-header-custom d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-3">
-                    <div class="avatar-md text-purple-custom bg-soft-purple-custom" style="border-color: #8b5cf6;">SJ</div>
+                    <div class="avatar-md text-purple-custom bg-soft-purple-custom" style="border-color: #8b5cf6;">SJ
+                    </div>
                     <div>
                         <h5 class="fw-bold text-main mb-0">Sarah Johnson</h5>
                         <div class="--text-muted small">Senior Software Engineer • Engineering</div>
                         <span class="status-badge status-progress mt-1 d-inline-block">In Progress</span>
                     </div>
                 </div>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
 
             <div class="modal-body-custom">
@@ -365,10 +490,14 @@
                     <div class="col-md-6">
                         <div class="mb-4">
                             <h6 class="section-title">Review Information</h6>
-                            <div class="info-row"><span class="info-label"><i class="bi bi-calendar3 me-2"></i>Review Period:</span> <span class="info-value">Q4 2024</span></div>
-                            <div class="info-row"><span class="info-label"><i class="bi bi-tag me-2"></i>Review Type:</span> <span class="info-value">Quarterly</span></div>
-                            <div class="info-row"><span class="info-label"><i class="bi bi-clock me-2"></i>Due Date:</span> <span class="info-value">15/12/2024</span></div>
-                            <div class="info-row"><span class="info-label"><i class="bi bi-star me-2"></i>Final Score:</span> <span class="info-value">4.1/5.0</span></div>
+                            <div class="info-row"><span class="info-label"><i class="bi bi-calendar3 me-2"></i>Review
+                                    Period:</span> <span class="info-value">Q4 2024</span></div>
+                            <div class="info-row"><span class="info-label"><i class="bi bi-tag me-2"></i>Review
+                                    Type:</span> <span class="info-value">Quarterly</span></div>
+                            <div class="info-row"><span class="info-label"><i class="bi bi-clock me-2"></i>Due
+                                    Date:</span> <span class="info-value">15/12/2024</span></div>
+                            <div class="info-row"><span class="info-label"><i class="bi bi-star me-2"></i>Final
+                                    Score:</span> <span class="info-value">4.1/5.0</span></div>
                         </div>
 
                         <div>
@@ -395,7 +524,8 @@
                                 <span class="fw-bold text-main small">Complete mobile app redesign</span>
                                 <span class="badge-track">On Track</span>
                             </div>
-                            <p class="--text-muted small mb-2" style="font-size: 0.75rem;">Lead the redesign of the mobile application UI/UX</p>
+                            <p class="--text-muted small mb-2" style="font-size: 0.75rem;">Lead the redesign of the
+                                mobile application UI/UX</p>
                             <div class="progress-track mb-1" style="height: 4px;">
                                 <div class="progress-fill" style="width: 85%; background-color: #10b981;"></div>
                             </div>
@@ -407,7 +537,8 @@
                                 <span class="fw-bold text-main small">Mentor junior developers</span>
                                 <span class="badge-track">On Track</span>
                             </div>
-                            <p class="--text-muted small mb-2" style="font-size: 0.75rem;">Provide guidance and support to 2 junior developers</p>
+                            <p class="--text-muted small mb-2" style="font-size: 0.75rem;">Provide guidance and support
+                                to 2 junior developers</p>
                             <div class="progress-track mb-1" style="height: 4px;">
                                 <div class="progress-fill" style="width: 70%; background-color: #10b981;"></div>
                             </div>
@@ -417,7 +548,8 @@
                         <div class="mt-4">
                             <h6 class="section-title">Manager Notes</h6>
                             <p class="--text-muted small fst-italic border-start border-3 border-primary ps-3">
-                                "Excellent technical contributions and team collaboration. Sarah has stepped up significantly this quarter."
+                                "Excellent technical contributions and team collaboration. Sarah has stepped up
+                                significantly this quarter."
                             </p>
                         </div>
                     </div>
