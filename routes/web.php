@@ -460,6 +460,92 @@ Route::prefix('hr')->name('hr.')->group(function () {
 });
 /*|------------------------------------------------End HR Portal Routes--------------------------------------------------|*/
 
+/*|------------------------------------------------Start Admin Portal Routes--------------------------------------------------|*/
+// Login
+Route::get('/admin-login', function () {
+    return view('frontend.adminPortal.auth.admin_login');
+});
+// Forgot Password (Correction: Fixed the URL to match admin path)
+Route::get('/admin/forgot-password', function () {
+    return view('frontend.adminPortal.auth.forgot_password');
+});
+
+// Admin Protected Routes
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    // 1. Dashboard
+    Route::get('/dashboard', function () {
+        return view('frontend.adminPortal.dashboard.dashboardIndex');
+    })->name('dashboard');
+
+    // 2. User Management
+    Route::get('/users', function () {
+        return view('frontend.adminPortal.dashboard.userManagement');
+    })->name('users');
+
+    // 3. Drive Oversight
+    Route::get('/drives', function () {
+        return view('frontend.adminPortal.dashboard.driveOversight');
+    })->name('drives');
+
+    // 4. Institutions
+    Route::get('/institutions', function () {
+        return view('frontend.adminPortal.dashboard.institutions');
+    })->name('institutions');
+
+    // 5. System Config
+    Route::get('/system', function () {
+        return view('frontend.adminPortal.dashboard.systemConfig');
+    })->name('system');
+
+    // 6. Analytics
+    Route::get('/analytics', function () {
+        return view('frontend.adminPortal.dashboard.analytics');
+    })->name('analytics');
+
+    // 7. Security
+    Route::get('/security', function () {
+        return view('frontend.adminPortal.dashboard.security');
+    })->name('security');
+
+    // 8. Content Management
+    Route::get('/content', function () {
+        return view('frontend.adminPortal.dashboard.content');
+    })->name('content');
+
+    // 9. Support
+    Route::get('/support', function () {
+        return view('frontend.adminPortal.dashboard.support');
+    })->name('support');
+
+    // 10. Billing
+    Route::get('/billing', function () {
+        return view('frontend.adminPortal.dashboard.billing');
+    })->name('billing');
+
+    // 11. AI Analytics
+    Route::get('/ai-analytics', function () {
+        return view('frontend.adminPortal.dashboard.aiAnalytics');
+    })->name('ai_analytics');
+
+    // 12. Workflows
+    Route::get('/workflows', function () {
+        return view('frontend.adminPortal.dashboard.workflows');
+    })->name('workflows');
+
+    // 13. Monitoring
+    Route::get('/monitoring', function () {
+        return view('frontend.adminPortal.dashboard.monitoring');
+    })->name('monitoring');
+
+    // 14. Intelligence
+    Route::get('/intelligence', function () {
+        return view('frontend.adminPortal.dashboard.intelligence');
+    })->name('intelligence');
+
+});
+/*|------------------------------------------------End Admin Portal Routes--------------------------------------------------|*/
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
