@@ -56,7 +56,7 @@
             justify-content: center;
             transition: background 0.5s ease;
             position: relative;
-            overflow: hidden;
+            
         }
 
         /* ------------------ FLOATING CIRCLES ANIMATION ------------------ */

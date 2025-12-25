@@ -19,7 +19,7 @@
     </form>
 
     <div class="mt-2">
-        <a href="{{ url('/student-login') }}" class="link-back">
+        <a href="{{ url('/institution-login') }}" class="link-back">
             Remember your password? <span class="fw-bold ms-1 text-white">Sign in</span>
         </a>
     </div>

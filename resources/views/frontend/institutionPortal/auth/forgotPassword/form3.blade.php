@@ -28,7 +28,7 @@
     </form>
 
     <div class="mt-2">
-        <a href="{{ url('/student-login') }}" class="link-back">
+        <a href="{{ url('/institution-login') }}" class="link-back">
             <i class="bi bi-arrow-left me-1"></i> Back to Login
         </a>
     </div>

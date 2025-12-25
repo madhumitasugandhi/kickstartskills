@@ -255,6 +255,120 @@ Route::prefix('institute')->group(function () {
         return view('frontend.institutionPortal.dashboard.index');
     })->name('institute.dashboard');
 });
+Route::prefix('institution')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('frontend.institutionPortal.dashboard.index');
+    })->name('institute.dashboard');
+    Route::get('/setup', function () {
+        return view('frontend.institutionPortal.dashboard.core-management.institution-setup.index');
+    })->name('institution.setup');
+    Route::get('/course-management', function () {
+        return view('frontend.institutionPortal.dashboard.core-management.course-management.index');
+    })->name('institution.course-management');
+    Route::get('/drive-management', function () {
+        return view('frontend.institutionPortal.dashboard.core-management.drivemanagement.index');
+    })->name('institution.drive-management');
+    Route::get('/academic-structure', function () {
+        return view('frontend.institutionPortal.dashboard.core-management.academic_structure.index');
+    })->name('institution.academic-structure');
+    Route::get('/internships/{tab?}', function ($tab = 'overview') {
+
+        $allowedTabs = [
+            'overview',
+            'drives',
+            'students',
+            'partners',
+            'analytics'
+        ];
+
+        if (!in_array($tab, $allowedTabs)) {
+            abort(404);
+        }
+
+        return view(
+            'frontend.institutionPortal.dashboard.core-management.internships.index',
+            compact('tab')
+        );
+    })->name('institution.internships');
+    Route::get('/financial-management/{tab?}', function ($tab = 'overview') {
+
+        $allowedTabs = [
+            'overview',
+            'fee-structure',
+            'payments',
+            'expenses',
+            'reports'
+        ];
+    
+        if (!in_array($tab, $allowedTabs)) {
+            abort(404);
+        }
+    
+        return view(
+            'frontend.institutionPortal.dashboard.core-management.financial_management.index',
+            compact('tab')
+        );
+    
+    })->name('institution.financial-management');
+    Route::get('/system-integrations', function () {
+        return view('frontend.institutionPortal.dashboard.core-management.system.index');
+    })->name('institution.system-integrations');
+    Route::get('/program-management', function () {
+        return view('frontend.institutionPortal.dashboard.programs.management.index');
+    })->name('institution.program-management');
+    Route::get('/course-catalog', function () {
+        return view('frontend.institutionPortal.dashboard.programs.course-catalog.index');
+    })->name('institution.course-catalog');
+    Route::get('/programs-assessment', function () {
+        return view('frontend.institutionPortal.dashboard.programs.assessment.index');
+    })->name('institution.programs-assessment');
+    Route::get('/students-overview', function () {
+        return view('frontend.institutionPortal.dashboard.students.overview.index');
+    })->name('institution.students-overview');
+    Route::get('/data-dashboard', function () {
+        return view('frontend.institutionPortal.dashboard.students.data-dashboard.index');
+    })->name('institution.data-dashboard');
+    Route::get('/enrollment', function () {
+        return view('frontend.institutionPortal.dashboard.students.enrollment.index');
+    })->name('institution.enrollment');
+    Route::get('/academic-records', function () {
+        return view('frontend.institutionPortal.dashboard.students.academic-records.index');
+    })->name('institution.academic-records');
+    Route::get('/faculty-management', function () {
+        return view('frontend.institutionPortal.dashboard.faculty.management.index');
+    })->name('institution.faculty-management');
+    Route::get('/faculty-assignments', function () {
+        return view('frontend.institutionPortal.dashboard.faculty.assignment.index');
+    })->name('institution.faculty-assignments');
+    Route::get('/analytics-performance', function () {
+        return view('frontend.institutionPortal.dashboard.analytics.performance.index');
+    })->name('institution.analytics-performance');
+    Route::get('/analytics-reports', function () {
+        return view('frontend.institutionPortal.dashboard.analytics.reports.index');
+    })->name('institution.analytics-reports');
+
+    Route::get('/advanced-dashboard', function () {
+        return view('frontend.institutionPortal.dashboard.analytics.advanced-dashboard.index');
+    })->name('institution.advanced-dashboard');
+    Route::get('/communication-announcements', function () {
+        return view('frontend.institutionPortal.dashboard.communication.announcements.index');
+    })->name('institution.communication-announcements');
+    Route::get('/communication-messaging', function () {
+        return view('frontend.institutionPortal.dashboard.communication.messaging.index');
+    })->name('institution.communication-messaging');
+    Route::get('/compliance-reports', function () {
+        return view('frontend.institutionPortal.dashboard.compliance-reports.index');
+    })->name('institution.compliance-reports');
+    Route::get('/settings', function () {
+        return view('frontend.institutionPortal.dashboard.settings.index');
+    })->name('institution.settings');
+    Route::get('/notifications', function () {
+        return view('frontend.institutionPortal.dashboard.notifications.index');
+    })->name('institution.notifications');
+
+
+});
+
 
 /*|------------------------------------------------End Institution Portal Routes--------------------------------------------------|*/
 
@@ -288,108 +402,108 @@ Route::prefix('mentor')->name('mentor.')->group(function () {
         Route::get('/analytics', function () {
             return view('frontend.mentorPortal.dashboard.students.analytics');
         })->name('analytics');
-    });
-
     // 3. Sessions Group
-    Route::prefix('sessions')->name('sessions.')->group(function () {
-        Route::get('/calendar', function () {
-            return view('frontend.mentorPortal.dashboard.sessions.calendar');
-        })->name('calendar');
+Route::prefix('sessions')->name('sessions.')->group(function () {
+    Route::get('/calendar', function () {
+        return view('frontend.mentorPortal.dashboard.sessions.calendar');
+    })->name('calendar');
 
-        Route::get('/schedule', function () {
-            return view('frontend.mentorPortal.dashboard.sessions.schedule');
-        })->name('schedule');
+    Route::get('/schedule', function () {
+        return view('frontend.mentorPortal.dashboard.sessions.schedule');
+    })->name('schedule');
 
-        Route::get('/history', function () {
-            return view('frontend.mentorPortal.dashboard.sessions.history');
-        })->name('history');
-    });
-
-    // 4. Internship Group
-    Route::prefix('internship')->name('internship.')->group(function () {
-        Route::get('/overview', function () {
-            return view('frontend.mentorPortal.dashboard.internship.overview');
-        })->name('overview');
-
-        Route::get('/tasks', function () {
-            return view('frontend.mentorPortal.dashboard.internship.tasks');
-        })->name('tasks');
-
-        Route::get('/phases', function () {
-            return view('frontend.mentorPortal.dashboard.internship.phases');
-        })->name('phases');
-    });
-
-    // 5. Drive Management
-    Route::prefix('drive')->name('drive.')->group(function () {
-        Route::get('/manage', function () {
-            return view('frontend.mentorPortal.dashboard.driveManagement.manage');
-        })->name('manage');
-
-        Route::get('/create', function () {
-            return view('frontend.mentorPortal.dashboard.driveManagement.create');
-        })->name('create');
-    });
-
-    // 6. Communication
-    Route::prefix('communication')->name('communication.')->group(function () {
-        Route::get('/messages', function () {
-            return view('frontend.mentorPortal.dashboard.communication.messages');
-        })->name('messages');
-
-        Route::get('/groups', function () {
-            return view('frontend.mentorPortal.dashboard.communication.groups');
-        })->name('groups');
-    });
-
-    // 7. Resources
-    Route::prefix('resources')->name('resources.')->group(function () {
-        Route::get('/library', function () {
-            return view('frontend.mentorPortal.dashboard.resources.library');
-        })->name('library');
-
-        Route::get('/assignments', function () {
-            return view('frontend.mentorPortal.dashboard.resources.assignments');
-        })->name('assignments');
-    });
-
-    // 8. Performance
-    Route::prefix('performance')->name('performance.')->group(function () {
-        Route::get('/tracking', function () {
-            return view('frontend.mentorPortal.dashboard.performance.tracking');
-        })->name('tracking');
-
-        Route::get('/goals', function () {
-            return view('frontend.mentorPortal.dashboard.performance.goals');
-        })->name('goals');
-    });
-
-    // 9. Reports
-    Route::prefix('reports')->name('reports.')->group(function () {
-        Route::get('/mentoring', function () {
-            return view('frontend.mentorPortal.dashboard.reports.mentoring');
-        })->name('mentoring');
-
-        Route::get('/assessments', function () {
-            return view('frontend.mentorPortal.dashboard.reports.assessments');
-        })->name('assessments');
-    });
-
-    // 10. General Pages
-    Route::get('/notifications', function () {
-        return view('frontend.mentorPortal.dashboard.general.notifications');
-    })->name('notifications');
-
-    Route::get('/profile', function () {
-        return view('frontend.mentorPortal.dashboard.general.profile');
-    })->name('profile');
-
-    Route::get('/settings', function () {
-        return view('frontend.mentorPortal.dashboard.general.settings');
-    })->name('settings');
-
+    Route::get('/history', function () {
+        return view('frontend.mentorPortal.dashboard.sessions.history');
+    })->name('history');
 });
 
+// 4. Internship Group
+Route::prefix('internship')->name('internship.')->group(function () {
+    Route::get('/overview', function () {
+        return view('frontend.mentorPortal.dashboard.internship.overview');
+    })->name('overview');
+
+    Route::get('/tasks', function () {
+        return view('frontend.mentorPortal.dashboard.internship.tasks');
+    })->name('tasks');
+
+    Route::get('/phases', function () {
+        return view('frontend.mentorPortal.dashboard.internship.phases');
+    })->name('phases');
+});
+
+// 5. Drive Management
+Route::prefix('drive')->name('drive.')->group(function () {
+    Route::get('/manage', function () {
+        return view('frontend.mentorPortal.dashboard.driveManagement.manage');
+    })->name('manage');
+
+    Route::get('/create', function () {
+        return view('frontend.mentorPortal.dashboard.driveManagement.create');
+    })->name('create');
+});
+
+// 6. Communication
+Route::prefix('communication')->name('communication.')->group(function () {
+    Route::get('/messages', function () {
+        return view('frontend.mentorPortal.dashboard.communication.messages');
+    })->name('messages');
+
+    Route::get('/groups', function () {
+        return view('frontend.mentorPortal.dashboard.communication.groups');
+    })->name('groups');
+});
+
+// 7. Resources
+Route::prefix('resources')->name('resources.')->group(function () {
+    Route::get('/library', function () {
+        return view('frontend.mentorPortal.dashboard.resources.library');
+    })->name('library');
+
+    Route::get('/assignments', function () {
+        return view('frontend.mentorPortal.dashboard.resources.assignments');
+    })->name('assignments');
+});
+
+// 8. Performance
+Route::prefix('performance')->name('performance.')->group(function () {
+    Route::get('/tracking', function () {
+        return view('frontend.mentorPortal.dashboard.performance.tracking');
+    })->name('tracking');
+
+    Route::get('/goals', function () {
+        return view('frontend.mentorPortal.dashboard.performance.goals');
+    })->name('goals');
+});
+
+// 9. Reports
+Route::prefix('reports')->name('reports.')->group(function () {
+    Route::get('/mentoring', function () {
+        return view('frontend.mentorPortal.dashboard.reports.mentoring');
+    })->name('mentoring');
+
+    Route::get('/assessments', function () {
+        return view('frontend.mentorPortal.dashboard.reports.assessments');
+    })->name('assessments');
+});
+
+// 10. General Pages
+Route::get('/notifications', function () {
+    return view('frontend.mentorPortal.dashboard.general.notifications');
+})->name('notifications');
+
+Route::get('/profile', function () {
+    return view('frontend.mentorPortal.dashboard.general.profile');
+})->name('profile');
+
+Route::get('/settings', function () {
+    return view('frontend.mentorPortal.dashboard.general.settings');
+})->name('settings');
+
+    });
+
+
+});
 /*|------------------------------------------------End Mentor Portal Routes--------------------------------------------------|*/
 
 /*|------------------------------------------------Start HR Portal Routes--------------------------------------------------|*/
