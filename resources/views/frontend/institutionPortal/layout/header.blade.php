@@ -1,69 +1,27 @@
-<style>
-    /* Default: DARK MODE */
-body.dark-mode {
-    background: #0f172a;
-    color: #e2e8f0;
-}
+<header class="top-header d-flex align-items-center justify-content-between px-4" 
+        style="height: var(--header-height); background: var(--bg-header); border-bottom: 1px solid var(--border-color);">
 
-.top-header {
-    background: #1a2333;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-/* LIGHT MODE */
-body.light-mode {
-    background: #f7f9fc;
-    color: #1a1a1a;
-}
-
-body.light-mode .top-header {
-    background: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-/* Transition effect */
-body {
-    transition: background 0.3s ease, color 0.3s ease;
-}
-
-#sidebar.light-mode,
-body.light-mode #sidebar {
-    background: #ffffff !important;
-    color: #333 !important;
-}
-
-</style>
-
-
-<header class="top-header d-flex align-items-center justify-content-between px-4">
-
-    <!-- Left: Sidebar Toggle + Title -->
     <div class="d-flex align-items-center">
-        <button id="sidebarToggle" class="btn btn-sm btn-outline-light me-3">
-            <i class="bi bi-list"></i>
+        <button id="sidebarToggle" class="btn btn-sm  me-3">
+            <i class="bi bi-list fs-4" style="color: var(--text-main)"></i>
         </button>
 
         <div>
-            <h5 class="text-white mb-0 fw-semibold">Institution Dashboard</h5>
-            <small class="text-muted">Welcome, ABC Institute!</small>
+            <h5 class="mb-0 fw-semibold" style="color: var(--text-main)">
+                @yield('page_title', 'Institution Dashboard')
+            </h5>
+            <small style="color: var(--text-main)">Welcome, ABC Institute!</small>
         </div>
     </div>
 
-    <!-- Right: Notifications + Settings -->
-    <div class="d-flex align-items-center">
-
-        <button class="btn position-relative text-white me-3">
-            <i class="bi bi-bell fs-5"></i>
-            <span class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-pill">
-                5
-            </span>
+    <div class="d-flex align-items-center gap-2">
+        <button class="btn position-relative border-0">
+            <i class="bi bi-bell fs-5" style="color: var(--text-main)"></i>
+            <span class="position-absolute top-2 start-75 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">5</span>
         </button>
 
-        <button id="themeToggle" class="btn text-white">
-            <i class="bi bi-moon fs-5"></i>
+        <button id="themeToggle" class="btn border-0 theme-toggle-btn">
+            <i class="bi bi-moon fs-5" style="color: var(--text-main)"></i>
         </button>
-
-
     </div>
-
 </header>

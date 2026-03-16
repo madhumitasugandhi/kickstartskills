@@ -1,0 +1,2322 @@
+/* ==========================================================================
+   1. VARIABLE DEFINITIONS (Theming Engine)
+   ========================================================================== */
+:root {
+    /* Dimensions */
+    --sidebar-width: 300px;
+    --sidebar-collapsed-width: 80px;
+    --header-height: 70px;
+    --card-radius: 16px;
+    --primary-teal: #2dd4bf;
+    --bg-body: #0e1a2b;
+    --bg-sidebar: #132238;
+    --bg-header: #0f2035;
+    --bg-input: rgba(0, 0, 0, 0.2);
+    --text-main: #ffffff;
+    --text-muted: #9fb2c8;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --active-bg: #113d3a;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --placeholder-color: rgba(255, 255, 255, 0.4);
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+body.light-mode {
+    --primary-teal: #0d9488;
+    --bg-body: #f3f4f6;
+    --bg-sidebar: #ffffff;
+    --bg-header: #ffffff;
+    --bg-input: #ffffff;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
+    --active-bg: #e0f2f1;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --placeholder-color: rgba(0, 0, 0, 0.4);
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* ==========================================================================
+   2. BASE STYLES & RESET
+   ========================================================================== */
+body {
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    transition: background 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
+}
+
+/* Scrollbar Refinement */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { 
+    background: var(--border-color); 
+    border-radius: 10px; 
+}
+body.light-mode ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); }
+
+/* ==========================================================================
+   3. LAYOUT STRUCTURE
+   ========================================================================== */
+.layout-wrapper {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.content-area {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 24px;
+    background-color: var(--bg-body);
+}
+
+.top-header {
+    height: var(--header-height);
+    background: var(--bg-header);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+}
+
+/* Sidebar Specifics */
+#sidebar {
+    width: var(--sidebar-width);
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    transition: width 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#sidebar.collapsed { width: var(--sidebar-collapsed-width); }
+.sidebar-dropdown.open > .dropdown-menu-custom {
+    display: block;
+}
+
+.dropdown-toggle-custom {
+    cursor: pointer;
+}
+
+.dropdown-arrow {
+    transition: transform 0.3s ease;
+}
+
+.sidebar-dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* Smooth dropdown animation */
+.dropdown-menu-custom {
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* ===========================
+   COLLAPSED SIDEBAR FIX
+=========================== */
+#sidebar.collapsed .menu-text,
+#sidebar.collapsed .sidebar-footer-text {
+    display: none;
+}
+
+#sidebar.collapsed .nav-item-custom {
+    justify-content: center;
+}
+
+#sidebar.collapsed .dropdown-menu-custom {
+    display: none !important;
+}
+
+#sidebar.collapsed .dropdown-arrow {
+    display: none;
+}
+    /* ===============================
+   FIXED SIDEBAR WITH SCROLL
+================================ */
+
+/* Scrollable middle section */
+.sidebar-scroll {
+    flex: 1;
+    min-height: 0;  
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Keep footer always visible */
+.sidebar-footer {
+    flex-shrink: 0;
+    background: var(--bg-sidebar);
+}
+
+/* Optional: nicer scrollbar */
+.sidebar-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 6px;
+}
+
+
+/* ==========================================================================
+   4. SHARED COMPONENTS (Inputs, Cards, Buttons)
+   ========================================================================== */
+
+/* Glass Cards */
+.glass-card, .setup-header, .setup-content, .config-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--card-radius);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+/* Form Controls & Dropdowns */
+.form-control, .form-select {
+    background: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+    border-radius: 10px;
+    padding: 10px 15px;
+    font-size: 0.95rem;
+}
+
+.form-control::placeholder { color: var(--placeholder-color); }
+
+.form-control:focus {
+    border-color: var(--primary-teal) !important;
+    box-shadow: 0 0 0 0.25rem rgba(45, 212, 191, 0.15);
+}
+
+/* Input Group with Icons */
+.input-group-custom {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-group-custom i {
+    position: absolute;
+    left: 15px;
+    color: var(--text-muted);
+}
+
+.input-group-custom .form-control { padding-left: 45px; }
+
+/* Buttons */
+.btn-teal {
+    background-color: var(--primary-teal);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-teal:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+/* ==========================================================================
+   5. NAVIGATION ELEMENTS
+   ========================================================================== */
+.nav-item-custom {
+    display: flex;
+    align-items: center;
+    padding: 12px 18px;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 8px;
+    margin: 4px 10px;
+    transition: 0.2s;
+}
+
+.nav-item-custom:hover, .nav-item-custom.active {
+    background: var(--active-bg);
+    color: var(--primary-teal);
+}
+
+.dropdown-menu-custom {
+    display: none;
+    padding-left: 15px;
+    border-left: 1px dashed var(--border-color);
+    margin: 5px 0 10px 30px;
+}
+
+/* ==========================================================================
+   6. MODULE SPECIFIC (Setup, Academic, Regulatory)
+   ========================================================================== */
+.step-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-body);
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+}
+
+.step-item.active .step-circle {
+    background: var(--primary-teal);
+    border-color: var(--primary-teal);
+    color: white;
+}
+
+.academic-warning {
+    padding: 15px;
+    border-radius: 12px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    display: flex;
+    gap: 12px;
+}
+
+/* ==========================================================================
+   7. MEDIA QUERIES (Responsiveness)
+   ========================================================================== */
+@media (max-width: 992px) {
+    .col-lg-8, .col-lg-4 { width: 100%; }
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        position: fixed;
+        left: -100%;
+        height: 100vh;
+    }
+    
+    #sidebar.show-mobile { left: 0; }
+    
+    .setup-header, .setup-content {
+        padding: 15px;
+        backdrop-filter: none; /* Better performance on mobile */
+    }
+
+    .top-header small { display: none; }
+}
+/* ===============================
+   BASIC INFO – PREMIUM UI
+================================ */
+.form-section {
+    padding: 18px 20px;
+    margin-bottom: 22px;
+    border-radius: 14px;
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.03),
+        rgba(255,255,255,0.01)
+    );
+    border: 1px solid var(--glass-border);
+}
+
+body.light-mode .form-section {
+    background: #ffffff;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+/* Header Icon */
+.basic-header .icon-box {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: rgba(45, 212, 191, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.basic-header i {
+    font-size: 1.3rem;
+    color: var(--primary-teal);
+}
+
+/* Input Focus Enhancement */
+.input-group-custom .form-control:focus,
+.input-group-custom .form-select:focus {
+    background: var(--bg-input);
+    border-color: var(--primary-teal);
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .form-section {
+        padding: 15px;
+    }
+
+    .basic-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .basic-header .icon-box {
+        margin-bottom: 10px;
+    }
+}
+/* ===============================
+   VERTICAL SETUP STEPPER
+================================ */
+.setup-wrapper {
+    align-items: flex-start;
+}
+
+/* Left step panel */
+.setup-steps {
+    width: 260px;
+    min-width: 260px;
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.03),
+        rgba(255,255,255,0.01)
+    );
+    border: 1px solid var(--glass-border);
+    border-radius: var(--card-radius);
+}
+
+/* Vertical steps */
+.steps-track {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: relative;
+    padding-left: 12px;
+}
+
+/* Vertical line */
+.steps-track::before {
+    content: '';
+    position: absolute;
+    left: 29px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border-color);
+}
+
+/* Step item */
+.step-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    z-index: 1;
+    cursor: default;
+}
+
+.step-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* Active state */
+.step-item.active .step-circle {
+    background: var(--primary-teal);
+    border-color: var(--primary-teal);
+    color: #fff;
+}
+
+.step-item.active .step-label {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+/* Completed state */
+.step-item.completed .step-circle {
+    background: rgba(45, 212, 191, 0.15);
+    border-color: var(--primary-teal);
+    color: var(--primary-teal);
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 992px) {
+    .setup-wrapper {
+        flex-direction: column;
+    }
+
+    .setup-steps {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .steps-track {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-left: 0;
+    }
+
+    .steps-track::before {
+        display: none;
+    }
+
+    .step-item {
+        flex-direction: column;
+        min-width: 90px;
+        text-align: center;
+    }
+}
+/* ===============================
+   STICKY LEFT SETUP STEPPER
+================================ */
+.setup-steps {
+    align-self: flex-start;
+    max-height: calc(100vh - var(--header-height) - 32px);
+    overflow-y: auto;
+}
+
+/* Smooth scrollbar for steps */
+.setup-steps::-webkit-scrollbar {
+    width: 4px;
+}
+
+.setup-steps::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 6px;
+}
+
+/* Disable sticky on mobile */
+@media (max-width: 992px) {
+    .setup-steps {
+        position: relative;
+        max-height: none;
+        overflow: visible;
+    }
+}
+/* ===============================
+   LIGHT MODE – FIX STEPPER BG
+================================ */
+body.light-mode .setup-steps {
+    background: #ffffff;           /* solid white */
+    border: 1px solid var(--border-color);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Optional: slightly darker vertical line in light mode */
+body.light-mode .steps-track::before {
+    background: #e5e7eb;
+}
+/* ===============================
+   ACADEMIC STEP POLISH
+================================ */
+.added-box {
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed var(--border-color);
+}
+
+body.light-mode .added-box {
+    background: #f9fafb;
+}
+
+/* Chips container spacing */
+.chip-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Add button hover */
+#addDeptBtn:hover,
+#addProgramBtn:hover {
+    filter: brightness(1.1);
+}
+/* ==========================================
+   CHIP UI – PREMIUM STYLE
+========================================== */
+
+/* Individual chip */
+.chip-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px 6px 12px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    background: rgba(45, 212, 191, 0.15);
+    color: var(--text-main);
+    border: 1px solid rgba(45, 212, 191, 0.35);
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+/* Chip hover */
+.chip-item:hover {
+    background: rgba(45, 212, 191, 0.25);
+}
+
+/* Chip text */
+.chip-item span {
+    line-height: 1;
+}
+
+/* Close button */
+.chip-item button {
+    all: unset;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Close hover */
+.chip-item button:hover {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+/* Keyboard accessibility */
+.chip-item button:focus-visible {
+    outline: 2px solid var(--primary-teal);
+    outline-offset: 2px;
+}
+
+/* ==========================================
+   LIGHT MODE OVERRIDES
+========================================== */
+body.light-mode .chip-item {
+    background: #ecfeff;           /* teal-50 */
+    color: #0f172a;
+    border-color: #67e8f9;
+}
+
+body.light-mode .chip-item:hover {
+    background: #cffafe;
+}
+
+body.light-mode .chip-item button {
+    color: #475569;
+}
+
+body.light-mode .chip-item button:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* ==========================================
+   COURSE REQUIREMENT TOGGLES
+========================================== */
+
+.requirement-btn {
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: rgba(255,255,255,0.05);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+}
+
+.requirement-btn:hover {
+    background: rgba(45, 212, 191, 0.15);
+    color: var(--text-main);
+}
+
+/* Active = selected */
+.requirement-btn.active {
+    background: rgba(45, 212, 191, 0.25);
+    border-color: var(--primary-teal);
+    color: var(--primary-teal);
+}
+
+/* Light mode */
+body.light-mode .requirement-btn {
+    background: #f8fafc;
+    color: #475569;
+}
+
+body.light-mode .requirement-btn.active {
+    background: #ecfeff;
+    border-color: #67e8f9;
+    color: #0f172a;
+}
+
+/* ==========================================
+   FIX PLACEHOLDER & INPUT VISIBILITY (LIGHT)
+========================================== */
+
+/* Ensure placeholder is clearly visible */
+body.light-mode .form-control::placeholder,
+body.light-mode .form-select::placeholder {
+    color: rgba(55, 65, 81, 0.6); /* Tailwind gray-600 */
+}
+
+/* Ensure input text is strong */
+body.light-mode .form-control,
+body.light-mode .form-select {
+    color: #111827 !important; /* Tailwind gray-900 */
+}
+
+/* Icons inside inputs */
+body.light-mode .input-group-custom i {
+    color: #6b7280; /* gray-500 */
+}
+
+/* Programs divider badge fix */
+body.light-mode .badge {
+    background: #f3f4f6 !important;
+    color: #374151;
+    border-color: #e5e7eb !important;
+}
+/* ==========================================
+   CONFIGURED COURSE ITEM
+========================================== */
+
+.configured-item {
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.02)
+    );
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.configured-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Delete button */
+.configured-item .delete-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+}
+
+.configured-item .delete-btn:hover {
+    color: #ef4444;
+}
+
+/* Light mode */
+body.light-mode .configured-item {
+    background: #ffffff;
+    border-color: var(--border-color);
+}
+.empty-state {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    border: 1px dashed var(--border-color);
+    border-radius: 12px;
+}
+/* ==========================================
+   CODE PREVIEW UI
+========================================== */
+
+.code-preview-box {
+    padding: 18px;
+    border-radius: 14px;
+    background: linear-gradient(
+        180deg,
+        rgba(45,212,191,0.12),
+        rgba(45,212,191,0.04)
+    );
+    border: 1px solid rgba(45,212,191,0.35);
+    text-align: center;
+}
+
+/* Preview badge */
+.code-preview-badge {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    background: rgba(0,0,0,0.25);
+    color: var(--primary-teal);
+    border: 1px dashed var(--primary-teal);
+}
+
+/* Light mode */
+body.light-mode .code-preview-box {
+    background: #ecfeff;
+    border-color: #67e8f9;
+}
+
+body.light-mode .code-preview-badge {
+    background: #ffffff;
+    color: #0f172a;
+}
+/* ==========================================
+   CODE OPTION ROW
+========================================== */
+
+/* .added-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+} */
+
+/* Switch refinement */
+.form-check-input {
+    background-color: var(--bg-input);
+    border-color: var(--border-color);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-teal);
+    border-color: var(--primary-teal);
+}
+
+body.light-mode .form-check-input {
+    background-color: #ffffff;
+}
+/* ==========================================
+   CODE EXAMPLES
+========================================== */
+
+.example-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed var(--border-color);
+}
+
+.badge-preview {
+    font-family: ui-monospace, monospace;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(45,212,191,0.15);
+    color: var(--primary-teal);
+}
+
+body.light-mode .example-item {
+    background: #f9fafb;
+}
+/* ==========================================
+   INFO WARNING VARIANT
+========================================== */
+
+.academic-warning--info {
+    background: rgba(59,130,246,0.08);
+    border-color: rgba(59,130,246,0.25);
+    color: #93c5fd;
+}
+
+.academic-warning--info i {
+    color: #60a5fa;
+}
+
+body.light-mode .academic-warning--info {
+    background: #eff6ff;
+    color: #1e3a8a;
+}
+@keyframes pulse {
+    0% { transform: scale(0.98); opacity: 0.6; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.code-preview-badge.pulse {
+    animation: pulse 0.25s ease;
+}
+/* ==========================================
+   ACCREDITATION CHIPS
+========================================== */
+
+.accreditation-chip {
+    cursor: pointer;
+}
+
+.accreditation-chip.active {
+    background: rgba(59,130,246,0.25);
+    border-color: #3b82f6;
+    color: #3b82f6;
+}
+
+body.light-mode .accreditation-chip.active {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+/* ==========================================
+   ADMIN PERMISSIONS LIST
+========================================== */
+
+.permission-list li {
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+}
+/* ==========================================
+   ADMIN PERMISSIONS BOX
+========================================== */
+.admin-permissions-box {
+    padding: 16px;
+    border-radius: 14px;
+    background: linear-gradient(
+        180deg,
+        rgba(45,212,191,0.10),
+        rgba(45,212,191,0.03)
+    );
+    border: 1px solid rgba(45,212,191,0.25);
+}
+
+body.light-mode .admin-permissions-box {
+    background: #ecfeff;
+    border-color: #67e8f9;
+}
+
+/* Make password helper calmer */
+#adminStep small {
+    color: var(--text-muted);
+}
+
+/* ==========================================
+   DOCUMENT VERIFICATION
+========================================== */
+
+.document-card {
+    padding: 16px;
+    border-radius: 14px;
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.02)
+    );
+    border: 1px solid var(--glass-border);
+}
+
+/* Icon block */
+.doc-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.doc-icon.danger {
+    background: rgba(239,68,68,0.15);
+    color: #ef4444;
+}
+
+.doc-icon.info {
+    background: rgba(59,130,246,0.15);
+    color: #3b82f6;
+}
+
+/* Status badge */
+.doc-badge {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+
+/* Reduce dominance of required badge */
+.doc-badge.danger {
+    background: rgba(239,68,68,0.12);
+    color: #f87171;
+}
+
+/* Upload buttons calmer */
+.document-card .btn {
+    width: fit-content;
+}
+
+/* Verification info spacing */
+.academic-warning ul li {
+    margin-bottom: 6px;
+}
+
+/* Light mode */
+body.light-mode .document-card {
+    background: #ffffff;
+    border-color: var(--border-color);
+}
+#documentStep .academic-warning {
+    display: block;          /* ← FIX */
+}
+
+#documentStep .academic-warning ul {
+    margin-top: 8px;
+}
+
+#documentStep .academic-warning i {
+    margin-top: 2px;
+}
+.academic-warning--info {
+    background: rgba(59,130,246,0.06);
+    border-color: rgba(59,130,246,0.18);
+}
+
+/* ==========================================
+   COMPLETION UI
+========================================== */
+
+.completion-hero {
+    background: linear-gradient(
+        180deg,
+        rgba(45,212,191,0.18),
+        rgba(45,212,191,0.05)
+    );
+    border: 1px solid rgba(45,212,191,0.35);
+}
+
+.completion-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(45,212,191,0.25);
+    color: var(--primary-teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto;
+}
+
+/* Next step cards */
+.next-step-card,
+.action-card {
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid var(--glass-border);
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.02)
+    );
+}
+
+/* Icons */
+.next-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.next-icon.warning {
+    background: rgba(245,158,11,0.18);
+    color: #f59e0b;
+}
+
+.next-icon.info {
+    background: rgba(59,130,246,0.18);
+    color: #3b82f6;
+}
+
+.next-icon.success {
+    background: rgba(45,212,191,0.2);
+    color: var(--primary-teal);
+}
+
+/* Light mode */
+body.light-mode .completion-hero,
+body.light-mode .next-step-card,
+body.light-mode .action-card {
+    background: #ffffff;
+    border-color: var(--border-color);
+}
+
+/* ==========================================
+   MOBILE WIDTH FIX – SETUP STEPS
+========================================== */
+@media (max-width: 768px) {
+
+    .setup-step,
+    .config-card,
+    .setup-content {
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .setup-steps {
+        min-width: unset !important;
+        width: 100% !important;
+    }
+
+    .setup-wrapper,
+    .config-card,
+    .document-card {
+        flex-shrink: 0;
+    }
+
+    .content-area {
+        padding: 16px;
+    }
+
+    .config-card,
+    .setup-content {
+        padding: 16px;
+    }
+
+    
+    #academicStep .d-flex,
+    #codeStep .d-flex,
+    #documentStep .d-flex {
+        flex-wrap: wrap;
+    }
+
+}
+
+.stat-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(45,212,191,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-teal);
+    font-size: 1.2rem;
+}
+.stat-icon.success { background: rgba(16,185,129,0.18); color: #10b981; }
+.stat-icon.info { background: rgba(59,130,246,0.18); color: #3b82f6; }
+
+.text-teal { color: var(--primary-teal); }
+/* ===============================
+   COURSE MANAGEMENT TABS
+================================ */
+
+.course-tabs {
+    display: flex;
+    gap: 10px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 8px;
+    border-radius: 14px;
+}
+
+/* Tab buttons */
+.tab-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.tab-btn i {
+    font-size: 1rem;
+}
+
+/* Hover */
+.tab-btn:hover {
+    background: rgba(255,255,255,0.06);
+    color: var(--text-main);
+}
+
+/* Active */
+.tab-btn.active {
+    background: rgba(45,212,191,0.18);
+    color: var(--primary-teal);
+    font-weight: 600;
+}
+
+/* ===============================
+   TAB CONTENT VISIBILITY
+================================ */
+
+.course-tab-content {
+    position: relative;
+}
+
+/* Hide all panes */
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.25s ease;
+}
+
+/* Show active pane */
+.tab-pane.active {
+    display: block;
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===============================
+   MOBILE FIX
+================================ */
+@media (max-width: 768px) {
+    .course-tabs {
+        flex-direction: column;
+    }
+
+    .tab-btn {
+        justify-content: flex-start;
+    }
+}
+
+/* ==========================================
+   COURSE TYPE CARD (FINAL UI)
+========================================== */
+
+.course-type-card {
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.02)
+    );
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-type-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Course code small chip */
+.course-code-chip {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(45,212,191,0.15);
+    color: var(--primary-teal);
+    border: 1px solid rgba(45,212,191,0.35);
+}
+
+/* Status pill */
+.status-pill {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+.status-pill.active {
+    background: rgba(16,185,129,0.18);
+    color: #10b981;
+}
+
+/* Meta row */
+.meta-row {
+    display: flex;
+    gap: 18px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.meta-row i {
+    margin-right: 6px;
+    color: var(--primary-teal);
+}
+
+/* Requirement chips */
+.requirements {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.req-chip {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(45,212,191,0.12);
+    color: var(--primary-teal);
+    border: 1px solid rgba(45,212,191,0.35);
+}
+
+/* Right kebab button */
+.icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 6px;
+}
+
+.icon-btn:hover {
+    color: var(--text-main);
+}
+
+/* Actions */
+.card-actions {
+    margin-top: 18px;
+    display: flex;
+    gap: 10px;
+}
+
+/* Light mode tweaks */
+body.light-mode .course-type-card {
+    background: #ffffff;
+    border-color: var(--border-color);
+}
+
+body.light-mode .req-chip {
+    background: #ecfeff;
+    color: #0f172a;
+    border-color: #67e8f9;
+}
+
+/* ==========================================
+   CONFIGURATION PAGE – UI FIX
+========================================== */
+
+/* Template list */
+.template-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Template row */
+.template-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed var(--border-color);
+    font-size: 0.85rem;
+}
+
+/* Tag icon */
+.template-item i.bi-tag {
+    color: var(--primary-teal);
+}
+
+/* Delete icon */
+.icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 4px;
+}
+
+.icon-btn.danger:hover {
+    color: #ef4444;
+}
+
+/* Duration chips */
+.duration-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.duration-chip {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    border-radius: 999px;
+    background: rgba(59,130,246,0.18);
+    color: #60a5fa;
+    border: 1px solid rgba(59,130,246,0.35);
+}
+
+/* Light mode */
+body.light-mode .template-item {
+    background: #f9fafb;
+}
+
+body.light-mode .duration-chip {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-color: #bfdbfe;
+}
+/* ==========================================
+   ANALYTICS – UI POLISH
+========================================== */
+
+.analytics-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--card-radius);
+    padding: 20px;
+}
+
+/* Enrollment rows */
+.enrollment-row {
+    margin-bottom: 14px;
+}
+
+.progress-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        var(--primary-teal),
+        rgba(45,212,191,0.6)
+    );
+    border-radius: 999px;
+}
+
+/* Activity list */
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--glass-border);
+}
+
+.activity-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(45,212,191,0.18);
+    color: var(--primary-teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+/* Light mode */
+body.light-mode .analytics-card,
+body.light-mode .activity-item {
+    background: #ffffff;
+    border-color: var(--border-color);
+}
+
+body.light-mode .progress-track {
+    background: #e5e7eb;
+}
+/* ==========================================
+   GLASS MODALS – COURSE TYPE
+========================================== */
+
+.glass-modal {
+    background: var(--glass-bg);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    color: var(--text-main);
+}
+
+/* Header */
+.modal-header,
+.modal-footer {
+    border-color: var(--glass-border);
+}
+.modal-header {
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.modal-title {
+    color: var(--text-main);
+    font-weight: 600;
+}
+.modal-header .icon-btn {
+    color: var(--text-muted);
+}
+
+.modal-header .icon-btn:hover {
+    color: var(--text-main);
+}
+
+/* Fix datetime input in dark mode */
+input[type="datetime-local"] {
+    color-scheme: dark;
+}
+
+body.light-mode input[type="datetime-local"] {
+    color-scheme: light;
+}
+/* Footer */
+.modal-footer {
+    border-top: 1px solid var(--glass-border);
+    gap: 10px;
+}
+
+/* Muted cancel button */
+.muted-btn {
+    color: var(--text-muted);
+    text-decoration: none;
+}
+
+.muted-btn:hover {
+    color: var(--text-main);
+}
+
+/* ==========================================
+   FLOATING INPUTS (MODAL)
+========================================== */
+
+.floating-field {
+    position: relative;
+}
+
+.floating-field label {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    pointer-events: none;
+    transition: all 0.2s ease;
+    background: transparent;
+}
+
+/* Float on focus or value */
+.floating-field input:focus + label,
+.floating-field input:not(:placeholder-shown) + label {
+    top: -6px;
+    font-size: 0.65rem;
+    color: var(--primary-teal);
+}
+
+/* Extra padding so text doesn’t overlap label */
+.floating-field .form-control {
+    padding-top: 16px;
+}
+
+/* Light mode fixes */
+body.light-mode .glass-modal {
+    background: #ffffff;
+    border-color: var(--border-color);
+}
+.stat-icon.danger {
+    background: rgba(239,68,68,0.18);
+    color: #ef4444;
+}
+
+.stat-icon.warning {
+    background: rgba(245,158,11,0.18);
+    color: #f59e0b;
+}
+/* ==========================================
+   DRIVE LIST UI
+========================================== */
+
+.drive-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.drive-card {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 16px;
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.02)
+    );
+    border: 1px solid var(--glass-border);
+}
+
+/* LEFT */
+.drive-left {
+    flex: 1;
+}
+
+.drive-header {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.company-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(45,212,191,0.2);
+    color: var(--primary-teal);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.package-badge {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    background: rgba(59,130,246,0.18);
+    color: #60a5fa;
+}
+
+.skill-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.skill-chip {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    border-radius: 999px;
+    background: rgba(239,68,68,0.15);
+    color: #f87171;
+}
+
+.drive-dates {
+    display: flex;
+    gap: 16px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.drive-dates i {
+    margin-right: 4px;
+}
+
+.drive-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* RIGHT */
+.drive-right {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.drive-metrics {
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.view-link {
+    font-size: 0.75rem;
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+.view-link:hover {
+    text-decoration: underline;
+}
+
+/* Status pill reuse */
+.status-pill.active {
+    background: rgba(16,185,129,0.18);
+    color: #10b981;
+}
+
+/* Light mode */
+body.light-mode .drive-card {
+    background: #ffffff;
+    border-color: var(--border-color);
+}
+/* Approval status pills */
+.status-pill.warning {
+    background: rgba(245,158,11,0.18);
+    color: #f59e0b;
+}
+
+/* Approval card spacing */
+.drive-approval-card {
+    transition: transform 0.2s ease;
+}
+.drive-approval-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Details drawer */
+.approval-details {
+    border-top: 1px dashed var(--border-color);
+    padding-top: 12px;
+}
+/* Recommendation card hover */
+.recommendation-card {
+    transition: transform 0.2s ease;
+}
+.recommendation-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Eligible students panel */
+.eligible-panel {
+    border-top: 1px dashed var(--border-color);
+    padding-top: 12px;
+}
+/* ===============================
+   KEBAB (3-DOT) ACTION MENU
+================================ */
+
+.student-actions {
+    position: relative;
+}
+
+/* Hidden by default */
+.kebab-menu {
+    position: absolute;
+    top: 36px;
+    right: 0;
+    min-width: 190px;
+    background: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 8px 0;
+    list-style: none;
+    display: none;              /* 🔴 IMPORTANT */
+    z-index: 1000;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Show only when active */
+.kebab-menu.show {
+    display: block;
+}
+
+/* Items */
+.kebab-menu li {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.kebab-menu li:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+.kebab-menu li.danger {
+    color: #f87171;
+}
+/* ==========================================
+   FINANCIAL HEADER POLISH
+========================================== */
+
+.financial-header {
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.02)
+    );
+}
+
+.financial-header .icon-box {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+}
+
+.financial-header .btn {
+    border-radius: 999px;
+    padding: 6px 14px;
+}
+/* ==========================================
+   FINANCIAL HEADER – RESPONSIVE FIX
+========================================== */
+
+.financial-header-inner {
+    gap: 16px;
+}
+
+/* =====================
+   MOBILE OPTIMIZATION
+===================== */
+@media (max-width: 768px) {
+
+    .financial-header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+    }
+
+    .financial-header-inner .icon-box {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        flex-shrink: 0;
+    }
+
+    .financial-header-inner h5 {
+        font-size: 1rem;
+    }
+
+    .financial-header-inner p {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+
+    /* Button becomes full-width */
+    .financial-action-btn {
+        width: 100%;
+        margin-top: 12px;
+        justify-content: center;
+    }
+}
+
+/* EXTRA SMALL DEVICES */
+@media (max-width: 420px) {
+    .financial-header-inner {
+        padding: 14px;
+    }
+
+    .financial-header-inner h5 {
+        font-size: 0.95rem;
+    }
+}
+
+/* ==========================================
+   EXPENSE LIST – RESPONSIVE FIX
+========================================== */
+
+/* Desktop stays same */
+.expense-metrics {
+    display: flex;
+    gap: 28px;
+    flex-wrap: nowrap;
+}
+
+/* Right column alignment */
+.drive-right {
+    min-width: 140px;
+}
+
+/* =====================
+   TABLET (≤ 992px)
+===================== */
+@media (max-width: 992px) {
+
+    .drive-card {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .drive-right {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .expense-metrics {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .expense-metrics span {
+        min-width: 45%;
+    }
+}
+
+/* =====================
+   MOBILE (≤ 768px)
+===================== */
+@media (max-width: 768px) {
+
+    .drive-header {
+        align-items: flex-start;
+    }
+
+    .expense-metrics {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .expense-metrics span {
+        display: block;
+        font-size: 0.8rem;
+    }
+
+    .drive-right {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 6px;
+    }
+
+    .status-pill {
+        font-size: 0.7rem;
+        padding: 4px 10px;
+    }
+}
+
+/* =====================
+   EXTRA SMALL (≤ 480px)
+===================== */
+@media (max-width: 480px) {
+
+    .expense-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .company-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+}
+/* ==========================================
+   SYSTEM INTEGRATIONS – INDEX UI
+========================================== */
+
+.system-integrations h4 {
+    letter-spacing: -0.02em;
+}
+
+.system-integrations p {
+    max-width: 680px;
+}
+
+/* ================= FILTER BAR ================= */
+
+.system-integrations .glass-card {
+    padding: 22px;
+}
+
+.system-integrations .input-group {
+    background: rgba(255,255,255,0.04);
+    border-radius: 14px;
+    padding: 6px 10px;
+    border: 1px solid var(--glass-border);
+}
+
+.system-integrations .input-group input {
+    font-size: 0.9rem;
+}
+
+/* ================= OVERVIEW STATS ================= */
+
+.integration-stat {
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.02)
+    );
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 22px;
+    height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.integration-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Icon box */
+.integration-stat i {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+/* Colored dot */
+.integration-stat .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* Value */
+.integration-stat h4 {
+    font-weight: 700;
+    font-size: 1.35rem;
+    margin-bottom: 4px;
+}
+
+/* Label */
+.integration-stat p {
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+}
+
+/* ================= QUICK SETUP ================= */
+
+.template-card {
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.02)
+    );
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 22px;
+    height: 100%;
+    transition: transform 0.2s ease;
+}
+
+.template-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Badge */
+.template-card .badge {
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+/* Levels */
+.level-high {
+    background: rgba(239,68,68,0.2);
+    color: #f87171;
+}
+
+.level-medium {
+    background: rgba(245,158,11,0.2);
+    color: #fbbf24;
+}
+
+.level-low {
+    background: rgba(16,185,129,0.2);
+    color: #34d399;
+}
+
+/* Footer row */
+.template-card .text-success {
+    font-weight: 600;
+}
+
+/* ================= SECTION HEADERS ================= */
+
+.system-integrations h6 {
+    letter-spacing: 0.02em;
+}
+
+/* ================= LIGHT MODE ================= */
+
+body.light-mode .integration-stat,
+body.light-mode .template-card {
+    background: #ffffff;
+    border-color: var(--border-color);
+}
+
+body.light-mode .system-integrations .input-group {
+    background: #ffffff;
+}
+/* ==========================================
+   SYSTEM INTEGRATION – MAIN CARD
+========================================== */
+
+.integration-card,
+.card.glass-card {
+    padding: 26px;
+}
+
+/* Header spacing */
+.card.glass-card h6 {
+    font-size: 0.95rem;
+}
+
+/* Status badge */
+.card.glass-card .badge {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+/* ==========================================
+   HEALTH PANEL (RIGHT SIDE)
+========================================== */
+
+.health-panel {
+    background: rgba(16,185,129,0.12);
+    border: 1px solid rgba(16,185,129,0.25);
+    border-radius: 14px;
+    padding: 16px;
+}
+
+/* Top row */
+.health-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+/* Health item */
+.health-item {
+    background: rgba(16,185,129,0.15);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+}
+
+/* Center error rate */
+.health-item.center {
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+/* Value */
+.health-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #34d399;
+    line-height: 1.2;
+}
+
+/* Label */
+.health-label {
+    font-size: 0.7rem;
+    color: rgba(209,250,229,0.85);
+}
+
+/* ==========================================
+   FEATURES CHIPS (BOTTOM)
+========================================== */
+
+.card.glass-card .badge.bg-success.bg-opacity-10 {
+    background: rgba(16,185,129,0.15) !important;
+    color: #34d399 !important;
+    font-size: 0.7rem;
+    padding: 6px 10px;
+    border-radius: 999px;
+}
+
+/* PROGRAM CARD (reuse glass system) */
+.program-card-custom {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.program-card-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* SKILL TAG */
+.skill-tag {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(45,212,191,0.15);
+    color: var(--primary-teal);
+    border: 1px solid rgba(45,212,191,0.35);
+}
+.skill-tag.highlight {
+    background: rgba(59,130,246,0.18);
+    color: #60a5fa;
+}
+
+
+/* ===============================
+   ANNOUNCEMENTS MODULE
+================================ */
+
+.announcement-card {
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.02)
+    );
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 18px;
+}
+
+.announcement-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.announcement-tag {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(16,185,129,0.12);
+    color: #10b981;
+}
+
+.announcement-status {
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 500;
+}
+
+.priority-high {
+    background: rgba(239,68,68,0.15);
+    color: #ef4444;
+}
+
+.priority-medium {
+    background: rgba(245,158,11,0.15);
+    color: #f59e0b;
+}
+
+.priority-low {
+    background: rgba(59,130,246,0.15);
+    color: #3b82f6;
+}
+
+.status-published {
+    background: rgba(16,185,129,0.15);
+    color: #10b981;
+}
+
+.status-draft {
+    background: rgba(245,158,11,0.15);
+    color: #f59e0b;
+}
+
+.status-scheduled {
+    background: rgba(99,102,241,0.15);
+    color: #6366f1;
+}
+/* SAFETY NET – prevent invisible inputs */
+.form-control-custom,
+.form-select-custom {
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: 10px;
+    padding: 10px 15px;
+}
+/* ==========================================
+   FORM LABEL VISIBILITY FIX (DARK + LIGHT)
+========================================== */
+
+
+.form-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: inline-block;
+}
+
+/* Stronger labels on focus */
+.form-control:focus + .form-label,
+.form-select:focus + .form-label {
+    color: var(--primary-teal);
+}
+
+/* Light mode override */
+body.light-mode .form-label {
+    color: #374151; /* Tailwind gray-700 */
+}
+
+/* ==========================================
+   TEXT UTILITIES (SAFE CONTRAST)
+========================================== */
+
+.text-main {
+    color: var(--text-main) !important;
+}
+
+.text-secondary {
+    color: rgba(255,255,255,0.75);
+}
+
+body.light-mode .text-secondary {
+    color: #374151; /* gray-700 */
+}
+
+/* ==========================================
+   FIX: SELECT PLACEHOLDER & ICON OVERLAP
+========================================== */
+
+/* Give select same left padding as inputs */
+.input-group-custom .form-select {
+    padding-left: 45px !important;   /* space for icon */
+    padding-right: 38px !important;  /* space for dropdown arrow */
+}
+
+/* Align icon vertically for select */
+.input-group-custom i {
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Improve placeholder/text contrast */
+.form-select {
+    color: var(--text-main);
+}
+
+/* Disabled / placeholder-like option */
+.form-select option[value=""] {
+    color: var(--text-muted);
+}
+/* ==========================================
+   SETTINGS HEADER VISIBILITY FIX
+========================================== */
+
+.glass-card h5 {
+    color: var(--text-main);
+}
+
+.glass-card h5 i {
+    color: var(--primary-teal);
+}

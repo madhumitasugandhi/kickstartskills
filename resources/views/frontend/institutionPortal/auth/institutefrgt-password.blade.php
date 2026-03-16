@@ -49,12 +49,9 @@
             font-family: 'Inter', sans-serif;
             background: var(--bg-gradient);
             color: var(--text-main);
-
-            /* Scrolling Enabled */
             min-height: 100vh;
             overflow-y: auto;
             overflow-x: hidden;
-
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding: 40px 15px;
             transition: background 0.5s ease;
@@ -104,7 +101,7 @@
 <body id="app-body">
     <ul class="circles"><li></li><li></li><li></li><li></li><li></li><li></li></ul>
 
-    <a href="{{ url('/student-login') }}" class="nav-btn back-btn">
+    <a href="{{ url('/institution-login') }}" class="nav-btn back-btn">
         <i class="bi bi-arrow-left"></i>
     </a>
 
@@ -129,13 +126,13 @@
         </div>
 
         <div id="step-1-form">
-            @include('frontend.studentPortal.auth.forgetPasswordLayouts.form1')
+            @include('frontend.institutionPortal.auth.forgotPassword.form1')
         </div>
         <div id="step-2-form" style="display: none;">
-            @include('frontend.studentPortal.auth.forgetPasswordLayouts.form2')
+            @include('frontend.institutionPortal.auth.forgotPassword.form2')
         </div>
         <div id="step-3-form" style="display: none;">
-            @include('frontend.studentPortal.auth.forgetPasswordLayouts.form3')
+            @include('frontend.institutionPortal.auth.forgotPassword.form3')
         </div>
 
     </div>

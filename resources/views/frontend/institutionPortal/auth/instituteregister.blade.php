@@ -95,36 +95,20 @@
    MAKE AUTH-CONTAINER SCROLLABLE
 --------------------------------------------------- */
 .auth-container {
-    max-height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 15px; z-index: 10; display: flex; flex-direction: column; align-items: center;}
+    overflow: none;
+    padding: 15px; z-index: 10; display: flex; flex-direction: column; align-items: center;
+    
+}
 
-/* Hide scrollbar (optional) */
-.auth-container::-webkit-scrollbar {
-    width: 6px;
-}
-.auth-container::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.25);
-    border-radius: 6px;
-}
 
 /* ---------------------------------------------------
    MAKE MAIN REGISTER FORM SCROLL-Y (long forms)
 --------------------------------------------------- */
 #main-register-form {
-    max-height: 70vh;
-    overflow-y: auto;
+    max-height: 100vh;
     padding-right: 8px;
 }
 
-#main-register-form::-webkit-scrollbar {
-    width: 6px;
-}
-#main-register-form::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.2);
-    border-radius: 6px;
-}
         .step { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.9rem; border: 2px solid rgba(255, 255, 255, 0.3); color: rgba(255, 255, 255, 0.7); cursor: default; transition: all 0.3s ease; }
         .step.active { background: #059166; border-color: #3b82f6; color: white; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); transform: scale(1.1); }
         .step-line { width: 40px; height: 2px; background: rgba(255, 255, 255, 0.2); }
