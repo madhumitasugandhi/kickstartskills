@@ -2,50 +2,65 @@
     <h5 class="fw-bold mb-3 text-white">Review Your Information</h5>
 
     <div class="review-box">
-        <h6 class="text-white fw-bold mb-3 border-bottom border-light pb-2" style="opacity: 0.9;">Personal Information</h6>
+        <h6 class="text-white fw-bold mb-3 border-bottom border-light pb-2" style="opacity: 0.9;">
+            <i class="bi bi-person-circle me-2"></i>Personal Information
+        </h6>
 
         <div class="row">
             <div class="col-6">
-                <div class="review-label">Name</div>
-                <div class="review-value" id="review-name">-</div>
+                <div class="review-label text-white-50 small">Full Name</div>
+                <div class="review-value fw-bold text-white" id="review-name">-</div>
             </div>
             <div class="col-6">
-                 <div class="review-label">Country</div>
-                 <div class="review-value" id="review-country">-</div>
+                 <div class="review-label text-white-50 small">Country</div>
+                 <div class="review-value fw-bold text-white" id="review-country">-</div>
             </div>
         </div>
 
-        <div class="review-label">Email</div>
-        <div class="review-value" id="review-email">-</div>
+        <div class="mt-2">
+            <div class="review-label text-white-50 small">Email Address</div>
+            <div class="review-value fw-bold text-white" id="review-email">-</div>
+        </div>
 
-        <div class="review-label">Phone</div>
-        <div class="review-value" id="review-phone">-</div>
+        <div class="mt-2">
+            <div class="review-label text-white-50 small">Phone Number</div>
+            <div class="review-value fw-bold text-white" id="review-phone">-</div>
+        </div>
     </div>
 
     <div class="review-box">
-        <h6 class="text-white fw-bold mb-3 border-bottom border-light pb-2" style="opacity: 0.9;">Account Details</h6>
-
-        <div class="review-label">Role</div>
-        <div class="review-value">Student</div>
+        <h6 class="text-white fw-bold mb-3 border-bottom border-light pb-2" style="opacity: 0.9;">
+            <i class="bi bi-mortarboard me-2"></i>Account Details
+        </h6>
 
         <div class="row">
             <div class="col-6">
-                <div class="review-label">Institution Code</div>
-                <div class="review-value" id="review-code">-</div>
+                <div class="review-label text-white-50 small">Institution Code</div>
+                <div class="review-value fw-bold text-white" id="review-code">-</div>
             </div>
             <div class="col-6">
-                 <div class="review-label">Institution Name</div>
-                 <div class="review-value" id="review-institution">-</div>
+                <div class="review-label text-white-50 small">Role</div>
+                <div class="review-value fw-bold text-white">Student</div>
             </div>
         </div>
 
-        <div class="review-label">Current Skills</div>
-        <div class="review-value" id="review-skills">-</div>
+        <hr class="border-white opacity-25">
 
-        <div class="review-label">Learning Goals</div>
-        <div class="review-value" id="review-goals">-</div>
+        <div class="mb-2">
+            <div class="review-label text-white-50 small">Current Skills</div>
+            <div class="review-value fw-bold text-white" id="review-skills">-</div>
+        </div>
+
+        <div>
+            <div class="review-label text-white-50 small">Learning Goals</div>
+            <div class="review-value fw-bold text-white" id="review-goals">-</div>
+        </div>
     </div>
 
-    <button type="submit" class="btn-action">Create Account</button>
-    <button type="button" class="btn-prev" onclick="switchStep(2)">Previous</button>
+    <button type="submit" class="btn-action w-100 mb-2">
+        <i class="bi bi-check-circle me-2"></i>Create Account
+    </button>
+    <button type="button" class="btn-prev w-100" onclick="switchStep(2)">
+        <i class="bi bi-arrow-left me-2"></i>Previous
+    </button>
 </div>

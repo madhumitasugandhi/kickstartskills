@@ -1,58 +1,65 @@
 <div class="glass-card">
-    <h5 class="fw-bold mb-3 text-white">Basic Information</h5>
+    <h4 class="text-center fw-bold mb-4">Basic Information</h4>
 
-    <div class="row g-2">
+    <div class="row g-3 mb-3">
         <div class="col-6">
+            <label class="form-label-custom">First Name</label>
             <div class="input-group-custom">
                 <i class="bi bi-person input-icon"></i>
-                <input type="text" id="fname" name="first_name" class="custom-input" placeholder="First Name" required>
+                <input type="text" name="first_name" id="fname" class="custom-input" placeholder="First Name">
             </div>
         </div>
         <div class="col-6">
+            <label class="form-label-custom">Last Name</label>
             <div class="input-group-custom">
                 <i class="bi bi-person input-icon"></i>
-                <input type="text" id="lname" name="last_name" class="custom-input" placeholder="Last Name" required>
+                <input type="text" name="last_name" id="lname" class="custom-input" placeholder="Last Name">
             </div>
         </div>
     </div>
 
-    <div class="input-group-custom">
-        <i class="bi bi-envelope input-icon"></i>
-        <input type="email" id="email" name="email" class="custom-input" placeholder="Email Address" required>
+    <div class="mb-3">
+        <label class="form-label-custom">Email Address</label>
+        <div class="input-group-custom">
+            <i class="bi bi-envelope input-icon"></i>
+            <input type="email" name="email" id="email" class="custom-input" placeholder="Email Address">
+        </div>
     </div>
 
-    <div class="input-group-custom">
-        <i class="bi bi-book-half input-icon"></i>
-        <input type="text" class="custom-input" value="Student" readonly style="background: rgba(255,255,255,0.7); cursor: not-allowed;">
+    <div class="mb-3">
+        <label class="form-label-custom">I am a</label>
+        <div class="input-group-custom">
+            <i class="bi bi-book input-icon"></i>
+            <select class="custom-input form-select" style="appearance: auto; padding-left: 42px;">
+                <option value="5" selected>Student</option>
+            </select>
+        </div>
     </div>
 
-    <div class="row g-2">
+    <div class="row g-3 mb-4">
         <div class="col-6">
+            <label class="form-label-custom">Password</label>
             <div class="input-group-custom">
                 <i class="bi bi-lock input-icon"></i>
-                <input type="password" name="password" class="custom-input" placeholder="Password" required>
+                <input type="password" name="password" class="custom-input" placeholder="••••••••" required>
             </div>
         </div>
         <div class="col-6">
+            <label class="form-label-custom">Confirm Password</label>
             <div class="input-group-custom">
                 <i class="bi bi-lock input-icon"></i>
-                <input type="password" name="password_confirmation" class="custom-input" placeholder="Confirm" required>
+                <input type="password" name="password_confirmation" class="custom-input" placeholder="••••••••"
+                    required>
             </div>
         </div>
     </div>
 
-    <div class="form-check mb-3">
+    <div class="form-check mb-4">
         <input class="form-check-input" type="checkbox" id="terms" required>
-        <label class="form-check-label text-white small opacity-75" for="terms">
+        <label class="form-check-label small text-muted-custom" for="terms">
             I agree to the Terms of Service and Privacy Policy
         </label>
     </div>
 
-    <button type="button" class="btn-action" onclick="switchStep(2)">Continue</button>
-
-    <div class="text-center mt-3">
-        <a href="{{ url('/student-login') }}" class="small text-white text-decoration-none opacity-75 hover:opacity-100">
-            Already have an account? <b>Sign In</b>
-        </a>
-    </div>
+    <button type="button" class="btn-action w-100" onclick="switchStep(2)">Continue</button>
 </div>

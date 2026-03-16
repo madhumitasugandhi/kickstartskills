@@ -5,308 +5,341 @@
 @section('icon', 'bi bi-house-door fs-4 p-2 bg-soft-orange rounded-3 text-accent')
 
 @section('content')
-    <div class="card-custom border-0"
-         style="background: linear-gradient(135deg, rgba(255, 140, 0, 0.15) 0%, rgba(30, 41, 59, 0) 100%);">
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center gap-3">
-                <div class="bg-soft-orange p-3 rounded-4 d-flex align-items-center justify-content-center"
-                     style="width: 56px; height: 56px;">
-                    <i class="bi bi-person-fill fs-3 text-accent"></i>
-                </div>
-                <div>
-                    <h5 class="fw-bold mb-1 text-main">Welcome back, Sarah!</h5>
-                    <p class="text-muted-custom mb-0 small">You have 5 students to mentor today.</p>
-                </div>
+@if(session('success'))
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
+    <div class="toast show align-items-center text-white bg-success border-0 shadow-lg" role="alert"
+        aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
             </div>
-            <span class="badge bg-soft-green text-green rounded-pill px-3 py-2">
-                <i class="bi bi-circle-fill small me-1" style="font-size: 6px;"></i> Active
-            </span>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close"></button>
         </div>
     </div>
+</div>
 
-    <div class="row g-4 mb-4">
-        <div class="col-md-6 col-xl-3">
-            <div class="card-custom h-100 d-flex flex-column justify-content-between mb-0">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <div class="bg-soft-blue p-2 rounded-3 text-blue">
-                        <i class="bi bi-person-video2 fs-5"></i>
-                    </div>
-                    <span class="badge bg-soft-blue text-blue rounded-pill">+2</span>
-                </div>
-                <div>
-                    <h4 class="fw-bold text-main mb-1">15</h4>
-                    <span class="text-muted-custom small">Assigned Students</span>
-                </div>
+<script>
+    // Auto-hide the toast after 3 seconds
+    setTimeout(() => {
+        $('.toast').fadeOut();
+    }, 3000);
+</script>
+@endif
+<div class="card-custom border-0"
+    style="background: linear-gradient(135deg, rgba(255, 140, 0, 0.15) 0%, rgba(30, 41, 59, 0) 100%);">
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-3">
+            <div class="bg-soft-orange p-3 rounded-4 d-flex align-items-center justify-content-center"
+                style="width: 56px; height: 56px;">
+                <i class="bi bi-person-fill fs-3 text-accent"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold mb-1 text-main">Welcome back, {{ Auth::user()->full_name }}!</h5>
+                <p class="text-muted-custom mb-0 small">You have {{ $stats['assigned_students'] }} students assigned to
+                    you.</p>
             </div>
         </div>
+        <span class="badge bg-soft-green text-green rounded-pill px-3 py-2">
+            <i class="bi bi-circle-fill small me-1" style="font-size: 6px;"></i> Active
+        </span>
+    </div>
+</div>
 
-        <div class="col-md-6 col-xl-3">
-            <div class="card-custom h-100 d-flex flex-column justify-content-between mb-0">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <div class="bg-soft-blue p-2 rounded-3 text-blue" style="background-color: rgba(13, 110, 253, 0.1) !important;">
-                        <i class="bi bi-calendar-check fs-5"></i>
-                    </div>
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-xl-3">
+        <div class="card-custom h-100 d-flex flex-column justify-content-between mb-0">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <div class="bg-soft-blue p-2 rounded-3 text-blue">
+                    <i class="bi bi-person-video2 fs-5"></i>
                 </div>
-                <div>
-                    <h4 class="fw-bold text-main mb-1">8</h4>
-                    <span class="text-muted-custom small">Active Sessions</span>
-                </div>
+                <span class="badge bg-soft-blue text-blue rounded-pill">+{{ $stats['new_students_count'] }}</span>
             </div>
-        </div>
-
-        <div class="col-md-6 col-xl-3">
-            <div class="card-custom h-100 d-flex flex-column justify-content-between mb-0">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <div class="bg-soft-green p-2 rounded-3 text-green">
-                        <i class="bi bi-check-circle fs-5"></i>
-                    </div>
-                    <span class="badge bg-soft-green text-green rounded-pill">+5</span>
-                </div>
-                <div>
-                    <h4 class="fw-bold text-main mb-1">42</h4>
-                    <span class="text-muted-custom small">Completed Tasks</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-xl-3">
-            <div class="card-custom h-100 d-flex flex-column justify-content-between mb-0">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <div class="bg-soft-orange p-2 rounded-3 text-accent">
-                        <i class="bi bi-graph-up-arrow fs-5"></i>
-                    </div>
-                    <span class="badge bg-soft-orange text-accent rounded-pill">+3%</span>
-                </div>
-                <div>
-                    <h4 class="fw-bold text-main mb-1">87%</h4>
-                    <span class="text-muted-custom small">Avg. Progress</span>
-                </div>
+            <div>
+                <h4 class="fw-bold text-main mb-1">{{ $stats['assigned_students'] }}</h4>
+                <span class="text-muted-custom small">Assigned Students</span>
             </div>
         </div>
     </div>
 
-    <div class="row g-4">
-
-        <div class="col-lg-8">
-            <div class="card-custom h-100 mb-0">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="fw-bold m-0 text-main">Assigned Students</h6>
-                    <a href="#" class="text-accent text-decoration-none small fw-bold">
-                        <i class="bi bi-box-arrow-up-right me-1"></i> View All
-                    </a>
+    <div class="col-md-6 col-xl-3">
+        <div class="card-custom h-100 d-flex flex-column justify-content-between mb-0">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <div class="bg-soft-blue p-2 rounded-3 text-blue"
+                    style="background-color: rgba(13, 110, 253, 0.1) !important;">
+                    <i class="bi bi-calendar-check fs-5"></i>
                 </div>
-
-                <div class="d-flex flex-column gap-3">
-                    <div class="p-3 rounded-3" style="background-color: var(--bg-hover);">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="rounded-circle bg-soft-blue text-blue d-flex align-items-center justify-content-center fw-bold"
-                                     style="width: 40px; height: 40px; font-size: 0.9rem;">JD</div>
-                                <div>
-                                    <h6 class="fw-bold text-main mb-0" style="font-size: 0.9rem;">John Doe</h6>
-                                    <small class="text-muted-custom" style="font-size: 0.75rem;">Advanced Learning Phase</small>
-                                </div>
-                            </div>
-                            <i class="bi bi-three-dots-vertical text-muted-custom small"></i>
-                        </div>
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="progress flex-grow-1" style="height: 6px; background-color: rgba(255,255,255,0.05);">
-                                <div class="progress-bar bg-primary" style="width: 85%"></div>
-                            </div>
-                            <small class="text-primary fw-bold" style="font-size: 0.75rem;">85%</small>
-                        </div>
-                    </div>
-
-                    <div class="p-3 rounded-3" style="background-color: var(--bg-hover);">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="rounded-circle bg-soft-teal text-teal d-flex align-items-center justify-content-center fw-bold"
-                                     style="width: 40px; height: 40px; font-size: 0.9rem;">JS</div>
-                                <div>
-                                    <h6 class="fw-bold text-main mb-0" style="font-size: 0.9rem;">Jane Smith</h6>
-                                    <small class="text-muted-custom" style="font-size: 0.75rem;">Mini-Project Phase</small>
-                                </div>
-                            </div>
-                            <i class="bi bi-three-dots-vertical text-muted-custom small"></i>
-                        </div>
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="progress flex-grow-1" style="height: 6px; background-color: rgba(255,255,255,0.05);">
-                                <div class="progress-bar bg-success" style="width: 92%"></div>
-                            </div>
-                            <small class="text-success fw-bold" style="font-size: 0.75rem;">92%</small>
-                        </div>
-                    </div>
-
-                    <div class="p-3 rounded-3" style="background-color: var(--bg-hover);">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="rounded-circle bg-soft-blue text-blue d-flex align-items-center justify-content-center fw-bold"
-                                     style="width: 40px; height: 40px; font-size: 0.9rem;">MJ</div>
-                                <div>
-                                    <h6 class="fw-bold text-main mb-0" style="font-size: 0.9rem;">Mike Johnson</h6>
-                                    <small class="text-muted-custom" style="font-size: 0.75rem;">Foundation Phase</small>
-                                </div>
-                            </div>
-                            <i class="bi bi-three-dots-vertical text-muted-custom small"></i>
-                        </div>
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="progress flex-grow-1" style="height: 6px; background-color: rgba(255,255,255,0.05);">
-                                <div class="progress-bar bg-primary" style="width: 78%"></div>
-                            </div>
-                            <small class="text-primary fw-bold" style="font-size: 0.75rem;">78%</small>
-                        </div>
-                    </div>
-
-                    <div class="p-3 rounded-3" style="background-color: var(--bg-hover);">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="rounded-circle bg-soft-teal text-teal d-flex align-items-center justify-content-center fw-bold"
-                                     style="width: 40px; height: 40px; font-size: 0.9rem;">SW</div>
-                                <div>
-                                    <h6 class="fw-bold text-main mb-0" style="font-size: 0.9rem;">Sarah Wilson</h6>
-                                    <small class="text-muted-custom" style="font-size: 0.75rem;">Client Project Phase</small>
-                                </div>
-                            </div>
-                            <i class="bi bi-three-dots-vertical text-muted-custom small"></i>
-                        </div>
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="progress flex-grow-1" style="height: 6px; background-color: rgba(255,255,255,0.05);">
-                                <div class="progress-bar bg-success" style="width: 96%"></div>
-                            </div>
-                            <small class="text-success fw-bold" style="font-size: 0.75rem;">96%</small>
-                        </div>
-                    </div>
-
-                    <div class="p-3 rounded-3" style="background-color: var(--bg-hover);">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="rounded-circle bg-soft-blue text-blue d-flex align-items-center justify-content-center fw-bold"
-                                     style="width: 40px; height: 40px; font-size: 0.9rem;">AC</div>
-                                <div>
-                                    <h6 class="fw-bold text-main mb-0" style="font-size: 0.9rem;">Alex Chen</h6>
-                                    <small class="text-muted-custom" style="font-size: 0.75rem;">Advanced Learning Phase</small>
-                                </div>
-                            </div>
-                            <i class="bi bi-three-dots-vertical text-muted-custom small"></i>
-                        </div>
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="progress flex-grow-1" style="height: 6px; background-color: rgba(255,255,255,0.05);">
-                                <div class="progress-bar bg-primary" style="width: 88%"></div>
-                            </div>
-                            <small class="text-primary fw-bold" style="font-size: 0.75rem;">88%</small>
-                        </div>
-                    </div>
-
-                </div>
+                {{-- ADD THIS BADGE BELOW --}}
+                <span class="badge bg-soft-blue text-blue rounded-pill">{{ $stats['sessions_today'] }} Today</span>
+            </div>
+            <div>
+                <h4 class="fw-bold text-main mb-1">{{ $stats['active_sessions'] }}</h4>
+                <span class="text-muted-custom small">Active Sessions</span>
             </div>
         </div>
+    </div>
 
-        <div class="col-lg-4">
-
-            <div class="card-custom mb-4">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h6 class="fw-bold m-0 text-main">Upcoming Sessions</h6>
-                    <i class="bi bi-calendar-event text-muted-custom"></i>
+    <div class="col-md-6 col-xl-3">
+        <div class="card-custom h-100 d-flex flex-column justify-content-between mb-0">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <div class="bg-soft-green p-2 rounded-3 text-green">
+                    <i class="bi bi-check-circle fs-5"></i>
                 </div>
+                <span class="badge bg-soft-green text-green rounded-pill">+5</span>
+            </div>
+            <div>
+                <h4 class="fw-bold text-main mb-1">{{ $stats['completed_tasks'] }}</h4>
+                <span class="text-muted-custom small">Completed Tasks</span>
+            </div>
+        </div>
+    </div>
 
-                <div class="d-flex flex-column gap-2 mb-3">
-                    <div class="d-flex align-items-start gap-3 p-2 rounded-3 border border-dark-subtle" style="border-color: var(--border-color) !important;">
-                        <div class="bg-soft-blue p-2 rounded-2 text-blue mt-1">
-                            <i class="bi bi-people"></i>
-                        </div>
-                        <div>
-                            <h6 class="fw-bold text-main mb-0" style="font-size: 0.85rem;">Daily Standup</h6>
-                            <small class="text-muted-custom d-block" style="font-size: 0.75rem;">John Doe</small>
-                            <small class="text-blue fw-bold" style="font-size: 0.7rem;">In 1 hour</small>
-                        </div>
-                    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card-custom h-100 d-flex flex-column justify-content-between mb-0">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <div class="bg-soft-orange p-2 rounded-3 text-accent">
+                    <i class="bi bi-graph-up-arrow fs-5"></i>
+                </div>
+                <span class="badge bg-soft-orange text-accent rounded-pill">+3%</span>
+            </div>
+            <div>
+                <h4 class="fw-bold text-main mb-1">{{ $stats['avg_progress'] }}%</h4>
+                <span class="text-muted-custom small">Avg. Progress</span>
+            </div>
+        </div>
+    </div>
+</div>
 
-                    <div class="d-flex align-items-start gap-3 p-2 rounded-3 border border-dark-subtle" style="border-color: var(--border-color) !important;">
-                        <div class="bg-soft-orange p-2 rounded-2 text-accent mt-1">
-                            <i class="bi bi-eye"></i>
-                        </div>
-                        <div>
-                            <h6 class="fw-bold text-main mb-0" style="font-size: 0.85rem;">Code Review</h6>
-                            <small class="text-muted-custom d-block" style="font-size: 0.75rem;">Jane Smith</small>
-                            <small class="text-accent fw-bold" style="font-size: 0.7rem;">In 3 hours</small>
-                        </div>
-                    </div>
+<div class="row g-4">
 
-                    <div class="d-flex align-items-start gap-3 p-2 rounded-3 border border-dark-subtle" style="border-color: var(--border-color) !important;">
-                        <div class="bg-soft-green p-2 rounded-2 text-green mt-1">
-                            <i class="bi bi-person"></i>
-                        </div>
-                        <div>
-                            <h6 class="fw-bold text-main mb-0" style="font-size: 0.85rem;">1-on-1 Meeting</h6>
-                            <small class="text-muted-custom d-block" style="font-size: 0.75rem;">Mike Johnson</small>
-                            <small class="text-green fw-bold" style="font-size: 0.7rem;">In 23 hours</small>
-                        </div>
-                    </div>
+    <div class="col-lg-8">
+        <div class="card-custom h-100 mb-0">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="fw-bold m-0 text-main">Assigned Students</h6>
+                <a href="{{ route('mentor.students.assigned') }}"
+                    class="text-accent text-decoration-none small fw-bold">
+                    <i class="bi bi-box-arrow-up-right me-1"></i> View All
+                </a>
+            </div>
 
-                     <div class="d-flex align-items-start gap-3 p-2 rounded-3 border border-dark-subtle" style="border-color: var(--border-color) !important;">
-                        <div class="bg-soft-blue p-2 rounded-2 text-blue mt-1">
-                            <i class="bi bi-laptop"></i>
+            <div class="d-flex flex-column gap-3">
+                @forelse($students as $student)
+                <div class="p-3 rounded-3" style="background-color: var(--bg-hover);">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="rounded-circle bg-soft-orange text-orange d-flex align-items-center justify-content-center fw-bold"
+                                style="width: 40px; height: 40px; font-size: 0.9rem;">
+                                {{ strtoupper(substr($student->full_name, 0, 2)) }}
+                            </div>
+                            <div>
+                                <h6 class="fw-bold text-main mb-0" style="font-size: 0.9rem;">
+                                    <a href="{{ route('mentor.students.show', $student->id) }}"
+                                        class="text-decoration-none text-main hover-accent">
+                                        {{ $student->full_name }}
+                                    </a>
+                                </h6>
+                                <small class="text-muted-custom" style="font-size: 0.75rem;">Status: {{
+                                    ucfirst($student->account_status) }}</small>
+                            </div>
                         </div>
-                        <div>
-                            <h6 class="fw-bold text-main mb-0" style="font-size: 0.85rem;">Project Demo</h6>
-                            <small class="text-muted-custom d-block" style="font-size: 0.75rem;">Sarah Wilson</small>
-                            <small class="text-blue fw-bold" style="font-size: 0.7rem;">In 1 day</small>
+                        <div class="dropdown">
+                            <button class="btn btn-link text-muted-custom p-0" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical small"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+                                <li>
+                                    <a class="dropdown-item small"
+                                        href="{{ route('mentor.students.show', $student->id) }}">
+                                        <i class="bi bi-person-lines-fill me-2 text-primary"></i> View Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item small" href="#" data-bs-toggle="modal"
+                                        data-bs-target="#messageModal">
+                                        <i class="bi bi-chat-left-text me-2 text-success"></i> Send Message
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider opacity-50">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item small text-danger" href="#">
+                                        <i class="bi bi-person-x me-2"></i> Unassign Student
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
+                @empty
+                <div class="text-center p-4">
+                    <i class="bi bi-people --text-muted fs-1 d-block mb-2"></i>
+                    <p class="--text-muted small">No students assigned to you yet.</p>
+                </div>
+                @endforelse
+            </div>
+        </div>
+    </div>
 
-                <button class="btn btn-primary w-100 fw-bold"
-                        style="background-color: var(--accent-color); border: none;">
-                    <i class="bi bi-plus me-1"></i> Schedule Session
+    <div class="col-lg-4">
+        {{-- 5. UPCOMING SESSIONS LIST --}}
+        <div class="card-custom mb-4">
+            <h6 class="fw-bold mb-3 text-main">Upcoming Sessions</h6>
+            <div class="d-flex flex-column gap-2 mb-3">
+                @forelse($upcomingSessions as $session)
+                <div class="d-flex align-items-start gap-3 p-2 rounded-3 border border-dark-subtle">
+                    <div class="bg-soft-blue p-2 rounded-2 text-blue mt-1"><i class="bi bi-people"></i></div>
+                    <div>
+                        <h6 class="fw-bold text-main mb-0" style="font-size: 0.85rem;">{{
+                            base64_decode($session->payload) }}</h6>
+                        <small class="text-muted-custom d-block">{{ $session->student_name }}</small>
+                        <small class="text-blue fw-bold" style="font-size: 0.7rem;">
+                            {{ \Carbon\Carbon::createFromTimestamp($session->last_activity)->diffForHumans() }}
+                        </small>
+                    </div>
+                </div>
+                @empty
+                <p class="--text-muted small text-center">No upcoming sessions.</p>
+                @endforelse
+            </div>
+            <button class="btn btn-primary w-100 fw-bold" data-bs-toggle="modal" data-bs-target="#scheduleModal"
+                style="background-color: var(--accent-color); border: none;">
+                <i class="bi bi-plus me-1"></i> Schedule Session
+            </button>
+        </div>
+
+        {{-- QUICK ACTIONS (Keeping this for you!) --}}
+        <div class="card-custom mb-0">
+            <h6 class="fw-bold mb-3 text-main">Quick Actions</h6>
+            <div class="d-flex flex-column gap-2">
+                <button class="btn-quick-action m-0 d-flex justify-content-between align-items-center"
+                    data-bs-toggle="modal" data-bs-target="#scheduleModal">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="action-icon bg-soft-blue text-blue"
+                            style="width: 32px; height: 32px; font-size: 0.9rem;">
+                            <i class="bi bi-calendar-plus"></i>
+                        </div>
+                        <span class="fw-medium text-main">Schedule Meeting</span>
+                    </div>
+                    <i class="bi bi-chevron-right small text-muted-custom"></i>
                 </button>
+
+                <button class="btn-quick-action m-0 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="action-icon bg-soft-blue text-blue"
+                            style="width: 32px; height: 32px; font-size: 0.9rem;">
+                            <i class="bi bi-chat-dots"></i>
+                        </div>
+                        <span class="fw-medium text-main">Send Message</span>
+                    </div>
+                    <i class="bi bi-chevron-right small text-muted-custom"></i>
+                </button>
+                <a href="#"
+                    class="btn-quick-action m-0 d-flex justify-content-between align-items-center text-decoration-none">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="action-icon bg-soft-green text-green"
+                            style="width: 32px; height: 32px; font-size: 0.9rem;">
+                            <i class="bi bi-check2-square"></i>
+                        </div>
+                        <span class="fw-medium text-main">Review Tasks</span>
+                    </div>
+                    <i class="bi bi-chevron-right small text-muted-custom"></i>
+                </a>
+                {{-- <button class="btn-quick-action m-0 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="action-icon bg-soft-green text-green"
+                            style="width: 32px; height: 32px; font-size: 0.9rem;">
+                            <i class="bi bi-check2-square"></i>
+                        </div>
+                        <span class="fw-medium text-main">Review Tasks</span>
+                    </div>
+                    <i class="bi bi-chevron-right small text-muted-custom"></i>
+                </button> --}}
+
+                <a href="{{ route('mentor.reports.mentoring') }}"
+                    class="btn-quick-action m-0 d-flex justify-content-between align-items-center text-decoration-none">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="action-icon bg-soft-orange text-accent"
+                            style="width: 32px; height: 32px; font-size: 0.9rem;">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <span class="fw-medium text-main">Generate Report</span>
+                    </div>
+                    <i class="bi bi-chevron-right small text-muted-custom"></i>
+                </a>
             </div>
-
-            <div class="card-custom mb-0">
-                <h6 class="fw-bold mb-3 text-main">Quick Actions</h6>
-
-                <div class="d-flex flex-column gap-2">
-                    <button class="btn-quick-action m-0 d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="action-icon bg-soft-blue text-blue" style="width: 32px; height: 32px; font-size: 0.9rem;">
-                                <i class="bi bi-calendar-plus"></i>
-                            </div>
-                            <span class="fw-medium text-main">Schedule Meeting</span>
-                        </div>
-                        <i class="bi bi-chevron-right small text-muted-custom"></i>
-                    </button>
-
-                    <button class="btn-quick-action m-0 d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="action-icon bg-soft-blue text-blue" style="width: 32px; height: 32px; font-size: 0.9rem;">
-                                <i class="bi bi-chat-dots"></i>
-                            </div>
-                            <span class="fw-medium text-main">Send Message</span>
-                        </div>
-                        <i class="bi bi-chevron-right small text-muted-custom"></i>
-                    </button>
-
-                    <button class="btn-quick-action m-0 d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="action-icon bg-soft-green text-green" style="width: 32px; height: 32px; font-size: 0.9rem;">
-                                <i class="bi bi-check2-square"></i>
-                            </div>
-                            <span class="fw-medium text-main">Review Tasks</span>
-                        </div>
-                        <i class="bi bi-chevron-right small text-muted-custom"></i>
-                    </button>
-
-                    <button class="btn-quick-action m-0 d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="action-icon bg-soft-orange text-accent" style="width: 32px; height: 32px; font-size: 0.9rem;">
-                                <i class="bi bi-file-earmark-text"></i>
-                            </div>
-                            <span class="fw-medium text-main">Generate Report</span>
-                        </div>
-                        <i class="bi bi-chevron-right small text-muted-custom"></i>
-                    </button>
-                </div>
-            </div>
-
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content card-custom border-0 shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="fw-bold text-main m-0"><i class="bi bi-calendar-plus me-2 text-accent"></i>Schedule New
+                    Session</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form action="{{ route('mentor.sessions.store') }}" method="POST">
+                @csrf
+                <div class="modal-body py-4">
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-main">SELECT STUDENT</label>
+                        <select name="student_id" class="form-select select2-dropdown" required>
+                            <option value="" selected disabled>Search student name...</option>
+
+                            @forelse($students as $student)
+                            {{-- This is the magic line --}}
+                            <option value="{{ $student->id }}">{{ $student->full_name }}</option>
+                            @empty
+                            <option value="" disabled>No students assigned to you yet</option>
+                            @endforelse
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-main">SESSION TOPIC</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-soft-orange border-0 text-accent"><i
+                                    class="bi bi-chat-dots"></i></span>
+                            <input type="text" name="topic" class="form-control bg-light border-0"
+                                placeholder="e.g. Code Review, Portfolio Discussion" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-0">
+                        <label class="form-label fw-bold small text-main">DATE & TIME</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-soft-orange border-0 text-accent"><i
+                                    class="bi bi-clock"></i></span>
+                            <input type="datetime-local" name="session_date" class="form-control bg-light border-0"
+                                required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light text-muted-custom fw-bold px-4"
+                        data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary fw-bold px-4"
+                        style="background-color: var(--accent-color); border: none;">
+                        Schedule Now
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.select2-dropdown').select2({
+            dropdownParent: $('#scheduleModal'),
+            width: '100%',
+            placeholder: "Type student name..."
+        });
+    });
+</script>
 @endsection

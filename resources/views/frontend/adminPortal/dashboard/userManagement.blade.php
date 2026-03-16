@@ -17,107 +17,265 @@
         height: 100%;
         position: relative;
         overflow: hidden;
-        display: flex; flex-direction: column; justify-content: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .stat-icon-circle {
-        width: 40px; height: 40px; border-radius: 50%;
-        background-color: rgba(255,255,255,0.05); color: var(--text-muted);
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.2rem; margin-bottom: 12px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.05);
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        margin-bottom: 12px;
     }
 
-    .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
-    .stat-label { font-size: 0.85rem; color: var(--text-muted); }
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 2px;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
 
     .trend-badge {
-        position: absolute; top: 15px; right: 15px; font-size: 0.7rem; font-weight: 600;
-        padding: 2px 8px; border-radius: 4px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 4px;
     }
-    .trend-up { color: #10b981; background-color: rgba(16, 185, 129, 0.1); }
-    .trend-down { color: #ef4444; background-color: rgba(239, 68, 68, 0.1); }
+
+    .trend-up {
+        color: #10b981;
+        background-color: rgba(16, 185, 129, 0.1);
+    }
+
+    .trend-down {
+        color: #ef4444;
+        background-color: rgba(239, 68, 68, 0.1);
+    }
 
     /* Navigation Tabs */
     .user-tabs {
-        display: flex; gap: 16px; margin-bottom: 24px; border-bottom: 1px solid var(--border-color);
-        overflow-x: auto; white-space: nowrap; padding-bottom: 4px;
+        display: flex;
+        gap: 16px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid var(--border-color);
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 4px;
     }
-    .user-tabs::-webkit-scrollbar { height: 0px; background: transparent; }
+
+    .user-tabs::-webkit-scrollbar {
+        height: 0px;
+        background: transparent;
+    }
 
     .user-tab-btn {
-        background: transparent; border: none; color: var(--text-muted); padding: 10px 12px;
-        font-size: 0.9rem; font-weight: 500; cursor: pointer; position: relative; transition: 0.2s;
-        display: flex; align-items: center; gap: 8px;
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        position: relative;
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
-    .user-tab-btn:hover { color: var(--text-main); }
-    .user-tab-btn.active { color: #ef4444; }
+
+    .user-tab-btn:hover {
+        color: var(--text-main);
+    }
+
+    .user-tab-btn.active {
+        color: #ef4444;
+    }
+
     .user-tab-btn.active::after {
-        content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 2px; background-color: #ef4444;
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #ef4444;
     }
 
     /* Filter Section */
     .filter-container {
-        background-color: var(--bg-card); border: 1px solid var(--border-color);
-        border-radius: 12px; padding: 20px; margin-bottom: 24px;
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 24px;
     }
 
-    .search-input-drive { background-color: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main); padding: 10px 16px; border-radius: 8px; width: 100%; }
+    .search-input-drive {
+        background-color: var(--bg-body);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 10px 16px;
+        border-radius: 8px;
+        width: 100%;
+    }
 
     .filter-pill {
-        border: 1px solid var(--border-color); background: transparent; color: var(--text-muted);
-        padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; transition: 0.2s; cursor: pointer;
-        display: inline-block; margin-right: 8px; margin-bottom: 8px;
+        border: 1px solid var(--border-color);
+        background: transparent;
+        color: var(--text-muted);
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        transition: 0.2s;
+        cursor: pointer;
+        display: inline-block;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        text-decoration: none;
     }
-    .filter-pill:hover, .filter-pill.active {
-        background-color: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: #ef4444;
+
+    .filter-pill:hover,
+    .filter-pill.active {
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border-color: #ef4444;
     }
 
     /* User List Item */
     .user-list-item {
-        background-color: var(--bg-card); border: 1px solid var(--border-color);
-        padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
-        transition: 0.2s; border-bottom: none;
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: 0.2s;
+        border-bottom: none;
     }
-    .user-list-item:first-child { border-top-left-radius: 12px; border-top-right-radius: 12px; }
-    .user-list-item:last-child { border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; border-bottom: 1px solid var(--border-color); }
-    .user-list-item:hover { background-color: rgba(255,255,255,0.02); }
+
+    .user-list-item:first-child {
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    .user-list-item:last-child {
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .user-list-item:hover {
+        background-color: rgba(255, 255, 255, 0.02);
+    }
 
     .user-avatar {
-        width: 42px; height: 42px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        font-weight: 600; font-size: 0.9rem; margin-right: 16px; flex-shrink: 0;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-right: 16px;
+        flex-shrink: 0;
     }
 
-    .role-badge-sm { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; display: block; text-align: right; }
-    .status-active { color: #10b981; font-size: 0.75rem; font-weight: 600; }
+    .role-badge-sm {
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        display: block;
+        text-align: right;
+    }
+
+    .status-active {
+        color: #10b981;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .status-danger {
+        color: #ef4444;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
 
     /* Role Distribution Bars */
-    .role-dist-row { margin-bottom: 16px; }
-    .role-dist-label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; color: var(--text-muted); }
-    .role-progress { height: 6px; background: var(--bg-body); border-radius: 3px; overflow: hidden; }
-    .role-fill { height: 100%; border-radius: 3px; }
+    .role-dist-row {
+        margin-bottom: 16px;
+    }
+
+    .role-dist-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+        color: var(--text-muted);
+    }
+
+    .role-progress {
+        height: 6px;
+        background: var(--bg-body);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .role-fill {
+        height: 100%;
+        border-radius: 3px;
+    }
 
     /* Activity Items */
     .activity-item {
-        padding: 16px; border-bottom: 1px solid var(--border-color);
-        display: flex; gap: 12px; align-items: start;
+        padding: 16px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        gap: 12px;
+        align-items: start;
     }
-    .activity-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem; }
 
-    /* Utilities */
-    .text-blue { color: #3b82f6; } .bg-soft-blue { background: rgba(59, 130, 246, 0.1); }
-    .text-purple { color: #8b5cf6; } .bg-soft-purple { background: rgba(139, 92, 246, 0.1); }
-    .text-teal { color: #14b8a6; } .bg-soft-teal { background: rgba(20, 184, 166, 0.1); }
-    .text-orange { color: #f59e0b; } .bg-soft-orange { background: rgba(245, 158, 11, 0.1); }
-
+    .activity-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 1rem;
+    }
 </style>
+
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show bg-soft-green text-green border-0 mb-4" role="alert">
+    <i class="bi bi-check-circle-fill me-2"></i>
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
 
 <div class="row g-4 mb-4">
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="user-stat-card">
             <span class="trend-badge trend-up">+12%</span>
             <div class="stat-icon-circle text-danger"><i class="bi bi-people"></i></div>
-            <div class="stat-value">15,420</div>
+            <div class="stat-value">{{ number_format($stats['total']) }}</div>
             <div class="stat-label">Total Users</div>
         </div>
     </div>
@@ -125,15 +283,15 @@
         <div class="user-stat-card">
             <span class="trend-badge trend-up">+8%</span>
             <div class="stat-icon-circle text-success"><i class="bi bi-person-check"></i></div>
-            <div class="stat-value">8,934</div>
+            <div class="stat-value">{{ number_format($stats['active']) }}</div>
             <div class="stat-label">Active Users</div>
         </div>
     </div>
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="user-stat-card">
-            <span class="trend-badge trend-up">+23%</span>
+            <span class="trend-badge trend-up">+{{ $stats['new_this_month'] > 0 ? 'New' : '0' }}</span>
             <div class="stat-icon-circle text-warning"><i class="bi bi-person-plus"></i></div>
-            <div class="stat-value">1,205</div>
+            <div class="stat-value">{{ number_format($stats['new_this_month']) }}</div>
             <div class="stat-label">New This Month</div>
         </div>
     </div>
@@ -141,7 +299,7 @@
         <div class="user-stat-card">
             <span class="trend-badge text-blue bg-soft-blue">Live</span>
             <div class="stat-icon-circle text-blue"><i class="bi bi-circle"></i></div>
-            <div class="stat-value">1,834</div>
+            <div class="stat-value">{{ number_format($stats['online_now']) }}</div>
             <div class="stat-label">Online Now</div>
         </div>
     </div>
@@ -149,7 +307,7 @@
         <div class="user-stat-card">
             <span class="trend-badge trend-down">-5%</span>
             <div class="stat-icon-circle text-danger"><i class="bi bi-person-x"></i></div>
-            <div class="stat-value">23</div>
+            <div class="stat-value">{{ number_format($stats['suspended']) }}</div>
             <div class="stat-label">Suspended</div>
         </div>
     </div>
@@ -157,7 +315,7 @@
         <div class="user-stat-card">
             <span class="trend-badge trend-up">+15%</span>
             <div class="stat-icon-circle text-warning"><i class="bi bi-clock-history"></i></div>
-            <div class="stat-value">156</div>
+            <div class="stat-value">{{ number_format($stats['pending']) }}</div>
             <div class="stat-label">Pending Verification</div>
         </div>
     </div>
@@ -172,113 +330,150 @@
 <div id="tab-users" class="user-content-block">
     <div class="filter-container">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-3">
-            <div class="position-relative flex-grow-1 w-50">
-                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 --text-muted"></i>
-                    <input type="text" class="search-input-drive ps-5" placeholder="Search drives, companies, or submitters...">
-                </div>
-            <button class="btn btn-outline-danger d-flex align-items-center gap-2 w-500 w-md-auto justify-content-center">
+            <form action="{{ route('admin.users') }}" method="GET" class="position-relative flex-grow-1 w-50">
+                <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 --text-muted"></i>
+                <input type="text" name="search" value="{{ request('search') }}" class="search-input-drive ps-5"
+                    placeholder="Search by name or email...">
+            </form>
+
+            <button
+                class="btn btn-outline-danger d-flex align-items-center gap-2 w-500 w-md-auto justify-content-center"
+                data-bs-toggle="modal" data-bs-target="#addUserModal">
                 <i class="bi bi-person-plus"></i> Add User
             </button>
         </div>
 
-        <div class="d-flex flex-wrap align-items-center gap-2">
-            <span class="--text-muted small me-2"><i class="bi bi-funnel"></i> Filters:</span>
-            <span class="filter-pill active">All</span>
-            <span class="filter-pill">Student</span>
-            <span class="filter-pill">Institution</span>
-            <span class="filter-pill">Mentor</span>
-            <span class="filter-pill">HR</span>
-            <span class="filter-pill">Admin</span>
-            <div class="vr mx-2 --text-muted d-none d-md-block"></div>
-            <span class="filter-pill">Active</span>
-            <span class="filter-pill">Inactive</span>
-            <span class="filter-pill">Suspended</span>
-            <span class="filter-pill">Pending</span>
+        <div class="filter-container">
+            <form action="{{ route('admin.users') }}" method="GET" class="position-relative mb-4">
+                <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 --text-muted"></i>
+                <input type="text" name="search" value="{{ request('search') }}" class="search-input-drive ps-5"
+                    placeholder="Search users by name, email, or department...">
+            </form>
+
+            <div class="d-flex flex-wrap align-items-center gap-3">
+                <span class="--text-muted small fw-bold"><i class="bi bi-funnel"></i> Filters:</span>
+
+                <div class="d-flex gap-2">
+                    <a href="{{ route('admin.users', array_merge(request()->query(), ['filter' => 'All'])) }}"
+                        class="filter-pill {{ request('filter') == 'All' || !request('filter') ? 'active' : '' }}">All</a>
+                    <a href="{{ route('admin.users', array_merge(request()->query(), ['filter' => '5'])) }}"
+                        class="filter-pill {{ request('filter') == '5' ? 'active' : '' }}">Student</a>
+                    <a href="{{ route('admin.users', array_merge(request()->query(), ['filter' => '4'])) }}"
+                        class="filter-pill {{ request('filter') == '4' ? 'active' : '' }}">Institution</a>
+                    <a href="{{ route('admin.users', array_merge(request()->query(), ['filter' => '3'])) }}"
+                        class="filter-pill {{ request('filter') == '3' ? 'active' : '' }}">Mentor</a>
+                    <a href="{{ route('admin.users', array_merge(request()->query(), ['filter' => '2'])) }}"
+                        class="filter-pill {{ request('filter') == '2' ? 'active' : '' }}">HR</a>
+                    <a href="{{ route('admin.users', array_merge(request()->query(), ['filter' => '1'])) }}"
+                        class="filter-pill {{ request('filter') == '1' ? 'active' : '' }}">Admin</a>
+                </div>
+
+                <div class="vr mx-2 --text-muted d-none d-md-block"></div>
+
+                <div class="d-flex gap-2">
+                    <div class="d-flex gap-2">
+
+                        <a href="{{ route('admin.users', array_merge(request()->query(), ['status' => 'All'])) }}"
+                            class="filter-pill {{ request('status') == 'All' || !request('status') ? 'active' : '' }}">All</a>
+
+                        <a href="{{ route('admin.users', array_merge(request()->query(), ['status' => 'active'])) }}"
+                            class="filter-pill {{ request('status') == 'active' ? 'active' : '' }}">Active</a>
+
+                        <a href="{{ route('admin.users', array_merge(request()->query(), ['status' => 'deactivated'])) }}"
+                            class="filter-pill {{ request('status') == 'deactivated' ? 'active' : '' }}">Inactive</a>
+
+                        <a href="{{ route('admin.users', array_merge(request()->query(), ['status' => 'suspended'])) }}"
+                            class="filter-pill {{ request('status') == 'suspended' ? 'active' : '' }}">Suspended</a>
+                        <a href="{{ route('admin.users', array_merge(request()->query(), ['status' => 'pending'])) }}"
+                            class="filter-pill {{ request('status') == 'pending' ? 'active' : '' }}">Pending</a>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 
     <div>
-        <h6 class="text-danger fw-bold mb-3 ms-1"><i class="bi bi-people me-2"></i> User Directory (8 users)</h6>
+        <h6 class="text-danger fw-bold mb-3 ms-1">
+            <i class="bi bi-people me-2"></i> User Directory ({{ $users->count() }} users)
+        </h6>
+
         <div class="d-flex flex-column">
+            @forelse($users as $user)
             <div class="user-list-item">
                 <div class="d-flex align-items-center">
-                    <div class="user-avatar bg-soft-blue text-blue">JS</div>
+                    <span class="--text-muted me-3 fw-bold small" style="min-width: 30px;">
+                        {{ $loop->iteration }})
+                    </span>
+                    <div class="user-avatar bg-soft-danger text-danger">
+                        {{ strtoupper(substr($user->full_name, 0, 2)) }}
+                    </div>
                     <div>
-                        <h6 class="fw-bold mb-0 text-main">John Smith <i class="bi bi-patch-check-fill text-success small ms-1"></i></h6>
-                        <small class="--text-muted d-block">john.smith@kickstartskills.com</small>
-                        <small class="--text-muted" style="font-size: 0.75rem;"><i class="bi bi-geo-alt me-1"></i> New York, USA • Computer Science</small>
+                        <h6 class="fw-bold mb-0 text-main">
+                            {{ $user->full_name }}
+                            @if($user->account_status == 'active')
+                            <i class="bi bi-patch-check-fill text-success small ms-1"></i>
+                            @endif
+                        </h6>
+                        <small class="--text-muted d-block">{{ $user->email }}</small>
                     </div>
                 </div>
                 <div class="text-end d-none d-sm-block">
-                    <span class="role-badge-sm text-blue">Student</span>
-                    <div class="status-active">Active</div>
-                    <small class="--text-muted d-block mt-1" style="font-size: 0.7rem;"><i class="bi bi-clock"></i> 688d ago</small>
-                </div>
-            </div>
+                    <span class="role-badge-sm text-danger">
+                        @if($user->admin_role_id == 1)
+                        ADMIN
+                        @elseif($user->admin_role_id == 2)
+                        HR
+                        @elseif($user->admin_role_id == 3)
+                        MENTOR
+                        @elseif($user->admin_role_id == 4)
+                        INSTITUTION
+                        @elseif($user->admin_role_id == 5)
+                        STUDENT
+                        @else
+                        STAFF
+                        @endif
+                    </span>
+                    <div class="status-{{ $user->account_status == 'active' ? 'active' : 'danger' }}">
+                        @if($user->account_status == 'pending')
+                        <span class="text-warning">Pending</span>
+                        @elseif($user->account_status == 'deactivated')
+                        <span class="text-secondary">Deactivated</span>
+                        @else
+                        {{ ucfirst($user->account_status) }}
+                        @endif
+                    </div>
+                    <small class="--text-muted d-block mt-1" style="font-size: 0.7rem;">
+                        <i class="bi bi-clock"></i> {{ \Carbon\Carbon::parse($user->created_at)->diffForHumans() }}
+                    </small>
 
-            <div class="user-list-item">
-                <div class="d-flex align-items-center">
-                    <div class="user-avatar bg-soft-teal text-teal">SJ</div>
-                    <div>
-                        <h6 class="fw-bold mb-0 text-main">Sarah Johnson <i class="bi bi-patch-check-fill text-success small ms-1"></i></h6>
-                        <small class="--text-muted d-block">sarah.johnson@techuniv.edu</small>
-                        <small class="--text-muted" style="font-size: 0.75rem;"><i class="bi bi-geo-alt me-1"></i> California, USA • Administration</small>
-                    </div>
-                </div>
-                <div class="text-end d-none d-sm-block">
-                    <span class="role-badge-sm text-teal">Institution</span>
-                    <div class="status-active">Active</div>
-                    <small class="--text-muted d-block mt-1" style="font-size: 0.7rem;"><i class="bi bi-clock"></i> 688d ago</small>
-                </div>
-            </div>
+                    <div class="d-flex justify-content-end gap-2 mt-2">
+                        <button class="btn btn-sm px-3 py-1 rounded-pill fw-bold edit-user-btn"
+                            data-id="{{ $user->id }}" data-name="{{ $user->full_name }}" data-email="{{ $user->email }}"
+                            data-role="{{ $user->admin_role_id }}" data-status="{{ $user->account_status }}"
+                            data-mentor="{{ $user->mentor_id }}"
+                            style="font-size: 0.65rem; background-color: rgba(13, 110, 253, 0.1); color: #0dcaf0; border: 1px solid rgba(13, 110, 253, 0.2);">
+                            <i class="bi bi-pencil-square me-1"></i> EDIT
+                        </button>
 
-            <div class="user-list-item">
-                <div class="d-flex align-items-center">
-                    <div class="user-avatar bg-soft-blue text-blue">MC</div>
-                    <div>
-                        <h6 class="fw-bold mb-0 text-main">Michael Chen <i class="bi bi-patch-check-fill text-success small ms-1"></i></h6>
-                        <small class="--text-muted d-block">michael.chen@mentor.com</small>
-                        <small class="--text-muted" style="font-size: 0.75rem;"><i class="bi bi-geo-alt me-1"></i> Texas, USA • Engineering</small>
+                        <form action="{{ route('admin.users.delete', $user->id) }}" method="POST"
+                            onsubmit="return confirm('Are you sure you want to remove {{ $user->full_name }}?');"
+                            class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm px-3 py-1 rounded-pill fw-bold"
+                                style="font-size: 0.65rem; background-color: rgba(220, 53, 69, 0.1); color: #ef4444; border: 1px solid rgba(220, 53, 69, 0.2);">
+                                <i class="bi bi-trash3 me-1"></i> REMOVE
+                            </button>
+                        </form>
                     </div>
                 </div>
-                <div class="text-end d-none d-sm-block">
-                    <span class="role-badge-sm text-blue">Mentor</span>
-                    <div class="status-active">Active</div>
-                    <small class="--text-muted d-block mt-1" style="font-size: 0.7rem;"><i class="bi bi-clock"></i> 688d ago</small>
-                </div>
             </div>
-
-            <div class="user-list-item">
-                <div class="d-flex align-items-center">
-                    <div class="user-avatar bg-soft-purple text-purple">ED</div>
-                    <div>
-                        <h6 class="fw-bold mb-0 text-main">Emily Davis <i class="bi bi-patch-check-fill text-success small ms-1"></i></h6>
-                        <small class="--text-muted d-block">emily.davis@hrcompany.com</small>
-                        <small class="--text-muted" style="font-size: 0.75rem;"><i class="bi bi-geo-alt me-1"></i> Florida, USA • Human Resources</small>
-                    </div>
-                </div>
-                <div class="text-end d-none d-sm-block">
-                    <span class="role-badge-sm text-purple">HR</span>
-                    <div class="status-active">Active</div>
-                    <small class="--text-muted d-block mt-1" style="font-size: 0.7rem;"><i class="bi bi-clock"></i> 688d ago</small>
-                </div>
+            @empty
+            <div class="user-list-item justify-content-center p-5 --text-muted text-center w-100">
+                No users found matching your search.
             </div>
-
-            <div class="user-list-item">
-                <div class="d-flex align-items-center">
-                    <div class="user-avatar bg-soft-danger text-danger">DW</div>
-                    <div>
-                        <h6 class="fw-bold mb-0 text-main">David Wilson <i class="bi bi-patch-check-fill text-success small ms-1"></i></h6>
-                        <small class="--text-muted d-block">david.wilson@admin.com</small>
-                        <small class="--text-muted" style="font-size: 0.75rem;"><i class="bi bi-geo-alt me-1"></i> Washington, USA • Administration</small>
-                    </div>
-                </div>
-                <div class="text-end d-none d-sm-block">
-                    <span class="role-badge-sm text-danger">Admin</span>
-                    <div class="status-active">Active</div>
-                    <small class="--text-muted d-block mt-1" style="font-size: 0.7rem;"><i class="bi bi-clock"></i> 688d ago</small>
-                </div>
-            </div>
+            @endforelse
         </div>
     </div>
 </div>
@@ -287,44 +482,59 @@
     <div class="filter-container">
         <h6 class="fw-bold text-main mb-4"><i class="bi bi-pie-chart me-2 text-danger"></i> Role Distribution</h6>
 
-        <div class="role-dist-row">
-            <div class="role-dist-label">
-                <span class="fw-bold text-blue"><i class="bi bi-person me-1"></i> Student</span>
-                <span>8756 (57%)</span>
-            </div>
-            <div class="role-progress"><div class="role-fill bg-blue" style="width: 57%; background-color: #3b82f6;"></div></div>
-        </div>
-
-        <div class="role-dist-row">
-            <div class="role-dist-label">
-                <span class="fw-bold text-teal"><i class="bi bi-building me-1"></i> Institution</span>
-                <span>2341 (15%)</span>
-            </div>
-            <div class="role-progress"><div class="role-fill bg-teal" style="width: 15%; background-color: #14b8a6;"></div></div>
-        </div>
-
-        <div class="role-dist-row">
-            <div class="role-dist-label">
-                <span class="fw-bold text-blue"><i class="bi bi-person-badge me-1"></i> Mentor</span>
-                <span>1890 (12%)</span>
-            </div>
-            <div class="role-progress"><div class="role-fill bg-blue" style="width: 12%; background-color: #3b82f6;"></div></div>
-        </div>
-
-        <div class="role-dist-row">
-            <div class="role-dist-label">
-                <span class="fw-bold text-purple"><i class="bi bi-briefcase me-1"></i> HR</span>
-                <span>1205 (8%)</span>
-            </div>
-            <div class="role-progress"><div class="role-fill bg-purple" style="width: 8%; background-color: #8b5cf6;"></div></div>
-        </div>
-
-        <div class="role-dist-row">
-            <div class="role-dist-label">
+        <div class="role-dist-row mb-3">
+            <div class="role-dist-label d-flex justify-content-between small mb-1">
                 <span class="fw-bold text-danger"><i class="bi bi-shield-lock me-1"></i> Admin</span>
-                <span>1228 (8%)</span>
+                <span>{{ $stats['admin_count'] }} ({{ number_format($stats['admin_pct'], 1) }}%)</span>
             </div>
-            <div class="role-progress"><div class="role-fill bg-danger" style="width: 8%; background-color: #ef4444;"></div></div>
+            <div class="role-progress"
+                style="height: 6px; background: var(--bg-body); border-radius: 3px; overflow: hidden;">
+                <div class="role-fill bg-danger" style="width: {{ $stats['admin_pct'] }}%; height: 100%;"></div>
+            </div>
+        </div>
+
+        <div class="role-dist-row mb-3">
+            <div class="role-dist-label d-flex justify-content-between small mb-1">
+                <span class="fw-bold text-success"><i class="bi bi-person-badge me-1"></i> HR / Staff</span>
+                <span>{{ $stats['hr_count'] }} ({{ number_format($stats['hr_pct'], 1) }}%)</span>
+            </div>
+            <div class="role-progress"
+                style="height: 6px; background: var(--bg-body); border-radius: 3px; overflow: hidden;">
+                <div class="role-fill bg-success" style="width: {{ $stats['hr_pct'] }}%; height: 100%;"></div>
+            </div>
+        </div>
+
+        <div class="role-dist-row mb-3">
+            <div class="role-dist-label d-flex justify-content-between small mb-1">
+                <span class="fw-bold text-warning"><i class="bi bi-person-video3 me-1"></i> Mentor</span>
+                <span>{{ $stats['mentor_count'] }} ({{ number_format($stats['mentor_pct'], 1) }}%)</span>
+            </div>
+            <div class="role-progress"
+                style="height: 6px; background: var(--bg-body); border-radius: 3px; overflow: hidden;">
+                <div class="role-fill bg-warning" style="width: {{ $stats['mentor_pct'] }}%; height: 100%;"></div>
+            </div>
+        </div>
+
+        <div class="role-dist-row mb-3">
+            <div class="role-dist-label d-flex justify-content-between small mb-1">
+                <span class="fw-bold text-info"><i class="bi bi-building me-1"></i> Institution</span>
+                <span>{{ $stats['inst_count'] }} ({{ number_format($stats['inst_pct'], 1) }}%)</span>
+            </div>
+            <div class="role-progress"
+                style="height: 6px; background: var(--bg-body); border-radius: 3px; overflow: hidden;">
+                <div class="role-fill bg-info" style="width: {{ $stats['inst_pct'] }}%; height: 100%;"></div>
+            </div>
+        </div>
+
+        <div class="role-dist-row mb-3">
+            <div class="role-dist-label d-flex justify-content-between small mb-1">
+                <span class="fw-bold text-primary"><i class="bi bi-person me-1"></i> Student</span>
+                <span>{{ $stats['student_count'] }} ({{ number_format($stats['student_pct'], 1) }}%)</span>
+            </div>
+            <div class="role-progress"
+                style="height: 6px; background: var(--bg-body); border-radius: 3px; overflow: hidden;">
+                <div class="role-fill bg-primary" style="width: {{ $stats['student_pct'] }}%; height: 100%;"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -333,40 +543,226 @@
     <div class="filter-container">
         <h6 class="fw-bold text-main mb-4"><i class="bi bi-activity me-2 text-danger"></i> Recent Activity Log</h6>
 
+        @forelse($recentActivities as $activity)
         <div class="activity-item">
-            <div class="activity-icon bg-soft-green text-success"><i class="bi bi-person-plus"></i></div>
+            <div class="activity-icon bg-soft-green text-success">
+                <i class="bi bi-person-plus"></i>
+            </div>
             <div>
-                <h6 class="fw-bold text-main mb-1">New user Jennifer Garcia registered</h6>
-                <small class="--text-muted">689d ago</small>
+                <h6 class="fw-bold text-main mb-1">New user {{ $activity->full_name }} registered</h6>
+                <small class="--text-muted">{{ $activity->created_at->diffForHumans() }}</small>
             </div>
         </div>
-
-        <div class="activity-item">
-            <div class="activity-icon bg-soft-red text-danger"><i class="bi bi-person-x"></i></div>
-            <div>
-                <h6 class="fw-bold text-main mb-1">User Robert Taylor was suspended for policy violation</h6>
-                <small class="--text-muted">689d ago</small>
-            </div>
+        @empty
+        <div class="p-4 text-center --text-muted">
+            No recent activity found.
         </div>
+        @endforelse
+    </div>
+</div>
 
-        <div class="activity-item">
-            <div class="activity-icon bg-soft-orange text-orange"><i class="bi bi-pencil"></i></div>
-            <div>
-                <h6 class="fw-bold text-main mb-1">Sarah Johnson role updated to Institution Admin</h6>
-                <small class="--text-muted">689d ago</small>
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: var(--bg-card); border: 1px solid var(--border-color);">
+            <div class="modal-header border-bottom border-secondary opacity-50">
+                <h5 class="modal-title text-main fw-bold">Create New User</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
+            <form action="{{ route('admin.users.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    @if ($errors->any())
+                    <div class="alert alert-danger bg-soft-red text-red border-0 small py-2 mb-3">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
+                    <div class="mb-3">
+                        <label class="form-label --text-muted small fw-bold">FULL NAME</label>
+                        <input type="text" name="full_name" class="search-input-drive" placeholder="e.g. Hrushi"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label --text-muted small fw-bold">EMAIL ADDRESS</label>
+                        <input type="email" name="email" class="search-input-drive"
+                            placeholder="hrushi@kickstartskills.com" required>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label class="form-label --text-muted small fw-bold">ROLE</label>
+                            <select name="admin_role_id" class="search-input-drive" style="appearance: auto;">
+                                <option value="1">Admin</option>
+                                <option value="2">HR</option>
+                                <option value="3">Mentor</option>
+                                <option value="4">Institution</option>
+                                <option value="5">Student</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label --text-muted small fw-bold">ASSIGN MENTOR (OPTIONAL)</label>
+                            <select name="mentor_id" class="search-input-drive" style="appearance: auto;">
+                                <option value="">Choose a Mentor...</option>
+                                @foreach($users->where('admin_role_id', 3) as $mentor)
+                                <option value="{{ $mentor->id }}">{{ $mentor->full_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label class="form-label --text-muted small fw-bold">STATUS</label>
+                            <select name="account_status" class="search-input-drive" style="appearance: auto;">
+                                <option value="active">Active</option>
+                                <option value="pending">Pending</option>
+                                <option value="deactivated">Deactivated / Inactive</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label --text-muted small fw-bold">TEMPORARY PASSWORD</label>
+                        <input type="password" name="password" class="search-input-drive" placeholder="Min 8 characters"
+                            required>
+                    </div>
+                </div>
+                <div class="modal-footer border-top border-secondary opacity-90">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger px-4">Create User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark border-secondary text-white">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold">Edit User Permissions</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editUserForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">FULL NAME</label>
+                        <input type="text" name="full_name" id="edit_full_name" class="search-input-drive" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">EMAIL ADDRESS</label>
+                        <input type="email" name="email" id="edit_email" class="search-input-drive" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small fw-bold text-muted">ROLE</label>
+                            <select name="admin_role_id" id="edit_admin_role_id" class="search-input-drive"
+                                style="appearance: auto;">
+                                <option value="1">Admin</option>
+                                <option value="2">HR</option>
+                                <option value="3">Mentor</option>
+                                <option value="4">Institution</option>
+                                <option value="5">Student</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small fw-bold text-muted">ASSIGN MENTOR</label>
+                            <select name="mentor_id" id="edit_mentor_id" class="search-input-drive"
+                                style="appearance: auto;">
+                                <option value="">No Mentor</option>
+                                @foreach($users->where('admin_role_id', 3) as $mentor)
+                                <option value="{{ $mentor->id }}">{{ $mentor->full_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label small fw-bold text-muted">STATUS</label>
+                            <select name="account_status" id="edit_account_status" class="search-input-drive"
+                                style="appearance: auto;">
+                                <option value="active">Active</option>
+                                <option value="pending">Pending</option>
+                                <option value="deactivated">Deactivated / Inactive</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                        </div>
+                    </div>
+                    {{-- <div class="mb-3">
+                        {{-- <label class="form-label small fw-bold text-muted">NEW PASSWORD (OPTIONAL)</label>
+                        <input type="password" name="password" class="search-input-drive"
+                            placeholder="Leave blank to keep current">
+                    </div> --}}
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Save Changes</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Select all buttons with the class 'edit-user-btn'
+    const editButtons = document.querySelectorAll('.edit-user-btn');
+
+    editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // 1. Get data from attributes
+            const id = this.getAttribute('data-id');
+            const name = this.getAttribute('data-name');
+            const email = this.getAttribute('data-email');
+            const role = this.getAttribute('data-role');
+            const status = this.getAttribute('data-status');
+            const mentor = this.getAttribute('data-mentor');
+
+            // 2. Set the form action
+            const form = document.getElementById('editUserForm');
+            form.action = `/admin/users/update/${id}`;
+
+            // 3. Fill the inputs
+            document.getElementById('edit_full_name').value = name;
+            document.getElementById('edit_email').value = email;
+            document.getElementById('edit_admin_role_id').value = role;
+            document.getElementById('edit_account_status').value = status;
+            document.getElementById('edit_mentor_id').value = mentor || '';
+
+            // 4. Show the modal
+            const editModal = new bootstrap.Modal(document.getElementById('editUserModal'));
+            editModal.show();
+        });
+    });
+});
     function switchUserTab(tabName) {
         document.querySelectorAll('.user-tab-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
+        event.currentTarget.classList.add('active');
 
         document.querySelectorAll('.user-content-block').forEach(el => el.classList.add('d-none'));
         document.getElementById('tab-' + tabName).classList.remove('d-none');
     }
-</script>
 
-@endsection--
+    function openEditModal(user) {
+    const form = document.getElementById('editUserForm');
+
+    // Use a clean template literal for the URL
+    form.action = `/admin/users/update/${user.id}`;
+
+    // IMPORTANT: Manually refresh the CSRF token input from the meta tag
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    form.querySelector('input[name="_token"]').value = token;
+
+    // ... your existing value assignments ...
+    document.getElementById('edit_full_name').value = user.full_name;
+    document.getElementById('edit_email').value = user.email;
+    document.getElementById('edit_admin_role_id').value = user.admin_role_id;
+    document.getElementById('edit_account_status').value = user.account_status;
+    document.getElementById('edit_mentor_id').value = user.mentor_id || '';
+
+    const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
+    modal.show();
+}
+
+</script>
+@endsection

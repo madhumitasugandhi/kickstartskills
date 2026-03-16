@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,111 +63,300 @@
 
             /* --- FIX STARTS HERE --- */
             /* Removed 'overflow: hidden' which was locking the scroll */
-            overflow-x: hidden; /* Prevents horizontal scroll from animation */
-            overflow-y: auto;   /* Allows vertical scroll on mobile */
-            padding-top: 2rem;  /* Adds breathing room on small screens */
+            overflow-x: hidden;
+            /* Prevents horizontal scroll from animation */
+            overflow-y: auto;
+            /* Allows vertical scroll on mobile */
+            padding-top: 2rem;
+            /* Adds breathing room on small screens */
             padding-bottom: 2rem;
             /* --- FIX ENDS HERE --- */
         }
 
         /* ------------------ FLOATING CIRCLES ANIMATION ------------------ */
         @keyframes animate {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 50%; }
-            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 50%;
+            }
+
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
         }
 
         .circles {
-            position: fixed; /* Changed from absolute to fixed so they stay in bg on scroll */
-            top: 0; left: 0; width: 100%; height: 100%;
-            overflow: hidden; margin: 0; padding: 0; z-index: 0; pointer-events: none;
+            position: fixed;
+            /* Changed from absolute to fixed so they stay in bg on scroll */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            z-index: 0;
+            pointer-events: none;
         }
 
         .circles li {
-            position: absolute; display: block; list-style: none;
-            width: 20px; height: 20px; background: var(--circle-color-1);
-            animation: animate 25s linear infinite; bottom: -150px;
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: var(--circle-color-1);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
         }
 
         /* Circle Variations (Kept same) */
-        .circles li:nth-child(3n+1) { background: var(--circle-color-1); }
-        .circles li:nth-child(3n+2) { background: var(--circle-color-2); }
-        .circles li:nth-child(3n) { background: var(--circle-color-3); }
-        .circles li:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
-        .circles li:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
-        .circles li:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
-        .circles li:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
-        .circles li:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
-        .circles li:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
-        .circles li:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
-        .circles li:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
-        .circles li:nth-child(9) { left: 20%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 35s; }
-        .circles li:nth-child(10) { left: 85%; width: 150px; height: 150px; animation-delay: 0s; animation-duration: 11s; }
+        .circles li:nth-child(3n+1) {
+            background: var(--circle-color-1);
+        }
+
+        .circles li:nth-child(3n+2) {
+            background: var(--circle-color-2);
+        }
+
+        .circles li:nth-child(3n) {
+            background: var(--circle-color-3);
+        }
+
+        .circles li:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+        .circles li:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+
+        .circles li:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+
+        .circles li:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+
+        .circles li:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .circles li:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+
+        .circles li:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+
+        .circles li:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+
+        .circles li:nth-child(9) {
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            animation-delay: 2s;
+            animation-duration: 35s;
+        }
+
+        .circles li:nth-child(10) {
+            left: 85%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+            animation-duration: 11s;
+        }
 
         /* ------------------ UI COMPONENT STYLES ------------------ */
-        .login-container { width: 100%; max-width: 420px; padding: 15px; z-index: 10; }
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 15px;
+            z-index: 10;
+        }
 
         .login-card {
-            background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--card-border); box-shadow: var(--card-shadow);
-            border-radius: 24px; padding: 2.5rem; transition: all 0.3s ease;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--card-shadow);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
         }
 
         .logo-box {
-            width: 54px; height: 54px; background-color: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; color: #fff; margin-bottom: 1rem; backdrop-filter: blur(4px);
+            width: 54px;
+            height: 54px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(4px);
         }
 
         /* Inputs */
-        .input-wrapper { position: relative; margin-bottom: 1.25rem; }
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 1.25rem;
+        }
+
         .input-icon {
-            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
-            color: #64748b; z-index: 5; transition: color 0.2s;
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            z-index: 5;
+            transition: color 0.2s;
         }
+
         .custom-input {
-            width: 100%; padding: 12px 15px 12px 42px; border-radius: 10px;
-            background: var(--input-bg); border: 1px solid var(--input-border);
-            color: var(--input-text); font-size: 0.95rem; transition: all 0.2s;
+            width: 100%;
+            padding: 12px 15px 12px 42px;
+            border-radius: 10px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--input-text);
+            font-size: 0.95rem;
+            transition: all 0.2s;
         }
-        .custom-input:focus { outline: none; box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25); }
-        .custom-input:focus + .input-icon, .input-wrapper:focus-within .input-icon { color: var(--btn-bg); }
+
+        .custom-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+        }
+
+        .custom-input:focus+.input-icon,
+        .input-wrapper:focus-within .input-icon {
+            color: var(--btn-bg);
+        }
 
         .password-toggle {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-            cursor: pointer; color: #64748b; border: none; background: none;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #64748b;
+            border: none;
+            background: none;
         }
 
         /* Button */
         .btn-login {
-            background-color: var(--btn-bg); color: var(--btn-text); font-weight: 600;
-            padding: 12px; border-radius: 12px; border: none; width: 100%; margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); transition: all 0.2s;
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            width: 100%;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
         }
-        .btn-login:hover { background-color: var(--btn-hover); transform: translateY(-1px); }
+
+        .btn-login:hover {
+            background-color: var(--btn-hover);
+            transform: translateY(-1px);
+        }
 
         /* Links & Text */
-        .text-muted-custom { color: var(--text-muted) !important; }
-        .link-custom {
-            color: var(--text-main); opacity: 0.9; text-decoration: none; font-weight: 500;
+        .text-muted-custom {
+            color: var(--text-muted) !important;
         }
-        .link-custom:hover { opacity: 1; text-decoration: underline; }
+
+        .link-custom {
+            color: var(--text-main);
+            opacity: 0.9;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .link-custom:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
 
         /* Theme Toggle */
         .theme-toggle {
-            position: absolute; top: 25px; right: 25px; width: 44px; height: 44px;
-            border-radius: 50%; border: none; background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(4px); color: #fff; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: background 0.2s; z-index: 50;
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            z-index: 50;
         }
-        .theme-toggle:hover { background: rgba(255, 255, 255, 0.25); }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
     </style>
 </head>
 
 <body id="app-body">
     <ul class="circles">
-        <li></li><li></li><li></li><li></li><li></li>
-        <li></li><li></li><li></li><li></li><li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
     </ul>
 
     <button onclick="toggleTheme()" class="theme-toggle" title="Toggle Theme">
@@ -189,22 +379,31 @@
                 <p class="text-muted-custom small">Continue your learning journey</p>
             </div>
 
-            <form>
+            <form action="{{ route('student.login.submit') }}" method="POST">
+                @csrf
+
+                @if($errors->any())
+                <div class="alert alert-danger bg-soft-red text-red border-0 py-2 small mb-3">
+                    {{ $errors->first() }}
+                </div>
+                @endif
                 <div class="mb-3">
-                    <label for="email" class="form-label small ms-1 mb-1 fw-medium text-muted-custom">Email address</label>
+                    <label for="email" class="form-label small ms-1 mb-1 fw-medium text-muted-custom">Email
+                        address</label>
                     <div class="input-wrapper">
                         <i class="bi bi-envelope input-icon"></i>
                         <input type="email" class="custom-input" id="email" name="email"
-                               placeholder="student@kickstartskills.com" required>
+                            placeholder="student@kickstartskills.com" required>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label small ms-1 mb-1 fw-medium text-muted-custom">Password</label>
+                    <label for="password"
+                        class="form-label small ms-1 mb-1 fw-medium text-muted-custom">Password</label>
                     <div class="input-wrapper">
                         <i class="bi bi-lock input-icon"></i>
-                        <input type="password" class="custom-input" id="password" name="password"
-                               placeholder="••••••••" required>
+                        <input type="password" class="custom-input" id="password" name="password" placeholder="••••••••"
+                            required>
                         <button type="button" class="password-toggle" onclick="togglePassword()">
                             <i id="eye-icon" class="bi bi-eye"></i>
                         </button>
@@ -268,4 +467,5 @@
         }
     </script>
 </body>
+
 </html>

@@ -7,8 +7,16 @@ use App\Http\Controllers\GeoController;
 use App\Http\Controllers\Institution\AuthController;
 use App\Http\Controllers\Institution\InstitutionController;
 use App\Http\Controllers\Institution\InstitutionProgramController;
-use App\Http\Controllers\Mentor\MentorDashboardController;
 
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ForgotPasswordController;
+use App\Http\Controllers\Mentor\MentorAuthController;
+use App\Http\Controllers\Mentor\MentorDashboardController;
+use App\Http\Controllers\Mentor\MentorSessionController;
+use App\Http\Controllers\Mentor\MentorStudentController;
+use App\Http\Controllers\Student\StudentAuthController;
+use App\Http\Controllers\Student\StudentProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,19 +51,20 @@ Route::get('/', function () {
     return view('frontend.index');
 });
 
-/*|------------------------------------------------Student Portal Routes--------------------------------------------------|*/
-//login
-Route::get('/student-login', function () {
-    return view('frontend.studentPortal.auth.student_login');
-});
-//forgot password
-Route::get('/student/forgot-password', function () {
-    return view('frontend.studentPortal.auth.forgot_password');
-});
-//register
-Route::get('/student/register', function () {
-    return view('frontend.studentPortal.auth.register');
-});
+/*|------------------------------------------------Student Portal Auth--------------------------------------------------|*/
+// Student Login
+Route::get('/student-login', [StudentAuthController::class, 'showLogin'])->name('student.login');
+Route::post('/student-login', [StudentAuthController::class, 'login'])->name('student.login.submit');
+
+// Student Logout (Inside your protected group or standalone)
+Route::post('/student-logout', [StudentAuthController::class, 'logout'])->name('student.logout');
+
+// Register
+Route::get('/student/register', [StudentAuthController::class, 'showRegister'])->name('student.register');
+Route::post('/student/register', [StudentAuthController::class, 'register'])->name('student.register.submit');
+
+// Forgot Password
+Route::get('/student/forgot-password', [StudentAuthController::class, 'showForgotPassword'])->name('student.forgot_password');
 
 /* 1. Student Dashboard (Home) */
 Route::get('/student/dashboard', function () {
@@ -64,25 +73,60 @@ Route::get('/student/dashboard', function () {
 })->name('student.dashboard');
 
 /* 2. Profile Section (Grouped Routes) */
-// This creates URLs like: /student/dashboard/profile/personal-info
-Route::prefix('student/dashboard/profile')->name('student.profile.')->group(function () {
+Route::prefix('student')->middleware(['auth', 'student'])->group(function () {
 
-    // Route Name: student.profile.personal
-    Route::get('/personal-info', function () {
-        return view('frontend.studentPortal.dashboard.profile.personalInfoIndex');
-    })->name('personal');
+    /* 1. Dashboard */
+    Route::get('/dashboard', function () {
+        return view('frontend.studentPortal.dashboard.dashboardIndex');
+    })->name('student.dashboard');
 
-    // Route Name: student.profile.academic (Placeholder)
-    Route::get('/academic', function () {
-        return view('frontend.studentPortal.dashboard.profile.academicIndex');
-    })->name('academic');
+    /* 2. Unified Profile Group */
+    // We use 'student.' as the name prefix.
+// The sub-routes will automatically become student.profile_personal, etc.
+    Route::prefix('dashboard/profile')->name('student.profile.')->group(function () {
 
-    // Route Name: student.profile.portfolio (Placeholder)
-    Route::get('/portfolio', function () {
-        return view('frontend.studentPortal.dashboard.profile.portfolioIndex');
-    })->name('portfolio');
+        // URL: /student/dashboard/profile/personal-info
+        // Route Name: student.profile.personal
+        Route::get('/personal-info', [StudentProfileController::class, 'index'])
+            ->name('personal');
+
+        // Academic Details (Naya addition isi controller mein)
+        Route::get('/academic', [StudentProfileController::class, 'academicIndex'])->name('academic');
+        Route::post('/academic/save', [StudentProfileController::class, 'academicUpdate'])->name('academic.save');
+
+        // Route Name: student.profile.portfolio
+        Route::get('/portfolio', function () {
+            return view('frontend.studentPortal.dashboard.profile.portfolio.index');
+        })->name('portfolio');
+
+        // Route Name: student.profile.update
+        Route::put('/update', [StudentProfileController::class, 'update'])
+            ->name('update');
+
+        // --- Portfolio Section (Updated) ---
+        // URL: /student/dashboard/profile/portfolio
+        Route::get('/portfolio', [StudentProfileController::class, 'portfolioIndex'])
+            ->name('portfolio');
+
+        // Route for saving new project
+        Route::post('/portfolio/save', [StudentProfileController::class, 'projectStore'])
+            ->name('portfolio.save');
+
+        Route::prefix('dashboard/profile')->name('student.profile.')->group(function () {
+            Route::get('/personal-info', [StudentProfileController::class, 'index'])->name('personal');
+            Route::get('/academic', [StudentProfileController::class, 'academicIndex'])->name('academic');
+            Route::post('/academic/save', [StudentProfileController::class, 'academicUpdate'])->name('academic.save');
+            Route::put('/update', [StudentProfileController::class, 'update'])->name('update');
+
+            // Portfolio
+            Route::get('/portfolio', [StudentProfileController::class, 'portfolioIndex'])->name('portfolio');
+            Route::post('/portfolio/save', [StudentProfileController::class, 'projectStore'])->name('portfolio.save');
+
+            // Skills (Corrected Name)
+            Route::post('/portfolio/skills/save', [StudentProfileController::class, 'skillStore'])->name('skills.save');
+        });
+    });
 });
-
 /* 3. Examinations Section (Grouped Routes) */
 Route::prefix('student/dashboard/examinations')->name('student.exam.')->group(function () {
 
@@ -303,17 +347,17 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
             'expenses',
             'reports'
         ];
-    
+
         if (!in_array($tab, $allowedTabs)) {
             abort(404);
         }
-    
+
         return view(
             'frontend.institutionPortal.dashboard.core-management.financial_management.index',
             compact('tab')
         );
     
-    })->name('financial-management');
+    })->name('institution.financial-management');
     Route::get('/system-integrations', function () {
         return view('frontend.institutionPortal.dashboard.core-management.system.index');
     })->name('system-integrations');
@@ -387,10 +431,10 @@ Route::delete('/program-management/delete/{id}', [InstitutionProgramController::
 /*|------------------------------------------------End Institution Portal Routes--------------------------------------------------|*/
 
 /*|------------------------------------------------Mentor Portal Routes--------------------------------------------------|*/
-//login
-Route::get('/mentor-login', function () {
-    return view('frontend.mentorPortal.auth.mentor_login');
-});
+// Login Routes
+Route::get('/mentor-login', [MentorAuthController::class, 'showLogin'])->name('mentor.login');
+Route::post('/mentor-login', [MentorAuthController::class, 'login'])->name('mentor.login.submit');
+
 //forgot password
 Route::get('/mentor/forgot-password', function () {
     return view('frontend.mentorPortal.auth.forgot_password');
@@ -400,22 +444,29 @@ Route::get('/mentor/register', function () {
     return view('frontend.mentorPortal.auth.register');
 });
 
-Route::prefix('mentor')->name('mentor.')->group(function () {
+Route::prefix('mentor')->name('mentor.')->middleware(['auth', 'mentor'])->group(function () {
+    // Logout Route
+    Route::post('/logout', [MentorAuthController::class, 'logout'])->name('logout');
 
     // 1. Dashboard Index
-    Route::get('/dashboard', function () {
-        return view('frontend.mentorPortal.dashboard.dashboardIndex');
-    })->name('dashboard');
+    Route::get('/dashboard', [MentorDashboardController::class, 'index'])->name('dashboard');
+
+    Route::post('/sessions/store', [MentorSessionController::class, 'store'])->name('sessions.store');
 
     // 2. Students Group
     Route::prefix('students')->name('students.')->group(function () {
-        Route::get('/assigned', function () {
-            return view('frontend.mentorPortal.dashboard.students.assignedStudents');
-        })->name('assigned');
+
+        Route::get('/assigned', [MentorStudentController::class, 'assigned'])->name('assigned');
+
+        Route::post('/store', [MentorStudentController::class, 'store'])->name('store');
+
+        Route::get('/view/{id}', [MentorStudentController::class, 'show'])->name('show');
 
         Route::get('/analytics', function () {
             return view('frontend.mentorPortal.dashboard.students.analytics');
         })->name('analytics');
+    });
+
     // 3. Sessions Group
 Route::prefix('sessions')->name('sessions.')->group(function () {
     Route::get('/calendar', function () {
@@ -516,8 +567,6 @@ Route::get('/settings', function () {
 
     });
 
-
-});
 /*|------------------------------------------------End Mentor Portal Routes--------------------------------------------------|*/
 
 /*|------------------------------------------------Start HR Portal Routes--------------------------------------------------|*/
@@ -589,27 +638,42 @@ Route::prefix('hr')->name('hr.')->group(function () {
 /*|------------------------------------------------End HR Portal Routes--------------------------------------------------|*/
 
 /*|------------------------------------------------Start Admin Portal Routes--------------------------------------------------|*/
-// Login
-Route::get('/admin-login', function () {
-    return view('frontend.adminPortal.auth.admin_login');
-});
+// Replace your static login route with these:
+Route::get('/admin-login', [AuthController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin-login', [AuthController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin-logout', [AuthController::class, 'logout'])->name('admin.logout');
+
+// Forgot Password (Correction: Fixed the URL to match admin path)
+// Make sure these match the names you used in your AJAX fetch calls
+Route::get('/admin-forgot-password', function () {
+    return view('frontend.adminPortal.auth.forgot_password');
+})->name('admin.forgot.password');
+
+Route::post('/admin/forgot-password/send-otp', [ForgotPasswordController::class, 'sendOtp'])->name('admin.otp.send');
+Route::post('/admin/forgot-password/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('admin.otp.verify');
+Route::post('/admin/forgot-password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('admin.password.update');
+
 // Forgot Password (Correction: Fixed the URL to match admin path)
 Route::get('/admin/forgot-password', function () {
     return view('frontend.adminPortal.auth.forgot_password');
 });
 
-// Admin Protected Routes
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    // ... all your dashboard, users, and security routes go here ...
 
     // 1. Dashboard
-    Route::get('/dashboard', function () {
-        return view('frontend.adminPortal.dashboard.dashboardIndex');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // 2. User Management
-    Route::get('/users', function () {
-        return view('frontend.adminPortal.dashboard.userManagement');
-    })->name('users');
+// User Management Routes
+    Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('users');
+    Route::post('/users/store', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('users.store');
+
+    // Keep this one for the update functionality
+    Route::put('/users/update/{id}', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
+
+    Route::delete('/users/delete/{id}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.delete');
+
 
     // 3. Drive Oversight
     Route::get('/drives', function () {

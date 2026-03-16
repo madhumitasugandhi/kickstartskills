@@ -12,6 +12,8 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 
     <style>
         /* ================= THEME VARIABLES ================= */
@@ -400,6 +402,20 @@
             margin-bottom: 10px;
         }
 
+        .dropdown-item {
+            padding: 8px 16px;
+            transition: all 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--bg-hover);
+            color: var(--accent-color);
+        }
+
+        .btn-link:focus {
+            box-shadow: none;
+        }
+
         /* Mobile */
         @media (max-width: 991.98px) {
             .sidebar {
@@ -445,6 +461,17 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+        $('.select2-dropdown').select2({
+            dropdownParent: $('#scheduleModal'), // This is key for Select2 to work inside a Modal
+            width: '100%'
+        });
+    });
+    </script>
 
     <script>
         function toggleTheme() {

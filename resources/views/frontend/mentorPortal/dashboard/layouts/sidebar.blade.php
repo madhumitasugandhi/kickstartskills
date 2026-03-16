@@ -203,18 +203,20 @@
     </div>
 
     <div class="user-footer p-2 m-2">
-         <div class="d-flex align-items-center gap-2 p-2 rounded">
-             <div class="avatar rounded-circle bg-soft-orange text-accent d-flex align-items-center justify-content-center flex-shrink-0"
-                 style="width: 36px; height: 36px; font-weight: bold;">SJ</div>
+    <div class="d-flex align-items-center gap-2 p-2 rounded">
+        <div class="avatar rounded-circle bg-soft-orange text-accent d-flex align-items-center justify-content-center flex-shrink-0"
+             style="width: 36px; height: 36px; font-weight: bold;">
+            {{ strtoupper(substr(Auth::user()->full_name, 0, 1)) }}{{ strtoupper(substr(strrchr(Auth::user()->full_name, " "), 1, 1)) ?: '' }}
+        </div>
 
-             <div class="user-info flex-grow-1" style="line-height: 1.2;">
-                 <div class="fw-bold small text-main">Sarah Johnson</div>
-                 <div class="text-muted-custom" style="font-size: 0.7rem;">Mentor ID: MEN001</div>
-             </div>
+        <div class="user-info flex-grow-1" style="line-height: 1.2;">
+            <div class="fw-bold small text-main">{{ Auth::user()->full_name }}</div>
+            <div class="text-muted-custom" style="font-size: 0.7rem;">Mentor ID: #{{ Auth::user()->id }}</div>
+        </div>
 
-             <button onclick="toggleTheme()" class="btn btn-link text-muted-custom p-0 text-decoration-none user-info">
-                <i id="themeIcon" class="bi bi-moon-stars"></i>
-             </button>
-         </div>
+        <button onclick="toggleTheme()" class="btn btn-link text-muted-custom p-0 text-decoration-none user-info">
+           <i id="themeIconSidebar" class="bi bi-moon-stars"></i>
+        </button>
     </div>
+</div>
 </nav>

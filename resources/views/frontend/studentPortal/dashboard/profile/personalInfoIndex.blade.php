@@ -2,6 +2,7 @@
 @section('content')
 @section('title', 'Personal Info')
 @section('icon', 'bi bi-pencil-square fs-4 p-2 bg-primary bg-opacity-10 rounded-3 text-primary')
+
 <style>
     /* ================= THEME VARIABLES ================= */
     :root {
@@ -112,35 +113,36 @@
         border-right: none;
     }
 
+    /* Use your variables to keep inputs consistent with the theme */
     .form-control,
-    .form-select {
-        background-color: var(--bg-card);
-        border-color: var(--border-color);
-        color: var(--text-main);
-        padding: 10px 12px;
-        font-size: 0.85rem;
-        border-left: none;
-        /* Merge with icon */
+    .form-select,
+    .input-group-text {
+        background-color: var(--bg-card) !important;
+        color: var(--text-main) !important;
+        border: 1px solid var(--border-color) !important;
     }
 
+    /* Fix for disabled state (when you aren't editing) */
+    .form-control:disabled,
+    .form-select:disabled {
+        background-color: var(--bg-card) !important;
+        opacity: 0.7;
+        /* Slightly dim so it looks read-only */
+        color: var(--text-muted) !important;
+    }
+
+    /* Highlight the border when user clicks to edit */
     .form-control:focus,
     .form-select:focus {
-        box-shadow: none;
-        border-color: var(--text-blue);
-        background-color: var(--bg-card);
-        color: var(--text-main);
+        border-color: var(--text-blue) !important;
+        box-shadow: 0 0 0 0.25rem var(--soft-blue) !important;
+        background-color: var(--bg-card) !important;
+        color: var(--text-main) !important;
     }
 
-    /* Input Group wrapper to handle focus border */
-    .input-group:focus-within .input-group-text,
-    .input-group:focus-within .form-control,
-    .input-group:focus-within .form-select {
-        border-color: var(--text-blue);
-    }
-
-    /* Fix for dark mode inputs */
-    [data-theme="dark"] .form-control::placeholder {
-        color: #6c757d;
+    /* Ensure icons match text color */
+    .input-group-text i {
+        color: var(--text-muted);
     }
 
     /* Mobile */
@@ -161,117 +163,215 @@
     .text-muted-custom {
         color: var(--text-muted) !important;
     }
+
+    .btn-save-group {
+        transition: all 0.3s ease;
+    }
 </style>
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert"
+    style="background: var(--soft-green); color: var(--text-green);">
+    <div class="d-flex align-items-center">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <div>
+            <strong>Success!</strong> {{ session('success') }}
+        </div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
+
+@if($errors->any())
+<div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-4" role="alert"
+    style="background: var(--soft-red); color: var(--text-red);">
+    <ul class="mb-0">
+        @foreach($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
 <div class="content-body">
-    
-    <!-- 1. Profile Header Card -->
     <div class="card-custom">
         <div class="d-flex flex-column flex-md-row align-items-center gap-4">
-            <!-- Avatar -->
             <div class="profile-avatar">
                 <i class="bi bi-person"></i>
             </div>
 
-            <!-- Info -->
             <div class="text-center text-md-start flex-grow-1">
-                <h4 class="fw-bold text-main mb-1">John Doe</h4>
+                <h4 class="fw-bold text-main mb-1">{{ $user->full_name }}</h4>
                 <div
                     class="text-muted-custom small mb-2 d-flex flex-column flex-md-row gap-md-3 justify-content-center justify-content-md-start">
-                    <span><i class="bi bi-envelope me-1"></i> john.doe@student.com</span>
-                    <span><i class="bi bi-telephone me-1"></i> +91 9876543210</span>
+                    <span><i class="bi bi-envelope me-1"></i> {{ $user->email }}</span>
+                    <span><i class="bi bi-telephone me-1"></i> {{ $user->phone ?? 'Not Provided' }}</span>
                 </div>
-                <div class="status-badge">
-                    <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Active Student
+                @php
+                // Define the colors based on status
+                $status = strtolower($user->account_status ?? 'pending');
+
+                $bg = 'var(--soft-orange)'; // Default Pending
+                $color = 'var(--text-orange)';
+
+                if($status == 'active') {
+                $bg = 'var(--soft-green)';
+                $color = 'var(--text-green)';
+                } elseif($status == 'inactive' || $status == 'suspended') {
+                $bg = 'var(--soft-red)';
+                $color = 'var(--text-red)';
+                }
+                @endphp
+
+                <div class="status-badge" style="background-color: {{ $bg }}; color: {{ $color }};">
+                    <i class="bi bi-circle-fill" style="font-size: 6px;"></i>
+                    {{ ucfirst($status) }} Student
                 </div>
             </div>
-
-            <!-- Edit Button (Optional) -->
-            <!-- <button class="btn btn-outline-primary btn-sm">Edit Photo</button> -->
         </div>
     </div>
 
-    <!-- 2. Basic Information Form -->
     <div class="card-custom">
-        <div class="d-flex align-items-center gap-2 mb-4">
-            <i class="bi bi-info-circle text-primary"></i>
-            <h6 class="fw-bold m-0 text-main">Basic Information</h6>
-        </div>
+        <form action="{{ route('student.profile.update') }}" method="POST" id="profileForm">
+            @csrf
+            @method('PUT')
 
-        <form>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-info-circle text-primary"></i>
+                    <h6 class="fw-bold m-0 text-main">Basic Information</h6>
+                </div>
+                <button type="button" id="editBtn" class="btn btn-sm btn-outline-primary px-3" onclick="toggleEdit()">
+                    <i class="bi bi-pencil me-1"></i> Edit Profile
+                </button>
+            </div>
+
             <div class="row g-4">
-                <!-- First Name -->
                 <div class="col-md-6">
                     <label class="form-label">First Name</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-person"></i></span>
-                        <input type="text" class="form-control" value="John" placeholder="Enter first name">
+                        <input type="text" name="first_name" class="form-control profile-input" value="{{ $firstName }}"
+                            disabled required>
                     </div>
                 </div>
 
-                <!-- Last Name -->
                 <div class="col-md-6">
                     <label class="form-label">Last Name</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-person"></i></span>
-                        <input type="text" class="form-control" value="Doe" placeholder="Enter last name">
+                        <input type="text" name="last_name" class="form-control profile-input" value="{{ $lastName }}"
+                            disabled required>
                     </div>
                 </div>
 
-                <!-- Email Address -->
                 <div class="col-md-6">
                     <label class="form-label">Email Address</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                        <input type="email" class="form-control" value="john.doe@student.com"
-                            placeholder="Enter email address">
+                        <input type="email" name="email" class="form-control profile-input" value="{{ $user->email }}"
+                            disabled required>
                     </div>
                 </div>
-
-                <!-- Gender -->
+                <div class="col-md-6">
+                    <label class="form-label">Mobile Number</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                        <input type="text" name="phone" class="form-control profile-input" value="{{ $user->phone }}"
+                            placeholder="Enter mobile number" disabled>
+                    </div>
+                </div>
                 <div class="col-md-6">
                     <label class="form-label">Gender</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-people"></i></span>
-                        <select class="form-select">
-                            <option selected>Male</option>
-                            <option>Female</option>
-                            <option>Other</option>
+                        <select name="gender" class="form-select profile-input" disabled>
+                            <option value="" disabled {{ is_null($user->gender) ? 'selected' : '' }}>Select Gender
+                            </option>
+                            <option value="Male" {{ $user->gender == 'Male' ? 'selected' : '' }}>Male</option>
+                            <option value="Female" {{ $user->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                            <option value="Other" {{ $user->gender == 'Other' ? 'selected' : '' }}>Other</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- Date of Birth -->
                 <div class="col-md-6">
                     <label class="form-label">Date of Birth</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
-                        <input type="text" class="form-control" value="15/08/2002" placeholder="DD/MM/YYYY">
+                        <input type="date" name="dob" class="form-control profile-input" value="{{ $user->dob }}"
+                            disabled>
                     </div>
                 </div>
 
-                <!-- Blood Group -->
                 <div class="col-md-6">
                     <label class="form-label">Blood Group</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-droplet"></i></span>
-                        <select class="form-select">
-                            <option selected>O+</option>
-                            <option>A+</option>
-                            <option>B+</option>
-                            <option>AB+</option>
+                        <select name="blood_group" class="form-select profile-input" disabled>
+                            <option value="" disabled {{ is_null($user->blood_group) ? 'selected' : '' }}>Select Group
+                            </option>
+                            @foreach(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'] as $group)
+                            <option value="{{ $group }}" {{ $user->blood_group == $group ? 'selected' : '' }}>{{ $group
+                                }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
 
-                <!-- Submit Button Area (Optional) -->
-                <!--
-                        <div class="col-12 text-end mt-4">
-                            <button type="submit" class="btn btn-primary px-4">Save Changes</button>
-                        </div>
-                        -->
+                <div class="col-12 text-end mt-4 d-none" id="saveButtonGroup">
+                    <hr class="mb-4 opacity-50">
+                    <button type="button" class="btn btn-light px-4 me-2" onclick="toggleEdit()">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+                </div>
             </div>
         </form>
     </div>
-
 </div>
+
+<script>
+    function toggleEdit() {
+    const inputs = document.querySelectorAll('.profile-input');
+    const editBtn = document.getElementById('editBtn');
+    const saveGroup = document.getElementById('saveButtonGroup');
+
+    // Check current state based on first input
+    const isEditing = !inputs[0].disabled;
+
+    if (isEditing) {
+        // Switch to View Mode
+        inputs.forEach(input => input.disabled = true);
+        editBtn.classList.remove('d-none');
+        saveGroup.classList.add('d-none');
+    } else {
+        // Switch to Edit Mode
+        inputs.forEach(input => input.disabled = false);
+        editBtn.classList.add('d-none');
+        saveGroup.classList.remove('d-none');
+    }
+}
+</script>
+{{-- <script>
+    public function update(Request $request)
+{
+    $user = User::find(Auth::id());
+
+    $request->validate([
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,' . $user->id,
+        'gender' => 'nullable|string',
+        'dob' => 'nullable|date',
+        'blood_group' => 'nullable|string',
+    ]);
+
+    $user->full_name = $request->first_name . ' ' . $request->last_name;
+    $user->email = $request->email;
+    $user->gender = $request->gender;
+    $user->dob = $request->dob;
+    $user->blood_group = $request->blood_group;
+    $user->save();
+
+    return back()->with('success', 'Profile updated successfully!');
+}
+</script> --}}
 @endsection

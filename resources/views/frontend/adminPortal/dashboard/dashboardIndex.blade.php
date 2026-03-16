@@ -111,7 +111,8 @@
     /* --- Chart Specific Styles --- */
     .chart-container-user {
         position: relative;
-        height: 200px; /* Adjusted height for better visibility */
+        height: 200px;
+        /* Adjusted height for better visibility */
         display: flex;
         align-items: flex-end;
 
@@ -215,9 +216,9 @@
                 </div>
                 <span class="badge bg-soft-green text-green">+12.5%</span>
             </div>
-            <h2 class="fw-bold text-main mb-1">15,420</h2>
+            <h2 class="fw-bold text-main mb-1">{{ number_format($totalUsers) }}</h2>
             <p class="--text-muted small mb-0">Total Users</p>
-            <small class="--text-muted" style="font-size: 0.75rem;">8934 active</small>
+            <small class="--text-muted" style="font-size: 0.75rem;">{{ $activeUsers }} active</small>
         </div>
     </div>
 
@@ -315,30 +316,27 @@
     </div>
 
     <div class="col-12 col-lg-4">
-    <div class="dashboard-card">
-        <h5 class="fw-bold mb-4 text-main"><i class="bi bi-graph-up-arrow me-2 text-success"></i> User Growth</h5>
+        <div class="dashboard-card">
+            <h5 class="fw-bold mb-4 text-main"><i class="bi bi-graph-up-arrow me-2 text-success"></i> User Growth</h5>
 
-        <div class="chart-container-user">
-            <svg viewBox="0 -100 500 150" class="w-100" style="height: 100%; overflow: visible;">
-                <defs>
-                    <linearGradient id="growthGradient" x1="0" x2="0" y1="0" y2="1">
-                        <stop offset="0%" stop-color="#10b981" />
-                        <stop offset="100%" stop-color="transparent" />
-                    </linearGradient>
-                </defs>
+            <div class="chart-container-user">
+                <svg viewBox="0 -100 500 150" class="w-100" style="height: 100%; overflow: visible;">
+                    <defs>
+                        <linearGradient id="growthGradient" x1="0" x2="0" y1="0" y2="1">
+                            <stop offset="0%" stop-color="#10b981" />
+                            <stop offset="100%" stop-color="transparent" />
+                        </linearGradient>
+                    </defs>
 
-                <path d="M0,150 C100,140 150,100 250,120 C350,140 400,20 500,50 L500,150 L0,150 Z"
-                      class="chart-area-fill" />
+                    <path d="M0,150 C100,140 150,100 250,120 C350,140 400,20 500,50 L500,150 L0,150 Z"
+                        class="chart-area-fill" />
 
-                <path d="M0,150 C100,140 150,100 250,120 C350,140 400,20 500,50"
-                      fill="none"
-                      stroke="#10b981"
-                      stroke-width="4"
-                      stroke-linecap="round" />
-            </svg>
+                    <path d="M0,150 C100,140 150,100 250,120 C350,140 400,20 500,50" fill="none" stroke="#10b981"
+                        stroke-width="4" stroke-linecap="round" />
+                </svg>
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 <div class="row g-4 mb-4">
@@ -373,25 +371,26 @@
         <div class="dashboard-card">
             <h5 class="fw-bold mb-4 text-main"><i class="bi bi-activity me-2 text-danger"></i> Recent Activities</h5>
 
+            @forelse($recentActivities as $activity)
             <div class="activity-item">
-                <div class="activity-icon"><i class="bi bi-building"></i></div>
+                <div class="activity-icon"><i class="bi bi-person-plus"></i></div>
                 <div>
-                    <div class="fw-bold text-main small">New Institution Registration</div>
-                    <div class="--text-muted small">by MIT College • <span class="--text-muted-custom">5 minutes ago</span>
+                    <div class="fw-bold text-main small">New User Registration</div>
+                    <div class="--text-muted small">
+                        {{-- Changed 'name' to 'full_name' to match your database --}}
+                        {{ $activity->full_name }} •
+                        <span class="--text-muted-custom">
+                            {{ $activity->created_at->diffForHumans() }}
+                        </span>
                     </div>
-                    <div class="--text-muted small mt-1" style="font-size: 0.75rem;">Institution ID: INST_001</div>
+                    <div class="--text-muted small mt-1" style="font-size: 0.75rem;">
+                        Email: {{ $activity->email }}
+                    </div>
                 </div>
             </div>
-
-            <div class="activity-item">
-                <div class="activity-icon"><i class="bi bi-gear"></i></div>
-                <div>
-                    <div class="fw-bold text-main small">System Configuration Update</div>
-                    <div class="--text-muted small">by Admin User • <span class="--text-muted-custom">15 minutes ago</span>
-                    </div>
-                    <div class="--text-muted small mt-1" style="font-size: 0.75rem;">Updated exam time limits</div>
-                </div>
-            </div>
+            @empty
+            <p class="text-muted small">No recent registrations found.</p>
+            @endforelse
         </div>
     </div>
 </div>
