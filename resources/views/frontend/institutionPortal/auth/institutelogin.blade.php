@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,9 +24,12 @@
             --input-bg: rgba(255, 255, 255, 0.9);
             --input-text: #1e293b;
             --input-placeholder: #64748b;
-            --btn-bg: #059166; --btn-hover: #1A9E75; --btn-text: #ffffff;
+            --btn-bg: #059166;
+            --btn-hover: #1A9E75;
+            --btn-text: #ffffff;
             --review-bg: rgba(0, 0, 0, 0.2);
             --circle-color-1: rgba(255, 255, 255, 0.15);
+            --text-muted: rgba(255, 255, 255, 0.7);
         }
 
         /* DARK MODE OVERRIDES */
@@ -38,7 +42,8 @@
             --input-bg: rgba(15, 23, 42, 0.6);
             --input-text: #f1f5f9;
             --input-placeholder: #94a3b8;
-            --btn-bg: #059166; --btn-hover: #1A9E75;
+            --btn-bg: #059166;
+            --btn-hover: #1A9E75;
             --review-bg: rgba(255, 255, 255, 0.05);
             --circle-color-1: rgba(70, 150, 255, 0.1);
         }
@@ -49,114 +54,378 @@
             background: var(--bg-gradient);
             color: var(--text-main);
             min-height: 100vh;
-            overflow-y: auto; overflow-x: hidden;
+            height: auto;
+            padding: 20px 0;
+            overflow-y: auto;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             transition: background 0.5s ease;
             position: relative;
-            
+
         }
 
         /* ------------------ FLOATING CIRCLES ANIMATION ------------------ */
         @keyframes animate {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 50%; }
-            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 50%;
+            }
+
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
         }
 
         .circles {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            overflow: hidden; margin: 0; padding: 0; z-index: 0; pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            z-index: 0;
+            pointer-events: none;
         }
 
         .circles li {
-            position: absolute; display: block; list-style: none;
-            width: 20px; height: 20px; background: var(--circle-color-1);
-            animation: animate 25s linear infinite; bottom: -150px;
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: var(--circle-color-1);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
         }
 
         /* Circle Variations & Positions (omitted for brevity) */
-        .circles li:nth-child(3n+1) { background: var(--circle-color-1); }
-        .circles li:nth-child(3n+2) { background: var(--circle-color-2); }
-        .circles li:nth-child(3n) { background: var(--circle-color-3); }
-        .circles li:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
-        .circles li:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
-        .circles li:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
-        .circles li:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
-        .circles li:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
-        .circles li:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
-        .circles li:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
-        .circles li:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
-        .circles li:nth-child(9) { left: 20%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 35s; }
-        .circles li:nth-child(10) { left: 85%; width: 150px; height: 150px; animation-delay: 0s; animation-duration: 11s; }
+        .circles li:nth-child(3n+1) {
+            background: var(--circle-color-1);
+        }
+
+        .circles li:nth-child(3n+2) {
+            background: var(--circle-color-2);
+        }
+
+        .circles li:nth-child(3n) {
+            background: var(--circle-color-3);
+        }
+
+        .circles li:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+        .circles li:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+
+        .circles li:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+
+        .circles li:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+
+        .circles li:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .circles li:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+
+        .circles li:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+
+        .circles li:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+
+        .circles li:nth-child(9) {
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            animation-delay: 2s;
+            animation-duration: 35s;
+        }
+
+        .circles li:nth-child(10) {
+            left: 85%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+            animation-duration: 11s;
+        }
 
 
         /* ------------------ UI COMPONENT STYLES ------------------ */
-        .login-container { width: 100%; max-width: 420px; padding: 15px; z-index: 10; }
+        .login-container {
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
+            z-index: 10;
+            animation: fadeInScale 0.6s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
 
         .login-card {
-            background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--card-border); box-shadow: var(--card-shadow);
-            border-radius: 24px; padding: 2.5rem; transition: all 0.3s ease;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--card-shadow);
+            border-radius: 28px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 576px) {
+            .login-card {
+                padding: 2rem 1.5rem;
+                /* Less horizontal padding on mobile */
+            }
+
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
+            }
         }
 
         .logo-box {
-            width: 54px; height: 54px; background-color: #059166;
-            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; color: #fff; margin-bottom: 1rem; backdrop-filter: blur(4px);
+            width: 54px;
+            height: 54px;
+            background-color: #059166;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(4px);
         }
 
         /* Inputs */
-        .input-wrapper { position: relative; margin-bottom: 1.25rem; }
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 1.25rem;
+        }
+
         .input-icon {
-            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
-            color: #64748b; z-index: 5; transition: color 0.2s;
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            z-index: 5;
+            transition: color 0.2s;
         }
+
         .custom-input {
-            width: 100%; padding: 12px 15px 12px 42px; border-radius: 10px;
-            background: var(--input-bg); border: 1px solid var(--input-border);
-            color: var(--input-text); font-size: 0.95rem; transition: all 0.2s;
+            width: 100%;
+            padding: 12px 15px 12px 42px;
+            border-radius: 10px;
+            background: var(--input-bg);
+            border: 1px solid transparent;
+            color: var(--input-text);
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .custom-input:focus { outline: none; box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25); }
-        .custom-input:focus + .input-icon, .input-wrapper:focus-within .input-icon { color: var(--btn-bg); }
+
+        .custom-input:focus {
+            background: #ffffff;
+            border-color: var(--btn-bg);
+            box-shadow: 0 0 0 4px rgba(5, 145, 102, 0.2);
+            transform: translateY(-1px);
+            ;
+        }
+
+        .custom-input:focus+.input-icon,
+        .input-wrapper:focus-within .input-icon {
+            color: var(--btn-bg);
+        }
+
+        body.dark-mode .custom-input:focus {
+            background: var(--input-bg);
+            color: white;
+        }
 
         .password-toggle {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-            cursor: pointer; color: #64748b; border: none; background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #64748b;
+            border: none;
+            background: none;
+        }
+
+        .password-toggle:active {
+            opacity: 0.6;
         }
 
         /* Button */
         .btn-login {
-            background-color: var(--btn-bg); color: var(--btn-text); font-weight: 600;
-            padding: 12px; border-radius: 12px; border: none; width: 100%; margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); transition: all 0.2s;
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            transform: scale(0.98);
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            width: 100%;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
         }
-        .btn-login:hover { background-color: var(--btn-hover); transform: translateY(-1px); }
+
+        .btn-login:hover {
+            background-color: var(--btn-hover);
+            transform: translateY(-1px);
+        }
 
         /* Links & Text */
-        .text-muted-custom { color: var(--text-muted) !important; }
-        .link-custom {
-            color: var(--text-main); opacity: 0.9; text-decoration: none; font-weight: 500;
+        .text-muted-custom {
+            color: var(--text-muted) !important;
         }
-        .link-custom:hover { opacity: 1; text-decoration: underline; }
+
+        .link-custom {
+            color: var(--text-main);
+            opacity: 0.9;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .link-custom:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
 
         /* Theme Toggle */
         .theme-toggle {
-            position: absolute; top: 25px; right: 25px; width: 44px; height: 44px;
-            border-radius: 50%; border: none; background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(4px); color: #fff; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: background 0.2s; z-index: 50;
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--card-border);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            z-index: 50;
         }
-        .theme-toggle:hover { background: rgba(255, 255, 255, 0.25); }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Spinner Animation */
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spinner-border-sm {
+            width: 1.2rem;
+            height: 1.2rem;
+            border-width: 0.15em;
+            display: none;
+            /* Hidden by default */
+            margin-right: 8px;
+        }
+
+        /* When button is in loading state */
+        .btn-login.loading .spinner-border-sm {
+            display: inline-block;
+        }
+
+        .btn-login.loading {
+            pointer-events: none;
+            /* Prevent double clicks */
+            opacity: 0.8;
+        }
     </style>
 </head>
 
 <body id="app-body">
     <ul class="circles">
-        <li></li><li></li><li></li><li></li><li></li>
-        <li></li><li></li><li></li><li></li><li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
     </ul>
 
     <button onclick="toggleTheme()" class="theme-toggle" title="Toggle Theme">
@@ -174,18 +443,29 @@
         </div>
 
         <div class="login-card">
+            @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+            @endif
             <div class="text-center mb-4">
                 <h4 class="fw-bold mb-2">Welcome, Institution</h4>
                 <p class="text-muted-custom small">Manage your educational programs and empower your students</p>
             </div>
 
-            <form>
+            <form action="{{ route('institution.login') }}" method="POST">
+                @csrf
                 <div class="mb-3">
                     <label for="email" class="form-label small ms-1 mb-1 fw-medium text-muted-custom">Institution Email address</label>
                     <div class="input-wrapper">
                         <i class="bi bi-envelope input-icon"></i>
-                        <input type="email" class="custom-input" id="email" name="email"
-                               placeholder="student@kickstartskills.com" required>
+                        <input type="email"
+                            class="custom-input"
+                            id="email"
+                            name="email"
+                            value="{{ Cookie::get('institution_email') }}"
+                            placeholder="student@kickstartskills.com"
+                            required>
                     </div>
                 </div>
 
@@ -194,7 +474,7 @@
                     <div class="input-wrapper">
                         <i class="bi bi-lock input-icon"></i>
                         <input type="password" class="custom-input" id="password" name="password"
-                               placeholder="••••••••" required>
+                            placeholder="••••••••" required>
                         <button type="button" class="password-toggle" onclick="togglePassword()">
                             <i id="eye-icon" class="bi bi-eye"></i>
                         </button>
@@ -203,13 +483,19 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="remember" name="remember">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            id="remember"
+                            name="remember"
+                            {{ Cookie::get('institution_email') ? 'checked' : '' }}>
                         <label class="form-check-label small text-muted-custom" for="remember">Remember me</label>
                     </div>
                     <a href="/institution/forgot-password" class="small link-custom">Forgot password?</a>
                 </div>
-
-                <button type="submit" class="btn-login">Access Institution Portal</button>
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span class="btn-text">Access Institution Portal</span>
+                </button>
             </form>
 
             <div class="text-center mt-4">
@@ -226,7 +512,15 @@
     <script>
         const body = document.getElementById('app-body');
         const themeIcon = document.getElementById('theme-icon');
-        const eyeIcon = document.getElementById('eye-icon'); // Defined globally for consistency
+        const eyeIcon = document.getElementById('eye-icon');
+        const loginForm = document.querySelector('form');
+        const loginBtn = document.getElementById('loginBtn');
+
+        loginForm.addEventListener('submit', function() {
+            loginBtn.classList.add('loading');
+            const btnText = loginBtn.querySelector('.btn-text');
+            btnText.innerText = "Authenticating...";
+        });
 
         function toggleTheme() {
             body.classList.toggle('dark-mode');
@@ -235,15 +529,11 @@
 
         function updateIcon() {
             if (body.classList.contains('dark-mode')) {
-                // Dark mode shows the sun icon (to switch to light mode)
                 themeIcon.className = 'bi bi-sun';
             } else {
-                // Light mode shows the moon icon (to switch to dark mode)
                 themeIcon.className = 'bi bi-moon';
             }
         }
-
-        // Initialize the icon state on page load
         updateIcon();
 
         function togglePassword() {
@@ -263,4 +553,5 @@
         }
     </script>
 </body>
+
 </html>

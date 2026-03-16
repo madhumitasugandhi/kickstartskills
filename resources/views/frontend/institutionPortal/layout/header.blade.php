@@ -10,7 +10,7 @@
             <h5 class="mb-0 fw-semibold" style="color: var(--text-main)">
                 @yield('page_title', 'Institution Dashboard')
             </h5>
-            <small style="color: var(--text-main)">Welcome, ABC Institute!</small>
+            <small style="color: var(--text-main)">Welcome, {{ $institution->institution_name }}</small>
         </div>
     </div>
 

@@ -13,8 +13,8 @@
         <h5 class="fw-semibold mb-0">Programs Overview</h5>
 
         <button class="btn btn-teal d-flex align-items-center gap-2"
-                data-bs-toggle="modal"
-                data-bs-target="#createProgramModal">
+            data-bs-toggle="modal"
+            data-bs-target="#createProgramModal">
             <i class="bi bi-plus-lg"></i>
             Create Program
         </button>
@@ -32,7 +32,7 @@
                         <i class="bi bi-book"></i>
                     </div>
                     <div>
-                        <h4 class="mb-0">4</h4>
+                        <h4 class="mb-0">{{ $programs->count() }}</h4>
                         <p class=" mb-0">Total Programs</p>
                     </div>
                 </div>
@@ -94,20 +94,29 @@
                 <div class="input-group-custom">
                     <i class="bi bi-search"></i>
                     <input type="text"
-                           class="form-control"
-                           placeholder="Search programs...">
+                        class="form-control"
+                        id="programSearch"
+                        placeholder="Search programs...">
                 </div>
             </div>
 
             <div class="col-md-3">
-                <select class="form-select">
-                    <option>All Departments</option>
+                <select class="form-select" id="departmentFilter">
+
+                    <option value="">All Departments</option>
+
+                    @foreach($departments as $id => $name)
+                    <option value="{{ strtolower($name) }}">{{ $name }}</option>
+                    @endforeach
+
                 </select>
             </div>
 
             <div class="col-md-3">
-                <select class="form-select">
-                    <option>All Status</option>
+                <select class="form-select" id="statusFilter">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
                 </select>
             </div>
         </div>
@@ -117,8 +126,9 @@
         PROGRAMS HEADER
     ====================================================== --}}
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h6 class="fw-semibold mb-0">Programs (1)</h6>
-
+        <h6 class="fw-semibold mb-0">
+            Programs (<span id="programCount">{{ $programs->count() }}</span>)
+        </h6>
         <button class="btn btn-link p-0">
             <i class="bi bi-download fs-5"></i>
         </button>
@@ -127,100 +137,59 @@
     {{-- =====================================================
         PROGRAM CARD
     ====================================================== --}}
-    <div class="course-type-card">
+    @foreach($programs as $program)
 
-        {{-- Header --}}
+    <div class="course-type-card program-card"
+        data-name="{{ strtolower($program->program_name) }}"
+        data-department="{{ strtolower($program->department->department_name ?? '') }}"
+        data-status="active">
+
         <div class="d-flex justify-content-between align-items-start mb-2">
             <div>
-                <h6 class="fw-semibold mb-1">Full Stack Web Development</h6>
-                <small class="">Engineering • 6 months</small>
+                <h6 class="fw-semibold mb-1">{{ $program->program_name }}</h6>
+                <small>
+                    {{ $program->department->department_name ?? 'N/A' }} •
+                    {{ $program->duration }}
+                </small>
             </div>
 
-            <div class="d-flex align-items-center gap-2">
-                <span class="status-pill active">Active</span>
-
-                <div class="student-actions">
-    <button class="icon-btn kebab-toggle" type="button">
-        <i class="bi bi-three-dots-vertical"></i>
-    </button>
-
-    <ul class="kebab-menu">
-        <li>
-            <i class="bi bi-eye"></i>
-            View Details
-        </li>
-        <li>
-            <i class="bi bi-pencil"></i>
-            Edit Program
-        </li>
-        <li>
-            <i class="bi bi-archive"></i>
-            Archive
-        </li>
-        <li class="danger">
-            <i class="bi bi-trash"></i>
-            Delete
-        </li>
-    </ul>
-</div>
-
-            </div>
+            <span class="status-pill active">Active</span>
         </div>
 
-        {{-- Description --}}
-        <p class=" small mb-3">
-            Comprehensive web development program covering front-end and back-end technologies
+        <p class="small mb-3">
+            {{ $program->description }}
         </p>
 
-        {{-- Metrics --}}
         <div class="row mb-3">
-            <div class="col-6 col-md-3">
-                <small class=" d-block">Students</small>
-                <strong>142 / 156</strong>
-            </div>
 
             <div class="col-6 col-md-3">
-                <small class=" d-block">Completion</small>
-                <strong>87.5%</strong>
+                <small class="d-block">Fees</small>
+                <strong>₹{{ number_format($program->fees) }}</strong>
             </div>
 
-            <div class="col-6 col-md-3">
-                <small class=" d-block">Fees</small>
-                <strong>₹25,000</strong>
-            </div>
-
-            <div class="col-6 col-md-3">
-                <small class=" d-block">Instructors</small>
-                <strong>2</strong>
-            </div>
         </div>
 
-        {{-- Skills --}}
-        <div class="d-flex flex-wrap gap-2 mb-4">
-            <span class="chip-item">HTML / CSS</span>
-            <span class="chip-item">JavaScript</span>
-            <span class="chip-item">React</span>
-            <span class="chip-item">+2 more skills</span>
-        </div>
-
-        {{-- Actions --}}
         <div class="d-flex gap-3">
-            <button class="btn btn-outline-teal flex-fill"
-                    data-bs-toggle="modal"
-                    data-bs-target="#viewProgramModal">
-                <i class="bi bi-eye me-1"></i>
-                View Details
+
+            <button class="btn btn-outline-teal flex-fill viewProgramBtn"
+                data-bs-toggle="modal"
+                data-bs-target="#viewProgramModal"
+                data-id="{{ $program->program_id }}">
+                View
             </button>
 
-            <button class="btn btn-teal flex-fill"
-                    data-bs-toggle="modal"
-                    data-bs-target="#editProgramModal">
-                <i class="bi bi-pencil me-1"></i>
+            <button class="btn btn-teal flex-fill editProgramBtn"
+                data-bs-toggle="modal"
+                data-bs-target="#editProgramModal"
+                data-id="{{ $program->program_id }}">
                 Edit
             </button>
+
         </div>
 
     </div>
+
+    @endforeach
 
 </div>
 
@@ -236,34 +205,34 @@
 ====================================================== --}}
 @include('frontend.institutionPortal.dashboard.programs.management.scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
 
-    // Toggle kebab menu
-    document.querySelectorAll('.kebab-toggle').forEach(button => {
-        button.addEventListener('click', function (e) {
-            e.stopPropagation();
+        // Toggle kebab menu
+        document.querySelectorAll('.kebab-toggle').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
 
-            // Close all other open menus
-            document.querySelectorAll('.kebab-menu').forEach(menu => {
-                if (menu !== this.nextElementSibling) {
-                    menu.classList.remove('show');
-                }
+                // Close all other open menus
+                document.querySelectorAll('.kebab-menu').forEach(menu => {
+                    if (menu !== this.nextElementSibling) {
+                        menu.classList.remove('show');
+                    }
+                });
+
+                // Toggle current menu
+                const menu = this.nextElementSibling;
+                menu.classList.toggle('show');
             });
-
-            // Toggle current menu
-            const menu = this.nextElementSibling;
-            menu.classList.toggle('show');
         });
-    });
 
-    // Close menu when clicking outside
-    document.addEventListener('click', function () {
-        document.querySelectorAll('.kebab-menu').forEach(menu => {
-            menu.classList.remove('show');
+        // Close menu when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.kebab-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
         });
-    });
 
-});
+    });
 </script>
 
 @endsection

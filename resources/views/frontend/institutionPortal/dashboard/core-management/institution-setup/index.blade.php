@@ -52,7 +52,9 @@
     <div class="flex-grow-1">
         <!-- Step Content -->
         <div class="setup-content p-4 rounded" id="step-basic">
-            @include('frontend.institutionPortal.dashboard.core-management.institution-setup.basicinfo')
+        @include(
+    'frontend.institutionPortal.dashboard.core-management.institution-setup.basicinfo'
+)
         </div>
 
         <div class="setup-content p-4 rounded d-none" id="step-academic">
@@ -89,7 +91,7 @@
                     <i class="bi bi-chevron-left me-2"></i> Previous
                 </button>
 
-                <button class="btn btn-success px-5 py-2" id="nextBtn">
+                <button class="btn btn-success px-5 py-2" id="nextBtn" onclick="saveBasicSetup()">
                     Next <i class="bi bi-chevron-right ms-2"></i>
                 </button>
             </div>
@@ -244,5 +246,45 @@ if (currentStep === stepIds.length - 1) {
     });
 
 });
+
+function saveBasicSetup(){
+
+const data = {
+
+    institution_name: document.querySelector('[name="institution_name"]').value,
+    institution_type_id: document.querySelector('[name="institution_type_id"]').value,
+    phone: document.querySelector('[name="phone"]').value,
+    email: document.querySelector('[name="email"]').value,
+    address_line1: document.querySelector('[name="address_line1"]').value,
+    city: document.querySelector('[name="city"]').value,
+    state: document.querySelector('[name="state"]').value,
+    postal_code: document.querySelector('[name="postal_code"]').value
+
+};
+
+fetch('/institution/setup/basic',{
+
+    method:'POST',
+
+    headers:{
+        'Content-Type':'application/json',
+        'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content
+    },
+
+    body:JSON.stringify(data)
+
+})
+.then(res=>res.json())
+.then(res=>{
+
+    if(res.status === 'success'){
+        switchStep(2);
+    }
+
+});
+
+}
+
+
 </script>
 @endsection

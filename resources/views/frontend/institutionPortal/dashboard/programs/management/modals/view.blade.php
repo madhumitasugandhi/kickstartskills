@@ -4,8 +4,8 @@
 
             <!-- Header -->
             <div class="modal-header px-4 pt-4 pb-2">
-                <h5 class="modal-title">Full Stack Web Development</h5>
-                <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            <h5 class="modal-title" id="view_program_name"></h5>
+                            <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
             <!-- Body -->
@@ -14,18 +14,15 @@
 
                     <div class="col-6 col-md-4">
                         <small class="text-muted d-block">Department</small>
-                        <strong>Engineering</strong>
-                    </div>
+                        <strong id="view_department"></strong>                    </div>
 
                     <div class="col-6 col-md-4">
                         <small class="text-muted d-block">Duration</small>
-                        <strong>6 months</strong>
-                    </div>
+                        <strong id="view_duration"></strong>                    </div>
 
                     <div class="col-6 col-md-4">
                         <small class="text-muted d-block">Fees</small>
-                        <strong>₹25,000</strong>
-                    </div>
+                        <strong id="view_fees"></strong>                    </div>
 
                     <div class="col-6 col-md-4">
                         <small class="text-muted d-block">Status</small>
@@ -45,9 +42,7 @@
                     <!-- Description -->
                     <div class="col-12 mt-4">
                         <small class="text-muted d-block mb-1">Description</small>
-                        <p class="mb-0">
-                            Comprehensive web development program covering front-end and back-end technologies.
-                        </p>
+                        <p class="mb-0" id="view_description"></p>
                     </div>
 
                     <!-- Skills -->

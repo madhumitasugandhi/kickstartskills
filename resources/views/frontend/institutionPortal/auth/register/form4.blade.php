@@ -1,3 +1,12 @@
+@if ($errors->any())
+<div class="alert alert-danger">
+<ul class="mb-0">
+@foreach ($errors->all() as $error)
+<li>{{ $error }}</li>
+@endforeach
+</ul>
+</div>
+@endif
 <div class="glass-card">
 
     <!-- Heading -->
@@ -26,16 +35,44 @@
         </ul>
     </div>
 
+    <div class="form-check mb-3">
+
+    <input
+        class="form-check-input"
+        type="checkbox"
+        id="terms_accepted"
+        name="terms_accepted"
+        value="1"
+        {{ old('terms_accepted', $formData['terms_accepted'] ?? '') ? 'checked' : '' }}
+        
+    >
+
+    <label class="form-check-label small text-white opacity-75" for="terms_accepted">
+        I agree to the
+        <a href="#" class="text-white fw-bold text-decoration-underline">
+            Terms & Conditions 
+        </a>
+        mentioned above .
+        <!-- and
+        <a href="/privacy" class="text-white fw-bold text-decoration-underline">
+            Privacy Policy
+        </a> -->
+    </label>
+
+</div>
+
     <!-- Complete Registration Button -->
     <button type="submit"
-            class="btn-action mb-3"
-            style="background: rgba(255,255,255,0.15);
-                   width: 100%;
-                   padding: 12px;
-                   font-weight: 600;
-                   border-radius: 12px;">
-        Complete Registration
-    </button>
+        id="registerBtn"
+        class="btn-action mb-3"
+        style="background: rgba(255,255,255,0.15);
+               width: 100%;
+               padding: 12px;
+               font-weight: 600;
+               border-radius: 12px;"
+        disabled>
+    Complete Registration
+</button>
 
     <!-- Back Button -->
     <button type="button"

@@ -12,7 +12,7 @@
 
         <nav class="mt-2 px-2">
 
-            <a href="{{ route('institute.dashboard') }}"
+            <a href="{{ route('institution.dashboard') }}"
                class="nav-item-custom {{ request()->is('institute/dashboard') ? 'active' : '' }}">
                 <i class="bi bi-speedometer2 me-2"></i>
                 <span class="menu-text">Dashboard</span>

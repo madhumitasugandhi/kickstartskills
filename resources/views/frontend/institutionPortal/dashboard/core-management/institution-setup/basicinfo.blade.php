@@ -24,11 +24,21 @@
                 <label class="form-label-custom">Institution Type *</label>
                 <div class="input-group-custom">
                     <i class="bi bi-mortarboard"></i>
-                    <select class="form-select ps-5" required>
-                        <option selected disabled>Select Type</option>
-                        <option>University</option>
-                        <option>College</option>
-                        <option>Institute</option>
+                    <select class="form-select ps-5" name="institution_type_id" required>
+
+                        <option value="">Select Type</option>
+
+                        @foreach($types as $type)
+
+                        <option value="{{ $type->institution_type_id }}"
+                            {{ $institution->institution_type_id == $type->institution_type_id ? 'selected' : '' }}>
+
+                            {{ $type->type_name }}
+
+                        </option>
+
+                        @endforeach
+
                     </select>
                 </div>
             </div>
@@ -37,8 +47,12 @@
                 <label class="form-label-custom">Institution Name *</label>
                 <div class="input-group-custom">
                     <i class="bi bi-bank"></i>
-                    <input type="text" class="form-control ps-5"
-                           placeholder="e.g. Stanford University" required>
+                    <input
+                        type="text"
+                        name="institution_name"
+                        class="form-control ps-5"
+                        value="{{ $institution->institution_name }}"
+                        required>
                 </div>
             </div>
         </div>
@@ -51,7 +65,11 @@
                 <label class="form-label-custom">Established Year *</label>
                 <div class="input-group-custom">
                     <i class="bi bi-calendar-event"></i>
-                    <input type="number" class="form-control ps-5" placeholder="YYYY" required>
+                    <input type="number"
+                        name="established_year"
+                        class="form-control ps-5"
+                        value="{{ $institution->established_year }}"
+                        placeholder="YYYY">
                 </div>
             </div>
 
@@ -59,8 +77,11 @@
                 <label class="form-label-custom">Website URL</label>
                 <div class="input-group-custom">
                     <i class="bi bi-globe"></i>
-                    <input type="url" class="form-control ps-5"
-                           placeholder="https://www.example.edu">
+                    <input type="url"
+                        name="website"
+                        class="form-control ps-5"
+                        value="{{ $institution->website }}"
+                        placeholder="https://www.example.edu">
                 </div>
             </div>
         </div>
@@ -75,8 +96,12 @@
                 <label class="form-label-custom">Phone Number *</label>
                 <div class="input-group-custom">
                     <i class="bi bi-telephone"></i>
-                    <input type="text" class="form-control ps-5"
-                           placeholder="+1 (000) 000-0000" required>
+                    <input
+                        type="text"
+                        name="phone"
+                        class="form-control ps-5"
+                        value="{{ $institution->phone }}"
+                        required>
                 </div>
             </div>
 
@@ -84,8 +109,12 @@
                 <label class="form-label-custom">Official Email *</label>
                 <div class="input-group-custom">
                     <i class="bi bi-envelope"></i>
-                    <input type="email" class="form-control ps-5"
-                           placeholder="admin@institute.edu" required>
+                    <input
+                        type="email"
+                        name="email"
+                        class="form-control ps-5"
+                        value="{{ $institution->email }}"
+                        required>
                 </div>
             </div>
         </div>
@@ -99,25 +128,80 @@
             <label class="form-label-custom">Address Line 1 *</label>
             <div class="input-group-custom">
                 <i class="bi bi-geo-alt"></i>
-                <input type="text" class="form-control ps-5"
-                       placeholder="Street name and number" required>
+                <input
+                    type="text"
+                    name="address_line1"
+                    class="form-control ps-5"
+                    value="{{ $address->address_line1 ?? '' }}"
+                    required>
             </div>
         </div>
 
         <div class="row g-3 mt-2">
+
             <div class="col-md-4">
-                <label class="form-label-custom">City *</label>
-                <input type="text" class="form-control" required>
-            </div>
-            <div class="col-md-4">
+
                 <label class="form-label-custom">State *</label>
-                <input type="text" class="form-control" required>
+
+                <select name="state" id="stateDropdown" class="form-select" required>
+
+                    <option value="">Select State</option>
+
+                    @foreach($states as $id => $name)
+
+                    <option value="{{ $id }}"
+                        {{ ($address->state_id ?? '') == $id ? 'selected' : '' }}>
+
+                        {{ $name }}
+
+                    </option>
+
+                    @endforeach
+
+                </select>
+
             </div>
+
+
             <div class="col-md-4">
-                <label class="form-label-custom">PIN Code *</label>
-                <input type="text" class="form-control"
-                       placeholder="123456" required>
+
+                <label class="form-label-custom">City *</label>
+
+                <select name="city" id="cityDropdown" class="form-select" required>
+
+                    <option value="">Select City</option>
+
+                    @if(!empty($cities))
+
+                    @foreach($cities as $id => $name)
+
+                    <option value="{{ $id }}"
+                        {{ ($address->city_id ?? '') == $id ? 'selected' : '' }}>
+                        {{ $name }}
+                    </option>
+
+                    @endforeach
+
+                    @endif
+
+                </select>
+
             </div>
+
+
+            <div class="col-md-4">
+
+                <label class="form-label-custom">PIN Code *</label>
+
+                <input
+                    type="text"
+                    name="postal_code"
+                    class="form-control"
+                    value="{{ $address->postal_code ?? '' }}"
+                    required>
+
+            </div>
+
         </div>
     </div>
 

@@ -95,7 +95,7 @@
 
         <!-- Buttons -->
         <div class="d-flex flex-wrap gap-3">
-            <a href="{{ route('institute.dashboard') }}" class="btn btn-teal px-4">
+            <a href="{{ route('institution.dashboard') }}" class="btn btn-teal px-4">
                 <i class="bi bi-house-door me-1"></i> Go to Dashboard
             </a>
 

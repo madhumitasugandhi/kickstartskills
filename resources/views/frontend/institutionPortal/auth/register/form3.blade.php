@@ -1,3 +1,12 @@
+@if ($errors->any())
+<div class="alert alert-danger">
+<ul class="mb-0">
+@foreach ($errors->all() as $error)
+<li>{{ $error }}</li>
+@endforeach
+</ul>
+</div>
+@endif
 <div class="glass-card">
 
     <h5 class="fw-bold mb-2 text-white text-center">Registration Details</h5>
@@ -9,14 +18,24 @@
     <label class="small text-white opacity-75 ms-1 mb-1">Institution Type</label>
     <div class="input-group-custom">
         <i class="bi bi-bookmark input-icon"></i>
-        <select id="institution_type" name="institution_type" class="custom-input">
-            <option selected disabled>Select Institution Type</option>
-            <option value="University">University</option>
-            <option value="College">College</option>
-            <option value="Standalone Institution">Standalone Institution</option>
-        </select>
-    </div>
+        <select id="institution_type" name="institution_type_id" class="custom-input">
 
+<option value="">Select Institution Type</option>
+
+@foreach($types as $type)
+
+<option value="{{ $type->institution_type_id }}"
+{{ (old('institution_type_id', $formData['institution_type_id'] ?? '') == $type->institution_type_id) ? 'selected' : '' }}>
+
+{{ $type->type_name }}
+
+</option>
+
+@endforeach
+
+</select>
+    </div>
+    <div class="field-error" id="type-error"></div>
     <!-- AISHE Code -->
     <label class="small text-white opacity-75 ms-1 mb-1 mt-3">AISHE Code</label>
     <div class="input-group-custom">
@@ -65,6 +84,6 @@
     <!-- Buttons -->
     <div class="d-flex justify-content-between mt-4 gap-2">
         <button type="button" class="btn-prev" onclick="switchStep(2)">Back</button>
-        <button type="button" class="btn-action" onclick="switchStep(4)">Review</button>
+        <button type="button" class="btn-action" onclick="validateStep3()">Review</button>
     </div>
 </div>

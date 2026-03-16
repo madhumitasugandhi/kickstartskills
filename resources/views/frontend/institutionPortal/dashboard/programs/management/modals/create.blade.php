@@ -10,20 +10,29 @@
 
             <!-- Body -->
             <div class="modal-body px-4 pb-4">
-                <form>
+                <form method="POST" action="{{ route('institution.program.store') }}">
+                    @csrf
 
                     <!-- Program Name -->
                     <div class="floating-field mb-4">
-                        <input type="text" class="form-control" placeholder=" " id="progName">
-                        <label for="progName">Program Name *</label>
+                        <input type="text"
+                            class="form-control"
+                            name="program_name"
+                            placeholder=" "
+                            required> <label for="progName">Program Name *</label>
                     </div>
 
                     <!-- Department -->
                     <div class="floating-field mb-4">
-                        <select class="form-select" id="dept">
+                        <select class="form-select" name="department_id" required>
                             <option value="" disabled selected></option>
-                            <option>Engineering</option>
-                            <option>Management</option>
+
+                            @foreach($departments as $id => $name)
+                            <option value="{{ $id }}">
+                                {{ $name }}
+                            </option>
+                            @endforeach
+
                         </select>
                         <label for="dept">Department *</label>
                     </div>
@@ -32,22 +41,27 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="floating-field mb-4">
-                                <input type="text" class="form-control" placeholder=" ">
-                                <label>Duration *</label>
+                                <input type="text"
+                                    class="form-control"
+                                    name="duration"
+                                    placeholder=" "> <label>Duration *</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="floating-field mb-4">
-                                <input type="number" class="form-control" placeholder=" ">
-                                <label>Fees (₹) *</label>
+                                <input type="number"
+                                    class="form-control"
+                                    name="fees"
+                                    placeholder=" "> <label>Fees (₹) *</label>
                             </div>
                         </div>
                     </div>
 
                     <!-- Description -->
                     <div class="floating-field mb-4">
-                        <textarea class="form-control" rows="4" placeholder=" "></textarea>
-                        <label>Description *</label>
+                        <textarea class="form-control"
+                            rows="4"
+                            name="description"></textarea> <label>Description *</label>
                     </div>
 
                     <!-- Actions -->
