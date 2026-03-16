@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GeoController;
-use App\Http\Controllers\Institution\AuthController;
+use App\Http\Controllers\Institution\InstitutionAuthController;
 use App\Http\Controllers\Institution\InstitutionController;
 use App\Http\Controllers\Institution\InstitutionProgramController;
 
@@ -289,12 +289,12 @@ Route::get('/student/settings', function () {
 
 
 /*|------------------------------------------------Start Institution Portal Routes--------------------------------------------------|*/
-Route::get('/institution-login',[AuthController::class,'showLogin']);
+Route::get('/institution-login',[InstitutionAuthController::class,'showLogin']);
 
-Route::post('/institution-login',[AuthController::class,'login'])
+Route::post('/institution-login',[InstitutionAuthController::class,'login'])
     ->name('institution.login');
 
-Route::post('/institution/logout',[AuthController::class,'logout'])
+Route::post('/institution/logout',[InstitutionAuthController::class,'logout'])
     ->name('institution.logout');
 
 Route::get('/institution/forgot-password', function () {
@@ -357,7 +357,7 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
             compact('tab')
         );
     
-    })->name('institution.financial-management');
+    })->name('financial-management');
     Route::get('/system-integrations', function () {
         return view('frontend.institutionPortal.dashboard.core-management.system.index');
     })->name('system-integrations');
