@@ -9,24 +9,46 @@
         </div>
         <div>
             <h5 class="fw-bold m-0">@yield('title', 'Student Portal')</h5>
-            <small class="text-muted-custom">Welcome back, John!</small>
+            <small class="text-muted-custom">Welcome back, {{ explode(' ', Auth::user()->full_name)[0] }}!</small>
         </div>
     </div>
 
-    <div class="d-flex align-items-center gap-2 ms-auto">
+    <div class="d-flex align-items-center gap-3 ms-auto">
+        <button class="btn btn-light rounded-circle p-2 d-none d-sm-flex" onclick="toggleTheme()"
+            style="width: 40px; height: 40px; align-items: center; justify-content: center;">
+            <i class="bi bi-moon" id="themeIcon"></i>
+        </button>
 
         <a href="{{ route('student.notifications') }}" class="btn btn-light position-relative rounded-circle px-2"
             style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-            <i class="bi bi-bell" style="font-size: 1.2rem;"></i>
-            <span
-                class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
-                style="padding: 0.3rem !important;"></span>
+            <i class="bi bi-bell"></i>
+            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
         </a>
 
-        <button class="btn btn-light rounded-circle p-2" onclick="toggleTheme()"
-            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-            <i class="bi bi-moon" id="themeIcon" style="font-size: 1.2rem;"></i>
-        </button>
+        <div class="dropdown">
+            <button class="btn p-0 border-0 d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm"
+                    style="width: 40px; height: 40px; font-size: 0.9rem;">
+                    {{ strtoupper(substr(Auth::user()->full_name, 0, 1)) }}
+                </div>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 py-2" style="border-radius: 12px; min-width: 180px;">
+                <li>
+                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{{ route('student.profile.personal') }}">
+                        <i class="bi bi-person text-primary"></i> My Profile
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider opacity-50"></li>
+                <li>
+                    <form action="{{ route('student.logout') }}" method="POST" class="m-0">
+                        @csrf
+                        <button type="submit" class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger fw-bold">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </div>
 </header>
 
@@ -102,6 +124,15 @@
     margin-left: 250px;
     transition: all 0.3s ease;
     width: calc(100% - 250px);
+}
+
+.dropdown-item {
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+.dropdown-item:hover {
+    background-color: var(--bg-body); /* Or any soft color */
+    color: var(--text-main);
 }
 
 /* --- SCENARIO A: DESKTOP TOGGLED (> 992px) --- */

@@ -185,46 +185,133 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // --- STEP SWITCHING LOGIC ---
-        function switchStep(step) {
-            document.getElementById('step-1-form').style.display = 'none';
-            document.getElementById('step-2-form').style.display = 'none';
-            document.getElementById('step-3-form').style.display = 'none';
+    // --- STEP SWITCHING LOGIC ---
+    function switchStep(step) {
+        document.getElementById('step-1-form').style.display = 'none';
+        document.getElementById('step-2-form').style.display = 'none';
+        document.getElementById('step-3-form').style.display = 'none';
 
-            document.getElementById('step-1-btn').classList.remove('active');
-            document.getElementById('step-2-btn').classList.remove('active');
-            document.getElementById('step-3-btn').classList.remove('active');
+        document.getElementById('step-1-btn').classList.remove('active');
+        document.getElementById('step-2-btn').classList.remove('active');
+        document.getElementById('step-3-btn').classList.remove('active');
 
-            document.getElementById('step-' + step + '-form').style.display = 'block';
-            document.getElementById('step-' + step + '-btn').classList.add('active');
+        document.getElementById('step-' + step + '-form').style.display = 'block';
+        document.getElementById('step-' + step + '-btn').classList.add('active');
 
-            const title = document.getElementById('page-title');
-            const sub = document.getElementById('page-subtitle');
+        const title = document.getElementById('page-title');
+        const sub = document.getElementById('page-subtitle');
 
-            if(step === 1) {
-                title.innerText = "Forgot Password?";
-                sub.innerText = "Enter your email to receive a reset link";
-            } else if(step === 2) {
-                title.innerText = "Verification";
-                sub.innerText = "We sent a code to your email";
-            } else if(step === 3) {
-                title.innerText = "Reset Password";
-                sub.innerText = "Create a new strong password";
-            }
+        if(step === 1) {
+            title.innerText = "Forgot Password?";
+            sub.innerText = "Enter your email to receive a reset link";
+        } else if(step === 2) {
+            title.innerText = "Verification";
+            sub.innerText = "We sent a code to your email";
+        } else if(step === 3) {
+            title.innerText = "Reset Password";
+            sub.innerText = "Create a new strong password";
         }
+    }
 
-        // --- THEME TOGGLE LOGIC ---
-        const body = document.getElementById('app-body');
-        const themeIcon = document.getElementById('theme-icon');
+    // --- THEME TOGGLE LOGIC ---
+    const body = document.getElementById('app-body');
+    const themeIcon = document.getElementById('theme-icon');
 
-        function toggleTheme() {
-            body.classList.toggle('dark-mode');
-            if(body.classList.contains('dark-mode')) {
-                themeIcon.className = 'bi bi-sun';
+    function toggleTheme() {
+        body.classList.toggle('dark-mode');
+        if(body.classList.contains('dark-mode')) {
+            themeIcon.className = 'bi bi-sun';
+        } else {
+            themeIcon.className = 'bi bi-moon';
+        }
+    }
+
+    // --- AJAX SUBMISSION LOGIC ---
+    let userEmail = "";
+
+    // Step 1: Submit Email
+    function submitEmail() {
+        const emailInput = document.querySelector('#step-1-form input[name="email"]');
+        userEmail = emailInput.value;
+
+        fetch("{{ route('admin.otp.send') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({ email: userEmail })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Remove this alert after testing
+                alert("Test OTP: " + data.debug_otp);
+                switchStep(2);
             } else {
-                themeIcon.className = 'bi bi-moon';
+                alert(data.message || "Email not found in our records.");
             }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Step 2: Verify OTP
+    function verifyCode() {
+        const otpInput = document.querySelector('#step-2-form input[name="otp"]');
+
+        fetch("{{ route('admin.otp.verify') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({
+                email: userEmail,
+                otp: otpInput.value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                switchStep(3);
+            } else {
+                alert("Invalid or expired code. Please try again.");
+            }
+        });
+    }
+
+    // Step 3: Final Reset
+    function finishReset() {
+        const password = document.querySelector('#step-3-form input[name="password"]').value;
+        const confirm = document.querySelector('#step-3-form input[name="password_confirmation"]').value;
+
+        if (password !== confirm) {
+            alert("Passwords do not match!");
+            return;
         }
-    </script>
+
+        fetch("{{ route('admin.password.update') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({
+                email: userEmail,
+                password: password,
+                password_confirmation: confirm
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Password updated! Redirecting to login...");
+                window.location.href = "{{ url('/admin-login') }}";
+            } else {
+                alert("Reset failed. Ensure password is at least 8 characters.");
+            }
+        });
+    }
+</script>
 </body>
 </html>

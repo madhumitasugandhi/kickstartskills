@@ -23,14 +23,20 @@
             --border-color: #e9ecef;
 
             /* ACCENT COLORS (ADMIN RED THEME) */
-            --accent-color: #f65a5a; /* Crimson Red */
-            --soft-accent: #fee2e2;  /* Soft Red Background */
+            --accent-color: #f65a5a;
+            /* Crimson Red */
+            --soft-accent: #fee2e2;
+            /* Soft Red Background */
 
             /* Utility Colors */
-            --soft-blue: #e7f1ff; --text-blue: #0d6efd;
-            --soft-green: #d1e7dd; --text-green: #0f5132;
-            --soft-red: #f8c7cb; --text-red: #e35965;
-            --soft-teal: #e0fbf6; --text-teal: #107c6f;
+            --soft-blue: #e7f1ff;
+            --text-blue: #0d6efd;
+            --soft-green: #d1e7dd;
+            --text-green: #0f5132;
+            --soft-red: #f8c7cb;
+            --text-red: #e35965;
+            --soft-teal: #e0fbf6;
+            --text-teal: #107c6f;
         }
 
         [data-theme="dark"] {
@@ -44,14 +50,20 @@
             --border-color: #3b455b;
 
             /* ACCENT COLORS (ADMIN RED THEME) */
-            --accent-color: #d95555; /* Brighter Red for Dark Mode */
-            --soft-accent: rgba(229, 68, 68, 0.15); /* Transparent Red */
+            --accent-color: #d95555;
+            /* Brighter Red for Dark Mode */
+            --soft-accent: rgba(229, 68, 68, 0.15);
+            /* Transparent Red */
 
             /* Dark Mode Transparencies */
-            --soft-blue: rgba(13, 110, 253, 0.15); --text-blue: #6ea8fe;
-            --soft-green: rgba(25, 135, 84, 0.15); --text-green: #75b798;
-            --soft-red: rgba(220, 53, 69, 0.15); --text-red: #e03b48;
-            --soft-teal: rgba(32, 201, 151, 0.15); --text-teal: #a9e5d6;
+            --soft-blue: rgba(13, 110, 253, 0.15);
+            --text-blue: #6ea8fe;
+            --soft-green: rgba(25, 135, 84, 0.15);
+            --text-green: #75b798;
+            --soft-red: rgba(220, 53, 69, 0.15);
+            --text-red: #e03b48;
+            --soft-teal: rgba(32, 201, 151, 0.15);
+            --text-teal: #a9e5d6;
         }
 
         /* ================= GENERAL STYLING ================= */
@@ -64,15 +76,22 @@
             font-size: 0.85rem;
         }
 
-        h5 { font-size: 1.1rem !important; }
-        h6 { font-size: 0.95rem !important; }
+        h5 {
+            font-size: 1.1rem !important;
+        }
+
+        h6 {
+            font-size: 0.95rem !important;
+        }
 
         .form-control::placeholder {
             color: var(--text-muted) !important;
             opacity: 0.6;
         }
 
-        .cursor-pointer { cursor: pointer; }
+        .cursor-pointer {
+            cursor: pointer;
+        }
 
         .hover-bg-soft:hover {
             background-color: var(--bg-hover);
@@ -80,12 +99,16 @@
             color: var(--accent-color) !important;
         }
 
-        .hover-accent:hover { color: var(--accent-color) !important; }
+        .hover-accent:hover {
+            color: var(--accent-color) !important;
+        }
 
         /* --- Fix for Date & Time Picker Icons in Dark Mode --- */
         [data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator,
         [data-theme="dark"] input[type="time"]::-webkit-calendar-picker-indicator {
-            filter: invert(1); opacity: 0.7; cursor: pointer;
+            filter: invert(1);
+            opacity: 0.7;
+            cursor: pointer;
         }
 
         /* btn-outline-primary custom (Red) */
@@ -106,7 +129,9 @@
         .sidebar {
             width: 260px;
             height: 100vh;
-            position: fixed; top: 0; left: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
             background: var(--bg-sidebar);
             border-right: 1px solid var(--border-color);
             z-index: 100;
@@ -116,10 +141,13 @@
 
         .sidebar-brand {
             height: 60px;
-            display: flex; align-items: center; padding: 0 20px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
             border-bottom: 1px solid var(--border-color);
             color: var(--accent-color);
-            font-weight: 700; font-size: 1rem;
+            font-weight: 700;
+            font-size: 1rem;
         }
 
         .nav-link {
@@ -128,13 +156,16 @@
             padding: 10px 14px;
             border-radius: 10px;
             margin-bottom: 2px;
-            display: flex; align-items: center; gap: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             transition: all 0.2s;
             font-size: 0.85rem;
         }
 
         /* HOVER STATE */
-        .nav-link:hover, .nav-link:focus {
+        .nav-link:hover,
+        .nav-link:focus {
             background-color: var(--bg-hover);
             color: var(--accent-color) !important;
         }
@@ -152,12 +183,15 @@
             padding: 8px 12px;
             border-radius: 8px;
             text-decoration: none;
-            display: flex; align-items: center;
+            display: flex;
+            align-items: center;
             transition: background-color 0.2s ease, color 0.2s ease;
         }
 
         .sub-link i {
-            margin-right: 10px; font-size: 1rem; opacity: 0.8;
+            margin-right: 10px;
+            font-size: 1rem;
+            opacity: 0.8;
             transition: color 0.2s;
         }
 
@@ -166,7 +200,10 @@
             background-color: var(--bg-hover);
         }
 
-        .sub-link:hover i { color: var(--accent-color); opacity: 1; }
+        .sub-link:hover i {
+            color: var(--accent-color);
+            opacity: 1;
+        }
 
         .sub-link.active {
             color: var(--accent-color) !important;
@@ -180,11 +217,27 @@
             margin-top: auto;
         }
 
+        /* Styling the logout option inside the dropdown */
+        .logout-hover:hover {
+            background-color: var(--bg-sidebar) !important;
+            /* White background */
+            color: var(--accent-color) !important;
+            /* Red text */
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* Hide the default Bootstrap arrow so only your chevron shows */
+        .dropdown-toggle::after {
+            display: none;
+        }
+
         /* --- Main Content --- */
         .main-content {
             margin-left: 260px;
             min-height: 100vh;
-            display: flex; flex-direction: column;
+            display: flex;
+            flex-direction: column;
             transition: margin-left 0.3s;
         }
 
@@ -192,12 +245,16 @@
             height: 60px;
             background: var(--bg-sidebar);
             border-bottom: 1px solid var(--border-color);
-            display: flex; align-items: center; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             padding: 0 24px;
             transition: background-color 0.3s, border-color 0.3s;
         }
 
-        .content-body { padding: 12px; }
+        .content-body {
+            padding: 12px;
+        }
 
         /* --- Cards & Components --- */
         .card-custom {
@@ -211,26 +268,67 @@
         }
 
         /* Utility Classes */
-        .text-main { color: var(--text-main) !important; }
-        .text-muted-custom { color: var(--text-muted) !important; }
-        .text-accent { color: var(--accent-color) !important; }
+        .text-main {
+            color: var(--text-main) !important;
+        }
 
-        .bg-soft-blue { background-color: var(--soft-blue); color: var(--text-blue); }
-        .bg-soft-green { background-color: var(--soft-green); color: var(--text-green); }
-        .bg-soft-red { background-color: var(--soft-red); color: var(--text-red); }
-        .bg-soft-teal { background-color: var(--soft-teal); color: var(--text-teal); }
-        .bg-soft-orange { background-color: var(--soft-accent); color: var(--accent-color); }
+        .text-muted-custom {
+            color: var(--text-muted) !important;
+        }
+
+        .text-accent {
+            color: var(--accent-color) !important;
+        }
+
+        .bg-soft-blue {
+            background-color: var(--soft-blue);
+            color: var(--text-blue);
+        }
+
+        .bg-soft-green {
+            background-color: var(--soft-green);
+            color: var(--text-green);
+        }
+
+        .bg-soft-red {
+            background-color: var(--soft-red);
+            color: var(--text-red);
+        }
+
+        .bg-soft-teal {
+            background-color: var(--soft-teal);
+            color: var(--text-teal);
+        }
+
+        .bg-soft-orange {
+            background-color: var(--soft-accent);
+            color: var(--accent-color);
+        }
 
         /* Mobile */
         @media (max-width: 991.98px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.show { transform: translateX(0); }
-            .main-content { margin-left: 0; }
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
         }
 
         /* Hide Scrollbar */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 
     <script>
@@ -240,7 +338,9 @@
 </head>
 
 <body>
-    <div id="sidebarOverlay" class="sidebar-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;opacity:0;visibility:hidden;transition:0.3s;"></div>
+    <div id="sidebarOverlay" class="sidebar-overlay"
+        style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;opacity:0;visibility:hidden;transition:0.3s;">
+    </div>
 
     @include('frontend.adminPortal.dashboard.layouts.sidebar')
 
@@ -291,4 +391,5 @@
         updateIcon(currentTheme);
     </script>
 </body>
+
 </html>

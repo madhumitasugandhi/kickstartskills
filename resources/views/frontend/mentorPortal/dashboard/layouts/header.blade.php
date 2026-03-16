@@ -5,29 +5,58 @@
 
     <div class="d-flex align-items-center">
         <div class="me-3 d-none d-md-block">
-             <i class="bi @yield('icon', 'bi-app') fs-2 text-primary"></i>
+            <i class="bi @yield('icon', 'bi-person-workspace') fs-2 text-primary"></i>
         </div>
         <div>
-            <h5 class="fw-bold m-0">@yield('title', 'Student Portal')</h5>
-            <small class="--text-muted">Welcome back, John!</small>
+            <h5 class="fw-bold m-0">@yield('title', 'Mentor Portal')</h5>
+
+            <small class="--text-muted">Welcome back, {{ Auth::user()->full_name }}!</small>
         </div>
     </div>
 
     <div class="d-flex align-items-center gap-2 ms-auto">
-
-        <a href="{{ route('student.notifications') }}" class="btn btn-light position-relative rounded-circle px-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+        <a href="{{ route('mentor.notifications') }}" class="btn btn-light position-relative rounded-circle px-2"
+            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
             <i class="bi bi-bell" style="font-size: 1.2rem;"></i>
-            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="padding: 0.3rem !important;"></span>
+            <span
+                class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
+                style="padding: 0.3rem !important;"></span>
         </a>
 
-        <button class="btn btn-light rounded-circle p-2" onclick="toggleTheme()" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+        <button class="btn btn-light rounded-circle p-2" onclick="toggleTheme()"
+            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
             <i class="bi bi-moon" id="themeIcon" style="font-size: 1.2rem;"></i>
         </button>
+
+        <div class="dropdown ms-2">
+            <button class="btn btn-light rounded-circle p-0 overflow-hidden" type="button" data-bs-toggle="dropdown"
+                style="width: 40px; height: 40px;">
+                <div class=" text-white w-100 h-100 d-flex align-items-center justify-content-center fw-bold"
+                    style="background-color: var(--accent-color)">
+                    {{ strtoupper(substr(Auth::user()->full_name, 0, 1)) }}
+                </div>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                <li><a class="dropdown-item" href="{{ route('mentor.profile') }}"><i class="bi bi-person me-2"></i>
+                        Profile</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
+                    <form action="{{ route('mentor.logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="dropdown-item text-danger">
+                            <i class="bi bi-box-arrow-right me-2"></i> Logout
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </div>
 </header>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function() {
     const body = document.body;
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
@@ -85,99 +114,101 @@
 </script>
 
 <style>
-/* =========================================================
+    /* =========================================================
    SIDEBAR TOGGLE LOGIC (MENTOR PORTAL)
    ========================================================= */
 
-/* DEFAULT SIDEBAR STYLE */
-.sidebar {
-    width: 250px;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    transition: all 0.3s ease;
-    z-index: 1000;
-}
-
-/* MAIN CONTENT ADJUSTMENT */
-.main-content {
-    margin-left: 250px;
-    transition: all 0.3s ease;
-    width: calc(100% - 250px);
-}
-
-/* --- SCENARIO A: DESKTOP MINIMIZED (> 992px) --- */
-@media (min-width: 992px) {
-
-    /* 1. Shrink Sidebar Width */
-    body.desktop-minimized .sidebar {
-        width: 80px;
-    }
-
-    /* 2. Adjust Main Content Margin */
-    body.desktop-minimized .main-content {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-    }
-
-    /* 3. HIDE TEXT LABELS & EXTRAS */
-    body.desktop-minimized .nav-label,
-    body.desktop-minimized .brand-text,
-    body.desktop-minimized .dropdown-arrow,
-    body.desktop-minimized .user-info {
-        display: none !important;
-    }
-
-    /* 4. CENTER ICONS */
-    body.desktop-minimized .nav-link {
-        justify-content: center !important;
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    body.desktop-minimized .nav-link i {
-        margin: 0 !important;
-        font-size: 1.4rem;
-    }
-
-    /* 5. Center Brand Logo */
-    body.desktop-minimized .sidebar-brand {
-        justify-content: center;
-        padding: 0;
-    }
-
-    /* 6. Center Footer Avatar */
-    body.desktop-minimized .user-footer {
-        padding: 5px;
-        display: flex;
-        justify-content: center;
-    }
-
-    /* 7. Hide Open Submenus */
-    body.desktop-minimized .collapse.show {
-        display: none;
-    }
-}
-
-/* --- SCENARIO B: MOBILE (< 992px) --- */
-@media (max-width: 991.98px) {
-    /* 1. Hide Sidebar Completely */
+    /* DEFAULT SIDEBAR STYLE */
     .sidebar {
-        transform: translateX(-100%);
-        width: 280px; /* Slightly wider on mobile for better touch targets */
+        width: 250px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        transition: all 0.3s ease;
+        z-index: 1000;
     }
 
-    /* 2. Content is Full Width */
+    /* MAIN CONTENT ADJUSTMENT */
     .main-content {
-        margin-left: 0 !important;
-        width: 100%;
+        margin-left: 250px;
+        transition: all 0.3s ease;
+        width: calc(100% - 250px);
     }
 
-    /* 3. Show Sidebar When Active */
-    .sidebar.mobile-active {
-        transform: translateX(0);
-        box-shadow: 0 0 100px rgba(0,0,0,0.5);
+    /* --- SCENARIO A: DESKTOP MINIMIZED (> 992px) --- */
+    @media (min-width: 992px) {
+
+        /* 1. Shrink Sidebar Width */
+        body.desktop-minimized .sidebar {
+            width: 80px;
+        }
+
+        /* 2. Adjust Main Content Margin */
+        body.desktop-minimized .main-content {
+            margin-left: 80px;
+            width: calc(100% - 80px);
+        }
+
+        /* 3. HIDE TEXT LABELS & EXTRAS */
+        body.desktop-minimized .nav-label,
+        body.desktop-minimized .brand-text,
+        body.desktop-minimized .dropdown-arrow,
+        body.desktop-minimized .user-info {
+            display: none !important;
+        }
+
+        /* 4. CENTER ICONS */
+        body.desktop-minimized .nav-link {
+            justify-content: center !important;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        body.desktop-minimized .nav-link i {
+            margin: 0 !important;
+            font-size: 1.4rem;
+        }
+
+        /* 5. Center Brand Logo */
+        body.desktop-minimized .sidebar-brand {
+            justify-content: center;
+            padding: 0;
+        }
+
+        /* 6. Center Footer Avatar */
+        body.desktop-minimized .user-footer {
+            padding: 5px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* 7. Hide Open Submenus */
+        body.desktop-minimized .collapse.show {
+            display: none;
+        }
     }
-}
+
+    /* --- SCENARIO B: MOBILE (< 992px) --- */
+    @media (max-width: 991.98px) {
+
+        /* 1. Hide Sidebar Completely */
+        .sidebar {
+            transform: translateX(-100%);
+            width: 280px;
+            /* Slightly wider on mobile for better touch targets */
+        }
+
+        /* 2. Content is Full Width */
+        .main-content {
+            margin-left: 0 !important;
+            width: 100%;
+        }
+
+        /* 3. Show Sidebar When Active */
+        .sidebar.mobile-active {
+            transform: translateX(0);
+            box-shadow: 0 0 100px rgba(0, 0, 0, 0.5);
+        }
+    }
 </style>

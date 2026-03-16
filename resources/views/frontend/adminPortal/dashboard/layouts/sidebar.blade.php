@@ -7,7 +7,7 @@
 
         <div class="d-lg-none --text-muted" id="sidebarCloseBtn" style="cursor: pointer;">
             <i class="bi bi-x-lg border rounded-2 d-flex align-items-center justify-content-center"
-               style="width: 32px; height: 32px; font-size: 16px; margin-top: -5px;"></i>
+                style="width: 32px; height: 32px; font-size: 16px; margin-top: -5px;"></i>
         </div>
     </div>
 
@@ -15,88 +15,88 @@
         <ul class="nav flex-column gap-1">
 
             <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('admin.dashboard') }}">
+                href="{{ route('admin.dashboard') }}">
                 <i class="bi  bi-house-door  fs-5"></i>
                 <span class="nav-label ms-3">Dashboard</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('admin.users') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('admin.users') }}">
+                href="{{ route('admin.users') }}">
                 <i class="bi bi-people fs-5"></i>
                 <span class="nav-label ms-3">User Management</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('admin.drives') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('admin.drives') }}">
+                href="{{ route('admin.drives') }}">
                 <i class="bi bi-activity fs-5"></i>
                 <span class="nav-label ms-3">Drive Oversight</span>
                 <span class="badge bg-danger ms-auto" style="font-size: 0.65rem;">New</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('admin.institutions') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('admin.institutions') }}">
+                href="{{ route('admin.institutions') }}">
                 <i class="bi bi-buildings fs-5"></i>
                 <span class="nav-label ms-3">Institutions</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('admin.system') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('admin.system') }}">
+                href="{{ route('admin.system') }}">
                 <i class="bi bi-gear-wide-connected fs-5"></i>
                 <span class="nav-label ms-3">System Config</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('admin.analytics') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('admin.analytics') }}">
+                href="{{ route('admin.analytics') }}">
                 <i class="bi bi-bar-chart-line fs-5"></i>
                 <span class="nav-label ms-3">Analytics</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('admin.security') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('admin.security') }}">
+                href="{{ route('admin.security') }}">
                 <i class="bi bi-shield-check fs-5"></i>
                 <span class="nav-label ms-3">Security</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('admin.content') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('admin.content') }}">
+                href="{{ route('admin.content') }}">
                 <i class="bi bi-file-text fs-5"></i>
                 <span class="nav-label ms-3">Content</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('admin.support') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('admin.support') }}">
+                href="{{ route('admin.support') }}">
                 <i class="bi bi-gear fs-5"></i>
                 <span class="nav-label ms-3">Support</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('admin.billing') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('admin.billing') }}">
+                href="{{ route('admin.billing') }}">
                 <i class="bi bi-credit-card fs-5"></i>
                 <span class="nav-label ms-3">Billing</span>
                 <span class="badge bg-soft-red ms-auto" style="font-size: 0.65rem;">12</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('admin.ai_analytics') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('admin.ai_analytics') }}">
+                href="{{ route('admin.ai_analytics') }}">
                 <i class="bi bi-cpu fs-5"></i>
                 <span class="nav-label ms-3">AI Analytics</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('admin.workflows') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('admin.workflows') }}">
+                href="{{ route('admin.workflows') }}">
                 <i class="bi bi-diagram-3 fs-5"></i>
                 <span class="nav-label ms-3">Workflows</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('admin.monitoring') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('admin.monitoring') }}">
+                href="{{ route('admin.monitoring') }}">
                 <i class="bi bi-activity fs-5"></i>
                 <span class="nav-label ms-3">Monitoring</span>
                 <span class="badge bg-danger ms-auto" style="font-size: 0.65rem;">Live</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('admin.intelligence') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('admin.intelligence') }}">
+                href="{{ route('admin.intelligence') }}">
                 <i class="bi bi-lightbulb fs-5"></i>
                 <span class="nav-label ms-3">Intelligence</span>
             </a>
@@ -104,15 +104,33 @@
         </ul>
     </div>
 
-    <div class="user-footer p-2 m-2">
-         <div class="d-flex align-items-center gap-2 p-2 rounded">
-             <div class="avatar rounded-circle bg-soft-red text-accent d-flex align-items-center justify-content-center flex-shrink-0"
-                  style="width: 36px; height: 36px; font-weight: bold;">SA</div>
+    <div class="user-footer dropup p-2 m-2">
+        <div class="d-flex align-items-center gap-2 p-2 rounded dropdown-toggle" data-bs-toggle="dropdown"
+            aria-expanded="false" style="cursor: pointer;">
 
-             <div class="user-info flex-grow-1" style="line-height: 1.2;">
-                 <div class="fw-bold small text-main">Super Admin</div>
-                 <div class="text-muted-custom" style="font-size: 0.7rem;">System Admin</div>
-             </div>
-         </div>
+            <div class="avatar rounded-circle bg-soft-red text-accent d-flex align-items-center justify-content-center flex-shrink-0"
+                style="width: 36px; height: 36px; font-weight: bold;">SA</div>
+
+            <div class="user-info flex-grow-1" style="line-height: 1.2;">
+                <div class="fw-bold small text-main">{{ Auth::user()->full_name ?? 'Admin' }}</div>
+                <div class="text-muted-custom" style="font-size: 0.7rem;">System Admin</div>
+            </div>
+        </div>
+
+        <ul class="dropdown-menu dropdown-menu-end shadow"
+    style="background-color: var(--bg-sidebar); border: 1px solid var(--accent-color); width: 50%; min-width: 30%;">
+    <li>
+        <a class="dropdown-item logout-hover small text-danger py-2 d-flex align-items-end justify-content-end"
+           href="#"
+           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <span>Logout</span>
+            <i class="bi bi-box-arrow-right ms-2"></i>
+        </a>
+    </li>
+</ul>
+
+        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
     </div>
 </nav>

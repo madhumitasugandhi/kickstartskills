@@ -5,6 +5,7 @@
 
 @section('content')
 <style>
+
     /* Reusing your Theme Variables */
     :root {
         --bg-body: #f8f9fa;
@@ -124,149 +125,134 @@
         font-family: monospace;
         font-size: 0.9rem;
     }
+
+    .card-custom {
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        background: var(--bg-card);
+        padding: 24px;
+        margin-bottom: 24px;
+    }
 </style>
 
 <div class="content-body">
+    <form action="{{ route('student.profile.academic.save') }}" method="POST">
+        @csrf
 
-    <!-- 1. Current Education Section -->
-    <div class="card-custom">
-        <div class="d-flex align-items-center gap-3 mb-4">
-            <div class="section-icon bg-soft-green text-success">
-                <i class="bi bi-book"></i>
+        <div class="card-custom">
+            <div class="d-flex align-items-center gap-3 mb-4 border-bottom pb-3">
+                <div class="section-icon bg-soft-green text-success">
+                    <i class="bi bi-mortarboard"></i>
+                </div>
+                <h6 class="fw-bold m-0 text-main fs-5">Current Graduation Details</h6>
             </div>
-            <h6 class="fw-bold m-0 text-main fs-5">Current Education</h6>
+
+            <div class="row g-4">
+                <div class="col-12">
+                    <label class="form-label">Institution / College Name</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-building"></i></span>
+                        <input type="text" name="degree_college" class="form-control"
+                            value="{{ $academic->degree_college ?? '' }}" placeholder="Enter college name">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Degree Name</label>
+                    <input type="text" name="degree_name" class="form-control"
+                        value="{{ $academic->degree_name ?? '' }}" placeholder="e.g. B.E. Computer Engineering">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Passing Year</label>
+                    <input type="number" name="degree_year" class="form-control"
+                        value="{{ $academic->degree_year ?? '' }}" placeholder="YYYY">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Current CGPA</label>
+                    <input type="number" step="0.01" name="degree_cgpa" class="form-control"
+                        value="{{ $academic->degree_cgpa ?? '' }}" placeholder="0.00">
+                </div>
+            </div>
         </div>
 
-        <form>
-            <div class="mb-4">
-                <label class="form-label">Institution/University</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-building"></i></span>
-                    <input type="text" class="form-control" value="Maharashtra Institute of Technology" readonly>
+        <div class="row g-4"> <div class="col-md-6">
+        <div class="card-custom h-100">
+            <div class="d-flex align-items-center gap-3 mb-4 border-bottom pb-3">
+                <div class="section-icon bg-soft-blue text-primary">
+                    <i class="bi bi-patch-check"></i>
                 </div>
+                <h6 class="fw-bold m-0 text-main fs-5">HSC (12th) Details</h6>
             </div>
-
-            <div class="row g-4 mb-4">
-                <!-- Degree Type -->
-                <div class="col-md-6">
-                    <label class="form-label">Degree Type</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-mortarboard"></i></span>
-                        <select class="form-select">
-                            <option selected>Undergraduate</option>
-                            <option>Postgraduate</option>
-                            <option>Diploma</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Degree Course -->
-                <div class="col-md-6">
-                    <label class="form-label">Degree/Course</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-award"></i></span>
-                        <input type="text" class="form-control" value="Bachelor of Engineering">
-                    </div>
-                </div>
-
-                <!-- Branch -->
-                <div class="col-md-6">
-                    <label class="form-label">Branch/Specialization</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-cpu"></i></span>
-                        <input type="text" class="form-control" value="Computer Engineering">
-                    </div>
-                </div>
-
-                <!-- Roll Number -->
-                <div class="col-md-6">
-                    <label class="form-label">Roll Number/ID</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-hash"></i></span>
-                        <input type="text" class="form-control" value="CE2021001">
-                    </div>
-                </div>
-
-                <!-- Year -->
-                <div class="col-md-6">
-                    <label class="form-label">Current Year</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-calendar"></i></span>
-                        <select class="form-select">
-                            <option selected>2024</option>
-                            <option>2025</option>
-                            <option>2026</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Semester -->
-                <div class="col-md-6">
-                    <label class="form-label">Current Semester</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-list-ol"></i></span>
-                        <select class="form-select">
-                            <option selected>Semester 7</option>
-                            <option>Semester 8</option>
-                        </select>
-                    </div>
-                </div>
+            <div class="mb-3">
+                <label class="form-label">College Name</label>
+                <input type="text" name="hsc_college" class="form-control" value="{{ $academic->hsc_college ?? '' }}">
             </div>
-        </form>
-    </div>
-
-    <!-- 2. Academic Performance Section -->
-    <div class="card-custom">
-        <div class="d-flex align-items-center gap-3 mb-4">
-            <div class="section-icon bg-soft-blue text-primary">
-                <i class="bi bi-graph-up"></i>
-            </div>
-            <h6 class="fw-bold m-0 text-main fs-5">Academic Performance</h6>
-        </div>
-
-        <div class="row g-4">
-            <div class="col-md-6">
-                <label class="form-label">Current CGPA/GPA</label>
-                <input type="text" class="form-control" value="8.75">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Current Percentage</label>
-                <input type="text" class="form-control" value="85.5">
+            <div class="row g-2">
+                <div class="col-4">
+                    <label class="form-label">Board</label>
+                    <input type="text" name="hsc_board" class="form-control" value="{{ $academic->hsc_board ?? '' }}">
+                </div>
+                <div class="col-4">
+                    <label class="form-label">Year</label>
+                    <input type="number" name="hsc_year" class="form-control" value="{{ $academic->hsc_year ?? '' }}" placeholder="YYYY">
+                </div>
+                <div class="col-4">
+                    <label class="form-label">Percentage</label>
+                    <input type="number" step="0.01" name="hsc_percentage" class="form-control" value="{{ $academic->hsc_percentage ?? '' }}">
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- 3. Previous Education Section -->
-    <div class="card-custom">
-        <div class="d-flex align-items-center gap-3 mb-4">
-            <div class="section-icon bg-soft-orange text-warning">
-                <i class="bi bi-clock-history"></i>
+    <div class="col-md-6">
+        <div class="card-custom h-100">
+            <div class="d-flex align-items-center gap-3 mb-4 border-bottom pb-3">
+                <div class="section-icon bg-soft-orange text-warning">
+                    <i class="bi bi-patch-check-fill"></i>
+                </div>
+                <h6 class="fw-bold m-0 text-main fs-5">SSC (10th) Details</h6>
             </div>
-            <h6 class="fw-bold m-0 text-main fs-5">Previous Education</h6>
-        </div>
-
-        <label class="form-label">Educational Background</label>
-        <div class="info-box">
-            HSC - 92.5% (2020)<br>
-            SSC - 95.2% (2018)
+            <div class="mb-3">
+                <label class="form-label">School Name</label>
+                <input type="text" name="ssc_school" class="form-control" value="{{ $academic->ssc_school ?? '' }}">
+            </div>
+            <div class="row g-2">
+                <div class="col-4">
+                    <label class="form-label">Board</label>
+                    <input type="text" name="ssc_board" class="form-control" value="{{ $academic->ssc_board ?? '' }}">
+                </div>
+                <div class="col-4">
+                    <label class="form-label">Year</label>
+                    <input type="number" name="ssc_year" class="form-control" value="{{ $academic->ssc_year ?? '' }}" placeholder="YYYY">
+                </div>
+                <div class="col-4">
+                    <label class="form-label">Percentage</label>
+                    <input type="number" step="0.01" name="ssc_percentage" class="form-control" value="{{ $academic->ssc_percentage ?? '' }}">
+                </div>
+            </div>
         </div>
     </div>
+</div>
 
-    <!-- 4. Skills Section -->
-    <div class="card-custom">
-        <div class="d-flex align-items-center gap-3 mb-4">
-            <div class="section-icon bg-soft-teal text-teal">
-                <!-- Using custom teal color -->
-                <i class="bi bi-cpu-fill"></i>
+        <div class="card-custom">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="section-icon bg-soft-teal text-teal">
+                    <i class="bi bi-cpu-fill"></i>
+                </div>
+                <h6 class="fw-bold m-0 text-main fs-5">Skills & Expertise</h6>
             </div>
-            <h6 class="fw-bold m-0 text-main fs-5">Skills & Expertise</h6>
+            <label class="form-label">Technical Skills (Comma separated)</label>
+            <textarea name="skills" class="form-control" rows="3"
+                placeholder="Flutter, Laravel, Python...">{{ $academic->skills ?? '' }}</textarea>
         </div>
 
-        <label class="form-label">Technical Skills</label>
-        <div class="info-box">
-            Flutter, Dart, Java, Python, React, Node.js, MySQL, Firebase
+        <div class="text-end pb-5">
+            <button type="submit" class="btn btn-primary px-5 py-2 shadow-sm fw-bold">
+                <i class="bi bi-cloud-upload me-2"></i> Save Academic Records
+            </button>
         </div>
-    </div>
-
+    </form>
 </div>
 @endsection

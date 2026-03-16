@@ -4,16 +4,17 @@
         Check your inbox and enter the 6-digit code we just sent.
     </p>
 
-    <form onsubmit="switchStep(3); return false;">
+    <form>
         <div class="mb-3 text-start">
             <label class="form-label small ms-1 mb-2 fw-bold text-white opacity-90">OTP Code</label>
             <div class="input-group-custom">
                 <i class="bi bi-shield-lock input-icon"></i>
-                <input type="text" class="custom-input" placeholder="123456" maxlength="6" style="letter-spacing: 4px; font-weight: 700;" required>
+                <input type="text" name="otp" class="custom-input" placeholder="123456" maxlength="6"
+                    style="letter-spacing: 4px; font-weight: 700;" required>
             </div>
         </div>
 
-        <button type="submit" class="btn-action">
+        <button type="button" class="btn-action" onclick="verifyCode()">
             Verify Code
         </button>
     </form>
