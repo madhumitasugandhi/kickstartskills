@@ -289,7 +289,7 @@
                 </div>
             </div> @empty
             <div class="col-12 text-center py-5 card-custom">
-                <p class="text-muted">No projects found. Click "Add Project" to begin!</p>
+                <p class="--text-muted">No projects found. Click "Add Project" to begin!</p>
             </div>
             @endforelse
         </div>
@@ -349,7 +349,7 @@
                 </div>
                 @empty
                 <div class="col-12 text-center py-3">
-                    <p class="text-muted small">No skills saved. Use the "Add Skill" button to showcase your expertise!
+                    <p class="--text-muted small">No skills saved. Use the "Add Skill" button to showcase your expertise!
                     </p>
                 </div>
                 @endforelse
