@@ -639,7 +639,7 @@
                     .then(cities => {
                         cityDropdown.innerHTML = '<option value="">Select City</option>';
                         cities.forEach(c => {
-                            cityDropdown.innerHTML += `<option value="${c.name}">${c.name}</option>`;
+                            cityDropdown.innerHTML += `<option value="${c.id}">${c.name}</option>`;
                         });
                     });
             });

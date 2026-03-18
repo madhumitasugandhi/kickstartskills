@@ -309,6 +309,10 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
     })->name('dashboard');
     Route::get('/setup', [InstitutionController::class, 'showSetup'])
     ->name('setup');
+    Route::post('/setup', [InstitutionController::class, 'showSetup'])
+    ->name('setup');
+    Route::post('/setup/save-step',[InstitutionController::class,'saveStep']);
+    Route::post('/setup/complete',[InstitutionController::class,'completeSetup']);
     
     Route::get('/course-management', function () {
         return view('frontend.institutionPortal.dashboard.core-management.course-management.index');

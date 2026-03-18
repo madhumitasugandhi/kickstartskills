@@ -1,5 +1,10 @@
 <div class="setup-step" id="adminStep">
 
+    <!-- SESSION DATA -->
+    <div id="adminData"
+         data-session='@json($sessionData["admin"] ?? [])'>
+    </div>
+
     <!-- ================= HEADER ================= -->
     <div class="mb-4">
         <h6 class="section-title-custom mb-1">Administrator Setup</h6>
@@ -16,43 +21,39 @@
 
                 <div class="col-md-6">
                     <label class="form-label-custom">Admin Full Name *</label>
-                    <input type="text"
-                           class="form-control"
-                           placeholder="Full Name">
+                    <input type="text" name="name" class="form-control"
+                        value="{{ $sessionData['admin']['name'] ?? ($admin->name ?? '') }}">
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label-custom">Admin Email *</label>
-                    <input type="email"
-                           class="form-control"
-                           placeholder="Email Address">
+                    <input type="email" name="email" class="form-control"
+                        value="{{ $sessionData['admin']['email'] ?? ($admin->email ?? '') }}">
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label-custom">Phone Number *</label>
-                    <input type="text"
-                           class="form-control"
-                           placeholder="Phone Number">
+                    <input type="text" name="phone" class="form-control"
+                        value="{{ $sessionData['admin']['phone'] ?? ($admin->phone ?? '') }}">
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label-custom">Designation *</label>
-                    <input type="text"
-                           class="form-control"
-                           placeholder="e.g. Principal / Director">
+                    <input type="text" name="designation" class="form-control"
+                        value="{{ $sessionData['admin']['designation'] ?? ($admin->designation ?? '') }}">
                 </div>
 
             </div>
         </div>
 
-        <!-- ================= INITIAL PASSWORD ================= -->
+        <!-- PASSWORD -->
         <div class="mb-4">
             <label class="form-label-custom">Initial Password *</label>
             <div class="input-group-custom">
                 <i class="bi bi-lock"></i>
-                <input type="password"
-                       class="form-control ps-5"
-                       placeholder="Enter initial password">
+                <input type="password" name="password"
+                    class="form-control ps-5"
+                    placeholder="Enter initial password">
             </div>
 
             <small class="small">
@@ -60,31 +61,57 @@
             </small>
         </div>
 
-       <!-- ================= ADMIN PERMISSIONS ================= -->
-<div class="admin-permissions-box mt-4">
-
-<div class="d-flex align-items-center gap-2 mb-2">
-    <i class="bi bi-shield-lock-fill text-primary-teal"></i>
-    <span class="fw-semibold">Administrator Permissions</span>
-</div>
-
-<p class="small opacity-75 mb-2">
-    The administrator account will have full access to:
-</p>
-
-<ul class="permission-list mb-0 ps-3">
-    <li>Institution dashboard and analytics</li>
-    <li>Student enrollment and academic records</li>
-    <li>Faculty and staff management</li>
-    <li>Programs, courses, and curriculum</li>
-    <li>Financial management and fee collection</li>
-    <li>Institution reports and exports</li>
-    <li>Settings, policies, and configurations</li>
-    <li>Internship drives and partnerships</li>
-</ul>
-
-</div>
-
-
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const data = JSON.parse(
+        document.getElementById('adminData').dataset.session
+    ) || {};
+
+    const name = document.querySelector('[name="name"]');
+    const email = document.querySelector('[name="email"]');
+    const phone = document.querySelector('[name="phone"]');
+    const designation = document.querySelector('[name="designation"]');
+    const password = document.querySelector('[name="password"]');
+
+    // ================= RESTORE =================
+    if(data.name) name.value = data.name;
+    if(data.email) email.value = data.email;
+    if(data.phone) phone.value = data.phone;
+    if(data.designation) designation.value = data.designation;
+
+    // ================= SAVE =================
+    window.saveAdminStep = async function () {
+
+        if(!name.value || !email.value || !phone.value || !designation.value || !password.value){
+            alert('Please fill all admin fields');
+            return false;
+        }
+
+        await fetch('/institution/setup/save-step',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+                'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                step:'admin',
+                data:{
+                    name: name.value,
+                    email: email.value,
+                    phone: phone.value,
+                    designation: designation.value,
+                    password: password.value
+                }
+            })
+        });
+
+        return true;
+
+    };
+
+});
+</script>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\File;
 
 use App\Models\Institution\Institution;
 use App\Models\Institution\InstitutionType;
@@ -16,6 +17,8 @@ use App\Models\Institution\InstitutionProgram;
 use App\Models\Institution\CourseType;
 use App\Models\Institution\CourseTypeRequirement;
 use App\Models\Institution\CourseRequirement;
+use App\Models\Institution\AccreditationBody;
+use App\Models\Institution\InstitutionAccreditation;
 use App\Models\Institution\InstitutionAdmin;
 use App\Models\Institution\InstitutionDocument;
 use App\Models\Institution\InstitutionSetupProgress;
@@ -27,6 +30,34 @@ use App\Models\City;
 class InstitutionController extends Controller
 {
 
+    private function generateInstitutionCode($name, $pincode)
+    {
+        $words = preg_split('/\s+/', trim($name));
+
+        // Generate 3-letter institution prefix
+        if (count($words) >= 3) {
+            $prefix =
+                substr($words[0], 0, 1) .
+                substr($words[1], 0, 1) .
+                substr($words[2], 0, 1);
+        } elseif (count($words) == 2) {
+            $prefix =
+                substr($words[0], 0, 2) .
+                substr($words[1], 0, 1);
+        } else {
+            $prefix = substr($words[0], 0, 3);
+        }
+
+        $prefix = strtoupper($prefix);
+
+        // Registration year
+        $year = date('Y');
+
+        // Last 3 digits of pincode
+        $pinPart = str_pad(substr($pincode, -3), 3, '0', STR_PAD_LEFT);
+        return $prefix . '-' . $year . '-' . $pinPart;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | INSTITUTION REGISTRATION
@@ -35,6 +66,7 @@ class InstitutionController extends Controller
 
     public function register(Request $request)
     {
+
 
         if ($request->isMethod('get')) {
 
@@ -53,9 +85,7 @@ class InstitutionController extends Controller
         $formData = $request->all();
         Session::put('institution_register', $formData);
 
-
         $request->validate([
-
             'institution_name' => 'required|max:255',
             'representative_name' => 'required|max:255',
             'email' => 'required|email|unique:institutions,email',
@@ -70,7 +100,6 @@ class InstitutionController extends Controller
 
             'institution_type_id' => 'required',
             'terms_accepted' => 'accepted'
-
         ]);
 
 
@@ -78,9 +107,13 @@ class InstitutionController extends Controller
 
         try {
 
+            $institutionCode = $this->generateInstitutionCode(
+                $formData['institution_name'],
+                $formData['zip']
+            );
             $institution = Institution::create([
-
                 'institution_name' => $formData['institution_name'],
+                'institution_code' => $institutionCode,
                 'representative_name' => $formData['representative_name'],
                 'email' => $formData['email'],
                 'phone' => $formData['phone'],
@@ -89,15 +122,13 @@ class InstitutionController extends Controller
                 'status' => 'pending',
                 'setup_status' => 'registered',
                 'terms_accepted' => $formData['terms_accepted'] ?? 0
-                
-                ]);
+            ]);
 
             InstitutionSetupProgress::create([
                 'institution_id' => $institution->institution_id
             ]);
 
             InstitutionAddress::create([
-
                 'institution_id' => $institution->institution_id,
                 'country_id' => $formData['country_id'],
                 'state_id' => $formData['state'],
@@ -105,9 +136,7 @@ class InstitutionController extends Controller
                 'address_line1' => $formData['address_line1'],
                 'address_line2' => $formData['address_line2'] ?? null,
                 'postal_code' => $formData['zip']
-
             ]);
-
 
             DB::commit();
 
@@ -118,13 +147,11 @@ class InstitutionController extends Controller
         } catch (\Exception $e) {
 
             DB::rollback();
-
             return back()
                 ->with('error', 'Registration failed')
                 ->withInput();
         }
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -132,10 +159,15 @@ class InstitutionController extends Controller
     |--------------------------------------------------------------------------
     */
 
-
-    public function showSetup()
+    public function showSetup(Request $request)
     {
+
         $institutionId = Session::get('institution_id');
+
+        $sessionData = session('institution_setup', []);
+        if ($request->isMethod('post')) {
+            return $this->uploadDocument($request);
+        }
 
         $institution = Institution::with('addresses')->findOrFail($institutionId);
 
@@ -145,18 +177,33 @@ class InstitutionController extends Controller
         $address = $institution->addresses->first();
 
         $states = State::pluck('name', 'id');
-
         $cities = [];
 
         if ($address && $address->state_id) {
-            $cities = City::where('state_id', $address->state_id)
-                ->pluck('name', 'id');
+            $cities = City::where('state_id', $address->state_id)->pluck('name', 'id');
         }
 
-        $progress = InstitutionSetupProgress::where(
-            'institution_id',
-            $institutionId
-        )->first();
+        $accreditationBodies = AccreditationBody::all();
+
+        $selectedAccreditations = InstitutionAccreditation::where('institution_id', $institutionId)
+            ->pluck('accreditation_body_id')
+            ->toArray();
+
+        $admin = InstitutionAdmin::where('institution_id', $institutionId)->first();
+
+        $documents = InstitutionDocument::where('institution_id', $institutionId)
+            ->get()
+            ->keyBy('document_type');
+
+        $progress = InstitutionSetupProgress::where('institution_id', $institutionId)->first();
+
+        $isCompleted = $progress &&
+            $progress->basic_info_completed &&
+            $progress->academic_completed &&
+            $progress->courses_completed &&
+            $progress->regulatory_completed &&
+            $progress->admin_completed &&
+            $progress->documents_uploaded;
 
         return view(
             'frontend.institutionPortal.dashboard.core-management.institution-setup.index',
@@ -167,274 +214,254 @@ class InstitutionController extends Controller
                 'types',
                 'address',
                 'states',
-                'cities'
+                'cities',
+                'accreditationBodies',
+                'selectedAccreditations',
+                'admin',
+                'documents',
+                'isCompleted',
+                'sessionData'
             )
         );
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | SAVE BASIC INFO
-    |--------------------------------------------------------------------------
-    */
-
-    public function saveBasicInfo(Request $request)
+    public function saveStep(Request $request)
     {
-        $institutionId = Session::get('institution_id');
+        $step = $request->step;
+        $data = $request->data;
 
-        $request->validate([
-            'institution_name' => 'required',
-            'institution_type_id' => 'required',
-            'phone' => 'required',
-            'email' => 'required|email',
-            'state' => 'required',
-            'city' => 'required',
-            'postal_code' => 'required'
+        // DEBUG (optional)
+        // dd($step, $data);
+
+        session()->put("institution_setup.$step", $data);
+
+        return response()->json([
+            'status' => 'success'
         ]);
-
-        Institution::where('institution_id', $institutionId)
-->update([
-'institution_name' => $request->institution_name,
-'institution_type_id' => $request->institution_type_id,
-'phone' => $request->phone,
-'email' => $request->email,
-'website' => $request->website,
-'established_year' => $request->established_year,
-'setup_status' => 'basic_completed'
-]);
-
-        InstitutionAddress::updateOrCreate(
-            ['institution_id' => $institutionId],
-            [
-                'state_id' => $request->state,
-                'city_id' => $request->city,
-                'address_line1' => $request->address_line1,
-                'postal_code' => $request->postal_code
-            ]
-        );
-
-        InstitutionSetupProgress::where('institution_id', $institutionId)
-            ->update(['basic_info_completed' => 1]);
-
-        return response()->json(['status' => 'success']);
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | SAVE DEPARTMENTS + PROGRAMS
-    |--------------------------------------------------------------------------
-    */
-
-    public function saveAcademicStructure(Request $request)
-    {
-
-        $institutionId = Session::get('institution_id');
-
-        DB::beginTransaction();
-
-        try {
-
-            foreach ($request->departments as $dept) {
-                InstitutionDepartment::firstOrCreate([
-
-                    'institution_id' => $institutionId,
-                    'department_name' => $dept
-
-                ]);
-            }
-
-            InstitutionSetupProgress::where('institution_id', $institutionId)
-                ->update([
-                    'academic_completed' => 1
-                ]);
-
-            foreach ($request->programs as $program) {
-
-                InstitutionProgram::firstOrCreate([
-
-                    'institution_id' => $institutionId,
-                    'program_name' => $program
-
-                ]);
-            }
-
-            DB::commit();
-
-            Institution::where('institution_id',$institutionId)
-->update(['setup_status' => 'academic_completed']);
-
-            return response()->json(['status' => 'success']);
-        } catch (\Exception $e) {
-
-            DB::rollback();
-
-            return response()->json(['status' => 'error']);
-        }
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | SAVE COURSES
-    |--------------------------------------------------------------------------
-    */
-
-    public function saveCourses(Request $request)
-    {
-
-        $institutionId = Session::get('institution_id');
-
-        DB::beginTransaction();
-
-        try {
-
-            foreach ($request->courses as $course) {
-
-                $courseType = CourseType::firstOrCreate([
-
-                    'institution_id' => $institutionId,
-                    'course_name' => $course['name']
-
-                ], [
-
-                    'duration_years' => $course['years'],
-                    'duration_months' => $course['months'],
-                    'code_extension' => $course['code']
-
-                ]);
-
-                InstitutionSetupProgress::where('institution_id', $institutionId)
-                    ->update([
-                        'courses_completed' => 1
-                    ]);
-
-                if (!empty($course['requirements'])) {
-
-                    foreach ($course['requirements'] as $req) {
-
-                        CourseTypeRequirement::create([
-
-                            'course_type_id' => $courseType->course_type_id,
-                            'requirement_id' => $req
-
-                        ]);
-                    }
-                }
-            }
-
-            DB::commit();
-            Institution::where('institution_id',$institutionId)
-->update(['setup_status' => 'courses_completed']);
-
-            return response()->json(['status' => 'success']);
-        } catch (\Exception $e) {
-
-            DB::rollback();
-
-            return response()->json(['status' => 'error']);
-        }
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | SAVE REGULATORY DATA
-    |--------------------------------------------------------------------------
-    */
-
-    public function saveRegulatory(Request $request)
-    {
-
-        $institutionId = Session::get('institution_id');
-
-        Institution::where('institution_id', $institutionId)->update([
-
-            'aishe_code' => $request->aishe_code,
-            'aicte_id' => $request->aicte_id,
-            'ugc_number' => $request->ugc_number,
-            'affiliated_university' => $request->affiliated_university
-
-        ]);
-
-        InstitutionSetupProgress::where('institution_id', $institutionId)
-            ->update([
-                'regulatory_completed' => 1
-            ]);
-
-            Institution::where('institution_id',$institutionId)
-->update(['setup_status' => 'regulatory_completed']);
-
-        return response()->json(['status' => 'success']);
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | CREATE ADMIN
-    |--------------------------------------------------------------------------
-    */
-
-    public function saveAdmin(Request $request)
-    {
-
-        $institutionId = Session::get('institution_id');
-
-        InstitutionAdmin::create([
-
-            'institution_id' => $institutionId,
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'designation' => $request->designation,
-            'password_hash' => Hash::make($request->password)
-
-        ]);
-
-        InstitutionSetupProgress::where('institution_id', $institutionId)
-            ->update([
-                'admin_completed' => 1
-            ]);
-
-            Institution::where('institution_id',$institutionId)
-->update(['setup_status' => 'admin_completed']);
-
-        return response()->json(['status' => 'success']);
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | UPLOAD DOCUMENT
-    |--------------------------------------------------------------------------
-    */
 
     public function uploadDocument(Request $request)
     {
+        $institutionId = Session::get('institution_id');
+
+        if (!$institutionId) {
+            return back()->with('error', 'Session expired');
+        }
+
+        $request->validate([
+            'document' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'document_type' => 'required|string|max:100'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+
+            // ================= FOLDER PATH =================
+            $folderPath = public_path("documents/institutions/{$institutionId}");
+
+            if (!File::exists($folderPath)) {
+                File::makeDirectory($folderPath, 0755, true);
+            }
+
+            // ================= DELETE OLD FILE =================
+            $existing = InstitutionDocument::where([
+                'institution_id' => $institutionId,
+                'document_type' => $request->document_type
+            ])->first();
+
+            if ($existing && file_exists(public_path($existing->file_path))) {
+                unlink(public_path($existing->file_path));
+                $existing->delete();
+            }
+
+            // ================= GENERATE FILE NAME =================
+            $file = $request->file('document');
+            $fileName = $request->document_type . '_' . time() . '.' . $file->getClientOriginalExtension();
+
+            // ================= MOVE FILE =================
+            $file->move($folderPath, $fileName);
+
+            // ================= SAVE RELATIVE PATH =================
+            $relativePath = "documents/institutions/{$institutionId}/{$fileName}";
+
+            InstitutionDocument::create([
+                'institution_id' => $institutionId,
+                'document_type' => $request->document_type,
+                'file_path' => $relativePath,
+                'verification_status' => 'pending'
+            ]);
+
+            // ================= UPDATE PROGRESS =================
+            InstitutionSetupProgress::where('institution_id', $institutionId)
+                ->update(['documents_uploaded' => 1]);
+
+            Institution::where('institution_id', $institutionId)
+                ->update(['setup_status' => 'verification_pending', 'status' => 'verification_pending']);
+
+
+
+            // ================= FINAL SAVE ALL SESSION DATA =================
+
+            $data = session('institution_setup');
+
+            if (!empty($data)) {
+                // ================= BASIC =================
+                if (isset($data['basic'])) {
+                    Institution::where('institution_id', $institutionId)->update([
+                        'institution_name' => $data['basic']['institution_name'],
+                        'institution_type_id' => $data['basic']['institution_type_id'],
+                        'phone' => $data['basic']['phone'],
+                        'email' => $data['basic']['email'],
+                        'website' => $data['basic']['website'] ?? null,
+                        'established_year' => $data['basic']['established_year'] ?? null
+                    ]);
+
+                    InstitutionAddress::updateOrCreate(
+                        ['institution_id' => $institutionId],
+                        [
+                            'state_id' => $data['basic']['state'],
+                            'city_id' => $data['basic']['city'],
+                            'address_line1' => $data['basic']['address_line1'],
+                            'postal_code' => $data['basic']['postal_code']
+                        ]
+                    );
+                }
+
+                // ================= ACADEMIC =================
+                if (isset($data['academic'])) {
+                    foreach ($data['academic']['departments'] as $dept) {
+                        InstitutionDepartment::firstOrCreate([
+                            'institution_id' => $institutionId,
+                            'department_name' => $dept
+                        ]);
+                    }
+
+                    foreach ($data['academic']['programs'] as $program) {
+                        InstitutionProgram::firstOrCreate([
+                            'institution_id' => $institutionId,
+                            'program_name' => $program
+                        ]);
+                    }
+                }
+
+                //===================Code==================
+                if(isset($data['code'])){
+                    Institution::where('institution_id', $institutionId)->update([
+                        'institution_code_prefix' => $data['code']['prefix'] ?? null
+                    ]);
+                }
+
+                // ================= COURSES =================
+                if (isset($data['courses'])) {
+                    foreach ($data['courses'] as $course) {
+
+                        $courseType = CourseType::firstOrCreate(
+                            [
+                                'institution_id' => $institutionId,
+                                'course_name' => $course['name']
+                            ],
+                            [
+                                'duration_years' => $course['years'],
+                                'duration_months' => $course['months'],
+                                'code_extension' => $course['code'] ?? null
+                            ]
+                        );
+
+                        if (!empty($course['requirements'])) {
+                            foreach ($course['requirements'] as $req) {
+                                CourseTypeRequirement::create([
+                                    'course_type_id' => $courseType->course_type_id,
+                                    'requirement_id' => $req
+                                ]);
+                            }
+                        }
+                    }
+                }
+
+                // ================= REGULATORY =================
+                if (isset($data['regulatory'])) {
+                    Institution::where('institution_id', $institutionId)->update([
+                        'aishe_code' => $data['regulatory']['aishe_code'],
+                        'aicte_id' => $data['regulatory']['aicte_id'],
+                        'ugc_number' => $data['regulatory']['ugc_number'],
+                        'affiliated_university' => $data['regulatory']['affiliated_university']
+                    ]);
+
+                    if (!empty($data['regulatory']['accreditation_ids'])) {
+                        $ids = explode(',', $data['regulatory']['accreditation_ids']);
+
+                        foreach ($ids as $id) {
+                            InstitutionAccreditation::create([
+                                'institution_id' => $institutionId,
+                                'accreditation_body_id' => $id,
+                                'accreditation_status' => 'active'
+                            ]);
+                        }
+                    }
+                }
+
+                InstitutionAdmin::where('institution_id', $institutionId)->delete();
+
+                // ================= ADMIN =================
+                if (isset($data['admin'])) {
+                    InstitutionAdmin::create([
+                        'institution_id' => $institutionId,
+                        'name' => $data['admin']['name'],
+                        'email' => $data['admin']['email'],
+                        'phone' => $data['admin']['phone'],
+                        'designation' => $data['admin']['designation'],
+                        'password_hash' => Hash::make($data['admin']['password'])
+                    ]);
+                }
+
+                // CLEAR SESSION AFTER SAVE
+                session()->forget('institution_setup');
+            }
+
+            DB::commit();
+
+            return back()->with('success','Completed');
+            
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            return back()->with('error', 'Upload failed');
+        }
+    }
+
+    public function completeSetup()
+{
+    try {
 
         $institutionId = Session::get('institution_id');
 
-        $path = $request->file('document')
-            ->store('institution_documents', 'public');
+        if(!$institutionId){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Session expired'
+            ]);
+        }
 
-
-        InstitutionDocument::create([
-
-            'institution_id' => $institutionId,
-            'document_type' => $request->document_type,
-            'file_path' => $path,
-            'verification_status' => 'pending'
-
-        ]);
-
-        InstitutionSetupProgress::where('institution_id', $institutionId)
+        // mark setup complete
+        Institution::where('institution_id', $institutionId)
             ->update([
-                'documents_uploaded' => 1
+                'setup_status' => 'completed',
+                'status' => 'active'
             ]);
 
-            Institution::where('institution_id',$institutionId)
-->update(['setup_status' => 'verification_pending']);
-        return response()->json(['status' => 'success']);
+        return response()->json([
+            'status' => 'success'
+        ]);
+
+    } catch (\Exception $e) {
+
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
     }
+}
 }

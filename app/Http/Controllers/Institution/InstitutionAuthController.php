@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 use App\Models\Institution\Institution;
 
-class AuthController extends Controller
+class InstitutionAuthController extends Controller
 {
 
     public function showLogin(Request $request)
