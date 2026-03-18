@@ -319,6 +319,7 @@
 </head>
 
 <body>
+
     <ul class="circles">
         <li></li>
         <li></li>
@@ -331,6 +332,22 @@
 
     <div class="auth-container">
         <div class="icon-box"><i class="fas fa-user-plus"></i></div>
+
+        @if(count($errors) > 0 || session('error'))
+        <div class="alert alert-danger shadow border-0 mb-4"
+            style="background: #e11d48; color: white; z-index: 9999; position: relative;">
+            <h6 class="fw-bold">Registration Problem:</h6>
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+                @if(session('error'))
+                <li>{{ session('error') }}</li>
+                @endif
+            </ul>
+        </div>
+        @endif
+
         <h2 class="fw-bold mb-1 text-center" id="page-title">Create Account</h2>
         <p class="opacity-75 mb-4 text-center" id="page-subtitle">Join thousands of learners</p>
 
@@ -356,150 +373,207 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" crossorigin="anonymous">
     </script>
+
     <script>
+        // If Laravel returns with validation errors, automatically jump to Step 3
+    document.addEventListener("DOMContentLoaded", function() {
+        @if($errors->any())
+            switchStep(3);
+        @endif
+    });
         let selectedSkills = [];
 
-// 1. Institution Code Toggle
-function toggleInstitutionFields() {
-    const isChecked = document.getElementById('no-institution-code').checked;
-    const codeInput = document.getElementById('institution_code');
-
-    if (isChecked) {
-        codeInput.value = '';
-        codeInput.disabled = true;
-        codeInput.style.opacity = '0.5';
-    } else {
-        codeInput.disabled = false;
-        codeInput.style.opacity = '1';
-    }
-}
-
-function openSkillModal(name) {
-    document.getElementById('skillModalName').innerText = name;
-
-    const modalEl = document.getElementById('addSkillModal');
-    const myModal = new bootstrap.Modal(modalEl, {
-        backdrop: true,
-        keyboard: true
-    });
-
-    myModal.show();
-
-    // Fix for the "Unclickable" issue:
-    // This moves the modal element to the body so the backdrop doesn't cover it
-    document.body.appendChild(modalEl);
-}
-
-function saveSkill() {
-    // 1. Get Values
-    const name = document.getElementById('skillModalName').innerText;
-    const level = document.getElementById('skillLevel').value;
-    const type = document.querySelector('input[name="skillType"]:checked').value;
-
-    // 2. Add to Array
-    selectedSkills.push({ name, type, level });
-    renderSkills();
-
-    // 3. Force Close & Clean up
-    const modalEl = document.getElementById('addSkillModal');
-    const modalInstance = bootstrap.Modal.getInstance(modalEl);
-    if (modalInstance) modalInstance.hide();
-
-    // Hard removal of backdrop if it gets stuck
-    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-    document.body.classList.remove('modal-open');
-    document.body.style.overflow = 'auto';
-}
-// 4. Render Skills (Show Chips)
-function renderSkills() {
-    const currentCont = document.getElementById('currentSkillsContainer');
-    const goalCont = document.getElementById('learningGoalsContainer');
-
-    if(!currentCont || !goalCont) return;
-
-    currentCont.innerHTML = '';
-    goalCont.innerHTML = '';
-
-    selectedSkills.forEach((skill, index) => {
-        const chip = `
-            <div class="badge rounded-pill bg-primary bg-opacity-25 text-white p-2 px-3 border border-primary border-opacity-50 d-flex align-items-center gap-2">
-                ${skill.name} <small>(${skill.level})</small>
-                <i class="bi bi-x-circle-fill" style="cursor:pointer;" onclick="removeSkill(${index})"></i>
-            </div>`;
-
-        if(skill.type === 'current') currentCont.innerHTML += chip;
-        else goalCont.innerHTML += chip;
-    });
-}
-
-function removeSkill(index) {
-    selectedSkills.splice(index, 1);
-    renderSkills();
-}
-
-        function switchStep(step) {
-            if (step === 3) {
-                const noCode = document.getElementById('no-institution-code').checked;
-                const codeValue = document.getElementById('institution_code').value.trim();
-                if (!noCode && codeValue === "") {
-                    alert("Please enter an institution code or select 'Individual learner'.");
-                    return;
-                }
-            }
-            document.getElementById('step-1-form').style.display = 'none';
-            document.getElementById('step-2-form').style.display = 'none';
-            document.getElementById('step-3-form').style.display = 'none';
-            document.getElementById('step-' + step + '-form').style.display = 'block';
-
-            for(let i=1; i<=3; i++) {
-                document.getElementById('step-' + i + '-indicator').classList.toggle('active', i <= step);
-            }
-            if(step === 3) populateReview();
+    // 1. Theme Toggle
+    function toggleTheme() {
+        const body = document.body;
+        const icon = document.getElementById('theme-icon');
+        body.classList.toggle('dark-mode');
+        if (body.classList.contains('dark-mode')) {
+            icon.classList.replace('bi-moon', 'bi-sun');
+        } else {
+            icon.classList.replace('bi-sun', 'bi-moon');
         }
-
-    function populateReview() {
-    // Helper to get value by ID
-    const getVal = (id) => {
-        const el = document.getElementById(id);
-        if (!el) {
-            console.warn("Could not find element with ID: " + id);
-            return '-';
-        }
-        return el.value.trim() !== "" ? el.value : '-';
-    };
-
-    // 1. Fetch Personal Info (Check these IDs match Step 1!)
-    const firstName = getVal('fname');
-    const lastName = getVal('lname');
-    const email = getVal('email');
-
-    document.getElementById('review-name').innerText = firstName + ' ' + lastName;
-    document.getElementById('review-email').innerText = email;
-
-    // 2. Fetch Details (Check these IDs match Step 2!)
-    document.getElementById('review-country').innerText = getVal('country');
-    document.getElementById('review-phone').innerText = getVal('phone');
-
-    // 3. Institution Logic
-    const noCodeCheck = document.getElementById('no-institution-code');
-    if (noCodeCheck && noCodeCheck.checked) {
-        document.getElementById('review-code').innerText = "Individual Learner";
-    } else {
-        document.getElementById('review-code').innerText = getVal('institution_code');
     }
+
+    // 2. Institution Code Toggle
+    function toggleInstitutionFields() {
+        const isChecked = document.getElementById('no-institution-code').checked;
+        const codeGroup = document.getElementById('code-group');
+        const nameGroup = document.getElementById('name-group');
+        const label = document.getElementById('institution-label');
+        const codeInput = document.getElementById('institution_code');
+        const nameInput = document.getElementById('institution_name');
+
+        if (isChecked) {
+            codeGroup.style.display = 'none';
+            nameGroup.style.display = 'flex';
+            label.innerText = 'Institution Name';
+            codeInput.value = '';
+        } else {
+            codeGroup.style.display = 'flex';
+            nameGroup.style.display = 'none';
+            label.innerText = 'Institution Code';
+            nameInput.value = '';
+        }
+    }
+
+    // 3. Navigation Logic
+    function switchStep(step) {
+
+        console.log("Navigating to step: " + step);
+    // Validate Step 1 before moving to Step 2
+    if (step === 2) {
+        const fname = document.getElementById('fname').value.trim();
+        const lname = document.getElementById('lname').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const terms = document.getElementById('terms').checked;
+
+        if (!fname || !lname || !email) {
+            alert("Please fill in your name and email.");
+            return;
+        }
+        if (!terms) {
+            alert("Please agree to the Terms and Conditions.");
+            return;
+        }
+    }
+
+    // Validate Step 2 before moving to Step 3
+    if (step === 3) {
+        const noCode = document.getElementById('no-institution-code').checked;
+        const codeValue = document.getElementById('institution_code').value.trim();
+        const nameValue = document.getElementById('institution_name').value.trim();
+
+        if (!noCode && !codeValue) {
+            alert("Please enter an institution code or select 'Individual learner'.");
+            return;
+        }
+        if (noCode && !nameValue) {
+            alert("Please enter your Institution/College Name.");
+            return;
+        }
+    }
+
+    // Navigation: Hide all, Show one
+    document.getElementById('step-1-form').style.display = 'none';
+    document.getElementById('step-2-form').style.display = 'none';
+    document.getElementById('step-3-form').style.display = 'none';
+
+    const target = document.getElementById('step-' + step + '-form');
+    if (target) target.style.display = 'block';
+
+    // Update Indicators
+    for (let i = 1; i <= 3; i++) {
+        const indicator = document.getElementById('step-' + i + '-indicator');
+        if (indicator) indicator.classList.toggle('active', i <= step);
+    }
+
+    // If moving to step 3, fill the review labels
+    if (step === 3) populateReview();
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
     // 4. Skills Logic
-    const current = selectedSkills.filter(s => s.type === 'current').map(s => `${s.name} (${s.level})`).join(', ');
-    const goals = selectedSkills.filter(s => s.type === 'goal').map(s => `${s.name} (${s.level})`).join(', ');
+    function openSkillModal(name) {
+        document.getElementById('skillModalName').innerText = name;
+        const modalEl = document.getElementById('addSkillModal');
+        const myModal = new bootstrap.Modal(modalEl);
+        myModal.show();
+        document.body.appendChild(modalEl);
+    }
 
-    document.getElementById('review-skills').innerText = current || 'None selected';
-    document.getElementById('review-goals').innerText = goals || 'None selected';
-}
+    function saveSkill() {
+        const name = document.getElementById('skillModalName').innerText;
+        const level = document.getElementById('skillLevel').value;
+        const type = document.querySelector('input[name="skillType"]:checked').value;
 
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            document.getElementById('theme-icon').className = document.body.classList.contains('dark-mode') ? 'bi bi-sun' : 'bi bi-moon';
+        selectedSkills.push({ name, type, level });
+        renderSkills();
+
+        const modalEl = document.getElementById('addSkillModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalEl);
+        if (modalInstance) modalInstance.hide();
+
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = 'auto';
+    }
+
+    function renderSkills() {
+        const currentCont = document.getElementById('currentSkillsContainer');
+        const goalCont = document.getElementById('learningGoalsContainer');
+        const hiddenInput = document.getElementById('skills_hidden_input');
+
+        if(!currentCont || !goalCont) return;
+
+        currentCont.innerHTML = '';
+        goalCont.innerHTML = '';
+
+        selectedSkills.forEach((skill, index) => {
+            const chip = `
+                <div class="badge rounded-pill bg-primary bg-opacity-25 text-white p-2 px-3 border border-primary border-opacity-50 d-flex align-items-center gap-2">
+                    ${skill.name} <small>(${skill.level})</small>
+                    <i class="bi bi-x-circle-fill" style="cursor:pointer;" onclick="removeSkill(${index})"></i>
+                </div>`;
+
+            if(skill.type === 'current') currentCont.innerHTML += chip;
+            else goalCont.innerHTML += chip;
+        });
+
+        // FIXED: Corrected the placement of hidden input update
+        if(hiddenInput) {
+            hiddenInput.value = JSON.stringify(selectedSkills);
         }
+    }
+
+    function removeSkill(index) {
+        selectedSkills.splice(index, 1);
+        renderSkills();
+    }
+
+    // 5. Review Logic
+    function populateReview() {
+    const getVal = (id) => {
+        const el = document.getElementById(id);
+        return (el && el.value.trim() !== "") ? el.value : '-';
+    };
+
+    // Personal Info (Using IDs from your Step 1)
+    document.getElementById('review-name').innerText = getVal('fname') + ' ' + getVal('lname');
+    document.getElementById('review-email').innerText = getVal('email');
+    document.getElementById('review-phone').innerText = getVal('phone'); // From Step 2
+    document.getElementById('review-country').innerText = getVal('country'); // From Step 2
+
+    // Institution Logic
+    const noCodeCheck = document.getElementById('no-institution-code');
+    const reviewCodeEl = document.getElementById('review-code');
+    const labelEl = document.getElementById('review-inst-label');
+
+    if (noCodeCheck && noCodeCheck.checked) {
+        reviewCodeEl.innerText = getVal('institution_name');
+        if(labelEl) labelEl.innerText = "Institution Name";
+    } else {
+        reviewCodeEl.innerText = getVal('institution_code');
+        if(labelEl) labelEl.innerText = "Institution Code";
+    }
+
+    // Skills Logic
+    const skillsCont = document.getElementById('review-skills');
+    const goalsCont = document.getElementById('review-goals');
+
+    skillsCont.innerHTML = '';
+    goalsCont.innerHTML = '';
+
+    selectedSkills.forEach(skill => {
+        const badge = `<span class="badge bg-primary bg-opacity-10 text-white border border-primary border-opacity-25 me-1 mb-1" style="font-size: 0.7rem;">${skill.name}</span>`;
+        if(skill.type === 'current') skillsCont.innerHTML += badge;
+        else goalsCont.innerHTML += badge;
+    });
+
+    if(!skillsCont.innerHTML) skillsCont.innerText = 'None selected';
+    if(!goalsCont.innerHTML) goalsCont.innerText = 'None selected';
+}
     </script>
 </body>
 

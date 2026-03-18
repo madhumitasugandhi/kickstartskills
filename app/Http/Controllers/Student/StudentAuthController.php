@@ -42,21 +42,23 @@ class StudentAuthController extends Controller
     }
     public function register(Request $request)
     {
-        // 1. Validation
-        // Note: Make sure 'password_confirmation' is sent from the frontend for 'confirmed' to work
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed',
-            'phone' => 'nullable|string',
-            'country' => 'nullable|string',
-            'institution_code' => 'nullable|string',
-        ]);
-
-        DB::beginTransaction();
-
         try {
+            // 1. Validation
+            $request->validate([
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|min:8|confirmed',
+                'phone' => 'nullable|string',
+                'country' => 'nullable|string',
+                'institution_code' => 'nullable|string',
+                'institution_name' => 'nullable|string|max:255',
+                'skills_data' => 'nullable|string',
+            ]);
+
+            DB::beginTransaction();
+
+
             // 2. Create User
             $user = User::create([
                 'full_name' => $request->first_name . ' ' . $request->last_name,
@@ -88,20 +90,32 @@ class StudentAuthController extends Controller
                 }
             }
 
+            //     DB::commit();
+
+            //     // Log them in immediately
+            //     Auth::login($user);
+
+            //     $skillsCategories = SkillsCategory::with('subcategories')->get();
+
+            //     return redirect()->route('student.dashboard')->with('success', 'Welcome to KickStartSkills!');
+
+            // } catch (\Exception $e) {
+            //     DB::rollBack();
+            //     // Log the error for your own debugging
+            //     \Log::error('Registration Error: ' . $e->getMessage());
+            //     return back()->withInput()->with('error', 'Registration failed. Please try again.');
+            // }
             DB::commit();
 
-            // Log them in immediately
+            // 4. Log in and Redirect
             Auth::login($user);
-
-            $skillsCategories = SkillsCategory::with('subcategories')->get();
 
             return redirect()->route('student.dashboard')->with('success', 'Welcome to KickStartSkills!');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            // Log the error for your own debugging
             \Log::error('Registration Error: ' . $e->getMessage());
-            return back()->withInput()->with('error', 'Registration failed. Please try again.');
+            return back()->withInput()->with('error', 'Registration failed: ' . $e->getMessage());
         }
     }
 

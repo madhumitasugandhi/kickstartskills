@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Models\SkillsCategory;
 
 class StudentProfileController extends Controller
 {
@@ -100,18 +101,79 @@ class StudentProfileController extends Controller
         return back()->with('success', 'Academic records updated successfully!');
     }
 
-    // 1. Portfolio Page Load karne ke liye
+    // 1. Portfolio Page
     public function portfolioIndex()
     {
         $user = \Auth::user();
-        $projects = \DB::table('student_projects')->where('user_id', $user->id)->get();
 
-        // Skills fetch karo
-        $skills = \DB::table('student_skills')->where('user_id', $user->id)->get();
+        // 1. Fetch Projects
+        $projects = \DB::table('student_projects')
+            ->where('user_id', $user->id)
+            ->get();
 
-        return view('frontend.studentPortal.dashboard.profile.portfolioIndex', compact('user', 'projects', 'skills'));
+        // 2. Fetch Skills
+        $skills = \DB::table('student_skills')
+            ->where('user_id', $user->id)
+            ->get();
+
+        // 3. Fetch Categories for the Modal
+        $categories = \App\Models\SkillsCategory::with('subcategories')->get();
+
+        // 4. Fetch Profile (The fix for your error)
+        $profile = \DB::table('student_profiles')
+            ->where('user_id', $user->id)
+            ->first(); // Returns null if no record found
+
+        $achievements = \DB::table('student_achievements')->where('user_id', $user->id)->get();
+        // Pass 'profile' into the compact array
+        return view(
+            'frontend.studentPortal.dashboard.profile.portfolioIndex',
+            compact('user', 'projects', 'skills', 'categories', 'profile', 'achievements')
+        );
     }
 
+    public function profileUpdate(Request $request)
+    {
+        // --- DEBUG START ---
+        // If you click save and see a black screen with "File Found",
+        // it means the HTML is working. If you see "No File", the HTML is still broken.
+        if ($request->hasFile('resume_file')) {
+            // dd('File Found!', $request->file('resume_file'));
+        } else {
+            // dd('No File Detected in Request', $request->all());
+        }
+        // --- DEBUG END ---
+
+        $user = \Auth::user();
+        $data = [
+            'bio' => $request->bio,
+            'linkedin_url' => $request->linkedin_url,
+            'github_url' => $request->github_url,
+            'updated_at' => now(),
+        ];
+
+        if ($request->hasFile('resume_file')) {
+            $file = $request->file('resume_file');
+            $fileName = 'resume_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+
+            $destinationPath = public_path('uploads/resumes');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+
+            $file->move($destinationPath, $fileName);
+
+            // This line actually puts the filename into the database update
+            $data['resume_url'] = $fileName;
+        }
+
+        \DB::table('student_profiles')->updateOrInsert(
+            ['user_id' => $user->id],
+            $data
+        );
+
+        return back()->with('success', 'Profile updated!');
+    }
     public function skillStore(Request $request)
     {
         $user = \Auth::user();
@@ -133,16 +195,20 @@ class StudentProfileController extends Controller
         return back()->with('success', 'Skill added successfully!');
     }
 
-    // 2. Naya Project Save karne ke liye
+    public function skillDelete($id)
+    {
+        \DB::table('student_skills')
+            ->where('id', $id)
+            ->where('user_id', \Auth::id())
+            ->delete();
+
+        return back()->with('success', 'Skill removed.');
+    }
+
+    // 2. For save new project
     public function projectStore(Request $request)
     {
         $user = \Auth::user();
-
-        $request->validate([
-            'project_title' => 'required|string|max:255',
-            'tech_stack' => 'nullable|string|max:255',
-            'project_link' => 'nullable|url',
-        ]);
 
         \DB::table('student_projects')->insert([
             'user_id' => $user->id,
@@ -150,11 +216,47 @@ class StudentProfileController extends Controller
             'project_description' => $request->project_description,
             'tech_stack' => $request->tech_stack,
             'project_link' => $request->project_link,
-            'github_link'  => $request->github_link,
+            'github_link' => $request->github_link,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        return back()->with('success', 'Bhai, project portfolio mein add ho gaya!');
+        return back()->with('success', 'Project added correctly!');
+    }
+
+    public function projectDelete($id)
+    {
+        $user = \Auth::user();
+
+        // Ensure the project belongs to the logged-in user before deleting
+        \DB::table('student_projects')
+            ->where('id', $id)
+            ->where('user_id', $user->id)
+            ->delete();
+
+        return back()->with('success', 'Project removed from your portfolio.');
+    }
+
+    public function achievementStore(Request $request)
+    {
+        \DB::table('student_achievements')->insert([
+            'user_id' => \Auth::id(),
+            'title' => $request->title,
+            'organization' => $request->organization,
+            'description' => $request->description,
+            'earned_at' => now(),
+        ]);
+
+        return back()->with('success', 'Achievement added successfully!');
+    }
+
+    public function achievementDelete($id)
+    {
+        \DB::table('student_achievements')
+            ->where('id', $id)
+            ->where('user_id', \Auth::id())
+            ->delete();
+
+        return back()->with('success', 'Achievement removed!');
     }
 }

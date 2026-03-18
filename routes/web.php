@@ -43,8 +43,8 @@ Route::get('optimize', function () {
     return 'done';
 });
 
-Route::get('/api/states/{country}', [GeoController::class,'states']);
-Route::get('/api/cities/{state}', [GeoController::class,'cities']);
+Route::get('/api/states/{country}', [GeoController::class, 'states']);
+Route::get('/api/cities/{state}', [GeoController::class, 'cities']);
 
 
 Route::get('/', function () {
@@ -81,50 +81,31 @@ Route::prefix('student')->middleware(['auth', 'student'])->group(function () {
     })->name('student.dashboard');
 
     /* 2. Unified Profile Group */
-    // We use 'student.' as the name prefix.
-// The sub-routes will automatically become student.profile_personal, etc.
     Route::prefix('dashboard/profile')->name('student.profile.')->group(function () {
 
-        // URL: /student/dashboard/profile/personal-info
-        // Route Name: student.profile.personal
-        Route::get('/personal-info', [StudentProfileController::class, 'index'])
-            ->name('personal');
+        // Personal Info
+        Route::get('/personal-info', [StudentProfileController::class, 'index'])->name('personal');
+        Route::put('/update', [StudentProfileController::class, 'update'])->name('update');
 
-        // Academic Details (Naya addition isi controller mein)
+        // Academic Details
         Route::get('/academic', [StudentProfileController::class, 'academicIndex'])->name('academic');
         Route::post('/academic/save', [StudentProfileController::class, 'academicUpdate'])->name('academic.save');
 
-        // Route Name: student.profile.portfolio
-        Route::get('/portfolio', function () {
-            return view('frontend.studentPortal.dashboard.profile.portfolio.index');
-        })->name('portfolio');
+        // Portfolio View
+        Route::get('/portfolio', [StudentProfileController::class, 'portfolioIndex'])->name('portfolio');
+        Route::post('/portfolio/profile/update', [StudentProfileController::class, 'profileUpdate'])->name('profile.update_links');
 
-        // Route Name: student.profile.update
-        Route::put('/update', [StudentProfileController::class, 'update'])
-            ->name('update');
+        // Projects
+        Route::post('/portfolio/save', [StudentProfileController::class, 'projectStore'])->name('portfolio.save');
+        Route::delete('/portfolio/delete/{id}', [StudentProfileController::class, 'projectDelete'])->name('portfolio.delete');
 
-        // --- Portfolio Section (Updated) ---
-        // URL: /student/dashboard/profile/portfolio
-        Route::get('/portfolio', [StudentProfileController::class, 'portfolioIndex'])
-            ->name('portfolio');
+        // Skills
+        Route::post('/portfolio/skills/save', [StudentProfileController::class, 'skillStore'])->name('skills.save');
+        Route::delete('/portfolio/skills/delete/{id}', [StudentProfileController::class, 'skillDelete'])->name('skills.delete');
 
-        // Route for saving new project
-        Route::post('/portfolio/save', [StudentProfileController::class, 'projectStore'])
-            ->name('portfolio.save');
-
-        Route::prefix('dashboard/profile')->name('student.profile.')->group(function () {
-            Route::get('/personal-info', [StudentProfileController::class, 'index'])->name('personal');
-            Route::get('/academic', [StudentProfileController::class, 'academicIndex'])->name('academic');
-            Route::post('/academic/save', [StudentProfileController::class, 'academicUpdate'])->name('academic.save');
-            Route::put('/update', [StudentProfileController::class, 'update'])->name('update');
-
-            // Portfolio
-            Route::get('/portfolio', [StudentProfileController::class, 'portfolioIndex'])->name('portfolio');
-            Route::post('/portfolio/save', [StudentProfileController::class, 'projectStore'])->name('portfolio.save');
-
-            // Skills (Corrected Name)
-            Route::post('/portfolio/skills/save', [StudentProfileController::class, 'skillStore'])->name('skills.save');
-        });
+        // Achievements
+        Route::post('/portfolio/achievements/save', [StudentProfileController::class, 'achievementStore'])->name('achievements.save');
+        Route::delete('/portfolio/achievements/delete/{id}', [StudentProfileController::class, 'achievementDelete'])->name('achievements.delete');
     });
 });
 /* 3. Examinations Section (Grouped Routes) */
@@ -289,22 +270,22 @@ Route::get('/student/settings', function () {
 
 
 /*|------------------------------------------------Start Institution Portal Routes--------------------------------------------------|*/
-Route::get('/institution-login',[InstitutionAuthController::class,'showLogin']);
+Route::get('/institution-login', [InstitutionAuthController::class, 'showLogin']);
 
-Route::post('/institution-login',[InstitutionAuthController::class,'login'])
+Route::post('/institution-login', [InstitutionAuthController::class, 'login'])
     ->name('institution.login');
 
-Route::post('/institution/logout',[InstitutionAuthController::class,'logout'])
+Route::post('/institution/logout', [InstitutionAuthController::class, 'logout'])
     ->name('institution.logout');
 
 Route::get('/institution/forgot-password', function () {
     return view('frontend.institutionPortal.auth.institutefrgt-password');
 });
-Route::match(['get','post'],'/institution/register',[InstitutionController::class,'register'])
+Route::match(['get', 'post'], '/institution/register', [InstitutionController::class, 'register'])
     ->name('institution.register');
 
 Route::middleware('institution.auth')->prefix('institution')->name('institution.')->group(function () {
-            Route::get('/dashboard', function () {
+    Route::get('/dashboard', function () {
         return view('frontend.institutionPortal.dashboard.index');
     })->name('dashboard');
     Route::get('/setup', [InstitutionController::class, 'showSetup'])
@@ -360,24 +341,24 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
             'frontend.institutionPortal.dashboard.core-management.financial_management.index',
             compact('tab')
         );
-    
+
     })->name('financial-management');
     Route::get('/system-integrations', function () {
         return view('frontend.institutionPortal.dashboard.core-management.system.index');
     })->name('system-integrations');
     Route::get('/program-management', [InstitutionProgramController::class, 'index'])
-    ->name('program-management');
+        ->name('program-management');
     Route::post('/program-management/store', [InstitutionProgramController::class, 'store'])
-    ->name('program.store');
+        ->name('program.store');
 
-Route::get('/program-management/edit/{id}', [InstitutionProgramController::class, 'edit'])
-    ->name('program.edit');
+    Route::get('/program-management/edit/{id}', [InstitutionProgramController::class, 'edit'])
+        ->name('program.edit');
 
-Route::post('/program-management/update/{id}', [InstitutionProgramController::class, 'update'])
-    ->name('program.update');
+    Route::post('/program-management/update/{id}', [InstitutionProgramController::class, 'update'])
+        ->name('program.update');
 
-Route::delete('/program-management/delete/{id}', [InstitutionProgramController::class, 'destroy'])
-    ->name('program.delete');
+    Route::delete('/program-management/delete/{id}', [InstitutionProgramController::class, 'destroy'])
+        ->name('program.delete');
     Route::get('/course-catalog', function () {
         return view('frontend.institutionPortal.dashboard.programs.course-catalog.index');
     })->name('course-catalog');
@@ -472,104 +453,104 @@ Route::prefix('mentor')->name('mentor.')->middleware(['auth', 'mentor'])->group(
     });
 
     // 3. Sessions Group
-Route::prefix('sessions')->name('sessions.')->group(function () {
-    Route::get('/calendar', function () {
-        return view('frontend.mentorPortal.dashboard.sessions.calendar');
-    })->name('calendar');
+    Route::prefix('sessions')->name('sessions.')->group(function () {
+        Route::get('/calendar', function () {
+            return view('frontend.mentorPortal.dashboard.sessions.calendar');
+        })->name('calendar');
 
-    Route::get('/schedule', function () {
-        return view('frontend.mentorPortal.dashboard.sessions.schedule');
-    })->name('schedule');
+        Route::get('/schedule', function () {
+            return view('frontend.mentorPortal.dashboard.sessions.schedule');
+        })->name('schedule');
 
-    Route::get('/history', function () {
-        return view('frontend.mentorPortal.dashboard.sessions.history');
-    })->name('history');
-});
-
-// 4. Internship Group
-Route::prefix('internship')->name('internship.')->group(function () {
-    Route::get('/overview', function () {
-        return view('frontend.mentorPortal.dashboard.internship.overview');
-    })->name('overview');
-
-    Route::get('/tasks', function () {
-        return view('frontend.mentorPortal.dashboard.internship.tasks');
-    })->name('tasks');
-
-    Route::get('/phases', function () {
-        return view('frontend.mentorPortal.dashboard.internship.phases');
-    })->name('phases');
-});
-
-// 5. Drive Management
-Route::prefix('drive')->name('drive.')->group(function () {
-    Route::get('/manage', function () {
-        return view('frontend.mentorPortal.dashboard.driveManagement.manage');
-    })->name('manage');
-
-    Route::get('/create', function () {
-        return view('frontend.mentorPortal.dashboard.driveManagement.create');
-    })->name('create');
-});
-
-// 6. Communication
-Route::prefix('communication')->name('communication.')->group(function () {
-    Route::get('/messages', function () {
-        return view('frontend.mentorPortal.dashboard.communication.messages');
-    })->name('messages');
-
-    Route::get('/groups', function () {
-        return view('frontend.mentorPortal.dashboard.communication.groups');
-    })->name('groups');
-});
-
-// 7. Resources
-Route::prefix('resources')->name('resources.')->group(function () {
-    Route::get('/library', function () {
-        return view('frontend.mentorPortal.dashboard.resources.library');
-    })->name('library');
-
-    Route::get('/assignments', function () {
-        return view('frontend.mentorPortal.dashboard.resources.assignments');
-    })->name('assignments');
-});
-
-// 8. Performance
-Route::prefix('performance')->name('performance.')->group(function () {
-    Route::get('/tracking', function () {
-        return view('frontend.mentorPortal.dashboard.performance.tracking');
-    })->name('tracking');
-
-    Route::get('/goals', function () {
-        return view('frontend.mentorPortal.dashboard.performance.goals');
-    })->name('goals');
-});
-
-// 9. Reports
-Route::prefix('reports')->name('reports.')->group(function () {
-    Route::get('/mentoring', function () {
-        return view('frontend.mentorPortal.dashboard.reports.mentoring');
-    })->name('mentoring');
-
-    Route::get('/assessments', function () {
-        return view('frontend.mentorPortal.dashboard.reports.assessments');
-    })->name('assessments');
-});
-
-// 10. General Pages
-Route::get('/notifications', function () {
-    return view('frontend.mentorPortal.dashboard.general.notifications');
-})->name('notifications');
-
-Route::get('/profile', function () {
-    return view('frontend.mentorPortal.dashboard.general.profile');
-})->name('profile');
-
-Route::get('/settings', function () {
-    return view('frontend.mentorPortal.dashboard.general.settings');
-})->name('settings');
-
+        Route::get('/history', function () {
+            return view('frontend.mentorPortal.dashboard.sessions.history');
+        })->name('history');
     });
+
+    // 4. Internship Group
+    Route::prefix('internship')->name('internship.')->group(function () {
+        Route::get('/overview', function () {
+            return view('frontend.mentorPortal.dashboard.internship.overview');
+        })->name('overview');
+
+        Route::get('/tasks', function () {
+            return view('frontend.mentorPortal.dashboard.internship.tasks');
+        })->name('tasks');
+
+        Route::get('/phases', function () {
+            return view('frontend.mentorPortal.dashboard.internship.phases');
+        })->name('phases');
+    });
+
+    // 5. Drive Management
+    Route::prefix('drive')->name('drive.')->group(function () {
+        Route::get('/manage', function () {
+            return view('frontend.mentorPortal.dashboard.driveManagement.manage');
+        })->name('manage');
+
+        Route::get('/create', function () {
+            return view('frontend.mentorPortal.dashboard.driveManagement.create');
+        })->name('create');
+    });
+
+    // 6. Communication
+    Route::prefix('communication')->name('communication.')->group(function () {
+        Route::get('/messages', function () {
+            return view('frontend.mentorPortal.dashboard.communication.messages');
+        })->name('messages');
+
+        Route::get('/groups', function () {
+            return view('frontend.mentorPortal.dashboard.communication.groups');
+        })->name('groups');
+    });
+
+    // 7. Resources
+    Route::prefix('resources')->name('resources.')->group(function () {
+        Route::get('/library', function () {
+            return view('frontend.mentorPortal.dashboard.resources.library');
+        })->name('library');
+
+        Route::get('/assignments', function () {
+            return view('frontend.mentorPortal.dashboard.resources.assignments');
+        })->name('assignments');
+    });
+
+    // 8. Performance
+    Route::prefix('performance')->name('performance.')->group(function () {
+        Route::get('/tracking', function () {
+            return view('frontend.mentorPortal.dashboard.performance.tracking');
+        })->name('tracking');
+
+        Route::get('/goals', function () {
+            return view('frontend.mentorPortal.dashboard.performance.goals');
+        })->name('goals');
+    });
+
+    // 9. Reports
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/mentoring', function () {
+            return view('frontend.mentorPortal.dashboard.reports.mentoring');
+        })->name('mentoring');
+
+        Route::get('/assessments', function () {
+            return view('frontend.mentorPortal.dashboard.reports.assessments');
+        })->name('assessments');
+    });
+
+    // 10. General Pages
+    Route::get('/notifications', function () {
+        return view('frontend.mentorPortal.dashboard.general.notifications');
+    })->name('notifications');
+
+    Route::get('/profile', function () {
+        return view('frontend.mentorPortal.dashboard.general.profile');
+    })->name('profile');
+
+    Route::get('/settings', function () {
+        return view('frontend.mentorPortal.dashboard.general.settings');
+    })->name('settings');
+
+});
 
 /*|------------------------------------------------End Mentor Portal Routes--------------------------------------------------|*/
 

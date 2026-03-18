@@ -1,4 +1,7 @@
 <div class="glass-card">
+
+    <input type="hidden" name="skills_data" id="skills_hidden_input">
+
     <h5 class="fw-bold mb-3 text-white">Tell us more about you</h5>
 
     <div class="row g-3 mb-3">
@@ -23,7 +26,7 @@
     </div>
 
     <div class="mb-3">
-        <label class="form-label text-white-50 small">Institution Code</label>
+        <label class="form-label text-white-50 small" id="institution-label">Institution Code</label>
         <div class="form-check mb-2">
             <input class="form-check-input" type="checkbox" id="no-institution-code"
                 onchange="toggleInstitutionFields()">
@@ -31,10 +34,17 @@
                 I don't have an institution code (Individual learner)
             </label>
         </div>
-        <div class="input-group-custom">
+
+        <div class="input-group-custom" id="code-group">
             <i class="bi bi-hash input-icon"></i>
             <input type="text" name="institution_code" id="institution_code" class="custom-input"
                 placeholder="Enter Code (e.g. DU2024)">
+        </div>
+
+        <div class="input-group-custom mt-2" id="name-group" style="display: none;">
+            <i class="bi bi-building input-icon"></i>
+            <input type="text" name="institution_name" id="institution_name" class="custom-input"
+                placeholder="Enter School/College Name">
         </div>
     </div>
 

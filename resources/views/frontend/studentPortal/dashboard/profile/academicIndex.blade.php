@@ -5,7 +5,6 @@
 
 @section('content')
 <style>
-
     /* Reusing your Theme Variables */
     :root {
         --bg-body: #f8f9fa;
@@ -133,6 +132,28 @@
         padding: 24px;
         margin-bottom: 24px;
     }
+
+    /* Placeholder Color Fix */
+    .form-control::placeholder,
+    .form-select::placeholder,
+    textarea::placeholder {
+        color: var(--text-muted) !important;
+        opacity: 1;
+        /* Firefox fix */
+    }
+
+    /* For older browsers */
+    .form-control::-webkit-input-placeholder {
+        color: var(--text-muted);
+    }
+
+    .form-control::-moz-placeholder {
+        color: var(--text-muted);
+    }
+
+    .form-control:-ms-input-placeholder {
+        color: var(--text-muted);
+    }
 </style>
 
 <div class="content-body">
@@ -177,64 +198,73 @@
             </div>
         </div>
 
-        <div class="row g-4"> <div class="col-md-6">
-        <div class="card-custom h-100">
-            <div class="d-flex align-items-center gap-3 mb-4 border-bottom pb-3">
-                <div class="section-icon bg-soft-blue text-primary">
-                    <i class="bi bi-patch-check"></i>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card-custom h-100">
+                    <div class="d-flex align-items-center gap-3 mb-4 border-bottom pb-3">
+                        <div class="section-icon bg-soft-blue text-primary">
+                            <i class="bi bi-patch-check"></i>
+                        </div>
+                        <h6 class="fw-bold m-0 text-main fs-5">HSC (12th) Details</h6>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">College Name</label>
+                        <input type="text" name="hsc_college" class="form-control"
+                            value="{{ $academic->hsc_college ?? '' }}">
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-4">
+                            <label class="form-label">Board</label>
+                            <input type="text" name="hsc_board" class="form-control"
+                                value="{{ $academic->hsc_board ?? '' }}">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Year</label>
+                            <input type="number" name="hsc_year" class="form-control"
+                                value="{{ $academic->hsc_year ?? '' }}" placeholder="YYYY">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Percentage</label>
+                            <input type="number" step="0.01" name="hsc_percentage" class="form-control"
+                                value="{{ $academic->hsc_percentage ?? '' }}">
+                        </div>
+                    </div>
                 </div>
-                <h6 class="fw-bold m-0 text-main fs-5">HSC (12th) Details</h6>
             </div>
-            <div class="mb-3">
-                <label class="form-label">College Name</label>
-                <input type="text" name="hsc_college" class="form-control" value="{{ $academic->hsc_college ?? '' }}">
-            </div>
-            <div class="row g-2">
-                <div class="col-4">
-                    <label class="form-label">Board</label>
-                    <input type="text" name="hsc_board" class="form-control" value="{{ $academic->hsc_board ?? '' }}">
-                </div>
-                <div class="col-4">
-                    <label class="form-label">Year</label>
-                    <input type="number" name="hsc_year" class="form-control" value="{{ $academic->hsc_year ?? '' }}" placeholder="YYYY">
-                </div>
-                <div class="col-4">
-                    <label class="form-label">Percentage</label>
-                    <input type="number" step="0.01" name="hsc_percentage" class="form-control" value="{{ $academic->hsc_percentage ?? '' }}">
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="col-md-6">
-        <div class="card-custom h-100">
-            <div class="d-flex align-items-center gap-3 mb-4 border-bottom pb-3">
-                <div class="section-icon bg-soft-orange text-warning">
-                    <i class="bi bi-patch-check-fill"></i>
-                </div>
-                <h6 class="fw-bold m-0 text-main fs-5">SSC (10th) Details</h6>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">School Name</label>
-                <input type="text" name="ssc_school" class="form-control" value="{{ $academic->ssc_school ?? '' }}">
-            </div>
-            <div class="row g-2">
-                <div class="col-4">
-                    <label class="form-label">Board</label>
-                    <input type="text" name="ssc_board" class="form-control" value="{{ $academic->ssc_board ?? '' }}">
-                </div>
-                <div class="col-4">
-                    <label class="form-label">Year</label>
-                    <input type="number" name="ssc_year" class="form-control" value="{{ $academic->ssc_year ?? '' }}" placeholder="YYYY">
-                </div>
-                <div class="col-4">
-                    <label class="form-label">Percentage</label>
-                    <input type="number" step="0.01" name="ssc_percentage" class="form-control" value="{{ $academic->ssc_percentage ?? '' }}">
+            <div class="col-md-6">
+                <div class="card-custom h-100">
+                    <div class="d-flex align-items-center gap-3 mb-4 border-bottom pb-3">
+                        <div class="section-icon bg-soft-orange text-warning">
+                            <i class="bi bi-patch-check-fill"></i>
+                        </div>
+                        <h6 class="fw-bold m-0 text-main fs-5">SSC (10th) Details</h6>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">School Name</label>
+                        <input type="text" name="ssc_school" class="form-control"
+                            value="{{ $academic->ssc_school ?? '' }}">
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-4">
+                            <label class="form-label">Board</label>
+                            <input type="text" name="ssc_board" class="form-control"
+                                value="{{ $academic->ssc_board ?? '' }}">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Year</label>
+                            <input type="number" name="ssc_year" class="form-control"
+                                value="{{ $academic->ssc_year ?? '' }}" placeholder="YYYY">
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Percentage</label>
+                            <input type="number" step="0.01" name="ssc_percentage" class="form-control"
+                                value="{{ $academic->ssc_percentage ?? '' }}">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
         <div class="card-custom">
             <div class="d-flex align-items-center gap-3 mb-4">

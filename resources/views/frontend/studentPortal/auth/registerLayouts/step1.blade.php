@@ -30,7 +30,7 @@
         <label class="form-label-custom">I am a</label>
         <div class="input-group-custom">
             <i class="bi bi-book input-icon"></i>
-            <select class="custom-input form-select" style="appearance: auto; padding-left: 42px;">
+            <select id="user_role" class="custom-input form-select" style="appearance: auto; padding-left: 42px;">
                 <option value="5" selected>Student</option>
             </select>
         </div>
@@ -41,7 +41,7 @@
             <label class="form-label-custom">Password</label>
             <div class="input-group-custom">
                 <i class="bi bi-lock input-icon"></i>
-                <input type="password" name="password" class="custom-input" placeholder="••••••••" required>
+                <input type="password" name="password" class="custom-input" placeholder="••••••••" >
             </div>
         </div>
         <div class="col-6">
@@ -49,17 +49,18 @@
             <div class="input-group-custom">
                 <i class="bi bi-lock input-icon"></i>
                 <input type="password" name="password_confirmation" class="custom-input" placeholder="••••••••"
-                    required>
+                    >
             </div>
         </div>
     </div>
 
     <div class="form-check mb-4">
-        <input class="form-check-input" type="checkbox" id="terms" required>
+        <input class="form-check-input" type="checkbox" id="terms">
         <label class="form-check-label small text-muted-custom" for="terms">
             I agree to the Terms of Service and Privacy Policy
         </label>
     </div>
 
-    <button type="button" class="btn-action w-100" onclick="switchStep(2)">Continue</button>
+    <button type="button" class="btn-action w-100"
+        onclick="console.log('Button Clicked'); switchStep(2)">Continue</button>
 </div>
