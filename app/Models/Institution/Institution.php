@@ -13,7 +13,7 @@ class Institution extends Model
 
     protected $primaryKey = 'institution_id';
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'institution_name',
@@ -37,15 +37,10 @@ class Institution extends Model
         'ugc_number',
         'affiliated_university',
 
-        // code generation settings
-        'code_prefix',
-        'code_format',
-        'include_year'
     ];
 
     protected $casts = [
         'terms_accepted' => 'boolean',
-        'include_year' => 'boolean',
         'created_at' => 'datetime',
     ];
 
@@ -73,6 +68,11 @@ class Institution extends Model
     public function programs()
     {
         return $this->hasMany(InstitutionProgram::class, 'institution_id');
+    }
+
+    public function accreditations()
+    {
+    return $this->hasMany(InstitutionAccreditation::class,'institution_id','institution_id');
     }
 
     public function courseTypes()

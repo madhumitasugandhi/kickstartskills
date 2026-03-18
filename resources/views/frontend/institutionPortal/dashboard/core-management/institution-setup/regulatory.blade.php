@@ -1,5 +1,9 @@
 <div class="setup-step" id="regulatoryStep">
 
+<div id="regulatoryData"
+     data-session='@json($sessionData["regulatory"] ?? [])'>
+</div>
+
     <!-- ================= HEADER ================= -->
     <div class="mb-4">
         <h6 class="section-title-custom mb-1">Regulatory Information</h6>
@@ -16,8 +20,10 @@
             <div class="input-group-custom">
                 <i class="bi bi-shield"></i>
                 <input type="text"
-                       class="form-control ps-5"
-                       placeholder="AISHE Code">
+                    name="aishe_code"
+                    value="{{ $sessionData['regulatory']['aishe_code'] ?? $institution->aishe_code }}"
+                    class="form-control ps-5"
+                    placeholder="AISHE Code">
             </div>
             <small class="small">
                 U for Universities, C for Colleges, S for Standalone
@@ -29,9 +35,10 @@
             <label class="form-label-custom">AICTE Permanent ID</label>
             <div class="input-group-custom">
                 <i class="bi bi-gear"></i>
-                <input type="text"
-                       class="form-control ps-5"
-                       placeholder="AICTE ID">
+                <input type="text" name="aicte_id"
+                    class="form-control ps-5"
+                    value="{{ $sessionData['regulatory']['aicte_id'] ?? $institution->aicte_id }}"
+                    placeholder="AICTE ID">
             </div>
             <small class="small">
                 Required for technical/engineering institutions
@@ -44,8 +51,10 @@
             <div class="input-group-custom">
                 <i class="bi bi-award"></i>
                 <input type="text"
-                       class="form-control ps-5"
-                       placeholder="UGC Recognition Number">
+                    name="ugc_number"
+                    class="form-control ps-5"
+                    value="{{ $sessionData['regulatory']['ugc_number'] ?? $institution->ugc_number }}"
+                    placeholder="UGC Recognition Number">
             </div>
         </div>
 
@@ -54,9 +63,10 @@
             <label class="form-label-custom">University Affiliation</label>
             <div class="input-group-custom">
                 <i class="bi bi-link-45deg"></i>
-                <input type="text"
-                       class="form-control ps-5"
-                       placeholder="Affiliated University Name">
+                <input type="text" name="affiliated_university"
+                    class="form-control ps-5"
+                    value="{{ $sessionData['regulatory']['affiliated_university'] ?? $institution->affiliated_university }}"
+                    placeholder="Affiliated University Name">
             </div>
         </div>
 
@@ -68,26 +78,14 @@
             </small>
 
             <div class="chip-container" id="accreditationContainer">
-                @php
-                    $accreditations = [
-                        'NAAC (A+/A/B+/B/C)',
-                        'NBA (National Board of Accreditation)',
-                        'NIRF Ranking',
-                        'ISO 9001:2015',
-                        'AICTE Approved',
-                        'UGC Recognized',
-                        'QS World Ranking',
-                        'Times Higher Education',
-                        'ABET Accredited'
-                    ];
-                @endphp
-
-                @foreach($accreditations as $acc)
-                    <div class="chip-item accreditation-chip">
-                        {{ $acc }}
-                    </div>
+                @foreach($accreditationBodies as $body)
+                <div class="chip-item accreditation-chip"
+                    data-id="{{ $body->accreditation_body_id }}">
+                    {{ $body->body_name }}
+                </div>
                 @endforeach
             </div>
+            <input type="hidden" name="accreditation_ids" id="accreditation_ids">
         </div>
 
         <!-- Selected Accreditations -->
@@ -119,19 +117,51 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+
+    const data = JSON.parse(
+        document.getElementById('regulatoryData').dataset.session
+    ) || {};
+
     const chips = document.querySelectorAll('.accreditation-chip');
     const box = document.getElementById('selectedAccreditationsBox');
     const text = document.getElementById('selectedAccreditationsText');
     const count = document.getElementById('selectedCount');
+    const hiddenInput = document.getElementById('accreditation_ids');
+
+    const aishe = document.querySelector('[name="aishe_code"]');
+    const aicte = document.querySelector('[name="aicte_id"]');
+    const ugc = document.querySelector('[name="ugc_number"]');
+    const uni = document.querySelector('[name="affiliated_university"]');
+
+    // ================= RESTORE INPUTS =================
+    if(data.aishe_code) aishe.value = data.aishe_code;
+    if(data.aicte_id) aicte.value = data.aicte_id;
+    if(data.ugc_number) ugc.value = data.ugc_number;
+    if(data.affiliated_university) uni.value = data.affiliated_university;
+
+    // ================= RESTORE CHIPS =================
+    if(data.accreditation_ids){
+        const ids = data.accreditation_ids.split(',');
+
+        chips.forEach(chip => {
+            if(ids.includes(chip.dataset.id)){
+                chip.classList.add('active');
+            }
+        });
+    }
 
     function updateSelected() {
-        const selected = [...chips]
-            .filter(c => c.classList.contains('active'))
-            .map(c => c.innerText);
+
+        const selected = [...chips].filter(c => c.classList.contains('active'));
+
+        const names = selected.map(c => c.innerText.trim());
+        const ids = selected.map(c => c.dataset.id);
 
         count.innerText = selected.length;
-        text.innerText = selected.join(', ');
+        text.innerText = names.join(', ');
         box.classList.toggle('d-none', selected.length === 0);
+
+        hiddenInput.value = ids.join(',');
     }
 
     chips.forEach(chip => {
@@ -140,5 +170,33 @@ document.addEventListener('DOMContentLoaded', () => {
             updateSelected();
         });
     });
+
+    updateSelected();
+
+    // ================= SAVE FUNCTION =================
+    window.saveRegulatoryStep = async function () {
+
+        const payload = {
+            aishe_code: aishe.value,
+            aicte_id: aicte.value,
+            ugc_number: ugc.value,
+            affiliated_university: uni.value,
+            accreditation_ids: hiddenInput.value
+        };
+
+        await fetch('/institution/setup/save-step',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+                'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                step:'regulatory',
+                data: payload
+            })
+        });
+
+    };
+
 });
 </script>

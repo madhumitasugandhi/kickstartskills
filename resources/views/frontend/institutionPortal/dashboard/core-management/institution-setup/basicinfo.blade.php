@@ -7,7 +7,7 @@
         </div>
         <div>
             <h5 class="fw-bold mb-0">Institution Basic Information</h5>
-            <p class="text-muted small mb-0">
+            <p class="small mb-0">
                 Provide the core identity details of your campus.
             </p>
         </div>
@@ -31,7 +31,7 @@
                         @foreach($types as $type)
 
                         <option value="{{ $type->institution_type_id }}"
-                            {{ $institution->institution_type_id == $type->institution_type_id ? 'selected' : '' }}>
+                            {{ ($sessionData['basic']['institution_type_id'] ?? $institution->institution_type_id) == $type->institution_type_id ? 'selected' : '' }}>
 
                             {{ $type->type_name }}
 
@@ -51,7 +51,7 @@
                         type="text"
                         name="institution_name"
                         class="form-control ps-5"
-                        value="{{ $institution->institution_name }}"
+                        value="{{ $sessionData['basic']['institution_name'] ?? $institution->institution_name }}"
                         required>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                     <input type="number"
                         name="established_year"
                         class="form-control ps-5"
-                        value="{{ $institution->established_year }}"
+                        value="{{ $sessionData['basic']['established_year'] ?? $institution->established_year }}"
                         placeholder="YYYY">
                 </div>
             </div>
@@ -80,7 +80,7 @@
                     <input type="url"
                         name="website"
                         class="form-control ps-5"
-                        value="{{ $institution->website }}"
+                        value="{{ $sessionData['basic']['website'] ?? $institution->website }}"
                         placeholder="https://www.example.edu">
                 </div>
             </div>
@@ -100,7 +100,7 @@
                         type="text"
                         name="phone"
                         class="form-control ps-5"
-                        value="{{ $institution->phone }}"
+                        value="{{ $sessionData['basic']['phone'] ?? $institution->phone }}"
                         required>
                 </div>
             </div>
@@ -113,7 +113,7 @@
                         type="email"
                         name="email"
                         class="form-control ps-5"
-                        value="{{ $institution->email }}"
+                        value="{{ $sessionData['basic']['email'] ?? $institution->email }}"
                         required>
                 </div>
             </div>
@@ -132,7 +132,7 @@
                     type="text"
                     name="address_line1"
                     class="form-control ps-5"
-                    value="{{ $address->address_line1 ?? '' }}"
+                    value="{{ $sessionData['basic']['address_line1'] ?? ($address->address_line1 ?? '') }}"
                     required>
             </div>
         </div>
@@ -150,13 +150,9 @@
                     @foreach($states as $id => $name)
 
                     <option value="{{ $id }}"
-                        {{ ($address->state_id ?? '') == $id ? 'selected' : '' }}>
-
-                        {{ $name }}
-
-                    </option>
-
-                    @endforeach
+                        {{ ($sessionData['basic']['state'] ?? ($address->state_id ?? '')) == $id ? 'selected' : '' }}>
+                            {{ $name }}
+                        @endforeach
 
                 </select>
 
@@ -176,13 +172,11 @@
                     @foreach($cities as $id => $name)
 
                     <option value="{{ $id }}"
-                        {{ ($address->city_id ?? '') == $id ? 'selected' : '' }}>
-                        {{ $name }}
-                    </option>
+                        {{ ($sessionData['basic']['city'] ?? ($address->city_id ?? '')) == $id ? 'selected' : '' }}>
+                            {{ $name }}
+                        @endforeach
 
-                    @endforeach
-
-                    @endif
+                        @endif
 
                 </select>
 
@@ -197,8 +191,7 @@
                     type="text"
                     name="postal_code"
                     class="form-control"
-                    value="{{ $address->postal_code ?? '' }}"
-                    required>
+                    value="{{ $sessionData['basic']['postal_code'] ?? ($address->postal_code ?? '') }}" required>
 
             </div>
 
@@ -206,3 +199,37 @@
     </div>
 
 </div>
+<script>
+document.getElementById('stateDropdown').addEventListener('change', function () {
+
+    let stateId = this.value;
+    let cityDropdown = document.getElementById('cityDropdown');
+
+    cityDropdown.innerHTML = '<option value="">Loading...</option>';
+
+    fetch(`/api/cities/${stateId}`)
+        .then(res => res.json())
+        .then(data => {
+
+            cityDropdown.innerHTML = '<option value="">Select City</option>';
+
+            data.forEach(city => {
+                cityDropdown.innerHTML += 
+                    `<option value="${city.id}">${city.name}</option>`;
+            });
+
+        })
+        .catch(() => {
+            cityDropdown.innerHTML = '<option value="">Error loading cities</option>';
+        });
+
+});
+
+// window.addEventListener('DOMContentLoaded', () => {
+//     let stateDropdown = document.getElementById('stateDropdown');
+
+//     if(stateDropdown.value){
+//         stateDropdown.dispatchEvent(new Event('change'));
+//     }
+// });
+</script>

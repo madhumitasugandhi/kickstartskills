@@ -53,10 +53,7 @@
             Terms & Conditions 
         </a>
         mentioned above .
-        <!-- and
-        <a href="/privacy" class="text-white fw-bold text-decoration-underline">
-            Privacy Policy
-        </a> -->
+        
     </label>
 
 </div>

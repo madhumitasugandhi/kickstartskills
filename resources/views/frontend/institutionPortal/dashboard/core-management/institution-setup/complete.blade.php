@@ -1,3 +1,12 @@
+@if($isCompleted)
+    <script>
+        // automatically go to completion step
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.setup-step').forEach(s => s.classList.add('d-none'));
+            document.getElementById('completionStep').classList.remove('d-none');
+        });
+    </script>
+@endif
 <div class="setup-step" id="completionStep">
 
     <!-- ================= COMPLETION HERO ================= -->

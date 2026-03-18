@@ -1,4 +1,7 @@
 <div class="setup-step" id="courseStep">
+<div id="courseData"
+     data-session='@json($sessionData["courses"] ?? [])'>
+</div>
     <div class="mb-4">
         <h6 class="section-title-custom mb-1">Course Catalog Setup</h6>
         <p class=" small">Configure course types, durations, and student requirements for your institution</p>
@@ -15,7 +18,7 @@
             <label class="form-label-custom">Course Type Name</label>
             <div class="input-group-custom">
                 <i class="bi bi-journal-text"></i>
-                <input type="text" id="courseTypeName" class="form-control ps-5" placeholder="e.g. MCA">
+                <input type="text" id="courseTypeName" class="form-control ps-5" placeholder="e.g. MCA, BTech, MBA">
             </div>
         </div>
 
@@ -38,7 +41,7 @@
         </div>
 
         {{-- Code Extension --}}
-        <div class="mb-4">
+        <!-- <div class="mb-4">
             <label class="form-label-custom d-flex justify-content-between">
                 Institution Code Extension (2–3 chars)
                 <span class=" char-counter" style="font-size: 10px;">0/3</span>
@@ -47,7 +50,7 @@
                 <i class="bi bi-hash"></i>
                 <input type="text" id="codeExtension" maxlength="3" placeholder="e.g. BT" class="form-control ps-5">
             </div>
-        </div>
+        </div> -->
 
         {{-- Background Requirements --}}
         <div class="mb-4">
@@ -96,81 +99,141 @@
     }
 </style> -->
 <script>
-   
-   document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
+
     const addBtn = document.getElementById('addCourseTypeBtn');
     const courseList = document.getElementById('courseListContainer');
     const badge = document.getElementById('courseCountBadge');
-    const codeInput = document.getElementById('codeExtension');
-    const charCounter = document.querySelector('.char-counter');
 
-    // Real-time character counter
-    codeInput?.addEventListener('input', (e) => {
-        charCounter.innerText = `${e.target.value.length}/3`;
-    });
+    const nameInput = document.getElementById('courseTypeName');
+    const yearsInput = document.getElementById('durationYears');
+    const monthsInput = document.getElementById('durationMonths');
 
-    addBtn?.addEventListener('click', function () {
-        // 1. Capture Data
-        const name = document.getElementById('courseTypeName').value.trim();
-        const years = document.getElementById('durationYears').value.trim();
-        const months = document.getElementById('durationMonths').value.trim();
-        const code = codeInput.value.trim();
-        
+    // ================= SESSION LOAD =================
+    let courseCatalog = JSON.parse(
+        document.getElementById('courseData').dataset.session
+    ) || [];
+
+    renderCourses(); // IMPORTANT
+
+    // ================= ADD COURSE =================
+    addBtn.addEventListener('click', function () {
+
+        const name = nameInput.value.trim();
+        const years = yearsInput.value.trim();
+        const months = monthsInput.value.trim();
+
         const activeReqs = [];
+
         document.querySelectorAll('.requirement-btn.active').forEach(btn => {
             activeReqs.push(btn.innerText.trim());
         });
 
-        // 2. Validation
-        if (!name || !years || !months || !code) {
-            alert('Please fill in Name, Duration, and Code.');
+        if (!name || !years || !months) {
+            alert('Please fill Course Name, Duration Years and Months');
             return;
         }
 
-        // 3. Create Element
-        const courseItem = document.createElement('div');
-        courseItem.className = 'configured-item d-flex justify-content-between align-items-start mb-3 p-3';
-        courseItem.innerHTML = `
-            <div>
-                <div class="fw-bold mb-1" style="color: var(--primary-teal); font-size: 15px;">${name}</div>
-                <div class="text-main small mb-2 fw-medium">
-                    <i class="bi bi-calendar3 me-2"></i>${years} years, ${months} months | Code: ${code}
-                </div>
-                <div style="font-size: 12px; line-height: 1.5;">
-                    <i class="bi bi-shield-check me-2"></i>Requirements: ${activeReqs.length > 0 ? activeReqs.join(', ') : 'None'}
-                </div>
-            </div>
-            <button class="delete-btn btn btn-sm btn-danger" onclick="this.parentElement.remove(); updateBadgeCount();">
-                <i class="bi bi-trash3"></i>
-            </button>
-        `;
+        const courseData = {
+            name,
+            years,
+            months,
+            requirements: activeReqs
+        };
 
-        // 4. Update UI
-        const emptyState = courseList.querySelector('.empty-state');
-        if (emptyState) emptyState.remove();
-        courseList.appendChild(courseItem);
-        updateBadgeCount();
+        courseCatalog.push(courseData);
 
-        // 5. Reset Form
-        document.getElementById('courseTypeName').value = '';
-        document.getElementById('durationYears').value = '';
-        document.getElementById('durationMonths').value = '';
-        codeInput.value = '';
-        charCounter.innerText = '0/3';
-        document.querySelectorAll('.requirement-btn.active').forEach(btn => btn.classList.remove('active'));
+        renderCourses();
+        resetForm();
     });
 
-    function updateBadgeCount() {
-        const count = courseList.querySelectorAll('.configured-item').length;
-        badge.innerText = count;
-        if (count === 0) {
-            courseList.innerHTML = '<div class="text-center  py-3 empty-state">No courses added yet.</div>';
+    // ================= RENDER =================
+    function renderCourses() {
+
+        courseList.innerHTML = '';
+
+        if (courseCatalog.length === 0) {
+            courseList.innerHTML =
+                '<div class="text-center py-3 empty-state">No courses added yet.</div>';
+            badge.innerText = 0;
+            return;
         }
+
+        courseCatalog.forEach((course, index) => {
+
+            const courseItem = document.createElement('div');
+
+            courseItem.className =
+                'configured-item d-flex justify-content-between align-items-start mb-3 p-3';
+
+            courseItem.innerHTML = `
+                <div>
+                    <div class="fw-bold mb-1"
+                        style="color: var(--primary-teal); font-size: 15px;">
+                        ${course.name}
+                    </div>
+
+                    <div class="text-main small mb-2 fw-medium">
+                        <i class="bi bi-calendar3 me-2"></i>
+                        ${course.years} years, ${course.months} months
+                    </div>
+
+                    <div style="font-size:12px;">
+                        Requirements:
+                        ${course.requirements.length
+                            ? course.requirements.join(', ')
+                            : 'None'}
+                    </div>
+                </div>
+
+                <button class="btn btn-sm btn-danger delete-course">
+                    <i class="bi bi-trash3"></i>
+                </button>
+            `;
+
+            courseItem.querySelector('.delete-course')
+                .addEventListener('click', function () {
+
+                    courseCatalog.splice(index, 1);
+                    renderCourses();
+
+                });
+
+            courseList.appendChild(courseItem);
+        });
+
+        badge.innerText = courseCatalog.length;
     }
-    
-    window.updateBadgeCount = updateBadgeCount;
+
+    function resetForm() {
+        nameInput.value = '';
+        yearsInput.value = '';
+        monthsInput.value = '';
+
+        document.querySelectorAll('.requirement-btn.active')
+            .forEach(btn => btn.classList.remove('active'));
+    }
+
+    // ================= SAVE FUNCTION =================
+    window.saveCourseStep = async function () {
+
+        await fetch('/institution/setup/save-step', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                step: 'courses',
+                data: courseCatalog
+            })
+        });
+
+    };
+
 });
 
+// Requirement toggle
 function toggleRequirement(btn) {
     btn.classList.toggle('active');
 }
