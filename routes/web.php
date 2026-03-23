@@ -22,6 +22,7 @@ use App\Http\Controllers\Mentor\MentorSessionController;
 use App\Http\Controllers\Mentor\MentorStudentController;
 use App\Http\Controllers\Student\StudentAuthController;
 use App\Http\Controllers\Student\StudentProfileController;
+use App\Http\Controllers\Student\StudentExaminationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -112,29 +113,27 @@ Route::prefix('student')->middleware(['auth', 'student'])->group(function () {
         Route::post('/portfolio/achievements/save', [StudentProfileController::class, 'achievementStore'])->name('achievements.save');
         Route::delete('/portfolio/achievements/delete/{id}', [StudentProfileController::class, 'achievementDelete'])->name('achievements.delete');
     });
-});
-/* 3. Examinations Section (Grouped Routes) */
-Route::prefix('student/dashboard/examinations')->name('student.exam.')->group(function () {
 
-    // 1st Option: Take Test
-    Route::get('/take-test', function () {
-        return view('frontend.studentPortal.dashboard.examinations.takeTestIndex');
-    })->name('take');
+    /* 3. Examinations Section */
+    Route::prefix('dashboard/examinations')->name('student.exam.')->group(function () {
 
-    // 2nd Option: Test History (Placeholder)
-    Route::get('/history', function () {
-        return view('frontend.studentPortal.dashboard.examinations.testHistoryIndex');
-    })->name('history');
+        // 1st Option: Take Test (The Instruction Hub)
+        Route::get('/take-test', [StudentExaminationController::class, 'takeTestIndex'])->name('take');
 
-    // 3rd Option: Results (Placeholder)
-    Route::get('/results', function () {
-        return view('frontend.studentPortal.dashboard.examinations.resultsIndex');
-    })->name('results');
+        // Start Test: This is the dynamic route for the live quiz
+        Route::get('/start-test/{id}', [StudentExaminationController::class, 'startTest'])->name('start');
+        // 2nd Option: Test History
+        Route::get('/history', [StudentExaminationController::class, 'testHistory'])->name('history');
 
-    // 4th Option: Practice Tests (Placeholder)
-    Route::get('/practice', function () {
-        return view('frontend.studentPortal.dashboard.examinations.practiceTestsIndex');
-    })->name('practice');
+        // 3rd Option: Results
+        Route::get('/results', [StudentExaminationController::class, 'results'])->name('results');
+
+        // 4th Option: Practice Tests
+        Route::get('/practice', [StudentExaminationController::class, 'practiceIndex'])->name('practice');
+
+        // Test Submission: Logic to calculate and save marks
+        Route::post('/submit-quiz', [StudentExaminationController::class, 'submitQuiz'])->name('submit');
+    });
 });
 
 /*Learning section Group Routes*/
@@ -293,17 +292,12 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
     Route::get('/dashboard', function () {
         return view('frontend.institutionPortal.dashboard.index');
     })->name('dashboard');
-    /* =============================
-       CORE MANAGEMENT GROUP 🔥
-    ============================== */
-    Route::prefix('core-management')->name('core.')->group(function () {
-        Route::get('/setup', [InstitutionController::class, 'showSetup'])
-            ->name('setup');
-        Route::post('/setup', [InstitutionController::class, 'showSetup'])
-            ->name('setup');
-        Route::post('/setup/save-step', [InstitutionController::class, 'saveStep']);
-        Route::post('/final-submit', [InstitutionController::class, 'finalSubmit']);
-        Route::post('/setup/complete', [InstitutionController::class, 'completeSetup']);
+    Route::get('/setup', [InstitutionController::class, 'showSetup'])
+        ->name('setup');
+    Route::post('/setup', [InstitutionController::class, 'showSetup'])
+        ->name('setup');
+    Route::post('/setup/save-step', [InstitutionController::class, 'saveStep']);
+    Route::post('/setup/complete', [InstitutionController::class, 'completeSetup']);
 
         Route::get('/course-management', [CourseTypeController::class, 'index'])
             ->name('course-management');
@@ -391,92 +385,92 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
 
         Route::get('/financial-management/{tab?}', function ($tab = 'overview') {
 
-            $allowedTabs = [
-                'overview',
-                'fee-structure',
-                'payments',
-                'expenses',
-                'reports'
-            ];
+        $allowedTabs = [
+            'overview',
+            'fee-structure',
+            'payments',
+            'expenses',
+            'reports'
+        ];
 
-            if (!in_array($tab, $allowedTabs)) {
-                abort(404);
-            }
+        if (!in_array($tab, $allowedTabs)) {
+            abort(404);
+        }
 
-            return view(
-                'frontend.institutionPortal.dashboard.core-management.financial_management.index',
-                compact('tab')
-            );
-        })->name('financial-management');
+        return view(
+            'frontend.institutionPortal.dashboard.core-management.financial_management.index',
+            compact('tab')
+        );
+    })->name('financial-management');
 
-        Route::get('/system-integrations', function () {
-            return view('frontend.institutionPortal.dashboard.core-management.system.index');
-        })->name('system-integrations');
-    });
-
-    Route::get('/program-management', [InstitutionProgramController::class, 'index'])
-        ->name('program-management');
-    Route::post('/program-management/store', [InstitutionProgramController::class, 'store'])
-        ->name('program.store');
-
-    Route::get('/program-management/edit/{id}', [InstitutionProgramController::class, 'edit'])
-        ->name('program.edit');
-
-    Route::post('/program-management/update/{id}', [InstitutionProgramController::class, 'update'])
-        ->name('program.update');
-
-    Route::delete('/program-management/delete/{id}', [InstitutionProgramController::class, 'destroy'])
-        ->name('program.delete');
-    Route::get('/course-catalog', function () {
-        return view('frontend.institutionPortal.dashboard.programs.course-catalog.index');
-    })->name('course-catalog');
-    Route::get('/programs-assessment', function () {
-        return view('frontend.institutionPortal.dashboard.programs.assessment.index');
-    })->name('programs-assessment');
-    Route::get('/students-overview', function () {
-        return view('frontend.institutionPortal.dashboard.students.overview.index');
-    })->name('students-overview');
-    Route::get('/data-dashboard', function () {
-        return view('frontend.institutionPortal.dashboard.students.data-dashboard.index');
-    })->name('data-dashboard');
-    Route::get('/enrollment', function () {
-        return view('frontend.institutionPortal.dashboard.students.enrollment.index');
-    })->name('enrollment');
-    Route::get('/academic-records', function () {
-        return view('frontend.institutionPortal.dashboard.students.academic-records.index');
-    })->name('academic-records');
-    Route::get('/faculty-management', function () {
-        return view('frontend.institutionPortal.dashboard.faculty.management.index');
-    })->name('faculty-management');
-    Route::get('/faculty-assignments', function () {
-        return view('frontend.institutionPortal.dashboard.faculty.assignment.index');
-    })->name('faculty-assignments');
-    Route::get('/analytics-performance', function () {
-        return view('frontend.institutionPortal.dashboard.analytics.performance.index');
-    })->name('analytics-performance');
-    Route::get('/analytics-reports', function () {
-        return view('frontend.institutionPortal.dashboard.analytics.reports.index');
-    })->name('analytics-reports');
-
-    Route::get('/advanced-dashboard', function () {
-        return view('frontend.institutionPortal.dashboard.analytics.advanced-dashboard.index');
-    })->name('advanced-dashboard');
-    Route::get('/communication-announcements', function () {
-        return view('frontend.institutionPortal.dashboard.communication.announcements.index');
-    })->name('communication-announcements');
-    Route::get('/communication-messaging', function () {
-        return view('frontend.institutionPortal.dashboard.communication.messaging.index');
-    })->name('communication-messaging');
-    Route::get('/compliance-reports', function () {
-        return view('frontend.institutionPortal.dashboard.compliance-reports.index');
-    })->name('compliance-reports');
-    Route::get('/settings', function () {
-        return view('frontend.institutionPortal.dashboard.settings.index');
-    })->name('settings');
-    Route::get('/notifications', function () {
-        return view('frontend.institutionPortal.dashboard.notifications.index');
-    })->name('notifications');
+    Route::get('/system-integrations', function () {
+        return view('frontend.institutionPortal.dashboard.core-management.system.index');
+    })->name('system-integrations');
 });
+
+Route::get('/program-management', [InstitutionProgramController::class, 'index'])
+    ->name('program-management');
+Route::post('/program-management/store', [InstitutionProgramController::class, 'store'])
+    ->name('program.store');
+
+Route::get('/program-management/edit/{id}', [InstitutionProgramController::class, 'edit'])
+    ->name('program.edit');
+
+Route::post('/program-management/update/{id}', [InstitutionProgramController::class, 'update'])
+    ->name('program.update');
+
+Route::delete('/program-management/delete/{id}', [InstitutionProgramController::class, 'destroy'])
+    ->name('program.delete');
+Route::get('/course-catalog', function () {
+    return view('frontend.institutionPortal.dashboard.programs.course-catalog.index');
+})->name('course-catalog');
+Route::get('/programs-assessment', function () {
+    return view('frontend.institutionPortal.dashboard.programs.assessment.index');
+})->name('programs-assessment');
+Route::get('/students-overview', function () {
+    return view('frontend.institutionPortal.dashboard.students.overview.index');
+})->name('students-overview');
+Route::get('/data-dashboard', function () {
+    return view('frontend.institutionPortal.dashboard.students.data-dashboard.index');
+})->name('data-dashboard');
+Route::get('/enrollment', function () {
+    return view('frontend.institutionPortal.dashboard.students.enrollment.index');
+})->name('enrollment');
+Route::get('/academic-records', function () {
+    return view('frontend.institutionPortal.dashboard.students.academic-records.index');
+})->name('academic-records');
+Route::get('/faculty-management', function () {
+    return view('frontend.institutionPortal.dashboard.faculty.management.index');
+})->name('faculty-management');
+Route::get('/faculty-assignments', function () {
+    return view('frontend.institutionPortal.dashboard.faculty.assignment.index');
+})->name('faculty-assignments');
+Route::get('/analytics-performance', function () {
+    return view('frontend.institutionPortal.dashboard.analytics.performance.index');
+})->name('analytics-performance');
+Route::get('/analytics-reports', function () {
+    return view('frontend.institutionPortal.dashboard.analytics.reports.index');
+})->name('analytics-reports');
+
+Route::get('/advanced-dashboard', function () {
+    return view('frontend.institutionPortal.dashboard.analytics.advanced-dashboard.index');
+})->name('advanced-dashboard');
+Route::get('/communication-announcements', function () {
+    return view('frontend.institutionPortal.dashboard.communication.announcements.index');
+})->name('communication-announcements');
+Route::get('/communication-messaging', function () {
+    return view('frontend.institutionPortal.dashboard.communication.messaging.index');
+})->name('communication-messaging');
+Route::get('/compliance-reports', function () {
+    return view('frontend.institutionPortal.dashboard.compliance-reports.index');
+})->name('compliance-reports');
+Route::get('/settings', function () {
+    return view('frontend.institutionPortal.dashboard.settings.index');
+})->name('settings');
+Route::get('/notifications', function () {
+    return view('frontend.institutionPortal.dashboard.notifications.index');
+})->name('notifications');
+
 
 
 /*|------------------------------------------------End Institution Portal Routes--------------------------------------------------|*/
