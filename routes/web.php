@@ -294,11 +294,11 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
         return view('frontend.institutionPortal.dashboard.index');
     })->name('dashboard');
     Route::get('/setup', [InstitutionController::class, 'showSetup'])
-    ->name('setup');
+        ->name('setup');
     Route::post('/setup', [InstitutionController::class, 'showSetup'])
-    ->name('setup');
-    Route::post('/setup/save-step',[InstitutionController::class,'saveStep']);
-    Route::post('/setup/complete',[InstitutionController::class,'completeSetup']);
+        ->name('setup');
+    Route::post('/setup/save-step', [InstitutionController::class, 'saveStep']);
+    Route::post('/setup/complete', [InstitutionController::class, 'completeSetup']);
 
     Route::get('/course-management', function () {
         return view('frontend.institutionPortal.dashboard.core-management.course-management.index');
@@ -330,92 +330,92 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
     })->name('internships');
     Route::get('/financial-management/{tab?}', function ($tab = 'overview') {
 
-            $allowedTabs = [
-                'overview',
-                'fee-structure',
-                'payments',
-                'expenses',
-                'reports'
-            ];
+        $allowedTabs = [
+            'overview',
+            'fee-structure',
+            'payments',
+            'expenses',
+            'reports'
+        ];
 
-            if (!in_array($tab, $allowedTabs)) {
-                abort(404);
-            }
+        if (!in_array($tab, $allowedTabs)) {
+            abort(404);
+        }
 
-            return view(
-                'frontend.institutionPortal.dashboard.core-management.financial_management.index',
-                compact('tab')
-            );
-        })->name('financial-management');
+        return view(
+            'frontend.institutionPortal.dashboard.core-management.financial_management.index',
+            compact('tab')
+        );
+    })->name('financial-management');
 
-        Route::get('/system-integrations', function () {
-            return view('frontend.institutionPortal.dashboard.core-management.system.index');
-        })->name('system-integrations');
-    });
-
-    Route::get('/program-management', [InstitutionProgramController::class, 'index'])
-        ->name('program-management');
-    Route::post('/program-management/store', [InstitutionProgramController::class, 'store'])
-        ->name('program.store');
-
-    Route::get('/program-management/edit/{id}', [InstitutionProgramController::class, 'edit'])
-        ->name('program.edit');
-
-    Route::post('/program-management/update/{id}', [InstitutionProgramController::class, 'update'])
-        ->name('program.update');
-
-    Route::delete('/program-management/delete/{id}', [InstitutionProgramController::class, 'destroy'])
-        ->name('program.delete');
-    Route::get('/course-catalog', function () {
-        return view('frontend.institutionPortal.dashboard.programs.course-catalog.index');
-    })->name('course-catalog');
-    Route::get('/programs-assessment', function () {
-        return view('frontend.institutionPortal.dashboard.programs.assessment.index');
-    })->name('programs-assessment');
-    Route::get('/students-overview', function () {
-        return view('frontend.institutionPortal.dashboard.students.overview.index');
-    })->name('students-overview');
-    Route::get('/data-dashboard', function () {
-        return view('frontend.institutionPortal.dashboard.students.data-dashboard.index');
-    })->name('data-dashboard');
-    Route::get('/enrollment', function () {
-        return view('frontend.institutionPortal.dashboard.students.enrollment.index');
-    })->name('enrollment');
-    Route::get('/academic-records', function () {
-        return view('frontend.institutionPortal.dashboard.students.academic-records.index');
-    })->name('academic-records');
-    Route::get('/faculty-management', function () {
-        return view('frontend.institutionPortal.dashboard.faculty.management.index');
-    })->name('faculty-management');
-    Route::get('/faculty-assignments', function () {
-        return view('frontend.institutionPortal.dashboard.faculty.assignment.index');
-    })->name('faculty-assignments');
-    Route::get('/analytics-performance', function () {
-        return view('frontend.institutionPortal.dashboard.analytics.performance.index');
-    })->name('analytics-performance');
-    Route::get('/analytics-reports', function () {
-        return view('frontend.institutionPortal.dashboard.analytics.reports.index');
-    })->name('analytics-reports');
-
-    Route::get('/advanced-dashboard', function () {
-        return view('frontend.institutionPortal.dashboard.analytics.advanced-dashboard.index');
-    })->name('advanced-dashboard');
-    Route::get('/communication-announcements', function () {
-        return view('frontend.institutionPortal.dashboard.communication.announcements.index');
-    })->name('communication-announcements');
-    Route::get('/communication-messaging', function () {
-        return view('frontend.institutionPortal.dashboard.communication.messaging.index');
-    })->name('communication-messaging');
-    Route::get('/compliance-reports', function () {
-        return view('frontend.institutionPortal.dashboard.compliance-reports.index');
-    })->name('compliance-reports');
-    Route::get('/settings', function () {
-        return view('frontend.institutionPortal.dashboard.settings.index');
-    })->name('settings');
-    Route::get('/notifications', function () {
-        return view('frontend.institutionPortal.dashboard.notifications.index');
-    })->name('notifications');
+    Route::get('/system-integrations', function () {
+        return view('frontend.institutionPortal.dashboard.core-management.system.index');
+    })->name('system-integrations');
 });
+
+Route::get('/program-management', [InstitutionProgramController::class, 'index'])
+    ->name('program-management');
+Route::post('/program-management/store', [InstitutionProgramController::class, 'store'])
+    ->name('program.store');
+
+Route::get('/program-management/edit/{id}', [InstitutionProgramController::class, 'edit'])
+    ->name('program.edit');
+
+Route::post('/program-management/update/{id}', [InstitutionProgramController::class, 'update'])
+    ->name('program.update');
+
+Route::delete('/program-management/delete/{id}', [InstitutionProgramController::class, 'destroy'])
+    ->name('program.delete');
+Route::get('/course-catalog', function () {
+    return view('frontend.institutionPortal.dashboard.programs.course-catalog.index');
+})->name('course-catalog');
+Route::get('/programs-assessment', function () {
+    return view('frontend.institutionPortal.dashboard.programs.assessment.index');
+})->name('programs-assessment');
+Route::get('/students-overview', function () {
+    return view('frontend.institutionPortal.dashboard.students.overview.index');
+})->name('students-overview');
+Route::get('/data-dashboard', function () {
+    return view('frontend.institutionPortal.dashboard.students.data-dashboard.index');
+})->name('data-dashboard');
+Route::get('/enrollment', function () {
+    return view('frontend.institutionPortal.dashboard.students.enrollment.index');
+})->name('enrollment');
+Route::get('/academic-records', function () {
+    return view('frontend.institutionPortal.dashboard.students.academic-records.index');
+})->name('academic-records');
+Route::get('/faculty-management', function () {
+    return view('frontend.institutionPortal.dashboard.faculty.management.index');
+})->name('faculty-management');
+Route::get('/faculty-assignments', function () {
+    return view('frontend.institutionPortal.dashboard.faculty.assignment.index');
+})->name('faculty-assignments');
+Route::get('/analytics-performance', function () {
+    return view('frontend.institutionPortal.dashboard.analytics.performance.index');
+})->name('analytics-performance');
+Route::get('/analytics-reports', function () {
+    return view('frontend.institutionPortal.dashboard.analytics.reports.index');
+})->name('analytics-reports');
+
+Route::get('/advanced-dashboard', function () {
+    return view('frontend.institutionPortal.dashboard.analytics.advanced-dashboard.index');
+})->name('advanced-dashboard');
+Route::get('/communication-announcements', function () {
+    return view('frontend.institutionPortal.dashboard.communication.announcements.index');
+})->name('communication-announcements');
+Route::get('/communication-messaging', function () {
+    return view('frontend.institutionPortal.dashboard.communication.messaging.index');
+})->name('communication-messaging');
+Route::get('/compliance-reports', function () {
+    return view('frontend.institutionPortal.dashboard.compliance-reports.index');
+})->name('compliance-reports');
+Route::get('/settings', function () {
+    return view('frontend.institutionPortal.dashboard.settings.index');
+})->name('settings');
+Route::get('/notifications', function () {
+    return view('frontend.institutionPortal.dashboard.notifications.index');
+})->name('notifications');
+
 
 
 /*|------------------------------------------------End Institution Portal Routes--------------------------------------------------|*/
