@@ -23,7 +23,7 @@
         <div class="setup-steps p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <span class="small fw-medium" id="step-title-display">
-                    Step 1 of 6: Basic Information
+                    `Step ${currentStep+1} of ${stepIds.length}`: Basic Information
                 </span>
                 <span class="progress-percent small">0%</span>
             </div>
@@ -102,6 +102,23 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
+            window.getCoursesGlobal = function() {
+
+                // priority 1: runtime data
+                if (window.courseCatalog && window.courseCatalog.length) {
+                    return window.courseCatalog;
+                }
+
+                // priority 2: session fallback
+                try {
+                    return JSON.parse(
+                        document.getElementById('courseData')?.dataset.session || '[]'
+                    );
+                } catch (e) {
+                    return [];
+                }
+            };
+
             // ================= STEPS =================
             const stepIds = [
                 'step-basic',
@@ -130,6 +147,8 @@
             const stepItems = document.querySelectorAll('.step-item');
             const nextBtn = document.getElementById('nextBtn');
             const prevBtn = document.getElementById('prevBtn');
+
+
 
             // ================= UI UPDATE =================
             function updateUI() {
@@ -165,24 +184,31 @@
             }
 
             // ================= SESSION SAVE =================
-            async function saveStep(step,data){
-    try{
-        const res = await fetch('/institution/setup/save-step',{
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json',
-                'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({step,data})
-        });
+            async function saveStep(step, data) {
+                try {
+                    const res = await fetch('/institution/core-management/setup/save-step', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            step,
+                            data
+                        })
+                    });
+                    return await res.json();
 
-        const result = await res.json();
-        console.log('Saved:', result);
+                } catch (e) {
+                    alert('Save failed!');
 
-    }catch(e){
-        console.error('Save error:', e);
-    }
-}
+                    console.error('Save error:', e);
+                    return false;
+                } finally {
+                    nextBtn.disabled = false;
+                    nextBtn.innerText = 'Next';
+                }
+            }
 
             // ================= NEXT =================
             nextBtn.addEventListener('click', async () => {
@@ -226,7 +252,14 @@
 
                 // COURSES
                 if (currentStep === 2) {
-                    await saveStep('courses', window.getCourseCatalog?.() || []);
+
+                    const courses = window.getCourseCatalog?.() || [];
+
+                    window.courseCatalog = courses;
+
+                    await saveStep('courses', courses);
+
+                    document.dispatchEvent(new Event('coursesUpdated'));
                 }
 
                 // CODE SETUP
@@ -271,7 +304,7 @@
                 // FINAL SUBMIT
                 if (currentStep === stepIds.length - 1) {
 
-                    const res = await fetch('/institution/setup/complete', {
+                    const res = await fetch('/institution/core-management/setup/complete', {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
@@ -289,6 +322,12 @@
 
                 currentStep++;
                 updateUI();
+
+                if (currentStep === 3) {
+                    setTimeout(() => {
+                        document.dispatchEvent(new Event('refreshCodeSetup'));
+                    }, 100);
+                }
 
             });
 

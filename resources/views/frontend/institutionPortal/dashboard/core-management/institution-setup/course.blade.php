@@ -41,35 +41,31 @@
         </div>
 
         {{-- Code Extension --}}
-        <!-- <div class="mb-4">
+        <div class="mb-4">
             <label class="form-label-custom d-flex justify-content-between">
-                Institution Code Extension (2–3 chars)
+                Course Code Extension (2–3 chars)
                 <span class=" char-counter" style="font-size: 10px;">0/3</span>
             </label>
             <div class="input-group-custom">
                 <i class="bi bi-hash"></i>
                 <input type="text" id="codeExtension" maxlength="3" placeholder="e.g. BT" class="form-control ps-5">
             </div>
-        </div> -->
+        </div>
 
         {{-- Background Requirements --}}
         <div class="mb-4">
             <label class="form-label-custom mb-3">Background Requirements</label>
             <div class="d-flex flex-wrap gap-2" id="requirementContainer">
-                @php
-                    // Defining variable here prevents the "Undefined variable" error
-                    $requirements = [
-                        '10th Grade completion', '12th Grade with Science', '12th Grade with Commerce',
-                        "Bachelor's degree", 'B.Tech or equivalent', 'Work experience preferred',
-                        'Minimum 60% marks', 'Minimum 70% marks', 'Valid entrance exam score'
-                    ];
-                @endphp
+                
 
-                @foreach($requirements as $req)
-                    <button type="button" class="btn btn-sm requirement-btn" onclick="toggleRequirement(this)">
-                        {{ $req }}
-                    </button>
-                @endforeach
+            @foreach($requirements as $req)
+    <button type="button"
+        class="btn btn-sm requirement-btn"
+        data-id="{{ $req->requirement_id }}"
+        onclick="toggleRequirement(this)">
+        {{ $req->requirement_name }}
+    </button>
+@endforeach
             </div>
         </div>
 
@@ -108,11 +104,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const nameInput = document.getElementById('courseTypeName');
     const yearsInput = document.getElementById('durationYears');
     const monthsInput = document.getElementById('durationMonths');
+    const codeInput = document.getElementById('codeExtension');
 
     // ================= SESSION LOAD =================
-    let courseCatalog = JSON.parse(
-        document.getElementById('courseData').dataset.session
-    ) || [];
+    window.courseCatalog = JSON.parse(
+    document.getElementById('courseData').dataset.session
+) || [];
 
     renderCourses(); // IMPORTANT
 
@@ -126,7 +123,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const activeReqs = [];
 
         document.querySelectorAll('.requirement-btn.active').forEach(btn => {
-            activeReqs.push(btn.innerText.trim());
+            activeReqs.push({
+    id: btn.dataset.id,
+    name: btn.innerText.trim()
+});
         });
 
         if (!name || !years || !months) {
@@ -134,16 +134,28 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        
+
+const code = codeInput.value.trim().toUpperCase();
+
+if (!code || code.length < 2) {
+    alert('Course code must be 2-3 characters');
+    return;
+}
         const courseData = {
             name,
             years,
             months,
+            code,
             requirements: activeReqs
         };
 
-        courseCatalog.push(courseData);
+        window.courseCatalog.push(courseData);
+
+        saveCourseToSession();
 
         renderCourses();
+        document.dispatchEvent(new Event('coursesUpdated'));
         resetForm();
     });
 
@@ -152,16 +164,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         courseList.innerHTML = '';
 
-        if (courseCatalog.length === 0) {
+        if (window.courseCatalog.length === 0) {
             courseList.innerHTML =
                 '<div class="text-center py-3 empty-state">No courses added yet.</div>';
             badge.innerText = 0;
             return;
         }
 
-        courseCatalog.forEach((course, index) => {
+        window.courseCatalog.forEach((course, index) => {
 
             const courseItem = document.createElement('div');
+            
 
             courseItem.className =
                 'configured-item d-flex justify-content-between align-items-start mb-3 p-3';
@@ -179,11 +192,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
 
                     <div style="font-size:12px;">
-                        Requirements:
-                        ${course.requirements.length
-                            ? course.requirements.join(', ')
-                            : 'None'}
-                    </div>
+    Requirements:
+    ${
+        course.requirements && course.requirements.length
+        ? course.requirements.map(r => r.name).join(', ')
+        : 'None'
+    }
+</div>
                 </div>
 
                 <button class="btn btn-sm btn-danger delete-course">
@@ -194,7 +209,9 @@ document.addEventListener('DOMContentLoaded', function () {
             courseItem.querySelector('.delete-course')
                 .addEventListener('click', function () {
 
-                    courseCatalog.splice(index, 1);
+                    window.courseCatalog.splice(index, 1);
+                    saveCourseToSession();
+                    document.dispatchEvent(new Event('coursesUpdated'));
                     renderCourses();
 
                 });
@@ -202,13 +219,14 @@ document.addEventListener('DOMContentLoaded', function () {
             courseList.appendChild(courseItem);
         });
 
-        badge.innerText = courseCatalog.length;
+        badge.innerText = window.courseCatalog.length;
     }
 
     function resetForm() {
         nameInput.value = '';
         yearsInput.value = '';
         monthsInput.value = '';
+        codeInput.value = '';
 
         document.querySelectorAll('.requirement-btn.active')
             .forEach(btn => btn.classList.remove('active'));
@@ -217,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ================= SAVE FUNCTION =================
     window.saveCourseStep = async function () {
 
-        await fetch('/institution/setup/save-step', {
+        await fetch('/institution/core-management/setup/save-step', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -225,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify({
                 step: 'courses',
-                data: courseCatalog
+                data: window.courseCatalog
             })
         });
 
@@ -237,6 +255,28 @@ document.addEventListener('DOMContentLoaded', function () {
 function toggleRequirement(btn) {
     btn.classList.toggle('active');
 }
+window.getCourseCatalog = function () {
+    return window.courseCatalog || [];
+};
+
+async function saveCourseToSession() {
+    await fetch('/institution/core-management/setup/save-step', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+            step: 'courses',
+            data: window.courseCatalog
+        })
+    });
+}
+document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(() => {
+        document.dispatchEvent(new Event('refreshCodeSetup'));
+    }, 200);
+});
 </script>
 
 

@@ -158,7 +158,7 @@ async function saveAcademicStep(){
     const programs = [...document.querySelectorAll('#programList span')]
         .map(el => el.innerText);
 
-    await fetch('/institution/setup/save-step',{
+    await fetch('/institution/core-management/setup/save-step',{
         method:'POST',
         headers:{
             'Content-Type':'application/json',

@@ -225,11 +225,4 @@ document.getElementById('stateDropdown').addEventListener('change', function () 
 
 });
 
-// window.addEventListener('DOMContentLoaded', () => {
-//     let stateDropdown = document.getElementById('stateDropdown');
-
-//     if(stateDropdown.value){
-//         stateDropdown.dispatchEvent(new Event('change'));
-//     }
-// });
 </script>

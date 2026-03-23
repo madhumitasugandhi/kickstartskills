@@ -17,7 +17,7 @@ class Institution extends Model
 
     protected $fillable = [
         'institution_name',
-        'institution_code',
+        'institution_code_prefix',
         'email',
         'status',
         'setup_status',
@@ -88,4 +88,6 @@ class Institution extends Model
     {
         return $this->hasMany(InstitutionDocument::class, 'institution_id');
     }
+
+    
 }

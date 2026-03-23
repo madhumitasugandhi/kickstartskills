@@ -10,28 +10,28 @@
       <div class="modal-body">
 
         <div class="floating-field mb-3">
-          <input class="form-control" placeholder=" " />
-          <label>Course Type Name</label>
+        <input name="course_name" class="form-control" placeholder="AI, " />
+        <label>Course Type Name</label>
         </div>
 
         <div class="row g-2 mb-3">
           <div class="col">
             <div class="floating-field">
-              <input class="form-control" placeholder=" " />
-              <label>Duration (Years)</label>
+            <input name="duration_years" type="number" class="form-control" placeholder=" " />
+            <label>Duration (Years)</label>
             </div>
           </div>
           <div class="col">
             <div class="floating-field">
-              <input class="form-control" placeholder=" " />
-              <label>Duration (Months)</label>
+            <input name="duration_months" type="number" class="form-control" placeholder=" " />
+            <label>Duration (Months)</label>
             </div>
           </div>
         </div>
 
         <div class="floating-field">
-          <input class="form-control" placeholder=" " />
-          <label>Institution Code Extension</label>
+        <input name="code_extension" class="form-control" placeholder=" " />
+                  <label>Course Code Extension</label>
         </div>
 
       </div>
@@ -40,8 +40,7 @@
         <button class="btn btn-link muted-btn" data-bs-dismiss="modal">
           Cancel
         </button>
-        <button class="btn btn-success">
-          Add Course Type
+        <button class="btn btn-success" id="saveCourseBtn">Add Course Type
         </button>
       </div>
 

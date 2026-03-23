@@ -1,24 +1,25 @@
 <div class="setup-step" id="codeStep">
-<div id="codeSetupData"
-     data-session='@json($sessionData["code"] ?? [])'>
-</div>
-
-<div class="mb-4">
-
-<div class="d-flex justify-content-between align-items-center">
-
-    <div>
-        <h6 class="section-title-custom mb-1">
-            Institution Code Configuration
-        </h6>
-
-        <p class="small">
-            Configure how student institution codes will be generated
-        </p>
+    <div id="codeSetupData"
+        data-session='@json($sessionData["code"] ?? [])'>
     </div>
 
-    <!-- Institution Code Display -->
-    <div class="text-end">
+
+    <div class="mb-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+                <h6 class="section-title-custom mb-1">
+                    Institution Code Configuration
+                </h6>
+
+                <p class="small">
+                    Configure how student institution codes will be generated
+                </p>
+            </div>
+
+            <!-- Institution Code Display -->
+            <!-- <div class="text-end">
 
         <div class="small d-flex align-items-center gap-1">
 
@@ -36,11 +37,11 @@
             {{ $institution->institution_code }}
         </span>
 
+    </div> -->
+
+        </div>
+
     </div>
-
-</div>
-
-</div>
 
     <div class="config-card p-4 mb-4">
 
@@ -49,13 +50,13 @@
             <div class="input-group-custom">
                 <i class="bi bi-type"></i>
                 <input
-    type="text"
-    id="codePrefix"
-    class="form-control ps-5"
-    placeholder="e.g. INS"
-    maxlength="3"
-    value="{{ $sessionData['code']['prefix'] ?? substr($institution->institution_code,0,3) }}"
-    style="text-transform:uppercase;">
+                    type="text"
+                    id="codePrefix"
+                    class="form-control ps-5"
+                    placeholder="e.g. INS"
+                    maxlength="3"
+                    value="{{ $sessionData['code']['prefix'] ?? $institution->institution_code_prefix ?? '---' }}"
+                    style="text-transform:uppercase;">
             </div>
             <small class=" mt-1 d-block" style="font-size: 11px;">
                 This will be the beginning of all student codes
@@ -90,7 +91,7 @@
             </div>
 
             <div class="code-preview-badge mb-3" id="liveCodePreview">
-                
+
             </div>
 
             <div class="" style="font-size: 11px;">
@@ -102,10 +103,7 @@
     <div class="config-card p-4">
         <label class="form-label-custom mb-3">Generation Examples</label>
 
-        <div class="example-item mb-2">
-            <span class="small fw-medium text-main">Information Technology</span>
-            <span class="badge-preview">INS-IT-2024-001</span>
-        </div>
+        <div id="exampleContainer"></div>
 
         <div class="academic-warning academic-warning--info mt-4">
             <div class="warning-container d-flex">
@@ -127,91 +125,163 @@
     </div>
 </div>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
 
-    const data = JSON.parse(
-        document.getElementById('codeSetupData').dataset.session
-    ) || {};
+        const data = JSON.parse(
+            document.getElementById('codeSetupData').dataset.session
+        ) || {};
 
-    const prefixInput = document.getElementById('codePrefix');
-    const yearToggle = document.getElementById('includeYearToggle');
-    const formatSelect = document.getElementById('codeFormat');
-    const previewBadge = document.getElementById('liveCodePreview');
 
-    const establishedYear = "{{ $institution->established_year ?? date('Y') }}";
 
-    // ================= RESTORE SESSION =================
-    if(data.prefix){
-        prefixInput.value = data.prefix;
-    }
+        const exampleContainer = document.getElementById('exampleContainer');
 
-    if(data.include_year !== undefined){
-        yearToggle.checked = data.include_year;
-    }
+        function getCourses() {
+            if (window.courseCatalog && window.courseCatalog.length) {
+                return window.courseCatalog;
+            }
 
-    if(data.format){
-        formatSelect.value = data.format;
-    }
-
-    // ================= PREVIEW =================
-    function updatePreview() {
-
-        let prefix = prefixInput.value
-            .toUpperCase()
-            .replace(/[^A-Z]/g, '')
-            .slice(0,3);
-
-        prefixInput.value = prefix;
-
-        const yearPart = yearToggle.checked ? establishedYear : '';
-
-        let numberPart = formatSelect.value === 'random'
-            ? 'A9X'
-            : '001';
-
-        let preview = '';
-
-        if(prefix && yearPart){
-            preview = `${prefix}-${yearPart}-${numberPart}`;
-        }
-        else if(prefix){
-            preview = `${prefix}-${numberPart}`;
-        }
-        else{
-            preview = 'Preview';
+            try {
+                return JSON.parse(
+                    document.getElementById('courseData')?.dataset.session || '[]'
+                );
+            } catch (e) {
+                return [];
+            }
         }
 
-        previewBadge.innerText = preview;
-    }
+        function generateExamples() {
+            const courseData = getCourses();
 
-    prefixInput.addEventListener('input', updatePreview);
-    yearToggle.addEventListener('change', updatePreview);
-    formatSelect.addEventListener('change', updatePreview);
+            exampleContainer.innerHTML = '';
 
-    updatePreview();
+            if (courseData.length === 0) {
+                exampleContainer.innerHTML = '<div class="small text-muted">No courses found</div>';
+                return;
+            }
 
-    // ================= SAVE FUNCTION =================
-    window.saveCodeStep = async function () {
+            let prefix = prefixInput.value.toUpperCase();
+            let yearPart = yearToggle.checked ? establishedYear : '';
 
-        const payload = {
-            prefix: prefixInput.value,
-            include_year: yearToggle.checked,
-            format: formatSelect.value
+            courseData.forEach((course, index) => {
+
+                let seq = '001';
+
+                let code = `${prefix}-${course.code}`;
+
+                if (yearPart) {
+                    code += `-${yearPart}`;
+                }
+
+                code += `-${seq}`;
+
+                exampleContainer.innerHTML += `
+            <div class="example-item mb-2 d-flex justify-content-between">
+                <span class="small fw-medium text-main">${course.name}</span>
+                <span class="badge-preview">${code}</span>
+            </div>
+        `;
+            });
+        }
+        const prefixInput = document.getElementById('codePrefix');
+        const yearToggle = document.getElementById('includeYearToggle');
+        const formatSelect = document.getElementById('codeFormat');
+        const previewBadge = document.getElementById('liveCodePreview');
+
+        const establishedYear = "{{ $institution->established_year ?? date('Y') }}";
+
+        // ================= RESTORE SESSION =================
+        if (data.prefix) {
+            prefixInput.value = data.prefix;
+        }
+
+        if (data.include_year !== undefined) {
+            yearToggle.checked = data.include_year;
+        }
+
+        if (data.format) {
+            formatSelect.value = data.format;
+        }
+
+        // ================= PREVIEW =================
+        function updatePreview() {
+
+            let prefix = prefixInput.value
+                .toUpperCase()
+                .replace(/[^A-Z]/g, '')
+                .slice(0, 3);
+
+            prefixInput.value = prefix;
+
+            const courseData = getCourses();
+
+            if (courseData.length === 0) {
+                previewBadge.innerText = 'No Course';
+                return;
+            }
+
+            const firstCourse = courseData[0];
+
+            const yearPart = yearToggle.checked ? establishedYear : '';
+
+            let numberPart = formatSelect.value === 'random' ?
+                'A9X' :
+                '001';
+
+            let preview = `${prefix}-${firstCourse.code}`;
+
+            if (yearPart) {
+                preview += `-${yearPart}`;
+            }
+
+            preview += `-${numberPart}`;
+
+            previewBadge.innerText = preview;
+
+            generateExamples(); // 🔥 important
+        }
+
+        prefixInput.addEventListener('input', updatePreview);
+        yearToggle.addEventListener('change', updatePreview);
+        formatSelect.addEventListener('change', updatePreview);
+
+        updatePreview();
+
+        // ================= SAVE FUNCTION =================
+        window.saveCodeStep = async function() {
+
+            const payload = {
+                prefix: prefixInput.value,
+                include_year: yearToggle.checked,
+                format: formatSelect.value
+            };
+
+            await fetch('/institution/core-management/setup/save-step', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    step: 'code',
+                    data: payload
+                })
+            });
+
         };
 
-        await fetch('/institution/setup/save-step',{
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json',
-                'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({
-                step:'code',
-                data: payload
-            })
-        });
+        document.addEventListener('coursesUpdated', () => {
+        updatePreview();
+    });
 
-    };
+    document.addEventListener('refreshCodeSetup', () => {
 
-});
+        if (window.getCoursesGlobal) {
+            window.courseCatalog = window.getCoursesGlobal();
+        }
+
+        updatePreview();
+    });
+    });
+
+    
 </script>

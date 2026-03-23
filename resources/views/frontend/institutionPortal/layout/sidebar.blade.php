@@ -13,7 +13,7 @@
         <nav class="mt-2 px-2">
 
             <a href="{{ route('institution.dashboard') }}"
-               class="nav-item-custom {{ request()->is('institute/dashboard') ? 'active' : '' }}">
+               class="nav-item-custom {{ request()->routeIs('institution.dashboard') ? 'active' : '' }}">
                 <i class="bi bi-speedometer2 me-2"></i>
                 <span class="menu-text">Dashboard</span>
             </a>
@@ -29,25 +29,25 @@
                 </a>
 
                 <div class="dropdown-menu-custom">
-                    <a href="{{ route('institution.setup') }}" class="nav-item-custom sub-item">
+                    <a href="{{ route('institution.core.setup') }}" class="nav-item-custom sub-item">
                         <i class="bi bi-gear me-2"></i> Institution Setup
                     </a>
-                    <a href="{{ route('institution.course-management') }}" class="nav-item-custom sub-item">
+                    <a href="{{ route('institution.core.course-management') }}" class="nav-item-custom sub-item">
                         <i class="bi bi-book me-2"></i> Course Management
                     </a>
-                    <a href="{{ route('institution.drive-management') }}" class="nav-item-custom sub-item">
+                    <a href="{{ route('institution.core.drive-management') }}" class="nav-item-custom sub-item">
                         <i class="bi bi-hdd-network me-2"></i> Drive Management
                     </a>
-                    <a href="{{ route('institution.academic-structure') }}" class="nav-item-custom sub-item">
+                    <a href="{{ route('institution.core.academic-structure') }}" class="nav-item-custom sub-item">
                         <i class="bi bi-diagram-3 me-2"></i> Academic Structure
                     </a>
-                    <a href="{{ route('institution.internships') }}" class="nav-item-custom sub-item">
+                    <a href="{{ route('institution.core.internships.index') }}" class="nav-item-custom sub-item">
                         <i class="bi bi-briefcase me-2"></i> Internships
                     </a>
-                    <a href="{{ route('institution.financial-management') }}" class="nav-item-custom sub-item">
+                    <a href="{{ route('institution.core.financial-management') }}" class="nav-item-custom sub-item">
                         <i class="bi bi-currency-dollar me-2"></i> Financial Management
                     </a>
-                    <a href="{{ route('institution.system-integrations') }}" class="nav-item-custom sub-item">
+                    <a href="{{ route('institution.core.system-integrations') }}" class="nav-item-custom sub-item">
                         <i class="bi bi-link-45deg me-2"></i> System Integrations
                     </a>
                 </div>

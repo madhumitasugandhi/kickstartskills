@@ -7,6 +7,11 @@ use App\Http\Controllers\GeoController;
 use App\Http\Controllers\Institution\InstitutionAuthController;
 use App\Http\Controllers\Institution\InstitutionController;
 use App\Http\Controllers\Institution\InstitutionProgramController;
+use App\Http\Controllers\Institution\InstitutionCourseController;
+use App\Http\Controllers\Institution\InstitutionDepartmentController;
+use App\Http\Controllers\Institution\CourseTypeController;
+use App\Http\Controllers\Institution\CourseRequirementController;
+use App\Http\Controllers\Institution\InstitutionDriveController;
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -108,7 +113,7 @@ Route::prefix('student')->middleware(['auth', 'student'])->group(function () {
         Route::post('/portfolio/achievements/save', [StudentProfileController::class, 'achievementStore'])->name('achievements.save');
         Route::delete('/portfolio/achievements/delete/{id}', [StudentProfileController::class, 'achievementDelete'])->name('achievements.delete');
     });
-    
+
     /* 3. Examinations Section */
     Route::prefix('dashboard/examinations')->name('student.exam.')->group(function () {
 
@@ -289,11 +294,12 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
         return view('frontend.institutionPortal.dashboard.index');
     })->name('dashboard');
     Route::get('/setup', [InstitutionController::class, 'showSetup'])
-        ->name('setup');
+    ->name('setup');
     Route::post('/setup', [InstitutionController::class, 'showSetup'])
-        ->name('setup');
-    Route::post('/setup/save-step', [InstitutionController::class, 'saveStep']);
-    Route::post('/setup/complete', [InstitutionController::class, 'completeSetup']);
+    ->name('setup');
+    Route::post('/setup/save-step',[InstitutionController::class,'saveStep']);
+    Route::post('/setup/complete',[InstitutionController::class,'completeSetup']);
+
     Route::get('/course-management', function () {
         return view('frontend.institutionPortal.dashboard.core-management.course-management.index');
     })->name('course-management');
@@ -324,27 +330,29 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
     })->name('internships');
     Route::get('/financial-management/{tab?}', function ($tab = 'overview') {
 
-        $allowedTabs = [
-            'overview',
-            'fee-structure',
-            'payments',
-            'expenses',
-            'reports'
-        ];
+            $allowedTabs = [
+                'overview',
+                'fee-structure',
+                'payments',
+                'expenses',
+                'reports'
+            ];
 
-        if (!in_array($tab, $allowedTabs)) {
-            abort(404);
-        }
+            if (!in_array($tab, $allowedTabs)) {
+                abort(404);
+            }
 
-        return view(
-            'frontend.institutionPortal.dashboard.core-management.financial_management.index',
-            compact('tab')
-        );
+            return view(
+                'frontend.institutionPortal.dashboard.core-management.financial_management.index',
+                compact('tab')
+            );
+        })->name('financial-management');
 
-    })->name('financial-management');
-    Route::get('/system-integrations', function () {
-        return view('frontend.institutionPortal.dashboard.core-management.system.index');
-    })->name('system-integrations');
+        Route::get('/system-integrations', function () {
+            return view('frontend.institutionPortal.dashboard.core-management.system.index');
+        })->name('system-integrations');
+    });
+
     Route::get('/program-management', [InstitutionProgramController::class, 'index'])
         ->name('program-management');
     Route::post('/program-management/store', [InstitutionProgramController::class, 'store'])
@@ -407,8 +415,6 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
     Route::get('/notifications', function () {
         return view('frontend.institutionPortal.dashboard.notifications.index');
     })->name('notifications');
-
-
 });
 
 
@@ -548,7 +554,6 @@ Route::prefix('mentor')->name('mentor.')->middleware(['auth', 'mentor'])->group(
     Route::get('/settings', function () {
         return view('frontend.mentorPortal.dashboard.general.settings');
     })->name('settings');
-
 });
 
 /*|------------------------------------------------End Mentor Portal Routes--------------------------------------------------|*/
@@ -617,7 +622,6 @@ Route::prefix('hr')->name('hr.')->group(function () {
     Route::get('/settings', function () {
         return view('frontend.hrPortal.dashboard.settings');
     })->name('settings');
-
 });
 /*|------------------------------------------------End HR Portal Routes--------------------------------------------------|*/
 
@@ -649,7 +653,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // 2. User Management
-// User Management Routes
+    // User Management Routes
     Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('users');
     Route::post('/users/store', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('users.store');
 
@@ -718,7 +722,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/intelligence', function () {
         return view('frontend.adminPortal.dashboard.intelligence');
     })->name('intelligence');
-
 });
 /*|------------------------------------------------End Admin Portal Routes--------------------------------------------------|*/
 

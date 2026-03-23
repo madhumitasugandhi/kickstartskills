@@ -44,7 +44,7 @@
             @endphp
 
             @foreach($tabs as $key => $t)
-                <a href="{{ route('institution.academic-structure', ['tab' => $key]) }}"
+                <a href="{{ route('institution.core.academic-structure', ['tab' => $key]) }}"
                    class="tab-btn {{ $tab === $key ? 'active' : '' }}">
                     <i class="bi bi-{{ $t['icon'] }}"></i>
                     {{ $t['label'] }}
