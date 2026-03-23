@@ -69,7 +69,8 @@ class StudentProfileController extends Controller
         $request->validate([
             'ssc_percentage' => 'nullable|numeric|min:0|max:100', // Percentage 100 se zyada nahi ho sakti
             'hsc_percentage' => 'nullable|numeric|min:0|max:100',
-            'degree_cgpa' => 'nullable|numeric|min:0|max:10',  // CGPA 10 se zyada nahi ho sakti
+            'degree_cgpa' => 'nullable|numeric|min:0|max:10',
+            'masters_cgpa' => 'nullable|numeric|min:0|max:10',  // CGPA 10 se zyada nahi ho sakti
         ]);
 
         // Data to be saved
@@ -89,7 +90,14 @@ class StudentProfileController extends Controller
             'degree_name' => $request->degree_name,
             'degree_year' => $request->degree_year ? (int) $request->degree_year : null,
             'degree_cgpa' => $request->degree_cgpa,
+
+            'masters_college' => $request->masters_college,
+            'masters_name' => $request->masters_name,
+            'masters_year' => $request->masters_year ? (int) $request->masters_year : null,
+            'masters_cgpa' => $request->masters_cgpa,
+
             'skills' => $request->skills,
+            'updated_at' => now(), // Good practice to track updates
         ];
 
         // Magic Function: Update if exists, else Insert

@@ -154,18 +154,50 @@
     .form-control:-ms-input-placeholder {
         color: var(--text-muted);
     }
+
+    /* Masters Section Hidden by Default */
+    #masters-section {
+        display: none;
+        border-left: 5px solid var(--text-blue);
+        animation: slideDown 0.4s ease-out;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Pulse effect to show the user they can add more */
+    .btn-add-more {
+        transition: all 0.3s ease;
+    }
+
+    .btn-add-more:hover {
+        transform: scale(1.05);
+    }
 </style>
 
 <div class="content-body">
     <form action="{{ route('student.profile.academic.save') }}" method="POST">
         @csrf
 
-        <div class="card-custom">
-            <div class="d-flex align-items-center gap-3 mb-4 border-bottom pb-3">
+        <div class="card-custom ">
+            <div class="d-flex align-items-center gap-3">
                 <div class="section-icon bg-soft-green text-success">
                     <i class="bi bi-mortarboard"></i>
                 </div>
                 <h6 class="fw-bold m-0 text-main fs-5">Current Graduation Details</h6>
+                <button type="button" id="toggle-masters-btn" class="btn btn-sm btn-outline-primary rounded-pill px-3 "
+                    onclick="toggleMasters()">
+                    <i class="bi bi-plus-circle me-1"></i> Add Masters
+                </button>
             </div>
 
             <div class="row g-4">
@@ -194,6 +226,41 @@
                     <label class="form-label">Current CGPA</label>
                     <input type="number" step="0.01" name="degree_cgpa" class="form-control"
                         value="{{ $academic->degree_cgpa ?? '' }}" placeholder="0.00">
+                </div>
+            </div>
+
+            <div id="masters-section" class="card-custom shadow-sm mt-3">
+                <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="section-icon bg-soft-blue text-blue">
+                            <i class="bi bi-mortarboard-fill"></i>
+                        </div>
+                        <h6 class="fw-bold m-0 text-main fs-5">Masters / Post-Graduation Details</h6>
+                    </div>
+                    <button type="button" class="btn-close" onclick="toggleMasters()"></button>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-12">
+                        <label class="form-label">University / College Name</label>
+                        <input type="text" name="masters_college" class="form-control"
+                            value="{{ $academic->masters_college ?? '' }}" placeholder="Enter University name">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Masters Degree Name</label>
+                        <input type="text" name="masters_name" class="form-control"
+                            value="{{ $academic->masters_name ?? '' }}" placeholder="e.g. MBA or M.Tech">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Passing Year</label>
+                        <input type="number" name="masters_year" class="form-control"
+                            value="{{ $academic->masters_year ?? '' }}" placeholder="YYYY">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">CGPA</label>
+                        <input type="number" step="0.01" name="masters_cgpa" class="form-control"
+                            value="{{ $academic->masters_cgpa ?? '' }}" placeholder="0.00">
+                    </div>
                 </div>
             </div>
         </div>
@@ -266,7 +333,7 @@
             </div>
         </div>
 
-        <div class="card-custom">
+        <div class="card-custom mt-4">
             <div class="d-flex align-items-center gap-3 mb-4">
                 <div class="section-icon bg-soft-teal text-teal">
                     <i class="bi bi-cpu-fill"></i>
@@ -285,4 +352,32 @@
         </div>
     </form>
 </div>
+
+<script>
+    function toggleMasters() {
+    const section = document.getElementById('masters-section');
+    const btn = document.getElementById('toggle-masters-btn');
+
+    if (section.style.display === 'none' || section.style.display === '') {
+        section.style.display = 'block';
+        btn.innerHTML = '<i class="bi bi-dash-circle me-1"></i> Remove Masters';
+        btn.classList.replace('btn-outline-primary', 'btn-outline-danger');
+    } else {
+        section.style.display = 'none';
+        btn.innerHTML = '<i class="bi bi-plus-circle me-1"></i> Add Masters';
+        btn.classList.replace('btn-outline-danger', 'btn-outline-primary');
+
+        // Optional: Reset Masters values if removed
+        section.querySelectorAll('input').forEach(input => input.value = '');
+    }
+}
+
+// Ensure Masters shows up if data already exists in DB
+document.addEventListener('DOMContentLoaded', function() {
+    @if(isset($academic->masters_name) && $academic->masters_name != '')
+        toggleMasters();
+    @endif
+});
+</script>
+
 @endsection
