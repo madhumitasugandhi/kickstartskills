@@ -1,6 +1,7 @@
 @extends('frontend.studentPortal.dashboard.layouts.app')
 
-@section('title', 'Examination Mode')
+@section('title', 'Examination - Live Quiz')
+@section('icon', 'bi bi-play-circle fs-4 p-2 bg-primary bg-opacity-10 rounded-3 text-primary')
 
 @section('content')
 <div class="content-body">
@@ -9,7 +10,7 @@
             <div class="card-custom border-0 shadow-sm p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
                     <div>
-                        <span class="text-muted small d-block">Time Remaining</span>
+                        <span class="--text-muted small d-block">Time Remaining</span>
                         <h4 id="timer" class="fw-bold text-primary mb-0">--:--</h4>
                     </div>
                     <div class="text-end">
@@ -25,20 +26,25 @@
 
                     <div id="questions-container">
                         @foreach($questions as $index => $question)
-                        <div class="question-step" id="step-{{ $index }}" style="display: {{ $index == 0 ? 'block' : 'none' }};">
+                        <div class="question-step" id="step-{{ $index }}"
+                            style="display: {{ $index == 0 ? 'block' : 'none' }};">
                             <h5 class="fw-bold mb-4 text-main">{{ $index + 1 }}. {{ $question->question_text }}</h5>
 
                             <div class="options-list d-grid gap-3">
                                 @php
-                                    // Fetch options for this specific question
-                                    $q_options = DB::table('question_options')->where('question_id', $question->id)->get();
+                                // Fetch options for this specific question
+                                $q_options = DB::table('question_options')->where('question_id', $question->id)->get();
                                 @endphp
 
-                                @foreach($q_options as $opt)
+                                @foreach($q_options as $index => $opt)
                                 <label class="option-item">
-                                    <input type="radio" name="answer[{{ $question->id }}]" value="{{ $opt->option_letter }}" class="d-none">
+                                    {{-- Value mein hum ID bhejenge taki backend par check kar sakein --}}
+                                    <input type="radio" name="answer[{{ $question->id }}]" value="{{ $opt->id }}" class="d-none">
+
                                     <div class="option-box p-3 border rounded-3 border-secondary">
-                                        <span class="me-2 fw-bold">{{ $opt->option_letter }})</span> {{ $opt->option_text }}
+                                        {{-- Index use karke A, B, C, D generate karein (0=A, 1=B, etc.) --}}
+                                        <span class="me-2 fw-bold">{{ chr(65 + $index) }})</span>
+                                        {{ $opt->option_text }}
                                     </div>
                                 </label>
                                 @endforeach
@@ -48,11 +54,14 @@
                     </div>
 
                     <div class="d-flex justify-content-between mt-5 pt-4 border-top">
-                        <button type="button" class="btn btn-outline-secondary px-4" id="prev-btn" onclick="changeStep(-1)" disabled>Previous</button>
+                        <button type="button" class="btn btn-outline-secondary px-4" id="prev-btn"
+                            onclick="changeStep(-1)" disabled>Previous</button>
 
-                        <button type="button" class="btn btn-primary px-5 fw-bold" id="next-btn" onclick="changeStep(1)">Next Question</button>
+                        <button type="button" class="btn btn-primary px-5 fw-bold" id="next-btn"
+                            onclick="changeStep(1)">Next Question</button>
 
-                        <button type="submit" class="btn btn-success px-5 fw-bold" id="submit-btn" style="display: none;">Submit Final Test</button>
+                        <button type="submit" class="btn btn-success px-5 fw-bold" id="submit-btn"
+                            style="display: none;">Submit Final Test</button>
                     </div>
                 </form>
             </div>
@@ -63,7 +72,9 @@
                 <h6 class="fw-bold mb-3">Question Palette</h6>
                 <div class="d-flex flex-wrap gap-2 justify-content-center">
                     @foreach($questions as $index => $q)
-                    <div class="palette-item border rounded text-center" id="palette-{{ $index }}" style="width: 35px; height: 35px; line-height: 35px; cursor: pointer;" onclick="goToStep({{ $index }})">
+                    <div class="palette-item border rounded text-center" id="palette-{{ $index }}"
+                        style="width: 35px; height: 35px; line-height: 35px; cursor: pointer;"
+                        onclick="goToStep({{ $index }})">
                         {{ $index + 1 }}
                     </div>
                     @endforeach
@@ -75,16 +86,34 @@
 
 <style>
     /* Styling for the radio buttons */
-    .option-item { cursor: pointer; display: block; transition: all 0.2s; }
-    .option-item input:checked + .option-box {
+    .option-item {
+        cursor: pointer;
+        display: block;
+        transition: all 0.2s;
+    }
+
+    .option-item input:checked+.option-box {
         background: var(--soft-blue);
         border-color: var(--text-blue) !important;
         color: var(--text-blue);
         font-weight: 600;
     }
-    .option-box:hover { background: rgba(255,255,255,0.05); }
-    .palette-item.active { background: var(--text-blue); color: white; border-color: var(--text-blue); }
-    .palette-item.answered { background: var(--soft-green); color: var(--text-green); border-color: var(--text-green); }
+
+    .option-box:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .palette-item.active {
+        background: var(--text-blue);
+        color: white;
+        border-color: var(--text-blue);
+    }
+
+    .palette-item.answered {
+        background: var(--soft-green);
+        color: var(--text-green);
+        border-color: var(--text-green);
+    }
 </style>
 
 <script>
@@ -141,3 +170,4 @@
     // Initial Palette Highlight
     showStep(0);
 </script>
+@endsection

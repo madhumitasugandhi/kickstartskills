@@ -122,7 +122,6 @@ Route::prefix('student')->middleware(['auth', 'student'])->group(function () {
 
         // Start Test: This is the dynamic route for the live quiz
         Route::get('/start-test/{id}', [StudentExaminationController::class, 'startTest'])->name('start');
-
         // 2nd Option: Test History
         Route::get('/history', [StudentExaminationController::class, 'testHistory'])->name('history');
 

@@ -208,7 +208,7 @@
                 <i class="bi bi-exclamation-circle"></i>
             </div>
             <h5 class="fw-bold text-main">No Exams Found</h5>
-            <p class="text-muted">We couldn't find exams matching the skills in your portfolio.<br>
+            <p class="--text-muted">We couldn't find exams matching the skills in your portfolio.<br>
                 Add skills like <strong>Next.js</strong> or <strong>Angular</strong> to see available tests.</p>
 
             <a href="{{ route('student.profile.portfolio') }}" class="btn btn-primary mt-3 px-4 shadow-sm">
