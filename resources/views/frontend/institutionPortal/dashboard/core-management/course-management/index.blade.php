@@ -27,7 +27,7 @@
             </div>
             <div>
                 <small class="">Total Types</small>
-                <h4 class="mb-0 text-teal">5</h4>
+                <h4 class="mb-0 text-teal">{{ $courseTypes->count() }}</h4>
             </div>
         </div>
     </div>
@@ -165,6 +165,151 @@ if (pane) {
     });
 
 });
+
+// ADD COURSE
+document.getElementById('saveCourseBtn')?.addEventListener('click', function () {
+
+let formData = {
+    course_name: document.querySelector('[name="course_name"]').value,
+    duration_years: document.querySelector('[name="duration_years"]').value,
+    duration_months: document.querySelector('[name="duration_months"]').value,
+    code_extension: document.querySelector('[name="code_extension"]').value,
+};
+
+fetch('/institution/core-management/course-types/store', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+    },
+    body: JSON.stringify(formData)
+})
+.then(res => res.json())
+.then(data => {
+    if (data.status) {
+        alert(data.message);
+        location.reload();
+    } else {
+        console.log(data.errors);
+    }
+});
+});
+
+
+// UPDATE COURSE
+document.getElementById('updateCourseBtn')?.addEventListener('click', function () {
+
+let id = this.dataset.id;
+
+let formData = {
+    course_name: document.getElementById('edit_course_name').value,
+    duration_years: document.getElementById('edit_duration_years').value,
+    duration_months: document.getElementById('edit_duration_months').value,
+    code_extension: document.getElementById('edit_code_extension').value,
+};
+
+fetch(`/institution/core-management/course-types/update/${id}`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+    },
+    body: JSON.stringify(formData)
+})
+.then(res => res.json())
+.then(data => {
+    if (data.status) {
+        alert(data.message);
+        location.reload();
+    } else {
+        console.log(data.errors);
+    }
+});
+});
+
+
+//Delete course
+document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+
+        let id = this.dataset.id;
+
+        if (!confirm('Are you sure you want to delete this course?')) return;
+
+        fetch(`/institution/core-management/course-types/delete/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status) {
+                alert(data.message);
+                location.reload();
+            }
+        });
+    });
+});
+
+//Add Requirement
+document.getElementById('addRequirementBtn').addEventListener('click', async () => {
+
+    const name = prompt('Enter Requirement Name');
+    if (!name) return;
+
+    const res = await fetch('/institution/core-management/requirements/store', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ name })
+    });
+
+    const data = await res.json();
+
+    if (data.status === 'success') {
+
+        const item = document.createElement('div');
+        item.className = 'template-item';
+        item.setAttribute('data-id', data.data.requirement_id);
+
+        item.innerHTML = `
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-tag"></i>
+                <span>${data.data.requirement_name}</span>
+            </div>
+            <button class="icon-btn danger deleteRequirement">
+                <i class="bi bi-trash"></i>
+            </button>
+        `;
+
+        document.getElementById('requirementList').appendChild(item);
+    }
+});
+
+//Delete Requirement
+document.addEventListener('click', async function (e) {
+
+if (e.target.closest('.deleteRequirement')) {
+
+    const item = e.target.closest('.template-item');
+    const id = item.dataset.id;
+
+    if (!confirm('Delete this requirement?')) return;
+
+    await fetch(`/institution/core-management/requirements/delete/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    });
+
+    item.remove();
+}
+});
+
 </script>
 
 @endpush

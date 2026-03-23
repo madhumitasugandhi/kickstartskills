@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
             accreditation_ids: hiddenInput.value
         };
 
-        await fetch('/institution/setup/save-step',{
+        await fetch('/institution/core-management/setup/save-step',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json',

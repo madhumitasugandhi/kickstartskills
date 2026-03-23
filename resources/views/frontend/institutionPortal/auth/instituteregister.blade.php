@@ -681,6 +681,44 @@
 
         }
 
+        document.addEventListener("DOMContentLoaded", function() {
+
+            let oldState = "{{ old('state', $formData['state'] ?? '') }}";
+            let oldCity = "{{ old('city', $formData['city'] ?? '') }}";
+            let country = document.getElementById("country").value;
+
+            if (country) {
+                fetch(`/api/states/${country}`)
+                    .then(res => res.json())
+                    .then(states => {
+
+                        let stateDropdown = document.getElementById("state");
+
+                        states.forEach(s => {
+                            let selected = (s.id == oldState) ? "selected" : "";
+                            stateDropdown.innerHTML += `<option value="${s.id}" ${selected}>${s.name}</option>`;
+                        });
+
+                        if (oldState) {
+                            fetch(`/api/cities/${oldState}`)
+                                .then(res => res.json())
+                                .then(cities => {
+
+                                    let cityDropdown = document.getElementById("city");
+
+                                    cities.forEach(c => {
+                                        let selected = (c.id == oldCity) ? "selected" : "";
+                                        cityDropdown.innerHTML += `<option value="${c.id}" ${selected}>${c.name}</option>`;
+                                    });
+
+                                });
+                        }
+
+                    });
+            }
+
+        });
+
         function clearErrors() {
 
             document.querySelectorAll(".field-error").forEach(el => {
@@ -786,18 +824,37 @@
 
         function validateStep3() {
 
-            clearErrors();
+clearErrors();
 
-            const type = document.querySelector('[name="institution_type_id"]');
+const type = document.querySelector('[name="institution_type_id"]');
+const aishe = document.getElementById("aishe_code");
+const aicte = document.getElementById("aicte_id");
+const ugc = document.getElementById("ugc_number");
 
-            if (type.value === "") {
-                showError(type, "type-error", "Please select institution type");
-                return;
-            }
+let valid = true;
 
-            switchStep(4);
+if (type.value === "") {
+    showError(type, "type-error", "Please select institution type");
+    valid = false;
+}
 
-        }
+if (aishe.value.trim() === "") {
+    showError(aishe, "aishe-error", "AISHE code required");
+    valid = false;
+}
+
+if (aicte.value.trim() === "") {
+    showError(aicte, "aicte-error", "AICTE ID required");
+    valid = false;
+}
+
+if (ugc.value.trim() === "") {
+    showError(ugc, "ugc-error", "UGC number required");
+    valid = false;
+}
+
+if (valid) switchStep(4);
+}
     </script>
 </body>
 

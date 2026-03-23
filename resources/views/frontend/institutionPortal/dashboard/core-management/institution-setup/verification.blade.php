@@ -27,7 +27,7 @@
                 <span class="doc-badge danger">Required</span>
             </div>
 
-            <form action="{{ url('/institution/setup') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ url('/institution/core-management/setup') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <input type="hidden" name="document_type" value="registration_certificate">
@@ -169,7 +169,7 @@ async function uploadDoc(input, type){
 
     try{
 
-        const res = await fetch('/institution/setup', {
+        const res = await fetch('/institution/core-management/setup', {
             method: 'POST',
             body: formData
         });
@@ -189,7 +189,7 @@ async function completeSetup(){
 
 if(!confirm('Are you sure you want to submit setup?')) return;
 
-const res = await fetch('/institution/setup/complete', {
+const res = await fetch('/institution/core-management/setup/complete', {
     method:'POST',
     headers:{
         'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content

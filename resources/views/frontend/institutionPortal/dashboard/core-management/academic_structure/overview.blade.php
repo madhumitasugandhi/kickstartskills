@@ -81,7 +81,7 @@
             @endforeach
 
             <div class="text-center mt-3">
-                <a href="{{ route('institution.academic-structure', ['tab'=>'departments']) }}"
+                <a href="{{ route('institution.core.academic-structure', ['tab'=>'departments']) }}"
                    class="btn btn-outline-primary btn-sm">
                     View All Departments
                 </a>

@@ -61,35 +61,25 @@
                         </p>
                     </div>
 
-                    <button class="btn btn-outline-success btn-sm">
-                        <i class="bi bi-plus-lg"></i>
-                    </button>
+                    <button class="btn btn-outline-success btn-sm" id="addRequirementBtn">
+    <i class="bi bi-plus-lg"></i>
+</button>
                 </div>
 
-                <div class="template-list">
-                    @php
-                        $templates = [
-                            '10th Grade completion',
-                            '12th Grade with Science',
-                            '12th Grade with Commerce',
-                            '12th Grade with Arts',
-                            'Bachelor’s degree in any field'
-                        ];
-                    @endphp
+                <div class="template-list" id="requirementList">
+    @foreach($requirements as $req)
+        <div class="template-item" data-id="{{ $req->requirement_id }}">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-tag"></i>
+                <span>{{ $req->requirement_name }}</span>
+            </div>
 
-                    @foreach($templates as $template)
-                        <div class="template-item">
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="bi bi-tag"></i>
-                                <span>{{ $template }}</span>
-                            </div>
-
-                            <button class="icon-btn danger">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    @endforeach
-                </div>
+            <button class="icon-btn danger deleteRequirement">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    @endforeach
+</div>
 
             </div>
 

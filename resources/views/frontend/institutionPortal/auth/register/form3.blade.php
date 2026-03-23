@@ -1,10 +1,10 @@
 @if ($errors->any())
 <div class="alert alert-danger">
-<ul class="mb-0">
-@foreach ($errors->all() as $error)
-<li>{{ $error }}</li>
-@endforeach
-</ul>
+    <ul class="mb-0">
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
 </div>
 @endif
 <div class="glass-card">
@@ -20,27 +20,30 @@
         <i class="bi bi-bookmark input-icon"></i>
         <select id="institution_type" name="institution_type_id" class="custom-input">
 
-<option value="">Select Institution Type</option>
+            <option value="">Select Institution Type</option>
 
-@foreach($types as $type)
+            @foreach($types as $type)
 
-<option value="{{ $type->institution_type_id }}"
-{{ (old('institution_type_id', $formData['institution_type_id'] ?? '') == $type->institution_type_id) ? 'selected' : '' }}>
+            <option value="{{ $type->institution_type_id }}"
+                {{ (old('institution_type_id', $formData['institution_type_id'] ?? '') == $type->institution_type_id) ? 'selected' : '' }}>
 
-{{ $type->type_name }}
+                {{ $type->type_name }}
 
-</option>
+            </option>
 
-@endforeach
+            @endforeach
 
-</select>
+        </select>
     </div>
     <div class="field-error" id="type-error"></div>
     <!-- AISHE Code -->
     <label class="small text-white opacity-75 ms-1 mb-1 mt-3">AISHE Code</label>
     <div class="input-group-custom">
         <i class="bi bi-upc-scan input-icon"></i>
-        <input type="text" id="aishe_code" name="aishe_code" class="custom-input" placeholder="AISHE Code">
+        <input type="text" id="aishe_code" name="aishe_code"
+            value="{{ old('aishe_code', $formData['aishe_code'] ?? '') }}"
+            class="custom-input">
+        <div class="field-error" id="aishe-error"></div>
     </div>
 
     <!-- Information Box -->
@@ -59,7 +62,8 @@
     </label>
     <div class="input-group-custom">
         <i class="bi bi-gear input-icon"></i>
-        <input type="text" id="aicte_id" name="aicte_id" class="custom-input" placeholder="AICTE Permanent ID (Technical Institutions)">
+        <input type="text" id="aicte_id" name="aicte_id" value="{{ old('aicte_id', $formData['aicte_id'] ?? '') }}" class="custom-input" placeholder="AICTE Permanent ID (Technical Institutions)">
+        <div class="field-error" id="aicte-error"></div>
     </div>
 
     <!-- UGC Recognition Number -->
@@ -68,7 +72,8 @@
     </label>
     <div class="input-group-custom">
         <i class="bi bi-bank input-icon"></i>
-        <input type="text" id="ugc_number" name="ugc_number" class="custom-input" placeholder="UGC Recognition Number (Universities & Colleges)">
+        <input type="text" id="ugc_number" name="ugc_number" value="{{ old('ugc_number', $formData['ugc_number'] ?? '') }}" class="custom-input" placeholder="UGC Recognition Number (Universities & Colleges)">
+        <div class="field-error" id="ugc-error"></div>
     </div>
 
     <!-- Regulatory Info Box -->
