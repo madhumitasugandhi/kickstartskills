@@ -352,6 +352,20 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
 
         Route::prefix('internships')->name('internships.')->group(function () {
 
+            /* =============================
+               INTERNSHIP DRIVES CRUD
+            ============================== */
+            Route::prefix('drives')->name('drives.')->group(function () {
+        
+                Route::get('/list', [InstitutionDriveController::class, 'index'])->name('list');
+                Route::post('/store', [InstitutionDriveController::class, 'store'])->name('store');
+                Route::get('/edit/{id}', [InstitutionDriveController::class, 'edit'])->name('edit');
+                Route::post('/update/{id}', [InstitutionDriveController::class, 'update'])->name('update');
+                Route::delete('/delete/{id}', [InstitutionDriveController::class, 'destroy'])->name('delete');
+                Route::post('/status', [InstitutionDriveController::class, 'changeStatus'])->name('status');
+        
+            });
+
             // Tabs Page
             Route::get('/{tab?}', function ($tab = 'overview') {
         
@@ -372,21 +386,6 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
                     compact('tab')
                 );
             })->name('index');
-        
-        
-            /* =============================
-               INTERNSHIP DRIVES CRUD
-            ============================== */
-            Route::prefix('drives')->name('drives.')->group(function () {
-        
-                Route::get('/', [InstitutionDriveController::class, 'index'])->name('list');
-                Route::post('/store', [InstitutionDriveController::class, 'store'])->name('store');
-                Route::get('/edit/{id}', [InstitutionDriveController::class, 'edit'])->name('edit');
-                Route::post('/update/{id}', [InstitutionDriveController::class, 'update'])->name('update');
-                Route::delete('/delete/{id}', [InstitutionDriveController::class, 'destroy'])->name('delete');
-                Route::post('/status', [InstitutionDriveController::class, 'changeStatus'])->name('status');
-        
-            });
         
         });
 
