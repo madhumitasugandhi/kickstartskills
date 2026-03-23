@@ -10,7 +10,7 @@
       <div class="modal-body">
 
         <div class="floating-field mb-3">
-        <input name="course_name" class="form-control" placeholder="AI, " />
+        <input name="course_name" class="form-control" placeholder=" " />
         <label>Course Type Name</label>
         </div>
 

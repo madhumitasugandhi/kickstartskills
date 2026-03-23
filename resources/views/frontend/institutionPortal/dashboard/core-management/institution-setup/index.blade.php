@@ -3,6 +3,7 @@
 @section('title', 'Institution Setup')
 
 @section('content')
+
 <div class="container-fluid px-4 py-4">
 
     <div class="setup-header p-4">
@@ -12,7 +13,7 @@
             </div>
             <div>
                 <h5 class="mb-1 fw-semibold" style="color: var(--text-main)">Institution Setup</h5>
-                <small class="">Complete your institution profile and get verified</small>
+                <small>Complete your institution profile and get verified</small>
             </div>
         </div>
     </div>
@@ -22,10 +23,8 @@
         <!-- LEFT: STEPS -->
         <div class="setup-steps p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <span class="small fw-medium" id="step-title-display">
-                    `Step ${currentStep+1} of ${stepIds.length}`: Basic Information
-                </span>
-                <span class="progress-percent small">0%</span>
+                <span class="small fw-medium" id="step-title-display"></span>
+                <span class="progress-percent small">{{ round($progressPercent) }}%</span>
             </div>
 
             <div class="steps-track">
@@ -48,13 +47,10 @@
             </div>
         </div>
 
-        <!-- RIGHT: CONTENT -->
+        <!-- RIGHT CONTENT -->
         <div class="flex-grow-1">
-            <!-- Step Content -->
             <div class="setup-content p-4 rounded" id="step-basic">
-                @include(
-                'frontend.institutionPortal.dashboard.core-management.institution-setup.basicinfo'
-                )
+                @include('frontend.institutionPortal.dashboard.core-management.institution-setup.basicinfo')
             </div>
 
             <div class="setup-content p-4 rounded d-none" id="step-academic">
@@ -81,45 +77,25 @@
                 @include('frontend.institutionPortal.dashboard.core-management.institution-setup.verification')
             </div>
 
-            <div class="setup-content p-4 rounded d-none" id="step-complete">
-                @include('frontend.institutionPortal.dashboard.core-management.institution-setup.complete')
-            </div>
-
             <div class="setup-footer p-3 px-4 mt-3">
                 <div class="d-flex justify-content-between">
                     <button class="btn btn-outline-secondary px-4" id="prevBtn">
-                        <i class="bi bi-chevron-left me-2"></i> Previous
+                        Previous
                     </button>
 
                     <button class="btn btn-success px-5 py-2" id="nextBtn">
-                        Next <i class="bi bi-chevron-right ms-2"></i>
+                        Next
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            window.getCoursesGlobal = function() {
-
-                // priority 1: runtime data
-                if (window.courseCatalog && window.courseCatalog.length) {
-                    return window.courseCatalog;
-                }
-
-                // priority 2: session fallback
-                try {
-                    return JSON.parse(
-                        document.getElementById('courseData')?.dataset.session || '[]'
-                    );
-                } catch (e) {
-                    return [];
-                }
-            };
-
-            // ================= STEPS =================
+            let currentStep = {{ $resumeStep ?? 0 }};
             const stepIds = [
                 'step-basic',
                 'step-academic',
@@ -140,17 +116,11 @@
                 'Verification'
             ];
 
-            const stepPercent = ['0%', '16%', '32%', '48%', '64%', '80%', '100%'];
-
-            let currentStep = 0;
-
             const stepItems = document.querySelectorAll('.step-item');
             const nextBtn = document.getElementById('nextBtn');
             const prevBtn = document.getElementById('prevBtn');
 
-
-
-            // ================= UI UPDATE =================
+            // ================= UPDATE UI =================
             function updateUI() {
 
                 stepIds.forEach((id, index) => {
@@ -160,8 +130,8 @@
                 document.getElementById('step-title-display').innerText =
                     `Step ${currentStep+1} of ${stepIds.length}: ${stepLabels[currentStep]}`;
 
-                document.querySelector('.progress-percent').innerText =
-                    stepPercent[currentStep];
+                    const percent = Math.round(((currentStep + 1) / stepIds.length) * 100);
+                document.querySelector('.progress-percent').innerText = percent + '%';
 
                 stepItems.forEach((item, index) => {
                     const circle = item.querySelector('.step-circle');
@@ -177,48 +147,135 @@
                 });
 
                 prevBtn.disabled = currentStep === 0;
+                nextBtn.innerText = currentStep === stepIds.length - 1 ? 'Submit' : 'Next';
 
-                nextBtn.innerText = currentStep === stepIds.length - 1 ?
-                    'Submit' :
-                    'Next';
+                document.dispatchEvent(new CustomEvent('stepChanged', {
+                    detail: {
+                        step: currentStep
+                    }
+                }));
             }
 
-            // ================= SESSION SAVE =================
+            // ================= SAVE STEP =================
             async function saveStep(step, data) {
-                try {
-                    const res = await fetch('/institution/core-management/setup/save-step', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            step,
-                            data
-                        })
-                    });
-                    return await res.json();
-
-                } catch (e) {
-                    alert('Save failed!');
-
-                    console.error('Save error:', e);
-                    return false;
-                } finally {
-                    nextBtn.disabled = false;
-                    nextBtn.innerText = 'Next';
-                }
+                await fetch('/institution/core-management/setup/save-step', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        step,
+                        data
+                    })
+                });
             }
 
-            // ================= NEXT =================
+            // ================= COMPLETE SETUP =================
+            async function completeSetup() {
+
+const uploadedIcons = document.querySelectorAll('.bi-check-circle').length;
+
+if(uploadedIcons < 2){
+    Swal.fire({
+        icon: 'warning',
+        title: 'Upload Required Documents',
+        text: 'Please upload all required documents before submitting'
+    });
+    return;
+}
+
+const confirm = await Swal.fire({
+    title: 'Submit Setup?',
+    text: 'After submission, institution will go for verification.',
+    icon: 'question',
+    showCancelButton: true
+});
+
+if (!confirm.isConfirmed) return;
+
+const res = await fetch('/institution/core-management/setup/complete', {
+    method: 'POST',
+    headers: {
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+    }
+});
+
+const data = await res.json();
+
+if (data.status === 'success') {
+    await Swal.fire({
+        icon: 'success',
+        title: 'Setup Completed'
+    });
+
+    window.location.href = '/institution/dashboard';
+}
+} //validateBasicInfo
+            function validateBasicInfo() {
+
+                let valid = true;
+
+                const fields = [
+                    'institution_name',
+                    'institution_type_id',
+                    'phone',
+                    'email',
+                    'address_line1',
+                    'state',
+                    'city',
+                    'postal_code',
+                    'established_year'
+                ];
+
+                // clear old errors
+                document.querySelectorAll('.error-msg').forEach(el => el.innerText = '');
+                document.querySelectorAll('.form-control, .form-select').forEach(el => el.classList.remove('is-invalid'));
+
+                fields.forEach(name => {
+                    const input = document.querySelector(`[name="${name}"]`);
+                    if (!input || !input.value.trim()) {
+                        valid = false;
+                        input.classList.add('is-invalid');
+                        const err = document.querySelector(`[data-error="${name}"]`);
+                        if (err) err.innerText = 'This field is required';
+                    }
+                });
+
+                // email format
+                const email = document.querySelector('[name="email"]').value;
+                if (email && !email.includes('@')) {
+                    valid = false;
+                    document.querySelector('[name="email"]').classList.add('is-invalid');
+                    document.querySelector('[data-error="email"]').innerText = 'Invalid email';
+                }
+
+                // phone validation
+                const phone = document.querySelector('[name="phone"]').value;
+                if (phone && phone.length < 10) {
+                    valid = false;
+                    document.querySelector('[name="phone"]').classList.add('is-invalid');
+                    document.querySelector('[data-error="phone"]').innerText = 'Invalid phone number';
+                }
+
+                return valid;
+            }
+
+
+
+            // ================= NEXT BUTTON =================
             nextBtn.addEventListener('click', async () => {
-                console.log('Next clicked, step:', currentStep);
-                // BASIC
+
                 if (currentStep === 0) {
-                    console.log({
-                        city: document.querySelector('[name="city"]'),
-                        state: document.querySelector('[name="state"]')
-                    });
+
+                    if (!validateBasicInfo()) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Please fill all required fields'
+                        });
+                        return;
+                    }
+
                     const getVal = (name) => document.querySelector(`[name="${name}"]`)?.value || '';
 
                     await saveStep('basic', {
@@ -229,109 +286,65 @@
                         address_line1: getVal('address_line1'),
                         city: getVal('city'),
                         state: getVal('state'),
-                        postal_code: getVal('postal_code')
+                        postal_code: getVal('postal_code'),
+                        website: getVal('website'),
+                        established_year: getVal('established_year')
                     });
                 }
-
-                // ACADEMIC
                 if (currentStep === 1) {
+    const departments = [...document.querySelectorAll('#deptList .chip-item span')]
+        .map(el => el.innerText);
 
-                    const departments = [...document.querySelectorAll('#deptList span')].map(el => el.innerText);
-                    const programs = [...document.querySelectorAll('#programList span')].map(el => el.innerText);
+    const programs = [...document.querySelectorAll('#programList .chip-item span')]
+        .map(el => el.innerText);
 
-                    if (!departments.length || !programs.length) {
-                        document.getElementById('academicWarning')?.classList.remove('d-none');
-                        return;
-                    }
+    if (!departments.length || !programs.length) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Add Departments & Programs'
+        });
+        return;
+    }
 
-                    await saveStep('academic', {
-                        departments,
-                        programs
-                    });
-                }
+    await saveStep('academic', {
+        departments,
+        programs
+    });
+}
+if (currentStep === 2) {
+    if(window.saveCourseStep){
+        await window.saveCourseStep();
+    }
+}
 
-                // COURSES
-                if (currentStep === 2) {
+if (currentStep === 3) {
+    if(window.saveAcademicStep){
+        await window.saveAcademicStep();
+    }
+}
 
-                    const courses = window.getCourseCatalog?.() || [];
-
-                    window.courseCatalog = courses;
-
-                    await saveStep('courses', courses);
-
-                    document.dispatchEvent(new Event('coursesUpdated'));
-                }
-
-                // CODE SETUP
-                if (currentStep === 3) {
-                    await saveStep('code', {
-                        prefix: document.getElementById('codePrefix')?.value,
-                        format: document.getElementById('codeFormat')?.value,
-                        include_year: document.getElementById('includeYearToggle')?.checked
-                    });
-                }
-
-                // REGULATORY
                 if (currentStep === 4) {
-                    await saveStep('regulatory', {
-                        aishe_code: document.querySelector('[name="aishe_code"]').value,
-                        aicte_id: document.querySelector('[name="aicte_id"]').value,
-                        ugc_number: document.querySelector('[name="ugc_number"]').value,
-                        affiliated_university: document.querySelector('[name="affiliated_university"]').value,
-                        accreditation_ids: document.getElementById('accreditation_ids').value
-                    });
-                }
+    if(window.saveRegulatoryStep){
+        await window.saveRegulatoryStep();
+    }
+}
 
-                // ADMIN
-                if (currentStep === 5) {
+if (currentStep === 5) {
+    if(window.saveAdminStep){
+        const ok = await window.saveAdminStep();
+        if(!ok) return;
+    }
+}
 
-                    const password = document.querySelector('[name="password"]').value;
-
-                    if (!password || password.length < 8) {
-                        alert('Password must be at least 8 characters');
-                        return;
-                    }
-
-                    await saveStep('admin', {
-                        name: document.querySelector('[name="name"]').value,
-                        email: document.querySelector('[name="email"]').value,
-                        phone: document.querySelector('[name="phone"]').value,
-                        designation: document.querySelector('[name="designation"]').value,
-                        password: password
-                    });
-                }
-
-                // FINAL SUBMIT
                 if (currentStep === stepIds.length - 1) {
-
-                    const res = await fetch('/institution/core-management/setup/complete', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        }
-                    });
-
-                    const data = await res.json();
-
-                    if (data.status === 'success') {
-                        window.location.href = '/institution/dashboard';
-                    }
-
+                    await completeSetup();
                     return;
                 }
 
                 currentStep++;
                 updateUI();
-
-                if (currentStep === 3) {
-                    setTimeout(() => {
-                        document.dispatchEvent(new Event('refreshCodeSetup'));
-                    }, 100);
-                }
-
             });
 
-            // ================= PREV =================
             prevBtn.addEventListener('click', () => {
                 if (currentStep > 0) {
                     currentStep--;
@@ -340,7 +353,6 @@
             });
 
             updateUI();
-
         });
     </script>
 

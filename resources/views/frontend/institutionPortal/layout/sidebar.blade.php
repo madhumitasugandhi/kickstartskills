@@ -12,7 +12,7 @@
 
         <nav class="mt-2 px-2">
 
-            <a href="{{ route('institution.dashboard') }}"
+            <a href="{{ route('institution.dashboard') }}" data-title="Dashboard"
                class="nav-item-custom {{ request()->routeIs('institution.dashboard') ? 'active' : '' }}">
                 <i class="bi bi-speedometer2 me-2"></i>
                 <span class="menu-text">Dashboard</span>
@@ -29,27 +29,40 @@
                 </a>
 
                 <div class="dropdown-menu-custom">
-                    <a href="{{ route('institution.core.setup') }}" class="nav-item-custom sub-item">
-                        <i class="bi bi-gear me-2"></i> Institution Setup
-                    </a>
-                    <a href="{{ route('institution.core.course-management') }}" class="nav-item-custom sub-item">
-                        <i class="bi bi-book me-2"></i> Course Management
-                    </a>
-                    <a href="{{ route('institution.core.drive-management') }}" class="nav-item-custom sub-item">
-                        <i class="bi bi-hdd-network me-2"></i> Drive Management
-                    </a>
-                    <a href="{{ route('institution.core.academic-structure') }}" class="nav-item-custom sub-item">
-                        <i class="bi bi-diagram-3 me-2"></i> Academic Structure
-                    </a>
-                    <a href="{{ route('institution.core.internships.index') }}" class="nav-item-custom sub-item">
-                        <i class="bi bi-briefcase me-2"></i> Internships
-                    </a>
-                    <a href="{{ route('institution.core.financial-management') }}" class="nav-item-custom sub-item">
-                        <i class="bi bi-currency-dollar me-2"></i> Financial Management
-                    </a>
-                    <a href="{{ route('institution.core.system-integrations') }}" class="nav-item-custom sub-item">
-                        <i class="bi bi-link-45deg me-2"></i> System Integrations
-                    </a>
+                <a href="{{ route('institution.core.setup') }}"
+   class="nav-item-custom sub-item {{ request()->routeIs('institution.core.setup*') ? 'active' : '' }}">
+    <i class="bi bi-gear me-2"></i> Institution Setup
+</a>
+
+<a href="{{ route('institution.core.course-management') }}"
+   class="nav-item-custom sub-item {{ request()->routeIs('institution.core.course-management*') ? 'active' : '' }}">
+    <i class="bi bi-book me-2"></i> Course Management
+</a>
+
+<a href="{{ route('institution.core.drive-management') }}"
+   class="nav-item-custom sub-item {{ request()->routeIs('institution.core.drive-management*') ? 'active' : '' }}">
+    <i class="bi bi-hdd-network me-2"></i> Drive Management
+</a>
+
+<a href="{{ route('institution.core.academic-structure') }}"
+   class="nav-item-custom sub-item {{ request()->routeIs('institution.core.academic-structure*') ? 'active' : '' }}">
+    <i class="bi bi-diagram-3 me-2"></i> Academic Structure
+</a>
+
+<a href="{{ route('institution.core.internships.index') }}"
+   class="nav-item-custom sub-item {{ request()->routeIs('institution.core.internships.*') ? 'active' : '' }}">
+    <i class="bi bi-briefcase me-2"></i> Internships
+</a>
+
+<a href="{{ route('institution.core.financial-management') }}"
+   class="nav-item-custom sub-item {{ request()->routeIs('institution.core.financial-management*') ? 'active' : '' }}">
+    <i class="bi bi-currency-dollar me-2"></i> Financial Management
+</a>
+
+<a href="{{ route('institution.core.system-integrations') }}"
+   class="nav-item-custom sub-item {{ request()->routeIs('institution.core.system-integrations*') ? 'active' : '' }}">
+    <i class="bi bi-link-45deg me-2"></i> System Integrations
+</a>
                 </div>
             </div>
 
@@ -198,32 +211,27 @@ function toggleDropdown(el) {
     const parent = el.closest('.sidebar-dropdown');
     const sidebar = document.getElementById('sidebar');
 
-    // Prevent dropdown when sidebar is collapsed
     if (sidebar.classList.contains('collapsed')) return;
 
-    // Close other dropdowns
+    const isOpen = parent.classList.contains('open');
+
     document.querySelectorAll('.sidebar-dropdown').forEach(drop => {
-        if (drop !== parent) {
-            drop.classList.remove('open');
-            drop.querySelector('.dropdown-toggle-custom')
-                ?.setAttribute('aria-expanded', 'false');
-        }
+        drop.classList.remove('open');
     });
 
-    const isOpen = parent.classList.toggle('open');
-    el.setAttribute('aria-expanded', isOpen);
+    if (!isOpen) {
+        parent.classList.add('open');
+    }
 }
-</script>
-<script>
 document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll('.dropdown-menu-custom .active')
-        .forEach(activeItem => {
-            const dropdown = activeItem.closest('.sidebar-dropdown');
-            if (dropdown) {
-                dropdown.classList.add('open');
-                dropdown.querySelector('.dropdown-toggle-custom')
-                    ?.setAttribute('aria-expanded', 'true');
-            }
-        });
+    document.querySelectorAll('.nav-item-custom.active').forEach(activeItem => {
+        const dropdown = activeItem.closest('.sidebar-dropdown');
+        if (dropdown) {
+            dropdown.classList.add('open');
+
+            const toggle = dropdown.querySelector('.dropdown-toggle-custom');
+            if (toggle) toggle.setAttribute('aria-expanded', 'true');
+        }
+    });
 });
 </script>

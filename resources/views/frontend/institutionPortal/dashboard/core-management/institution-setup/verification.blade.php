@@ -19,23 +19,25 @@
                     </div>
                     <div>
                         <div class="fw-semibold mb-1">Institution Registration Certificate</div>
-                        <small class="">
-                            Official registration document from the registrar
-                        </small>
+                        <small>Official registration document from the registrar</small>
                     </div>
                 </div>
                 <span class="doc-badge danger">Required</span>
             </div>
 
-            <form action="{{ url('/institution/core-management/setup') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-
-                <input type="hidden" name="document_type" value="registration_certificate">
-
-                <input type="file" name="document" id="doc1" hidden onchange="uploadDoc(this, 'registration_certificate')">
+            <form enctype="multipart/form-data">
+                <input type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    id="doc1"
+                    hidden
+                    onchange="uploadDoc(this, 'registration_certificate')">
 
                 <label for="doc1" class="btn btn-outline-secondary btn-sm mt-3">
+                    @if(isset($documents['registration_certificate']))
+                    <i class="bi bi-check-circle text-success me-1"></i> Uploaded (Replace)
+                    @else
                     <i class="bi bi-upload me-1"></i> Upload Document
+                    @endif
                 </label>
             </form>
         </div>
@@ -45,7 +47,7 @@
             <div class="d-flex justify-content-between align-items-start">
                 <div class="d-flex gap-3">
                     <div class="doc-icon danger">
-                        <i class="bi bi-award"></i>
+                    <i class="bi bi-file-earmark-text"></i>
                     </div>
                     <div>
                         <div class="fw-semibold mb-1">AISHE Certificate</div>
@@ -57,15 +59,20 @@
                 <span class="doc-badge danger">Required</span>
             </div>
 
-            <form action="{{ url('/institution/setup') }}" method="POST" enctype="multipart/form-data">
-                @csrf
+            <form enctype="multipart/form-data">
 
-                <input type="hidden" name="document_type" value="aicte_certificate">
-
-                <input type="file" name="document" id="doc2" hidden onchange="uploadDoc(this, 'aicte_certificate')">
+                <input type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    id="doc2"
+                    hidden
+                    onchange="uploadDoc(this, 'aishe_certificate')">
 
                 <label for="doc2" class="btn btn-outline-secondary btn-sm mt-3">
+                    @if(isset($documents['aishe_certificate']))
+                    <i class="bi bi-check-circle text-success me-1"></i> Uploaded (Replace)
+                    @else
                     <i class="bi bi-upload me-1"></i> Upload Document
+                    @endif
                 </label>
             </form>
         </div>
@@ -75,7 +82,7 @@
             <div class="d-flex justify-content-between align-items-start">
                 <div class="d-flex gap-3">
                     <div class="doc-icon info">
-                        <i class="bi bi-gear"></i>
+                    <i class="bi bi-file-earmark-text"></i>
                     </div>
                     <div>
                         <div class="fw-semibold mb-1">AICTE Approval Letter</div>
@@ -86,15 +93,19 @@
                 </div>
             </div>
 
-            <form action="{{ url('/institution/setup') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-
-                <input type="hidden" name="document_type" value="aicte_letter">
-
-                <input type="file" name="document" id="doc3" hidden onchange="uploadDoc(this, 'aicte_letter')">
+            <form enctype="multipart/form-data">
+                <input type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    id="doc3"
+                    hidden
+                    onchange="uploadDoc(this, 'aicte_approval_letter')">
 
                 <label for="doc3" class="btn btn-outline-secondary btn-sm mt-3">
+                    @if(isset($documents['aicte_approval_letter']))
+                    <i class="bi bi-check-circle text-success me-1"></i> Uploaded (Replace)
+                    @else
                     <i class="bi bi-upload me-1"></i> Upload Document
+                    @endif
                 </label>
             </form>
         </div>
@@ -113,15 +124,19 @@
                 </div>
             </div>
 
-            <form action="{{ url('/institution/setup') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-
-                <input type="hidden" name="document_type" value="infrastructure_docs">
-
-                <input type="file" name="document" id="doc4" hidden onchange="uploadDoc(this, 'infrastructure_docs')">
+            <form enctype="multipart/form-data">
+                <input type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    id="doc4"
+                    hidden
+                    onchange="uploadDoc(this, 'infrastructure_documents')"> 
 
                 <label for="doc4" class="btn btn-outline-secondary btn-sm mt-3">
+                    @if(isset($documents['infrastructure_documents']))
+                    <i class="bi bi-check-circle text-success me-1"></i> Uploaded (Replace)
+                    @else
                     <i class="bi bi-upload me-1"></i> Upload Document
+                    @endif
                 </label>
             </form>
         </div>
@@ -150,58 +165,69 @@
 
         </div>
     </div>
-
-    <button class="btn btn-success w-100 mt-4" onclick="completeSetup()">
-    Complete Setup
-</button>
 </div>
 
 <script>
-async function uploadDoc(input, type){
+    async function uploadDoc(input, type) {
 
-    const file = input.files[0];
-    if(!file) return;
+        const file = input.files[0];
+        if (!file) return;
 
-    const formData = new FormData();
-    formData.append('document', file);
-    formData.append('document_type', type);
-    formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+        // ================= FILE VALIDATION =================
+        const allowedTypes = [
+            'application/pdf',
+            'image/jpeg',
+            'image/jpg',
+            'image/png'
+        ];
 
-    try{
+        if (!allowedTypes.includes(file.type)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid File',
+                text: 'Only PDF, JPG, JPEG, PNG files are allowed'
+            });
+            input.value = '';
+            return;
+        }
 
-        const res = await fetch('/institution/core-management/setup', {
-            method: 'POST',
-            body: formData
-        });
+        // max 2MB
+        if (file.size > 2 * 1024 * 1024) {
+            Swal.fire({
+                icon: 'error',
+                title: 'File Too Large',
+                text: 'File must be less than 2MB'
+            });
+            input.value = '';
+            return;
+        }
 
-        const data = await res.text();
+        // ================= UPLOAD =================
+        const formData = new FormData();
+        formData.append('document', file);
+        formData.append('document_type', type);
+        formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
 
-        // SUCCESS UI
-        input.nextElementSibling.innerHTML = `
-            <i class="bi bi-check-circle text-success me-1"></i> Uploaded
-        `;
+        try {
+            const res = await fetch('/institution/core-management/setup', {
+                method: 'POST',
+                body: formData
+            });
 
-    }catch(err){
-        alert('Upload failed');
+            Swal.fire({
+                icon: 'success',
+                title: 'Uploaded',
+                text: 'Document uploaded successfully'
+            });
+
+            input.nextElementSibling.innerHTML =
+                `<i class="bi bi-check-circle text-success me-1"></i> Uploaded`;
+
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Upload Failed'
+            });
+        }
     }
-}
-async function completeSetup(){
-
-if(!confirm('Are you sure you want to submit setup?')) return;
-
-const res = await fetch('/institution/core-management/setup/complete', {
-    method:'POST',
-    headers:{
-        'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content
-    }
-});
-
-const data = await res.json();
-
-if(data.status === 'success'){
-    window.location.href = '/institution/dashboard';
-}else{
-    alert('Something went wrong');
-}
-}
 </script>

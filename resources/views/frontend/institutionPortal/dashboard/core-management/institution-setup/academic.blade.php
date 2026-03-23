@@ -88,23 +88,29 @@
 
 </div>
 
-<!-- ================= JS ================= -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+
+let initialized = false;
+
+function initAcademicStep(){
+
+    if(initialized) return;
+    initialized = true;
 
     const deptInput = document.getElementById('deptInput');
     const programInput = document.getElementById('programInput');
     const deptList = document.getElementById('deptList');
     const programList = document.getElementById('programList');
-    const deptWrapper = document.getElementById('deptListWrapper');
-    const programWrapper = document.getElementById('programListWrapper');
+
     const academicSession = JSON.parse(
-    document.getElementById('academicData').dataset.session
-);
+        document.getElementById('academicData').dataset.session || '{}'
+    );
 
-    // ================= CREATE CHIP =================
+    const departmentsFromDB = @json($departments ?? []);
+    const programsFromDB = @json($programs ?? []);
+
     function createChip(text, container) {
-
         const chip = document.createElement('div');
         chip.className = 'chip-item';
 
@@ -121,54 +127,38 @@ document.addEventListener('DOMContentLoaded', () => {
         container.parentElement.classList.remove('d-none');
     }
 
-    // ================= RESTORE SESSION =================
+    // SESSION restore
     if (academicSession.departments) {
-        academicSession.departments.forEach(dept => {
-            createChip(dept, deptList);
-        });
+        academicSession.departments.forEach(d => createChip(d, deptList));
+    } else {
+        departmentsFromDB.forEach(d => createChip(d, deptList));
     }
 
     if (academicSession.programs) {
-        academicSession.programs.forEach(program => {
-            createChip(program, programList);
-        });
+        academicSession.programs.forEach(p => createChip(p, programList));
+    } else {
+        programsFromDB.forEach(p => createChip(p, programList));
     }
 
-    // ================= ADD EVENTS =================
-    document.getElementById('addDeptBtn').addEventListener('click', () => {
+    document.getElementById('addDeptBtn').onclick = () => {
         if (!deptInput.value.trim()) return;
         createChip(deptInput.value.trim(), deptList);
         deptInput.value = '';
-    });
+    };
 
-    document.getElementById('addProgramBtn').addEventListener('click', () => {
+    document.getElementById('addProgramBtn').onclick = () => {
         if (!programInput.value.trim()) return;
         createChip(programInput.value.trim(), programList);
         programInput.value = '';
-    });
+    };
+}
 
+document.addEventListener('stepChanged', e => {
+    if(e.detail.step === 1){
+        initAcademicStep();
+    }
 });
 
-// ================= SAVE FUNCTION =================
-async function saveAcademicStep(){
-
-    const departments = [...document.querySelectorAll('#deptList span')]
-        .map(el => el.innerText);
-
-    const programs = [...document.querySelectorAll('#programList span')]
-        .map(el => el.innerText);
-
-    await fetch('/institution/core-management/setup/save-step',{
-        method:'POST',
-        headers:{
-            'Content-Type':'application/json',
-            'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({
-            step:'academic',
-            data:{ departments, programs }
-        })
-    });
-
-}
+});
 </script>
+

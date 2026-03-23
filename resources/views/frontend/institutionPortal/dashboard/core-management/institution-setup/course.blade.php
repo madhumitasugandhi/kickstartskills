@@ -1,3 +1,6 @@
+<div id="courseDBData"
+     data-courses='@json($institution->courseTypes ?? [])'>
+</div>
 <div class="setup-step" id="courseStep">
 <div id="courseData"
      data-session='@json($sessionData["courses"] ?? [])'>
@@ -84,18 +87,16 @@
         </div>
     </div>
 </div>
-{{-- Page-specific styles --}}
-<!-- <style>
-    .requirement-btn.active {
-        color: #fff;
-    }
 
-    .form-control::placeholder {
-        color: rgba(255,255,255,0.5);
-    }
-</style> -->
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', () => {
+
+let initialized = false;
+
+function initCourseStep(){
+
+    if(initialized) return;
+    initialized = true;
 
     const addBtn = document.getElementById('addCourseTypeBtn');
     const courseList = document.getElementById('courseListContainer');
@@ -106,42 +107,59 @@ document.addEventListener('DOMContentLoaded', function () {
     const monthsInput = document.getElementById('durationMonths');
     const codeInput = document.getElementById('codeExtension');
 
-    // ================= SESSION LOAD =================
-    window.courseCatalog = JSON.parse(
-    document.getElementById('courseData').dataset.session
-) || [];
+    const sessionCourses = JSON.parse(
+        document.getElementById('courseData').dataset.session || '[]'
+    );
 
-    renderCourses(); // IMPORTANT
+    const dbCoursesRaw = JSON.parse(
+        document.getElementById('courseDBData').dataset.courses || '[]'
+    );
 
-    // ================= ADD COURSE =================
-    addBtn.addEventListener('click', function () {
+    // Convert DB format to session format
+    const dbCourses = dbCoursesRaw.map(course => ({
+        name: course.course_name,
+        years: course.duration_years,
+        months: course.duration_months,
+        code: course.code_extension,
+        requirements: course.requirements
+            ? course.requirements.map(r => ({
+                id: r.requirement_id,
+                name: r.requirement_name
+            }))
+            : []
+    }));
+
+    // Priority: Session → DB
+    window.courseCatalog = sessionCourses.length ? sessionCourses : dbCourses;
+
+    renderCourses();
+
+    addBtn.onclick = function () {
 
         const name = nameInput.value.trim();
         const years = yearsInput.value.trim();
         const months = monthsInput.value.trim();
+        const code = codeInput.value.trim().toUpperCase();
 
         const activeReqs = [];
 
         document.querySelectorAll('.requirement-btn.active').forEach(btn => {
             activeReqs.push({
-    id: btn.dataset.id,
-    name: btn.innerText.trim()
-});
+                id: btn.dataset.id,
+                name: btn.innerText.trim()
+            });
         });
 
         if (!name || !years || !months) {
-            alert('Please fill Course Name, Duration Years and Months');
+            Swal.fire({icon:'warning', title:'Fill course details'});
             return;
         }
 
-        
+        if (!code || code.length < 2) {
+            Swal.fire({icon:'warning', title:'Course code must be 2-3 characters'});
+            return;
+        }
 
-const code = codeInput.value.trim().toUpperCase();
-
-if (!code || code.length < 2) {
-    alert('Course code must be 2-3 characters');
-    return;
-}
         const courseData = {
             name,
             years,
@@ -153,13 +171,10 @@ if (!code || code.length < 2) {
         window.courseCatalog.push(courseData);
 
         saveCourseToSession();
-
         renderCourses();
-        document.dispatchEvent(new Event('coursesUpdated'));
         resetForm();
-    });
+    };
 
-    // ================= RENDER =================
     function renderCourses() {
 
         courseList.innerHTML = '';
@@ -174,7 +189,6 @@ if (!code || code.length < 2) {
         window.courseCatalog.forEach((course, index) => {
 
             const courseItem = document.createElement('div');
-            
 
             courseItem.className =
                 'configured-item d-flex justify-content-between align-items-start mb-3 p-3';
@@ -187,18 +201,17 @@ if (!code || code.length < 2) {
                     </div>
 
                     <div class="text-main small mb-2 fw-medium">
-                        <i class="bi bi-calendar3 me-2"></i>
                         ${course.years} years, ${course.months} months
                     </div>
 
                     <div style="font-size:12px;">
-    Requirements:
-    ${
-        course.requirements && course.requirements.length
-        ? course.requirements.map(r => r.name).join(', ')
-        : 'None'
-    }
-</div>
+                        Requirements:
+                        ${
+                            course.requirements && course.requirements.length
+                            ? course.requirements.map(r => r.name).join(', ')
+                            : 'None'
+                        }
+                    </div>
                 </div>
 
                 <button class="btn btn-sm btn-danger delete-course">
@@ -211,9 +224,7 @@ if (!code || code.length < 2) {
 
                     window.courseCatalog.splice(index, 1);
                     saveCourseToSession();
-                    document.dispatchEvent(new Event('coursesUpdated'));
                     renderCourses();
-
                 });
 
             courseList.appendChild(courseItem);
@@ -232,9 +243,7 @@ if (!code || code.length < 2) {
             .forEach(btn => btn.classList.remove('active'));
     }
 
-    // ================= SAVE FUNCTION =================
-    window.saveCourseStep = async function () {
-
+    async function saveCourseToSession() {
         await fetch('/institution/core-management/setup/save-step', {
             method: 'POST',
             headers: {
@@ -246,37 +255,27 @@ if (!code || code.length < 2) {
                 data: window.courseCatalog
             })
         });
+    }
+}
 
-    };
+// Run when step opened
+document.addEventListener('stepChanged', e => {
+    if(e.detail.step === 2){
+        initCourseStep();
+    }
+});
 
 });
 
 // Requirement toggle
 function toggleRequirement(btn) {
-    btn.classList.toggle('active');
+btn.classList.toggle('active');
 }
+
 window.getCourseCatalog = function () {
-    return window.courseCatalog || [];
+return window.courseCatalog || [];
 };
 
-async function saveCourseToSession() {
-    await fetch('/institution/core-management/setup/save-step', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({
-            step: 'courses',
-            data: window.courseCatalog
-        })
-    });
-}
-document.addEventListener('DOMContentLoaded', function () {
-    setTimeout(() => {
-        document.dispatchEvent(new Event('refreshCodeSetup'));
-    }, 200);
-});
 </script>
 
 

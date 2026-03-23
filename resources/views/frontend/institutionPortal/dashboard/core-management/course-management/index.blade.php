@@ -169,11 +169,13 @@ if (pane) {
 // ADD COURSE
 document.getElementById('saveCourseBtn')?.addEventListener('click', function () {
 
+const modal = document.getElementById('addCourseTypeModal');
+
 let formData = {
-    course_name: document.querySelector('[name="course_name"]').value,
-    duration_years: document.querySelector('[name="duration_years"]').value,
-    duration_months: document.querySelector('[name="duration_months"]').value,
-    code_extension: document.querySelector('[name="code_extension"]').value,
+    course_name: modal.querySelector('[name="course_name"]').value,
+    duration_years: modal.querySelector('[name="duration_years"]').value,
+    duration_months: modal.querySelector('[name="duration_months"]').value,
+    code_extension: modal.querySelector('[name="code_extension"]').value,
 };
 
 fetch('/institution/core-management/course-types/store', {
@@ -187,15 +189,25 @@ fetch('/institution/core-management/course-types/store', {
 .then(res => res.json())
 .then(data => {
     if (data.status) {
-        alert(data.message);
-        location.reload();
+        Swal.fire({
+    icon: 'success',
+    title: 'Course Added',
+    text: data.message,
+    confirmButtonColor: '#16a085',
+    background: '#1e1e2f',
+    color: '#fff',
+    timer: 1800,
+    showConfirmButton: false
+}).then(() => {
+    location.reload();
+});
     } else {
-        console.log(data.errors);
+        console.log(data);
+        alert('Error adding course');
     }
+})
+.catch(err => console.log(err));
 });
-});
-
-
 // UPDATE COURSE
 document.getElementById('updateCourseBtn')?.addEventListener('click', function () {
 
@@ -219,8 +231,20 @@ fetch(`/institution/core-management/course-types/update/${id}`, {
 .then(res => res.json())
 .then(data => {
     if (data.status) {
-        alert(data.message);
+        if (data.status) {
+    Swal.fire({
+        icon: 'success',
+        title: 'Course Updated',
+        text: data.message,
+        confirmButtonColor: '#16a085',
+        background: '#1e1e2f',
+        color: '#fff',
+        timer: 1800,
+        showConfirmButton: false
+    }).then(() => {
         location.reload();
+    });
+}
     } else {
         console.log(data.errors);
     }
@@ -234,7 +258,55 @@ document.querySelectorAll('.delete-btn').forEach(btn => {
 
         let id = this.dataset.id;
 
-        if (!confirm('Are you sure you want to delete this course?')) return;
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+
+        let id = this.dataset.id;
+
+        Swal.fire({
+            title: 'Delete Course?',
+            text: "This action cannot be undone",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e74c3c',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, Delete',
+            background: '#1e1e2f',
+            color: '#fff'
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                fetch(`/institution/core-management/course-types/delete/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status) {
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Deleted!',
+                            text: data.message,
+                            confirmButtonColor: '#16a085',
+                            background: '#1e1e2f',
+                            color: '#fff',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
+
+                    }
+                });
+
+            }
+        });
+    });
+});
 
         fetch(`/institution/core-management/course-types/delete/${id}`, {
             method: 'DELETE',

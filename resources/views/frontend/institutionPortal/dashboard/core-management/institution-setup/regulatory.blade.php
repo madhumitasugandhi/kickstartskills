@@ -79,8 +79,9 @@
 
             <div class="chip-container" id="accreditationContainer">
                 @foreach($accreditationBodies as $body)
-                <div class="chip-item accreditation-chip"
-                    data-id="{{ $body->accreditation_body_id }}">
+                <div class="chip-item accreditation-chip
+    {{ in_array($body->accreditation_body_id, $selectedAccreditations) ? 'active' : '' }}"
+    data-id="{{ $body->accreditation_body_id }}">
                     {{ $body->body_name }}
                 </div>
                 @endforeach
@@ -116,11 +117,18 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
+
+let initialized = false;
+
+function initRegulatoryStep(){
+
+    if(initialized) return;
+    initialized = true;
 
     const data = JSON.parse(
-        document.getElementById('regulatoryData').dataset.session
-    ) || {};
+        document.getElementById('regulatoryData').dataset.session || '{}'
+    );
 
     const chips = document.querySelectorAll('.accreditation-chip');
     const box = document.getElementById('selectedAccreditationsBox');
@@ -133,13 +141,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const ugc = document.querySelector('[name="ugc_number"]');
     const uni = document.querySelector('[name="affiliated_university"]');
 
-    // ================= RESTORE INPUTS =================
+    // SESSION override DB values
     if(data.aishe_code) aishe.value = data.aishe_code;
     if(data.aicte_id) aicte.value = data.aicte_id;
     if(data.ugc_number) ugc.value = data.ugc_number;
     if(data.affiliated_university) uni.value = data.affiliated_university;
 
-    // ================= RESTORE CHIPS =================
     if(data.accreditation_ids){
         const ids = data.accreditation_ids.split(',');
 
@@ -173,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateSelected();
 
-    // ================= SAVE FUNCTION =================
+    // SAVE FUNCTION
     window.saveRegulatoryStep = async function () {
 
         const payload = {
@@ -195,8 +202,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 data: payload
             })
         });
-
     };
+}
+
+// Initialize when step opened
+document.addEventListener('stepChanged', e => {
+    if(e.detail.step === 4){
+        initRegulatoryStep();
+    }
+});
 
 });
 </script>

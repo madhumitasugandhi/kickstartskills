@@ -67,9 +67,16 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
+let initialized = false;
+
+function initAdminStep(){
+
+    if(initialized) return;
+    initialized = true;
+
     const data = JSON.parse(
-        document.getElementById('adminData').dataset.session
-    ) || {};
+        document.getElementById('adminData').dataset.session || '{}'
+    );
 
     const name = document.querySelector('[name="name"]');
     const email = document.querySelector('[name="email"]');
@@ -77,18 +84,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const designation = document.querySelector('[name="designation"]');
     const password = document.querySelector('[name="password"]');
 
-    // ================= RESTORE =================
+    // SESSION override DB
     if(data.name) name.value = data.name;
     if(data.email) email.value = data.email;
     if(data.phone) phone.value = data.phone;
     if(data.designation) designation.value = data.designation;
 
-    // ================= SAVE =================
+    // SAVE FUNCTION
     window.saveAdminStep = async function () {
 
-        if(!name.value || !email.value || !phone.value || !designation.value || !password.value){
-            alert('Please fill all admin fields');
+        if(!name.value || !email.value || !phone.value || !designation.value){
+            Swal.fire({
+                icon:'warning',
+                title:'Please fill all admin fields'
+            });
             return false;
+        }
+
+        // Password validation only if entered
+        if(password.value){
+            if(password.value.length < 8){
+                Swal.fire({
+                    icon:'warning',
+                    title:'Password must be at least 8 characters'
+                });
+                return false;
+            }
         }
 
         await fetch('/institution/core-management/setup/save-step',{
@@ -110,8 +131,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         return true;
-
     };
+}
+
+// Initialize when step opened
+document.addEventListener('stepChanged', e => {
+    if(e.detail.step === 5){
+        initAdminStep();
+    }
+});
 
 });
 </script>

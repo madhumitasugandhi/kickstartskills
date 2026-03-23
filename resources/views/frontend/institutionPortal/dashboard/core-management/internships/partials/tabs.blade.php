@@ -11,7 +11,7 @@ $tabs = [
 <div class="glass-card mb-4">
     <div class="d-flex gap-3 flex-wrap">
         @foreach($tabs as $key => $tabItem)
-            <a href="{{ route('institution.internships',$key) }}"
+            <a href="{{ route('institution.core.internships.index', $key) }}"
                class="tab-btn {{ $tab === $key ? 'active' : '' }}">
                 <i class="bi {{ $tabItem['icon'] }}"></i>
                 {{ $tabItem['label'] }}

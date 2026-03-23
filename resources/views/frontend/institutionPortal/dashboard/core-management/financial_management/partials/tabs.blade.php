@@ -3,27 +3,27 @@
     <!-- DESKTOP TABS -->
     <div class="course-tabs financial-tabs desktop-tabs">
         <a class="tab-btn {{ $tab === 'overview' ? 'active' : '' }}"
-           href="{{ route('institution.financial-management', 'overview') }}">
+           href="{{ route('institution.core.financial-management', 'overview') }}">
             <i class="bi bi-pie-chart"></i> Overview
         </a>
 
         <a class="tab-btn {{ $tab === 'fee-structure' ? 'active' : '' }}"
-           href="{{ route('institution.financial-management', 'fee-structure') }}">
+           href="{{ route('institution.core.financial-management', 'fee-structure') }}">
             <i class="bi bi-card-list"></i> Fee Structures
         </a>
 
         <a class="tab-btn {{ $tab === 'payments' ? 'active' : '' }}"
-           href="{{ route('institution.financial-management', 'payments') }}">
+           href="{{ route('institution.core.financial-management', 'payments') }}">
             <i class="bi bi-cash-stack"></i> Payments
         </a>
 
         <a class="tab-btn {{ $tab === 'expenses' ? 'active' : '' }}"
-           href="{{ route('institution.financial-management', 'expenses') }}">
+           href="{{ route('institution.core.financial-management', 'expenses') }}">
             <i class="bi bi-receipt"></i> Expenses
         </a>
 
         <a class="tab-btn {{ $tab === 'reports' ? 'active' : '' }}"
-           href="{{ route('institution.financial-management', 'reports') }}">
+           href="{{ route('institution.core.financial-management', 'reports') }}">
             <i class="bi bi-file-earmark-text"></i> Reports
         </a>
     </div>
@@ -43,31 +43,31 @@
 
     <ul class="dropdown-menu-custom" id="financeTabMenu">
         <li>
-            <a href="{{ route('institution.financial-management','overview') }}"
+            <a href="{{ route('institution.core.financial-management','overview') }}"
                class="{{ $tab==='overview'?'active':'' }}">
                 <i class="bi bi-pie-chart"></i> Overview
             </a>
         </li>
         <li>
-            <a href="{{ route('institution.financial-management','fee-structure') }}"
+            <a href="{{ route('institution.core.financial-management','fee-structure') }}"
                class="{{ $tab==='fee-structure'?'active':'' }}">
                 <i class="bi bi-card-list"></i> Fee Structures
             </a>
         </li>
         <li>
-            <a href="{{ route('institution.financial-management','payments') }}"
+            <a href="{{ route('institution.core.financial-management','payments') }}"
                class="{{ $tab==='payments'?'active':'' }}">
                 <i class="bi bi-cash-stack"></i> Payments
             </a>
         </li>
         <li>
-            <a href="{{ route('institution.financial-management','expenses') }}"
+            <a href="{{ route('institution.core.financial-management','expenses') }}"
                class="{{ $tab==='expenses'?'active':'' }}">
                 <i class="bi bi-receipt"></i> Expenses
             </a>
         </li>
         <li>
-            <a href="{{ route('institution.financial-management','reports') }}"
+            <a href="{{ route('institution.core.financial-management','reports') }}"
                class="{{ $tab==='reports'?'active':'' }}">
                 <i class="bi bi-file-earmark-text"></i> Reports
             </a>

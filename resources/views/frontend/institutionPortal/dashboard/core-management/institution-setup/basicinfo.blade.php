@@ -47,12 +47,12 @@
                 <label class="form-label-custom">Institution Name *</label>
                 <div class="input-group-custom">
                     <i class="bi bi-bank"></i>
-                    <input
-                        type="text"
+                    <input type="text"
                         name="institution_name"
                         class="form-control ps-5"
                         value="{{ $sessionData['basic']['institution_name'] ?? $institution->institution_name }}"
                         required>
+                    <small class="text-danger error-msg" data-error="institution_name"></small>
                 </div>
             </div>
         </div>
@@ -96,12 +96,12 @@
                 <label class="form-label-custom">Phone Number *</label>
                 <div class="input-group-custom">
                     <i class="bi bi-telephone"></i>
-                    <input
-                        type="text"
+                    <input type="text"
                         name="phone"
                         class="form-control ps-5"
                         value="{{ $sessionData['basic']['phone'] ?? $institution->phone }}"
                         required>
+                    <small class="text-danger error-msg" data-error="phone"></small>
                 </div>
             </div>
 
@@ -109,12 +109,12 @@
                 <label class="form-label-custom">Official Email *</label>
                 <div class="input-group-custom">
                     <i class="bi bi-envelope"></i>
-                    <input
-                        type="email"
+                    <input type="email"
                         name="email"
                         class="form-control ps-5"
                         value="{{ $sessionData['basic']['email'] ?? $institution->email }}"
                         required>
+                    <small class="text-danger error-msg" data-error="email"></small>
                 </div>
             </div>
         </div>
@@ -128,12 +128,12 @@
             <label class="form-label-custom">Address Line 1 *</label>
             <div class="input-group-custom">
                 <i class="bi bi-geo-alt"></i>
-                <input
-                    type="text"
+                <input type="text"
                     name="address_line1"
                     class="form-control ps-5"
                     value="{{ $sessionData['basic']['address_line1'] ?? ($address->address_line1 ?? '') }}"
                     required>
+                <small class="text-danger error-msg" data-error="address_line1"></small>
             </div>
         </div>
 
@@ -151,7 +151,7 @@
 
                     <option value="{{ $id }}"
                         {{ ($sessionData['basic']['state'] ?? ($address->state_id ?? '')) == $id ? 'selected' : '' }}>
-                            {{ $name }}
+                        {{ $name }}
                         @endforeach
 
                 </select>
@@ -173,7 +173,7 @@
 
                     <option value="{{ $id }}"
                         {{ ($sessionData['basic']['city'] ?? ($address->city_id ?? '')) == $id ? 'selected' : '' }}>
-                            {{ $name }}
+                        {{ $name }}
                         @endforeach
 
                         @endif
@@ -187,11 +187,12 @@
 
                 <label class="form-label-custom">PIN Code *</label>
 
-                <input
-                    type="text"
+                <input type="text"
                     name="postal_code"
                     class="form-control"
-                    value="{{ $sessionData['basic']['postal_code'] ?? ($address->postal_code ?? '') }}" required>
+                    value="{{ $sessionData['basic']['postal_code'] ?? ($address->postal_code ?? '') }}"
+                    required>
+                <small class="text-danger error-msg" data-error="postal_code"></small>
 
             </div>
 
@@ -200,29 +201,28 @@
 
 </div>
 <script>
-document.getElementById('stateDropdown').addEventListener('change', function () {
+    document.getElementById('stateDropdown').addEventListener('change', function() {
 
-    let stateId = this.value;
-    let cityDropdown = document.getElementById('cityDropdown');
+        let stateId = this.value;
+        let cityDropdown = document.getElementById('cityDropdown');
 
-    cityDropdown.innerHTML = '<option value="">Loading...</option>';
+        cityDropdown.innerHTML = '<option value="">Loading...</option>';
 
-    fetch(`/api/cities/${stateId}`)
-        .then(res => res.json())
-        .then(data => {
+        fetch(`/api/cities/${stateId}`)
+            .then(res => res.json())
+            .then(data => {
 
-            cityDropdown.innerHTML = '<option value="">Select City</option>';
+                cityDropdown.innerHTML = '<option value="">Select City</option>';
 
-            data.forEach(city => {
-                cityDropdown.innerHTML += 
-                    `<option value="${city.id}">${city.name}</option>`;
+                data.forEach(city => {
+                    cityDropdown.innerHTML +=
+                        `<option value="${city.id}">${city.name}</option>`;
+                });
+
+            })
+            .catch(() => {
+                cityDropdown.innerHTML = '<option value="">Error loading cities</option>';
             });
 
-        })
-        .catch(() => {
-            cityDropdown.innerHTML = '<option value="">Error loading cities</option>';
-        });
-
-});
-
+    });
 </script>
