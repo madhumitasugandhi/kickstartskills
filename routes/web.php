@@ -17,6 +17,7 @@ use App\Http\Controllers\Mentor\MentorSessionController;
 use App\Http\Controllers\Mentor\MentorStudentController;
 use App\Http\Controllers\Student\StudentAuthController;
 use App\Http\Controllers\Student\StudentProfileController;
+use App\Http\Controllers\Student\StudentExaminationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -107,29 +108,28 @@ Route::prefix('student')->middleware(['auth', 'student'])->group(function () {
         Route::post('/portfolio/achievements/save', [StudentProfileController::class, 'achievementStore'])->name('achievements.save');
         Route::delete('/portfolio/achievements/delete/{id}', [StudentProfileController::class, 'achievementDelete'])->name('achievements.delete');
     });
-});
-/* 3. Examinations Section (Grouped Routes) */
-Route::prefix('student/dashboard/examinations')->name('student.exam.')->group(function () {
+    
+    /* 3. Examinations Section */
+    Route::prefix('dashboard/examinations')->name('student.exam.')->group(function () {
 
-    // 1st Option: Take Test
-    Route::get('/take-test', function () {
-        return view('frontend.studentPortal.dashboard.examinations.takeTestIndex');
-    })->name('take');
+        // 1st Option: Take Test (The Instruction Hub)
+        Route::get('/take-test', [StudentExaminationController::class, 'takeTestIndex'])->name('take');
 
-    // 2nd Option: Test History (Placeholder)
-    Route::get('/history', function () {
-        return view('frontend.studentPortal.dashboard.examinations.testHistoryIndex');
-    })->name('history');
+        // Start Test: This is the dynamic route for the live quiz
+        Route::get('/start-test/{id}', [StudentExaminationController::class, 'startTest'])->name('start');
 
-    // 3rd Option: Results (Placeholder)
-    Route::get('/results', function () {
-        return view('frontend.studentPortal.dashboard.examinations.resultsIndex');
-    })->name('results');
+        // 2nd Option: Test History
+        Route::get('/history', [StudentExaminationController::class, 'testHistory'])->name('history');
 
-    // 4th Option: Practice Tests (Placeholder)
-    Route::get('/practice', function () {
-        return view('frontend.studentPortal.dashboard.examinations.practiceTestsIndex');
-    })->name('practice');
+        // 3rd Option: Results
+        Route::get('/results', [StudentExaminationController::class, 'results'])->name('results');
+
+        // 4th Option: Practice Tests
+        Route::get('/practice', [StudentExaminationController::class, 'practiceIndex'])->name('practice');
+
+        // Test Submission: Logic to calculate and save marks
+        Route::post('/submit-quiz', [StudentExaminationController::class, 'submitQuiz'])->name('submit');
+    });
 });
 
 /*Learning section Group Routes*/
@@ -289,12 +289,11 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
         return view('frontend.institutionPortal.dashboard.index');
     })->name('dashboard');
     Route::get('/setup', [InstitutionController::class, 'showSetup'])
-    ->name('setup');
+        ->name('setup');
     Route::post('/setup', [InstitutionController::class, 'showSetup'])
-    ->name('setup');
-    Route::post('/setup/save-step',[InstitutionController::class,'saveStep']);
-    Route::post('/setup/complete',[InstitutionController::class,'completeSetup']);
-    
+        ->name('setup');
+    Route::post('/setup/save-step', [InstitutionController::class, 'saveStep']);
+    Route::post('/setup/complete', [InstitutionController::class, 'completeSetup']);
     Route::get('/course-management', function () {
         return view('frontend.institutionPortal.dashboard.core-management.course-management.index');
     })->name('course-management');
