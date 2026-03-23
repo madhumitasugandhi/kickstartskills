@@ -7,6 +7,11 @@ use App\Http\Controllers\GeoController;
 use App\Http\Controllers\Institution\InstitutionAuthController;
 use App\Http\Controllers\Institution\InstitutionController;
 use App\Http\Controllers\Institution\InstitutionProgramController;
+use App\Http\Controllers\Institution\InstitutionCourseController;
+use App\Http\Controllers\Institution\InstitutionDepartmentController;
+use App\Http\Controllers\Institution\CourseTypeController;
+use App\Http\Controllers\Institution\CourseRequirementController;
+use App\Http\Controllers\Institution\InstitutionDriveController;
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -288,64 +293,128 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
     Route::get('/dashboard', function () {
         return view('frontend.institutionPortal.dashboard.index');
     })->name('dashboard');
-    Route::get('/setup', [InstitutionController::class, 'showSetup'])
-    ->name('setup');
-    Route::post('/setup', [InstitutionController::class, 'showSetup'])
-    ->name('setup');
-    Route::post('/setup/save-step',[InstitutionController::class,'saveStep']);
-    Route::post('/setup/complete',[InstitutionController::class,'completeSetup']);
-    
-    Route::get('/course-management', function () {
-        return view('frontend.institutionPortal.dashboard.core-management.course-management.index');
-    })->name('course-management');
-    Route::get('/drive-management', function () {
-        return view('frontend.institutionPortal.dashboard.core-management.drivemanagement.index');
-    })->name('drive-management');
-    Route::get('/academic-structure', function () {
-        return view('frontend.institutionPortal.dashboard.core-management.academic_structure.index');
-    })->name('academic-structure');
-    Route::get('/internships/{tab?}', function ($tab = 'overview') {
+    /* =============================
+       CORE MANAGEMENT GROUP 🔥
+    ============================== */
+    Route::prefix('core-management')->name('core.')->group(function () {
+        Route::get('/setup', [InstitutionController::class, 'showSetup'])
+            ->name('setup');
+        Route::post('/setup', [InstitutionController::class, 'showSetup'])
+            ->name('setup');
+        Route::post('/setup/save-step', [InstitutionController::class, 'saveStep']);
+        Route::post('/final-submit', [InstitutionController::class, 'finalSubmit']);
+        Route::post('/setup/complete', [InstitutionController::class, 'completeSetup']);
 
-        $allowedTabs = [
-            'overview',
-            'drives',
-            'students',
-            'partners',
-            'analytics'
-        ];
+        Route::get('/course-management', [CourseTypeController::class, 'index'])
+            ->name('course-management');
+        Route::prefix('course-types')->name('course-types.')->group(function () {
+            Route::post('/store', [CourseTypeController::class, 'store'])->name('store');
+            Route::post('/update/{id}', [CourseTypeController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [CourseTypeController::class, 'destroy'])->name('delete');
+        });
 
-        if (!in_array($tab, $allowedTabs)) {
-            abort(404);
-        }
+        Route::prefix('requirements')->name('requirements.')->group(function () {
 
-        return view(
-            'frontend.institutionPortal.dashboard.core-management.internships.index',
-            compact('tab')
-        );
-    })->name('internships');
-    Route::get('/financial-management/{tab?}', function ($tab = 'overview') {
+            Route::get('/', [CourseRequirementController::class, 'index'])->name('index');
+        
+            Route::post('/store', [CourseRequirementController::class, 'store'])->name('store');
+        
+            Route::delete('/delete/{id}', [CourseRequirementController::class, 'destroy'])->name('delete');
+        
+        });
 
-        $allowedTabs = [
-            'overview',
-            'fee-structure',
-            'payments',
-            'expenses',
-            'reports'
-        ];
+        Route::get('/drive-management', function () {
+            return view('frontend.institutionPortal.dashboard.core-management.drivemanagement.index');
+        })->name('drive-management');
 
-        if (!in_array($tab, $allowedTabs)) {
-            abort(404);
-        }
+        Route::get('/academic-structure', function () {
 
-        return view(
-            'frontend.institutionPortal.dashboard.core-management.financial_management.index',
-            compact('tab')
-        );
+            $tab = request('tab', 'overview');
+            $institutionId = session('institution_id');
+        
+            $departments = \App\Models\Institution\InstitutionDepartment::where('institution_id', $institutionId)->get();
+        
+            return view(
+                'frontend.institutionPortal.dashboard.core-management.academic_structure.index',
+                compact('tab', 'departments')
+            );
+        
+        })->name('academic-structure');
 
-    })->name('financial-management');
-    Route::get('/system-integrations', function () {
-        return view('frontend.institutionPortal.dashboard.core-management.system.index');
-    })->name('system-integrations');
+        Route::prefix('academic-structure/departments')->name('academic-structure.departments.')->group(function () {
+
+            Route::post('/store', [InstitutionDepartmentController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [InstitutionDepartmentController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [InstitutionDepartmentController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [InstitutionDepartmentController::class, 'destroy'])->name('delete');
+        
+        });
+
+        Route::prefix('internships')->name('internships.')->group(function () {
+
+            // Tabs Page
+            Route::get('/{tab?}', function ($tab = 'overview') {
+        
+                $allowedTabs = [
+                    'overview',
+                    'drives',
+                    'students',
+                    'partners',
+                    'analytics'
+                ];
+        
+                if (!in_array($tab, $allowedTabs)) {
+                    abort(404);
+                }
+        
+                return view(
+                    'frontend.institutionPortal.dashboard.core-management.internships.index',
+                    compact('tab')
+                );
+            })->name('index');
+        
+        
+            /* =============================
+               INTERNSHIP DRIVES CRUD
+            ============================== */
+            Route::prefix('drives')->name('drives.')->group(function () {
+        
+                Route::get('/', [InstitutionDriveController::class, 'index'])->name('list');
+                Route::post('/store', [InstitutionDriveController::class, 'store'])->name('store');
+                Route::get('/edit/{id}', [InstitutionDriveController::class, 'edit'])->name('edit');
+                Route::post('/update/{id}', [InstitutionDriveController::class, 'update'])->name('update');
+                Route::delete('/delete/{id}', [InstitutionDriveController::class, 'destroy'])->name('delete');
+                Route::post('/status', [InstitutionDriveController::class, 'changeStatus'])->name('status');
+        
+            });
+        
+        });
+
+        Route::get('/financial-management/{tab?}', function ($tab = 'overview') {
+
+            $allowedTabs = [
+                'overview',
+                'fee-structure',
+                'payments',
+                'expenses',
+                'reports'
+            ];
+
+            if (!in_array($tab, $allowedTabs)) {
+                abort(404);
+            }
+
+            return view(
+                'frontend.institutionPortal.dashboard.core-management.financial_management.index',
+                compact('tab')
+            );
+        })->name('financial-management');
+
+        Route::get('/system-integrations', function () {
+            return view('frontend.institutionPortal.dashboard.core-management.system.index');
+        })->name('system-integrations');
+    });
+
     Route::get('/program-management', [InstitutionProgramController::class, 'index'])
         ->name('program-management');
     Route::post('/program-management/store', [InstitutionProgramController::class, 'store'])
@@ -408,8 +477,6 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
     Route::get('/notifications', function () {
         return view('frontend.institutionPortal.dashboard.notifications.index');
     })->name('notifications');
-
-
 });
 
 
@@ -549,7 +616,6 @@ Route::prefix('mentor')->name('mentor.')->middleware(['auth', 'mentor'])->group(
     Route::get('/settings', function () {
         return view('frontend.mentorPortal.dashboard.general.settings');
     })->name('settings');
-
 });
 
 /*|------------------------------------------------End Mentor Portal Routes--------------------------------------------------|*/
@@ -618,7 +684,6 @@ Route::prefix('hr')->name('hr.')->group(function () {
     Route::get('/settings', function () {
         return view('frontend.hrPortal.dashboard.settings');
     })->name('settings');
-
 });
 /*|------------------------------------------------End HR Portal Routes--------------------------------------------------|*/
 
@@ -650,7 +715,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // 2. User Management
-// User Management Routes
+    // User Management Routes
     Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('users');
     Route::post('/users/store', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('users.store');
 
@@ -719,7 +784,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/intelligence', function () {
         return view('frontend.adminPortal.dashboard.intelligence');
     })->name('intelligence');
-
 });
 /*|------------------------------------------------End Admin Portal Routes--------------------------------------------------|*/
 

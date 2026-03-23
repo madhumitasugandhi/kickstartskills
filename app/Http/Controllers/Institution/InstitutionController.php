@@ -30,34 +30,6 @@ use App\Models\City;
 class InstitutionController extends Controller
 {
 
-    private function generateInstitutionCode($name, $pincode)
-    {
-        $words = preg_split('/\s+/', trim($name));
-
-        // Generate 3-letter institution prefix
-        if (count($words) >= 3) {
-            $prefix =
-                substr($words[0], 0, 1) .
-                substr($words[1], 0, 1) .
-                substr($words[2], 0, 1);
-        } elseif (count($words) == 2) {
-            $prefix =
-                substr($words[0], 0, 2) .
-                substr($words[1], 0, 1);
-        } else {
-            $prefix = substr($words[0], 0, 3);
-        }
-
-        $prefix = strtoupper($prefix);
-
-        // Registration year
-        $year = date('Y');
-
-        // Last 3 digits of pincode
-        $pinPart = str_pad(substr($pincode, -3), 3, '0', STR_PAD_LEFT);
-        return $prefix . '-' . $year . '-' . $pinPart;
-    }
-
     /*
     |--------------------------------------------------------------------------
     | INSTITUTION REGISTRATION
@@ -93,11 +65,14 @@ class InstitutionController extends Controller
             'phone' => 'required|max:20',
 
             'country_id' => 'required',
-            'city' => 'required',
-            'state' => 'required',
+            'state' => 'required|exists:states,id',
+            'city' => 'required|exists:cities,id',
             'address_line1' => 'required|max:255',
             'zip' => 'required|max:20',
 
+            'aishe_code' => 'required',
+            'aicte_id' => 'required',
+            'ugc_number' => 'required',
             'institution_type_id' => 'required',
             'terms_accepted' => 'accepted'
         ]);
@@ -107,17 +82,17 @@ class InstitutionController extends Controller
 
         try {
 
-            $institutionCode = $this->generateInstitutionCode(
-                $formData['institution_name'],
-                $formData['zip']
-            );
+
             $institution = Institution::create([
                 'institution_name' => $formData['institution_name'],
-                'institution_code' => $institutionCode,
                 'representative_name' => $formData['representative_name'],
                 'email' => $formData['email'],
                 'phone' => $formData['phone'],
                 'institution_type_id' => $formData['institution_type_id'],
+
+                'aishe_code' => $formData['aishe_code'],
+                'aicte_id' => $formData['aicte_id'],
+                'ugc_number' => $formData['ugc_number'],
                 'password_hash' => Hash::make($formData['password']),
                 'status' => 'pending',
                 'setup_status' => 'registered',
@@ -347,7 +322,7 @@ class InstitutionController extends Controller
                 }
 
                 //===================Code==================
-                if(isset($data['code'])){
+                if (isset($data['code'])) {
                     Institution::where('institution_id', $institutionId)->update([
                         'institution_code_prefix' => $data['code']['prefix'] ?? null
                     ]);
@@ -371,9 +346,12 @@ class InstitutionController extends Controller
 
                         if (!empty($course['requirements'])) {
                             foreach ($course['requirements'] as $req) {
+
+                                $reqId = is_array($req) ? $req['id'] : $req;
+
                                 CourseTypeRequirement::create([
                                     'course_type_id' => $courseType->course_type_id,
-                                    'requirement_id' => $req
+                                    'requirement_id' => $reqId
                                 ]);
                             }
                         }
@@ -422,8 +400,7 @@ class InstitutionController extends Controller
 
             DB::commit();
 
-            return back()->with('success','Completed');
-            
+            return back()->with('success', 'Completed');
         } catch (\Exception $e) {
 
             DB::rollback();
@@ -433,35 +410,34 @@ class InstitutionController extends Controller
     }
 
     public function completeSetup()
-{
-    try {
+    {
+        try {
 
-        $institutionId = Session::get('institution_id');
+            $institutionId = Session::get('institution_id');
 
-        if(!$institutionId){
+            if (!$institutionId) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Session expired'
+                ]);
+            }
+
+            // mark setup complete
+            Institution::where('institution_id', $institutionId)
+                ->update([
+                    'setup_status' => 'completed',
+                    'status' => 'active'
+                ]);
+
+            return response()->json([
+                'status' => 'success'
+            ]);
+        } catch (\Exception $e) {
+
             return response()->json([
                 'status' => 'error',
-                'message' => 'Session expired'
-            ]);
+                'message' => $e->getMessage()
+            ], 500);
         }
-
-        // mark setup complete
-        Institution::where('institution_id', $institutionId)
-            ->update([
-                'setup_status' => 'completed',
-                'status' => 'active'
-            ]);
-
-        return response()->json([
-            'status' => 'success'
-        ]);
-
-    } catch (\Exception $e) {
-
-        return response()->json([
-            'status' => 'error',
-            'message' => $e->getMessage()
-        ], 500);
     }
-}
 }
