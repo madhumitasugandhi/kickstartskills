@@ -18,6 +18,8 @@ use App\Http\Controllers\Institution\FacultyController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ForgotPasswordController;
+use App\Http\Controllers\Admin\AdminQuestionController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Mentor\MentorAuthController;
 use App\Http\Controllers\Mentor\MentorDashboardController;
 use App\Http\Controllers\Mentor\MentorSessionController;
@@ -718,13 +720,11 @@ Route::prefix('hr')->name('hr.')->group(function () {
 /*|------------------------------------------------End HR Portal Routes--------------------------------------------------|*/
 
 /*|------------------------------------------------Start Admin Portal Routes--------------------------------------------------|*/
-// Replace your static login route with these:
+/* ----------------------- Public Admin Routes (No Auth) ----------------------- */
 Route::get('/admin-login', [AuthController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin-login', [AuthController::class, 'login'])->name('admin.login.submit');
-Route::post('/admin-logout', [AuthController::class, 'logout'])->name('admin.logout');
 
-// Forgot Password (Correction: Fixed the URL to match admin path)
-// Make sure these match the names you used in your AJAX fetch calls
+// Forgot Password Routes
 Route::get('/admin-forgot-password', function () {
     return view('frontend.adminPortal.auth.forgot_password');
 })->name('admin.forgot.password');
@@ -733,87 +733,48 @@ Route::post('/admin/forgot-password/send-otp', [ForgotPasswordController::class,
 Route::post('/admin/forgot-password/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('admin.otp.verify');
 Route::post('/admin/forgot-password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('admin.password.update');
 
-// Forgot Password (Correction: Fixed the URL to match admin path)
-Route::get('/admin/forgot-password', function () {
-    return view('frontend.adminPortal.auth.forgot_password');
-});
 
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
-    // ... all your dashboard, users, and security routes go here ...
+/* ----------------------- Protected Admin Routes (With Auth & Admin Middleware) ----------------------- */
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // 1. Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // 2. User Management
-    // User Management Routes
-    Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('users');
-    Route::post('/users/store', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('users.store');
+    Route::controller(UserController::class)->group(function () {
+        Route::get('/users', 'index')->name('users');
+        Route::post('/users/store', 'store')->name('users.store');
+        Route::put('/users/update/{id}', 'update')->name('users.update');
+        Route::delete('/users/delete/{id}', 'destroy')->name('users.delete');
+    });
 
-    // Keep this one for the update functionality
-    Route::put('/users/update/{id}', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
+    // 3. Question Bank (Fixed Prefix)
+    Route::prefix('questions')->name('questions.')->group(function () {
+        Route::get('/', [AdminQuestionController::class, 'index'])->name('index');
+        Route::get('/create', [AdminQuestionController::class, 'create'])->name('create');
+        Route::post('/store', [AdminQuestionController::class, 'store'])->name('store');
+        // --- YE WALE ROUTES ADD KARO ---
+        Route::delete('/delete/{id}', [AdminQuestionController::class, 'destroy'])->name('destroy');
+        Route::get('/edit/{id}', [AdminQuestionController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [AdminQuestionController::class, 'update'])->name('update');
+        Route::get('/get-subcategories/{categoryId}', [AdminQuestionController::class, 'getSubcategories'])->name('get_subcategories');
+    });
 
-    Route::delete('/users/delete/{id}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.delete');
-
-
-    // 3. Drive Oversight
-    Route::get('/drives', function () {
-        return view('frontend.adminPortal.dashboard.driveOversight');
-    })->name('drives');
-
-    // 4. Institutions
-    Route::get('/institutions', function () {
-        return view('frontend.adminPortal.dashboard.institutions');
-    })->name('institutions');
-
-    // 5. System Config
-    Route::get('/system', function () {
-        return view('frontend.adminPortal.dashboard.systemConfig');
-    })->name('system');
-
-    // 6. Analytics
-    Route::get('/analytics', function () {
-        return view('frontend.adminPortal.dashboard.analytics');
-    })->name('analytics');
-
-    // 7. Security
-    Route::get('/security', function () {
-        return view('frontend.adminPortal.dashboard.security');
-    })->name('security');
-
-    // 8. Content Management
-    Route::get('/content', function () {
-        return view('frontend.adminPortal.dashboard.content');
-    })->name('content');
-
-    // 9. Support
-    Route::get('/support', function () {
-        return view('frontend.adminPortal.dashboard.support');
-    })->name('support');
-
-    // 10. Billing
-    Route::get('/billing', function () {
-        return view('frontend.adminPortal.dashboard.billing');
-    })->name('billing');
-
-    // 11. AI Analytics
-    Route::get('/ai-analytics', function () {
-        return view('frontend.adminPortal.dashboard.aiAnalytics');
-    })->name('ai_analytics');
-
-    // 12. Workflows
-    Route::get('/workflows', function () {
-        return view('frontend.adminPortal.dashboard.workflows');
-    })->name('workflows');
-
-    // 13. Monitoring
-    Route::get('/monitoring', function () {
-        return view('frontend.adminPortal.dashboard.monitoring');
-    })->name('monitoring');
-
-    // 14. Intelligence
-    Route::get('/intelligence', function () {
-        return view('frontend.adminPortal.dashboard.intelligence');
-    })->name('intelligence');
+    // 4. Other Modules (Static Views)
+    Route::get('/drives', fn() => view('frontend.adminPortal.dashboard.driveOversight'))->name('drives');
+    Route::get('/institutions', fn() => view('frontend.adminPortal.dashboard.institutions'))->name('institutions');
+    Route::get('/system', fn() => view('frontend.adminPortal.dashboard.systemConfig'))->name('system');
+    Route::get('/analytics', fn() => view('frontend.adminPortal.dashboard.analytics'))->name('analytics');
+    Route::get('/security', fn() => view('frontend.adminPortal.dashboard.security'))->name('security');
+    Route::get('/content', fn() => view('frontend.adminPortal.dashboard.content'))->name('content');
+    Route::get('/support', fn() => view('frontend.adminPortal.dashboard.support'))->name('support');
+    Route::get('/billing', fn() => view('frontend.adminPortal.dashboard.billing'))->name('billing');
+    Route::get('/ai-analytics', fn() => view('frontend.adminPortal.dashboard.aiAnalytics'))->name('ai_analytics');
+    Route::get('/workflows', fn() => view('frontend.adminPortal.dashboard.workflows'))->name('workflows');
+    Route::get('/monitoring', fn() => view('frontend.adminPortal.dashboard.monitoring'))->name('monitoring');
+    Route::get('/intelligence', fn() => view('frontend.adminPortal.dashboard.intelligence'))->name('intelligence');
 });
 /*|------------------------------------------------End Admin Portal Routes--------------------------------------------------|*/
 
