@@ -144,7 +144,21 @@ class InstitutionController extends Controller
             return $this->uploadDocument($request);
         }
 
-        $institution = Institution::with('addresses')->findOrFail($institutionId);
+        $institution = Institution::with([
+            'addresses',
+            'departments',
+            'programs',
+            'courseTypes.requirements',
+            'admins',
+            'documents',
+            'accreditations'
+        ])->findOrFail($institutionId);
+
+        $departments = InstitutionDepartment::where('institution_id', $institutionId)
+    ->pluck('department_name');
+
+$programs = InstitutionProgram::where('institution_id', $institutionId)
+    ->pluck('program_name');
 
         $types = InstitutionType::all();
         $requirements = CourseRequirement::all();
@@ -172,6 +186,18 @@ class InstitutionController extends Controller
 
         $progress = InstitutionSetupProgress::where('institution_id', $institutionId)->first();
 
+        $totalSteps = 6;
+$completed = 0;
+
+if ($progress->basic_info_completed) $completed++;
+if ($progress->academic_completed) $completed++;
+if ($progress->courses_completed) $completed++;
+if ($progress->regulatory_completed) $completed++;
+if ($progress->admin_completed) $completed++;
+if ($progress->documents_uploaded) $completed++;
+
+$progressPercent = ($completed / $totalSteps) * 100;
+
         $isCompleted = $progress &&
             $progress->basic_info_completed &&
             $progress->academic_completed &&
@@ -179,6 +205,16 @@ class InstitutionController extends Controller
             $progress->regulatory_completed &&
             $progress->admin_completed &&
             $progress->documents_uploaded;
+
+            // ================= RESUME STEP =================
+$resumeStep = 0;
+
+if ($progress->basic_info_completed) $resumeStep = 1;
+if ($progress->academic_completed) $resumeStep = 2;
+if ($progress->courses_completed) $resumeStep = 3;
+if ($progress->regulatory_completed) $resumeStep = 4;
+if ($progress->admin_completed) $resumeStep = 5;
+if ($progress->documents_uploaded) $resumeStep = 6;
 
         return view(
             'frontend.institutionPortal.dashboard.core-management.institution-setup.index',
@@ -195,25 +231,41 @@ class InstitutionController extends Controller
                 'admin',
                 'documents',
                 'isCompleted',
-                'sessionData'
+                'sessionData',
+                'progressPercent',
+                'departments',
+                'programs',
+                'resumeStep'
             )
         );
     }
 
     public function saveStep(Request $request)
-    {
-        $step = $request->step;
-        $data = $request->data;
+{
+    $step = $request->step;
+    $data = $request->data;
+    $institutionId = Session::get('institution_id');
 
-        // DEBUG (optional)
-        // dd($step, $data);
+    session()->put("institution_setup.$step", $data);
 
-        session()->put("institution_setup.$step", $data);
+    // Update progress
+    $progressFieldMap = [
+        'basic' => 'basic_info_completed',
+        'academic' => 'academic_completed',
+        'courses' => 'courses_completed',
+        'regulatory' => 'regulatory_completed',
+        'admin' => 'admin_completed'
+    ];
 
-        return response()->json([
-            'status' => 'success'
-        ]);
+    if(isset($progressFieldMap[$step])){
+        InstitutionSetupProgress::where('institution_id', $institutionId)
+            ->update([$progressFieldMap[$step] => 1]);
     }
+
+    return response()->json([
+        'status' => 'success'
+    ]);
+}
 
 
     public function uploadDocument(Request $request)
@@ -306,19 +358,23 @@ class InstitutionController extends Controller
 
                 // ================= ACADEMIC =================
                 if (isset($data['academic'])) {
-                    foreach ($data['academic']['departments'] as $dept) {
-                        InstitutionDepartment::firstOrCreate([
-                            'institution_id' => $institutionId,
-                            'department_name' => $dept
-                        ]);
-                    }
+                    InstitutionDepartment::where('institution_id', $institutionId)->delete();
 
-                    foreach ($data['academic']['programs'] as $program) {
-                        InstitutionProgram::firstOrCreate([
-                            'institution_id' => $institutionId,
-                            'program_name' => $program
-                        ]);
-                    }
+foreach ($data['academic']['departments'] as $dept) {
+    InstitutionDepartment::create([
+        'institution_id' => $institutionId,
+        'department_name' => $dept
+    ]);
+}
+
+InstitutionProgram::where('institution_id', $institutionId)->delete();
+
+foreach ($data['academic']['programs'] as $program) {
+    InstitutionProgram::create([
+        'institution_id' => $institutionId,
+        'program_name' => $program
+    ]);
+}
                 }
 
                 //===================Code==================
@@ -328,35 +384,42 @@ class InstitutionController extends Controller
                     ]);
                 }
 
-                // ================= COURSES =================
-                if (isset($data['courses'])) {
-                    foreach ($data['courses'] as $course) {
+               // ================= COURSES =================
+if (isset($data['courses'])) {
 
-                        $courseType = CourseType::firstOrCreate(
-                            [
-                                'institution_id' => $institutionId,
-                                'course_name' => $course['name']
-                            ],
-                            [
-                                'duration_years' => $course['years'],
-                                'duration_months' => $course['months'],
-                                'code_extension' => $course['code'] ?? null
-                            ]
-                        );
+    // delete old
+    $oldCourses = CourseType::where('institution_id', $institutionId)->get();
 
-                        if (!empty($course['requirements'])) {
-                            foreach ($course['requirements'] as $req) {
+    foreach ($oldCourses as $old) {
+        CourseTypeRequirement::where('course_type_id', $old->course_type_id)->delete();
+    }
 
-                                $reqId = is_array($req) ? $req['id'] : $req;
+    CourseType::where('institution_id', $institutionId)->delete();
 
-                                CourseTypeRequirement::create([
-                                    'course_type_id' => $courseType->course_type_id,
-                                    'requirement_id' => $reqId
-                                ]);
-                            }
-                        }
-                    }
-                }
+    // insert new
+    foreach ($data['courses'] as $course) {
+
+        $courseType = CourseType::create([
+            'institution_id' => $institutionId,
+            'course_name' => $course['name'],
+            'duration_years' => $course['years'],
+            'duration_months' => $course['months'],
+            'code_extension' => $course['code'] ?? null
+        ]);
+
+        if (!empty($course['requirements'])) {
+            foreach ($course['requirements'] as $req) {
+
+                $reqId = is_array($req) ? $req['id'] : $req;
+
+                CourseTypeRequirement::create([
+                    'course_type_id' => $courseType->course_type_id,
+                    'requirement_id' => $reqId
+                ]);
+            }
+        }
+    }
+}
 
                 // ================= REGULATORY =================
                 if (isset($data['regulatory'])) {
@@ -368,8 +431,11 @@ class InstitutionController extends Controller
                     ]);
 
                     if (!empty($data['regulatory']['accreditation_ids'])) {
-                        $ids = explode(',', $data['regulatory']['accreditation_ids']);
 
+                        InstitutionAccreditation::where('institution_id', $institutionId)->delete();
+                    
+                        $ids = explode(',', $data['regulatory']['accreditation_ids']);
+                    
                         foreach ($ids as $id) {
                             InstitutionAccreditation::create([
                                 'institution_id' => $institutionId,

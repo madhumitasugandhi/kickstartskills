@@ -18,15 +18,18 @@ class InstitutionProgram extends Model
     protected $fillable = [
         'institution_id',
         'department_id',
+        'education_type_id',
         'program_name',
-        'fees',
+        'coordinator',
+        'semesters',
+        'max_intake',
         'duration',
-        'description'
+        'description',
+        'status'
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
-        'fees' => 'decimal:2'
     ];
 
     /*
@@ -44,4 +47,9 @@ class InstitutionProgram extends Model
     {
         return $this->belongsTo(InstitutionDepartment::class, 'department_id');
     }
+
+    public function educationType()
+{
+    return $this->belongsTo(EducationType::class, 'education_type_id');
+}
 }

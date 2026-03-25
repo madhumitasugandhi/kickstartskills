@@ -29,6 +29,7 @@ class InstitutionDriveController extends Controller
      */
     public function store(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'drive_name' => 'required|max:255',
             'company_name' => 'required|max:255',
@@ -74,10 +75,10 @@ class InstitutionDriveController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-
             return response()->json([
                 'status' => false,
                 'message' => 'Something went wrong'
+
             ]);
         }
     }

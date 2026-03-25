@@ -49,4 +49,14 @@ class CourseType extends Model
         'requirement_id'
     );
 }
+
+public function faculties()
+{
+    return $this->belongsToMany(
+        Faculty::class,
+        'faculty_courses',
+        'course_type_id',
+        'faculty_id'
+    );
+}
 }
