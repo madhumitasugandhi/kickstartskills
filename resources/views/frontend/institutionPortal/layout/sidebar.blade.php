@@ -66,28 +66,7 @@
                 </div>
             </div>
 
-            <!-- Programs -->
-            <div class="sidebar-dropdown">
-                <a href="javascript:void(0)" class="nav-item-custom dropdown-toggle-custom"
-                   onclick="toggleDropdown(this)">
-                    <i class="bi bi-journal-bookmark me-2"></i>
-                    <span class="menu-text">Programs</span>
-                    <i class="bi bi-chevron-down ms-auto dropdown-arrow"></i>
-                </a>
-                <div class="dropdown-menu-custom">
-                    <a href="{{ route('institution.program-management') }}" class="nav-item-custom sub-item">
-                        <i class="bi bi-kanban me-2"></i> Management
-                    </a>
-                    <a href="{{ route('institution.course-catalog') }}" class="nav-item-custom sub-item">
-                        <i class="bi bi-search me-2"></i> Course Catalog
-                    </a>
-                    <a href="{{ route('institution.programs-assessment') }}" class="nav-item-custom sub-item">
-                        <i class="bi bi-clipboard-check me-2"></i> Assessment
-                    </a>
-                </div>
-            </div>
-
-            <!-- Students -->
+                      <!-- Students -->
             <div class="sidebar-dropdown">
                 <a href="javascript:void(0)" class="nav-item-custom dropdown-toggle-custom"
                    onclick="toggleDropdown(this)">
