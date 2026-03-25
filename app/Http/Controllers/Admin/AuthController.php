@@ -9,11 +9,13 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function showLoginForm() {
+    public function showLoginForm()
+    {
         return view('frontend.adminPortal.auth.admin_login');
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -26,7 +28,7 @@ class AuthController extends Controller
             // Check if they are an Admin (Role 1 or 2)
             if ($user->admin_role_id == User::ROLE_SUPER_ADMIN || $user->admin_role_id == User::ROLE_ADMIN_STAFF) {
                 $request->session()->regenerate();
-                return redirect()->intended('/admin/dashboard');
+                return redirect()->intended(route('admin.dashboard'));
             }
 
             // If they are a student/mentor trying to sneak into the Admin portal
@@ -38,16 +40,16 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request)
-{
-    Auth::logout();
+    {
+        Auth::logout();
 
-    // Invalidate the session to clear all data
-    $request->session()->invalidate();
+        // Invalidate the session to clear all data
+        $request->session()->invalidate();
 
-    // Regenerate the CSRF token to prevent attacks
-    $request->session()->regenerateToken();
+        // Regenerate the CSRF token to prevent attacks
+        $request->session()->regenerateToken();
 
-    // Redirect back to the login page
-    return redirect('/admin-login');
-}
+        // Redirect back to the login page
+        return redirect('/admin-login');
+    }
 }

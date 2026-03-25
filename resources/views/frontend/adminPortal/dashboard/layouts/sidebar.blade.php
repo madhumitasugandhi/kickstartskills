@@ -26,6 +26,13 @@
                 <span class="nav-label ms-3">User Management</span>
             </a>
 
+            <a class="nav-link {{ request()->routeIs('admin.questions.*') ? 'active' : '' }} d-flex align-items-center"
+                href="{{ route('admin.questions.index') }}"> <i class="bi bi-patch-question fs-5"></i>
+                <span class="nav-label ms-3">Question Bank</span>
+
+                <span class="badge bg-danger ms-auto" style="font-size: 0.65rem;">View</span>
+            </a>
+
             <a class="nav-link {{ request()->routeIs('admin.drives') ? 'active' : '' }} d-flex align-items-center"
                 href="{{ route('admin.drives') }}">
                 <i class="bi bi-activity fs-5"></i>
@@ -118,16 +125,15 @@
         </div>
 
         <ul class="dropdown-menu dropdown-menu-end shadow"
-    style="background-color: var(--bg-sidebar); border: 1px solid var(--accent-color); width: 50%; min-width: 30%;">
-    <li>
-        <a class="dropdown-item logout-hover small text-danger py-2 d-flex align-items-end justify-content-end"
-           href="#"
-           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            <span>Logout</span>
-            <i class="bi bi-box-arrow-right ms-2"></i>
-        </a>
-    </li>
-</ul>
+            style="background-color: var(--bg-sidebar); border: 1px solid var(--accent-color); width: 50%; min-width: 30%;">
+            <li>
+                <a class="dropdown-item logout-hover small text-danger py-2 d-flex align-items-end justify-content-end"
+                    href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <span>Logout</span>
+                    <i class="bi bi-box-arrow-right ms-2"></i>
+                </a>
+            </li>
+        </ul>
 
         <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
             @csrf
