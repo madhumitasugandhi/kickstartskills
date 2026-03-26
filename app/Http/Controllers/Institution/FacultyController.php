@@ -11,16 +11,9 @@ class FacultyController extends Controller
 {
     /* ================= LIST PAGE ================= */
     public function index()
-{
-    $institutionId = session('institution_id');
-
-    $faculties = Faculty::with(['department','courses'])
-        ->where('institution_id', $institutionId)
-        ->orderBy('name')
-        ->get();
-
-    return $faculties;
-}
+    {
+        return redirect()->route('institution.core.academic-structure', ['tab' => 'faculty']);
+    }
 
     /* ================= GET FACULTY LIST (AJAX) ================= */
     public function list(Request $request)

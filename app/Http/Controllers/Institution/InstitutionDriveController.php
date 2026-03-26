@@ -87,10 +87,22 @@ class InstitutionDriveController extends Controller
      * Edit drive
      */
     public function edit($id)
-    {
-        $drive = InstitutionDrive::find($id);
-        return response()->json($drive);
-    }
+{
+    $drive = InstitutionDrive::find($id);
+
+    return response()->json([
+        'id' => $drive->id,
+        'drive_name' => $drive->drive_name,
+        'company_name' => $drive->company_name,
+        'drive_date' => $drive->drive_date ? date('Y-m-d', strtotime($drive->drive_date)) : null,
+        'application_deadline' => $drive->application_deadline ? date('Y-m-d', strtotime($drive->application_deadline)) : null,
+        'interview_start_date' => $drive->interview_start_date ? date('Y-m-d', strtotime($drive->interview_start_date)) : null,
+        'interview_end_date' => $drive->interview_end_date ? date('Y-m-d', strtotime($drive->interview_end_date)) : null,
+        'stipend' => $drive->stipend,
+        'location' => $drive->location,
+        'description' => $drive->description,
+    ]);
+}
 
     /**
      * Update drive
@@ -98,26 +110,26 @@ class InstitutionDriveController extends Controller
     public function update(Request $request, $id)
     {
         $drive = InstitutionDrive::find($id);
-
+    
         if (!$drive) {
             return response()->json([
                 'status' => false,
                 'message' => 'Drive not found'
             ]);
         }
-
-        $drive->update([
-            'drive_name' => $request->drive_name,
-            'description' => $request->description,
-            'company_name' => $request->company_name,
-            'drive_date' => $request->drive_date,
-            'interview_start_date' => $request->interview_start_date,
-            'interview_end_date' => $request->interview_end_date,
-            'application_deadline' => $request->application_deadline,
-            'stipend' => $request->stipend,
-            'location' => $request->location,
-        ]);
-
+    
+        $drive->drive_name = $request->drive_name;
+        $drive->description = $request->description;
+        $drive->company_name = $request->company_name;
+        $drive->drive_date = $request->drive_date;
+        $drive->interview_start_date = $request->interview_start_date;
+        $drive->interview_end_date = $request->interview_end_date;
+        $drive->application_deadline = $request->application_deadline;
+        $drive->stipend = $request->stipend;
+        $drive->location = $request->location;
+    
+        $drive->save();
+    
         return response()->json([
             'status' => true,
             'message' => 'Drive Updated Successfully'

@@ -12,6 +12,9 @@ class Faculty extends Model
     use HasFactory;
 
     protected $table = 'faculties';
+    protected $primaryKey = 'faculty_id';
+    public $incrementing = true;
+    protected $keyType = 'int';
 
     protected $fillable = [
         'institution_id',
@@ -26,20 +29,20 @@ class Faculty extends Model
         'created_by'
     ];
 
-    /* ================= RELATIONSHIPS ================= */
-
     public function department()
-{
-    return $this->belongsTo(InstitutionDepartment::class, 'department_id');
-}
+    {
+        return $this->belongsTo(InstitutionDepartment::class, 'department_id');
+    }
 
-public function courses()
-{
-    return $this->belongsToMany(
-        CourseType::class,
-        'faculty_courses',
-        'faculty_id',
-        'course_type_id'
-    );
-}
+    public function courses()
+    {
+        return $this->belongsToMany(
+            CourseType::class,
+            'faculty_courses',
+            'faculty_id',
+            'course_type_id',
+            'faculty_id',
+            'course_type_id'
+        );
+    }
 }
