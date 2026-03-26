@@ -3,6 +3,16 @@
 @section('title', 'Exam management - View All Exam')
 @section('icon', 'bi-journal-check')
 @section('content')
+
+<style>
+.table th,
+    td {
+        border-bottom: 1px solid var(--border-color) !important;
+        color: var(--text-main) !important;
+        background-color: transparent !important;
+    }
+</style>
+
 <div class="content-body p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -55,12 +65,16 @@
                             <td>{{ $exam->passing_score }}%</td>
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">
+                                    <a href="{{ route('admin.exams.view', $exam->id) }}"
+                                        class="btn btn-sm btn-outline-warning">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
                                     <a href="{{ route('admin.exams.edit', $exam->id) }}"
                                         class="btn btn-sm btn-outline-info">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form action="{{ route('admin.exams.delete', $exam->id) }}" method="POST"
-                                        onsubmit="return confirm('Bhai, delete kar doon?')">
+                                        onsubmit="return confirm('Shall we delete this?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger">

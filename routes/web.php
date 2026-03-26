@@ -13,7 +13,7 @@ use App\Http\Controllers\Institution\InstitutionDepartmentController;
 use App\Http\Controllers\Institution\CourseTypeController;
 use App\Http\Controllers\Institution\CourseRequirementController;
 use App\Http\Controllers\Institution\InstitutionDriveController;
-use App\Http\Controllers\Institution\FacultyController; 
+use App\Http\Controllers\Institution\FacultyController;
 use App\Http\Controllers\Institution\ElectiveProgramController;
 
 
@@ -294,24 +294,24 @@ Route::get('/institution/forgot-password', function () {
 Route::match(['get', 'post'], '/institution/register', [InstitutionController::class, 'register'])
     ->name('institution.register');
 
-    Route::middleware('institution.auth')->prefix('institution')->name('institution.')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('frontend.institutionPortal.dashboard.index');
-        })->name('dashboard');
-        /* =============================
-           CORE MANAGEMENT GROUP
-        ============================== */
-        Route::prefix('core-management')->name('core.')->group(function () {
-            Route::match(['get', 'post'], '/setup', [InstitutionController::class, 'showSetup'])
-                ->name('setup');
-            // Route::post('/setup', [InstitutionController::class, 'showSetup'])
-            //     ->name('setup');
-            Route::post('/setup/save-step', [InstitutionController::class, 'saveStep']);
-            Route::post('/final-submit', [InstitutionController::class, 'finalSubmit']);
-            Route::post('/setup/complete', [InstitutionController::class, 'completeSetup']);
-    
-            Route::get('/course-management', [CourseTypeController::class, 'index'])
-                ->name('course-management');
+Route::middleware('institution.auth')->prefix('institution')->name('institution.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('frontend.institutionPortal.dashboard.index');
+    })->name('dashboard');
+    /* =============================
+       CORE MANAGEMENT GROUP
+    ============================== */
+    Route::prefix('core-management')->name('core.')->group(function () {
+        Route::match(['get', 'post'], '/setup', [InstitutionController::class, 'showSetup'])
+            ->name('setup');
+        // Route::post('/setup', [InstitutionController::class, 'showSetup'])
+        //     ->name('setup');
+        Route::post('/setup/save-step', [InstitutionController::class, 'saveStep']);
+        Route::post('/final-submit', [InstitutionController::class, 'finalSubmit']);
+        Route::post('/setup/complete', [InstitutionController::class, 'completeSetup']);
+
+        Route::get('/course-management', [CourseTypeController::class, 'index'])
+            ->name('course-management');
 
         Route::prefix('course-types')->name('course-types.')->group(function () {
             Route::post('/store', [CourseTypeController::class, 'store'])->name('store');
@@ -335,193 +335,193 @@ Route::match(['get', 'post'], '/institution/register', [InstitutionController::c
 
         Route::get('/academic-structure', function () {
 
-                $tab = request('tab', 'overview');
-                $institutionId = session('institution_id');
-            
-                $departments = \App\Models\Institution\InstitutionDepartment::where('institution_id', $institutionId)->get();
-            
-                $programs = \App\Models\Institution\InstitutionProgram::with(['department','educationType'])
-                    ->where('institution_id', $institutionId)
-                    ->get();
-            
-                $educationTypes = \App\Models\Institution\EducationType::where('status',1)->get();
-            
-                $faculties = \App\Models\Institution\Faculty::with(['department','courses'])
-                    ->where('institution_id', $institutionId)
-                    ->get();
-            
-                $courseTypes = \App\Models\Institution\CourseType::where('institution_id', $institutionId)->get();
-            
-                return view(
-                    'frontend.institutionPortal.dashboard.core-management.academic_structure.index',
-                    compact('tab', 'departments', 'programs', 'educationTypes', 'faculties', 'courseTypes')
-                );
-            
-            })->name('academic-structure');
-    
-            Route::prefix('academic-structure/departments')->name('academic-structure.departments.')->group(function () {
-    
-                Route::post('/store', [InstitutionDepartmentController::class, 'store'])->name('store');
-                Route::get('/edit/{id}', [InstitutionDepartmentController::class, 'edit'])->name('edit');
-                Route::post('/update/{id}', [InstitutionDepartmentController::class, 'update'])->name('update');
-                Route::delete('/delete/{id}', [InstitutionDepartmentController::class, 'destroy'])->name('delete');
-            
+            $tab = request('tab', 'overview');
+            $institutionId = session('institution_id');
+
+            $departments = \App\Models\Institution\InstitutionDepartment::where('institution_id', $institutionId)->get();
+
+            $programs = \App\Models\Institution\InstitutionProgram::with(['department', 'educationType'])
+                ->where('institution_id', $institutionId)
+                ->get();
+
+            $educationTypes = \App\Models\Institution\EducationType::where('status', 1)->get();
+
+            $faculties = \App\Models\Institution\Faculty::with(['department', 'courses'])
+                ->where('institution_id', $institutionId)
+                ->get();
+
+            $courseTypes = \App\Models\Institution\CourseType::where('institution_id', $institutionId)->get();
+
+            return view(
+                'frontend.institutionPortal.dashboard.core-management.academic_structure.index',
+                compact('tab', 'departments', 'programs', 'educationTypes', 'faculties', 'courseTypes')
+            );
+
+        })->name('academic-structure');
+
+        Route::prefix('academic-structure/departments')->name('academic-structure.departments.')->group(function () {
+
+            Route::post('/store', [InstitutionDepartmentController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [InstitutionDepartmentController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [InstitutionDepartmentController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [InstitutionDepartmentController::class, 'destroy'])->name('delete');
+
+        });
+
+        Route::prefix('academic-structure/programs')->name('academic-structure.programs.')->group(function () {
+
+            Route::post('/store', [InstitutionProgramController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [InstitutionProgramController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [InstitutionProgramController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [InstitutionProgramController::class, 'destroy'])->name('delete');
+
+        });
+
+        Route::prefix('academic-structure/faculty')->name('academic-structure.faculty.')->group(function () {
+            Route::get('/', [FacultyController::class, 'index'])->name('index');
+            Route::get('/list', [FacultyController::class, 'list'])->name('list');
+            Route::post('/store', [FacultyController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [FacultyController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [FacultyController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [FacultyController::class, 'destroy'])->name('delete');
+        });
+
+
+        Route::prefix('internships')->name('internships.')->group(function () {
+
+            /* =============================
+               INTERNSHIP DRIVES CRUD
+            ============================== */
+            Route::prefix('drives')->name('drives.')->group(function () {
+
+                Route::get('/list', [InstitutionDriveController::class, 'index'])->name('list');
+                Route::post('/store', [InstitutionDriveController::class, 'store'])->name('store');
+                Route::get('/edit/{id}', [InstitutionDriveController::class, 'edit'])->name('edit');
+                Route::post('/update/{id}', [InstitutionDriveController::class, 'update'])->name('update');
+                Route::delete('/delete/{id}', [InstitutionDriveController::class, 'destroy'])->name('delete');
+                Route::post('/status', [InstitutionDriveController::class, 'changeStatus'])->name('status');
+
             });
 
-            Route::prefix('academic-structure/programs')->name('academic-structure.programs.')->group(function () {
+            // Tabs Page
+            Route::get('/{tab?}', function ($tab = 'overview') {
 
-                Route::post('/store', [InstitutionProgramController::class, 'store'])->name('store');
-                Route::get('/edit/{id}', [InstitutionProgramController::class, 'edit'])->name('edit');
-                Route::post('/update/{id}', [InstitutionProgramController::class, 'update'])->name('update');
-                Route::delete('/delete/{id}', [InstitutionProgramController::class, 'destroy'])->name('delete');
-            
-            });
-
-            Route::prefix('academic-structure/faculty')->name('academic-structure.faculty.')->group(function () {
-                Route::get('/', [FacultyController::class, 'index'])->name('index');
-                Route::get('/list', [FacultyController::class, 'list'])->name('list');
-                Route::post('/store', [FacultyController::class, 'store'])->name('store');
-                Route::get('/edit/{id}', [FacultyController::class, 'edit'])->name('edit');
-                Route::post('/update/{id}', [FacultyController::class, 'update'])->name('update');
-                Route::delete('/delete/{id}', [FacultyController::class, 'destroy'])->name('delete');
-            });
-
-    
-            Route::prefix('internships')->name('internships.')->group(function () {
-    
-                /* =============================
-                   INTERNSHIP DRIVES CRUD
-                ============================== */
-                Route::prefix('drives')->name('drives.')->group(function () {
-            
-                    Route::get('/list', [InstitutionDriveController::class, 'index'])->name('list');
-                    Route::post('/store', [InstitutionDriveController::class, 'store'])->name('store');
-                    Route::get('/edit/{id}', [InstitutionDriveController::class, 'edit'])->name('edit');
-                    Route::post('/update/{id}', [InstitutionDriveController::class, 'update'])->name('update');
-                    Route::delete('/delete/{id}', [InstitutionDriveController::class, 'destroy'])->name('delete');
-                    Route::post('/status', [InstitutionDriveController::class, 'changeStatus'])->name('status');
-            
-                });
-    
-                // Tabs Page
-                Route::get('/{tab?}', function ($tab = 'overview') {
-            
-                    $allowedTabs = [
-                        'overview',
-                        'drives',
-                        'students',
-                        'partners',
-                        'analytics'
-                    ];
-            
-                    if (!in_array($tab, $allowedTabs)) {
-                        abort(404);
-                    }
-            
-                    return view(
-                        'frontend.institutionPortal.dashboard.core-management.internships.index',
-                        compact('tab')
-                    );
-                })->name('index');
-            
-            });
-    
-            Route::get('/financial-management/{tab?}', function ($tab = 'overview') {
-    
                 $allowedTabs = [
                     'overview',
-                    'fee-structure',
-                    'payments',
-                    'expenses',
-                    'reports'
+                    'drives',
+                    'students',
+                    'partners',
+                    'analytics'
                 ];
-    
+
                 if (!in_array($tab, $allowedTabs)) {
                     abort(404);
                 }
-    
+
                 return view(
-                    'frontend.institutionPortal.dashboard.core-management.financial_management.index',
+                    'frontend.institutionPortal.dashboard.core-management.internships.index',
                     compact('tab')
                 );
-            })->name('financial-management');
-    
-            Route::get('/system-integrations', function () {
-                return view('frontend.institutionPortal.dashboard.core-management.system.index');
-            })->name('system-integrations');
+            })->name('index');
+
         });
 
-        // Programs
-    
-        Route::prefix('electives')->name('electives.')->group(function () {
-            Route::get('/program-management', function(){ 
-                return view('frontend.institutionPortal.dashboard.electives.management.index');
-             })->name('program-management');
+        Route::get('/financial-management/{tab?}', function ($tab = 'overview') {
 
-             Route::prefix('program-management')->name('program-management.')->group(function () {
-                Route::get('/list', [ElectiveProgramController::class, 'index'])->name('list');
-                Route::post('/store', [ElectiveProgramController::class, 'store'])->name('store');
-                Route::get('/edit/{id}', [ElectiveProgramController::class, 'edit'])->name('edit');
-                Route::post('/update/{id}', [ElectiveProgramController::class, 'update'])->name('update');
-                Route::delete('/delete/{id}', [ElectiveProgramController::class, 'destroy'])->name('delete');
-                Route::get('/departments', [ElectiveProgramController::class, 'departments'])->name('departments');
-            });
-            
-            Route::get('/course-catalog', function () {
-                return view('frontend.institutionPortal.dashboard.electives.course-catalog.index');
-            })->name('course-catalog');
-            Route::get('/programs-assessment', function () {
-                return view('frontend.institutionPortal.dashboard.electives.assessment.index');
-            })->name('programs-assessment');
-        });
-        
+            $allowedTabs = [
+                'overview',
+                'fee-structure',
+                'payments',
+                'expenses',
+                'reports'
+            ];
 
-        // Students
-        Route::get('/students-overview', function () {
-            return view('frontend.institutionPortal.dashboard.students.overview.index');
-        })->name('students-overview');
-        Route::get('/data-dashboard', function () {
-            return view('frontend.institutionPortal.dashboard.students.data-dashboard.index');
-        })->name('data-dashboard');
-        Route::get('/enrollment', function () {
-            return view('frontend.institutionPortal.dashboard.students.enrollment.index');
-        })->name('enrollment');
-        Route::get('/academic-records', function () {
-            return view('frontend.institutionPortal.dashboard.students.academic-records.index');
-        })->name('academic-records');
-        Route::get('/faculty-management', function () {
-            return view('frontend.institutionPortal.dashboard.faculty.management.index');
-        })->name('faculty-management');
-        Route::get('/faculty-assignments', function () {
-            return view('frontend.institutionPortal.dashboard.faculty.assignment.index');
-        })->name('faculty-assignments');
-        Route::get('/analytics-performance', function () {
-            return view('frontend.institutionPortal.dashboard.analytics.performance.index');
-        })->name('analytics-performance');
-        Route::get('/analytics-reports', function () {
-            return view('frontend.institutionPortal.dashboard.analytics.reports.index');
-        })->name('analytics-reports');
-    
+            if (!in_array($tab, $allowedTabs)) {
+                abort(404);
+            }
 
-        Route::get('/advanced-dashboard', function () {
-            return view('frontend.institutionPortal.dashboard.analytics.advanced-dashboard.index');
-        })->name('advanced-dashboard');
-        Route::get('/communication-announcements', function () {
-            return view('frontend.institutionPortal.dashboard.communication.announcements.index');
-        })->name('communication-announcements');
-        Route::get('/communication-messaging', function () {
-            return view('frontend.institutionPortal.dashboard.communication.messaging.index');
-        })->name('communication-messaging');
-        Route::get('/compliance-reports', function () {
-            return view('frontend.institutionPortal.dashboard.compliance-reports.index');
-        })->name('compliance-reports');
-        Route::get('/settings', function () {
-            return view('frontend.institutionPortal.dashboard.settings.index');
-        })->name('settings');
-        Route::get('/notifications', function () {
-            return view('frontend.institutionPortal.dashboard.notifications.index');
-        })->name('notifications');
+            return view(
+                'frontend.institutionPortal.dashboard.core-management.financial_management.index',
+                compact('tab')
+            );
+        })->name('financial-management');
+
+        Route::get('/system-integrations', function () {
+            return view('frontend.institutionPortal.dashboard.core-management.system.index');
+        })->name('system-integrations');
     });
+
+    // Programs
+
+    Route::prefix('electives')->name('electives.')->group(function () {
+        Route::get('/program-management', function () {
+            return view('frontend.institutionPortal.dashboard.electives.management.index');
+        })->name('program-management');
+
+        Route::prefix('program-management')->name('program-management.')->group(function () {
+            Route::get('/list', [ElectiveProgramController::class, 'index'])->name('list');
+            Route::post('/store', [ElectiveProgramController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [ElectiveProgramController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [ElectiveProgramController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [ElectiveProgramController::class, 'destroy'])->name('delete');
+            Route::get('/departments', [ElectiveProgramController::class, 'departments'])->name('departments');
+        });
+
+        Route::get('/course-catalog', function () {
+            return view('frontend.institutionPortal.dashboard.electives.course-catalog.index');
+        })->name('course-catalog');
+        Route::get('/programs-assessment', function () {
+            return view('frontend.institutionPortal.dashboard.electives.assessment.index');
+        })->name('programs-assessment');
+    });
+
+
+    // Students
+    Route::get('/students-overview', function () {
+        return view('frontend.institutionPortal.dashboard.students.overview.index');
+    })->name('students-overview');
+    Route::get('/data-dashboard', function () {
+        return view('frontend.institutionPortal.dashboard.students.data-dashboard.index');
+    })->name('data-dashboard');
+    Route::get('/enrollment', function () {
+        return view('frontend.institutionPortal.dashboard.students.enrollment.index');
+    })->name('enrollment');
+    Route::get('/academic-records', function () {
+        return view('frontend.institutionPortal.dashboard.students.academic-records.index');
+    })->name('academic-records');
+    Route::get('/faculty-management', function () {
+        return view('frontend.institutionPortal.dashboard.faculty.management.index');
+    })->name('faculty-management');
+    Route::get('/faculty-assignments', function () {
+        return view('frontend.institutionPortal.dashboard.faculty.assignment.index');
+    })->name('faculty-assignments');
+    Route::get('/analytics-performance', function () {
+        return view('frontend.institutionPortal.dashboard.analytics.performance.index');
+    })->name('analytics-performance');
+    Route::get('/analytics-reports', function () {
+        return view('frontend.institutionPortal.dashboard.analytics.reports.index');
+    })->name('analytics-reports');
+
+
+    Route::get('/advanced-dashboard', function () {
+        return view('frontend.institutionPortal.dashboard.analytics.advanced-dashboard.index');
+    })->name('advanced-dashboard');
+    Route::get('/communication-announcements', function () {
+        return view('frontend.institutionPortal.dashboard.communication.announcements.index');
+    })->name('communication-announcements');
+    Route::get('/communication-messaging', function () {
+        return view('frontend.institutionPortal.dashboard.communication.messaging.index');
+    })->name('communication-messaging');
+    Route::get('/compliance-reports', function () {
+        return view('frontend.institutionPortal.dashboard.compliance-reports.index');
+    })->name('compliance-reports');
+    Route::get('/settings', function () {
+        return view('frontend.institutionPortal.dashboard.settings.index');
+    })->name('settings');
+    Route::get('/notifications', function () {
+        return view('frontend.institutionPortal.dashboard.notifications.index');
+    })->name('notifications');
+});
 
 
 /*|------------------------------------------------End Institution Portal Routes--------------------------------------------------|*/
@@ -781,7 +781,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::get('/create', [ExamController::class, 'create'])->name('create'); // admin.exams.create
         Route::post('/store', [ExamController::class, 'store'])->name('store'); // admin.exams.store
         Route::get('/get-questions/{catId}', [ExamController::class, 'getQuestionsByCategory'])->name('get_questions');
+        Route::get('/view/{id}', [ExamController::class, 'viewExam'])->name('view');
         Route::get('/edit/{id}', [ExamController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [ExamController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [ExamController::class, 'destroy'])->name('delete');
     });
 
