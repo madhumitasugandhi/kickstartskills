@@ -13,6 +13,7 @@ use App\Http\Controllers\Institution\CourseTypeController;
 use App\Http\Controllers\Institution\CourseRequirementController;
 use App\Http\Controllers\Institution\InstitutionDriveController;
 use App\Http\Controllers\Institution\FacultyController; 
+use App\Http\Controllers\Institution\ElectiveProgramController;
 
 
 use App\Http\Controllers\Admin\AuthController;
@@ -300,10 +301,10 @@ Route::match(['get', 'post'], '/institution/register', [InstitutionController::c
            CORE MANAGEMENT GROUP
         ============================== */
         Route::prefix('core-management')->name('core.')->group(function () {
-            Route::get('/setup', [InstitutionController::class, 'showSetup'])
+            Route::match(['get', 'post'], '/setup', [InstitutionController::class, 'showSetup'])
                 ->name('setup');
-            Route::post('/setup', [InstitutionController::class, 'showSetup'])
-                ->name('setup');
+            // Route::post('/setup', [InstitutionController::class, 'showSetup'])
+            //     ->name('setup');
             Route::post('/setup/save-step', [InstitutionController::class, 'saveStep']);
             Route::post('/final-submit', [InstitutionController::class, 'finalSubmit']);
             Route::post('/setup/complete', [InstitutionController::class, 'completeSetup']);
@@ -365,6 +366,7 @@ Route::match(['get', 'post'], '/institution/register', [InstitutionController::c
                 Route::delete('/delete/{id}', [InstitutionDepartmentController::class, 'destroy'])->name('delete');
             
             });
+
             Route::prefix('academic-structure/programs')->name('academic-structure.programs.')->group(function () {
 
                 Route::post('/store', [InstitutionProgramController::class, 'store'])->name('store');
@@ -373,6 +375,7 @@ Route::match(['get', 'post'], '/institution/register', [InstitutionController::c
                 Route::delete('/delete/{id}', [InstitutionProgramController::class, 'destroy'])->name('delete');
             
             });
+
             Route::prefix('academic-structure/faculty')->name('academic-structure.faculty.')->group(function () {
                 Route::get('/', [FacultyController::class, 'index'])->name('index');
                 Route::get('/list', [FacultyController::class, 'list'])->name('list');
@@ -446,26 +449,33 @@ Route::match(['get', 'post'], '/institution/register', [InstitutionController::c
                 return view('frontend.institutionPortal.dashboard.core-management.system.index');
             })->name('system-integrations');
         });
+
+        // Programs
     
-        // Route::get('/program-management', [InstitutionProgramController::class, 'index'])
-        //     ->name('program-management');
-        // Route::post('/program-management/store', [InstitutionProgramController::class, 'store'])
-        //     ->name('program.store');
-    
-        // Route::get('/program-management/edit/{id}', [InstitutionProgramController::class, 'edit'])
-        //     ->name('program.edit');
-    
-        // Route::post('/program-management/update/{id}', [InstitutionProgramController::class, 'update'])
-        //     ->name('program.update');
-    
-        // Route::delete('/program-management/delete/{id}', [InstitutionProgramController::class, 'destroy'])
-        //     ->name('program.delete');
-        Route::get('/course-catalog', function () {
-            return view('frontend.institutionPortal.dashboard.programs.course-catalog.index');
-        })->name('course-catalog');
-        Route::get('/programs-assessment', function () {
-            return view('frontend.institutionPortal.dashboard.programs.assessment.index');
-        })->name('programs-assessment');
+        Route::prefix('electives')->name('electives.')->group(function () {
+            Route::get('/program-management', function(){ 
+                return view('frontend.institutionPortal.dashboard.electives.management.index');
+             })->name('program-management');
+
+             Route::prefix('program-management')->name('program-management.')->group(function () {
+                Route::get('/list', [ElectiveProgramController::class, 'index'])->name('list');
+                Route::post('/store', [ElectiveProgramController::class, 'store'])->name('store');
+                Route::get('/edit/{id}', [ElectiveProgramController::class, 'edit'])->name('edit');
+                Route::post('/update/{id}', [ElectiveProgramController::class, 'update'])->name('update');
+                Route::delete('/delete/{id}', [ElectiveProgramController::class, 'destroy'])->name('delete');
+                Route::get('/departments', [ElectiveProgramController::class, 'departments'])->name('departments');
+            });
+            
+            Route::get('/course-catalog', function () {
+                return view('frontend.institutionPortal.dashboard.electives.course-catalog.index');
+            })->name('course-catalog');
+            Route::get('/programs-assessment', function () {
+                return view('frontend.institutionPortal.dashboard.electives.assessment.index');
+            })->name('programs-assessment');
+        });
+        
+
+        // Students
         Route::get('/students-overview', function () {
             return view('frontend.institutionPortal.dashboard.students.overview.index');
         })->name('students-overview');
@@ -491,6 +501,7 @@ Route::match(['get', 'post'], '/institution/register', [InstitutionController::c
             return view('frontend.institutionPortal.dashboard.analytics.reports.index');
         })->name('analytics-reports');
     
+
         Route::get('/advanced-dashboard', function () {
             return view('frontend.institutionPortal.dashboard.analytics.advanced-dashboard.index');
         })->name('advanced-dashboard');
