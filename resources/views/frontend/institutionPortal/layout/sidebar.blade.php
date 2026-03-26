@@ -13,7 +13,7 @@
         <nav class="mt-2 px-2">
 
             <a href="{{ route('institution.dashboard') }}" data-title="Dashboard"
-               class="nav-item-custom {{ request()->routeIs('institution.dashboard') ? 'active' : '' }}">
+                class="nav-item-custom {{ request()->routeIs('institution.dashboard') ? 'active' : '' }}">
                 <i class="bi bi-speedometer2 me-2"></i>
                 <span class="menu-text">Dashboard</span>
             </a>
@@ -21,55 +21,77 @@
             <!-- Core Management -->
             <div class="sidebar-dropdown">
                 <a href="javascript:void(0)"
-                   class="nav-item-custom dropdown-toggle-custom"
-                   onclick="toggleDropdown(this)">
+                    class="nav-item-custom dropdown-toggle-custom"
+                    onclick="toggleDropdown(this)">
                     <i class="bi bi-grid me-2"></i>
                     <span class="menu-text">Core Management</span>
                     <i class="bi bi-chevron-down ms-auto dropdown-arrow"></i>
                 </a>
 
                 <div class="dropdown-menu-custom">
-                <a href="{{ route('institution.core.setup') }}"
-   class="nav-item-custom sub-item {{ request()->routeIs('institution.core.setup*') ? 'active' : '' }}">
-    <i class="bi bi-gear me-2"></i> Institution Setup
-</a>
+                    <a href="{{ route('institution.core.setup') }}"
+                        class="nav-item-custom sub-item {{ request()->routeIs('institution.core.setup*') ? 'active' : '' }}">
+                        <i class="bi bi-gear me-2"></i> Institution Setup
+                    </a>
 
-<a href="{{ route('institution.core.course-management') }}"
-   class="nav-item-custom sub-item {{ request()->routeIs('institution.core.course-management*') ? 'active' : '' }}">
-    <i class="bi bi-book me-2"></i> Course Management
-</a>
+                    <a href="{{ route('institution.core.course-management') }}"
+                        class="nav-item-custom sub-item {{ request()->routeIs('institution.core.course-management*') ? 'active' : '' }}">
+                        <i class="bi bi-book me-2"></i> Course Management
+                    </a>
 
-<a href="{{ route('institution.core.drive-management') }}"
-   class="nav-item-custom sub-item {{ request()->routeIs('institution.core.drive-management*') ? 'active' : '' }}">
-    <i class="bi bi-hdd-network me-2"></i> Drive Management
-</a>
+                    <a href="{{ route('institution.core.drive-management') }}"
+                        class="nav-item-custom sub-item {{ request()->routeIs('institution.core.drive-management*') ? 'active' : '' }}">
+                        <i class="bi bi-hdd-network me-2"></i> Drive Management
+                    </a>
 
-<a href="{{ route('institution.core.academic-structure') }}"
-   class="nav-item-custom sub-item {{ request()->routeIs('institution.core.academic-structure*') ? 'active' : '' }}">
-    <i class="bi bi-diagram-3 me-2"></i> Academic Structure
-</a>
+                    <a href="{{ route('institution.core.academic-structure') }}"
+                        class="nav-item-custom sub-item {{ request()->routeIs('institution.core.academic-structure*') ? 'active' : '' }}">
+                        <i class="bi bi-diagram-3 me-2"></i> Academic Structure
+                    </a>
 
-<a href="{{ route('institution.core.internships.index') }}"
-   class="nav-item-custom sub-item {{ request()->routeIs('institution.core.internships.*') ? 'active' : '' }}">
-    <i class="bi bi-briefcase me-2"></i> Internships
-</a>
+                    <a href="{{ route('institution.core.internships.index') }}"
+                        class="nav-item-custom sub-item {{ request()->routeIs('institution.core.internships.*') ? 'active' : '' }}">
+                        <i class="bi bi-briefcase me-2"></i> Internships
+                    </a>
 
-<a href="{{ route('institution.core.financial-management') }}"
-   class="nav-item-custom sub-item {{ request()->routeIs('institution.core.financial-management*') ? 'active' : '' }}">
-    <i class="bi bi-currency-dollar me-2"></i> Financial Management
-</a>
+                    <a href="{{ route('institution.core.financial-management') }}"
+                        class="nav-item-custom sub-item {{ request()->routeIs('institution.core.financial-management*') ? 'active' : '' }}">
+                        <i class="bi bi-currency-dollar me-2"></i> Financial Management
+                    </a>
 
-<a href="{{ route('institution.core.system-integrations') }}"
-   class="nav-item-custom sub-item {{ request()->routeIs('institution.core.system-integrations*') ? 'active' : '' }}">
-    <i class="bi bi-link-45deg me-2"></i> System Integrations
-</a>
+                    <a href="{{ route('institution.core.system-integrations') }}"
+                        class="nav-item-custom sub-item {{ request()->routeIs('institution.core.system-integrations*') ? 'active' : '' }}">
+                        <i class="bi bi-link-45deg me-2"></i> System Integrations
+                    </a>
                 </div>
             </div>
 
-                      <!-- Students -->
+             <!-- Electives -->
             <div class="sidebar-dropdown">
                 <a href="javascript:void(0)" class="nav-item-custom dropdown-toggle-custom"
                    onclick="toggleDropdown(this)">
+                    <i class="bi bi-journal-bookmark me-2"></i>
+                    <span class="menu-text">Electives</span>
+                    <i class="bi bi-chevron-down ms-auto dropdown-arrow"></i>
+                </a>
+                <div class="dropdown-menu-custom">
+                    <a href="{{ route('institution.electives.program-management') }}" class="nav-item-custom sub-item">
+                        <i class="bi bi-kanban me-2"></i> Management
+                    </a>
+                    <a href="{{ route('institution.electives.course-catalog') }}" class="nav-item-custom sub-item">
+                        <i class="bi bi-search me-2"></i> Course Catalog
+                    </a>
+                    <a href="{{ route('institution.electives.programs-assessment') }}" class="nav-item-custom sub-item">
+                        <i class="bi bi-clipboard-check me-2"></i> Assessment
+                    </a>
+                </div>
+            </div>
+
+
+            <!-- Students -->
+            <div class="sidebar-dropdown">
+                <a href="javascript:void(0)" class="nav-item-custom dropdown-toggle-custom"
+                    onclick="toggleDropdown(this)">
                     <i class="bi bi-people me-2"></i>
                     <span class="menu-text">Students</span>
                     <i class="bi bi-chevron-down ms-auto dropdown-arrow"></i>
@@ -93,7 +115,7 @@
             <!-- Faculty -->
             <div class="sidebar-dropdown">
                 <a href="javascript:void(0)" class="nav-item-custom dropdown-toggle-custom"
-                   onclick="toggleDropdown(this)">
+                    onclick="toggleDropdown(this)">
                     <i class="bi bi-person-badge me-2"></i>
                     <span class="menu-text">Faculty</span>
                     <i class="bi bi-chevron-down ms-auto dropdown-arrow"></i>
@@ -111,7 +133,7 @@
             <!-- Analytics -->
             <div class="sidebar-dropdown">
                 <a href="javascript:void(0)" class="nav-item-custom dropdown-toggle-custom"
-                   onclick="toggleDropdown(this)">
+                    onclick="toggleDropdown(this)">
                     <i class="bi bi-bar-chart-line me-2"></i>
                     <span class="menu-text">Analytics</span>
                     <i class="bi bi-chevron-down ms-auto dropdown-arrow"></i>
@@ -132,7 +154,7 @@
             <!-- Communication -->
             <div class="sidebar-dropdown">
                 <a href="javascript:void(0)" class="nav-item-custom dropdown-toggle-custom"
-                   onclick="toggleDropdown(this)">
+                    onclick="toggleDropdown(this)">
                     <i class="bi bi-megaphone me-2"></i>
                     <span class="menu-text">Communication</span>
                     <i class="bi bi-chevron-down ms-auto dropdown-arrow"></i>
@@ -169,7 +191,7 @@
     <div class="sidebar-footer px-3 py-2 border-top border-secondary d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center">
             <div class="rounded-circle d-flex align-items-center justify-content-center me-2"
-                 style="width:35px;height:35px;background:rgba(45,212,191,0.18);">
+                style="width:35px;height:35px;background:rgba(45,212,191,0.18);">
                 <i class="bi bi-bank text-teal"></i>
             </div>
             <div class="sidebar-footer-text">
@@ -186,31 +208,31 @@
 </div>
 
 <script>
-function toggleDropdown(el) {
-    const parent = el.closest('.sidebar-dropdown');
-    const sidebar = document.getElementById('sidebar');
+    function toggleDropdown(el) {
+        const parent = el.closest('.sidebar-dropdown');
+        const sidebar = document.getElementById('sidebar');
 
-    if (sidebar.classList.contains('collapsed')) return;
+        if (sidebar.classList.contains('collapsed')) return;
 
-    const isOpen = parent.classList.contains('open');
+        const isOpen = parent.classList.contains('open');
 
-    document.querySelectorAll('.sidebar-dropdown').forEach(drop => {
-        drop.classList.remove('open');
-    });
+        document.querySelectorAll('.sidebar-dropdown').forEach(drop => {
+            drop.classList.remove('open');
+        });
 
-    if (!isOpen) {
-        parent.classList.add('open');
-    }
-}
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll('.nav-item-custom.active').forEach(activeItem => {
-        const dropdown = activeItem.closest('.sidebar-dropdown');
-        if (dropdown) {
-            dropdown.classList.add('open');
-
-            const toggle = dropdown.querySelector('.dropdown-toggle-custom');
-            if (toggle) toggle.setAttribute('aria-expanded', 'true');
+        if (!isOpen) {
+            parent.classList.add('open');
         }
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.nav-item-custom.active').forEach(activeItem => {
+            const dropdown = activeItem.closest('.sidebar-dropdown');
+            if (dropdown) {
+                dropdown.classList.add('open');
+
+                const toggle = dropdown.querySelector('.dropdown-toggle-custom');
+                if (toggle) toggle.setAttribute('aria-expanded', 'true');
+            }
+        });
     });
-});
 </script>

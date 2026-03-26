@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GeoController;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\Institution\InstitutionAuthController;
 use App\Http\Controllers\Institution\InstitutionController;
 use App\Http\Controllers\Institution\InstitutionProgramController;
@@ -312,27 +313,27 @@ Route::match(['get', 'post'], '/institution/register', [InstitutionController::c
             Route::get('/course-management', [CourseTypeController::class, 'index'])
                 ->name('course-management');
 
-            Route::prefix('course-types')->name('course-types.')->group(function () {
-                Route::post('/store', [CourseTypeController::class, 'store'])->name('store');
-                Route::post('/update/{id}', [CourseTypeController::class, 'update'])->name('update');
-                Route::delete('/delete/{id}', [CourseTypeController::class, 'destroy'])->name('delete');
-            });
-    
-            Route::prefix('requirements')->name('requirements.')->group(function () {
-    
-                Route::get('/', [CourseRequirementController::class, 'index'])->name('index');
-            
-                Route::post('/store', [CourseRequirementController::class, 'store'])->name('store');
-            
-                Route::delete('/delete/{id}', [CourseRequirementController::class, 'destroy'])->name('delete');
-            
-            });
-    
-            Route::get('/drive-management', function () {
-                return view('frontend.institutionPortal.dashboard.core-management.drivemanagement.index');
-            })->name('drive-management');
-    
-            Route::get('/academic-structure', function () {
+        Route::prefix('course-types')->name('course-types.')->group(function () {
+            Route::post('/store', [CourseTypeController::class, 'store'])->name('store');
+            Route::post('/update/{id}', [CourseTypeController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [CourseTypeController::class, 'destroy'])->name('delete');
+        });
+
+        Route::prefix('requirements')->name('requirements.')->group(function () {
+
+            Route::get('/', [CourseRequirementController::class, 'index'])->name('index');
+
+            Route::post('/store', [CourseRequirementController::class, 'store'])->name('store');
+
+            Route::delete('/delete/{id}', [CourseRequirementController::class, 'destroy'])->name('delete');
+
+        });
+
+        Route::get('/drive-management', function () {
+            return view('frontend.institutionPortal.dashboard.core-management.drivemanagement.index');
+        })->name('drive-management');
+
+        Route::get('/academic-structure', function () {
 
                 $tab = request('tab', 'overview');
                 $institutionId = session('institution_id');
@@ -771,6 +772,17 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::get('/edit/{id}', [AdminQuestionController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [AdminQuestionController::class, 'update'])->name('update');
         Route::get('/get-subcategories/{categoryId}', [AdminQuestionController::class, 'getSubcategories'])->name('get_subcategories');
+    });
+
+
+    // 4. Exam Management (Corrected Prefix inside Admin group)
+    Route::prefix('exams')->name('exams.')->group(function () {
+        Route::get('/', [ExamController::class, 'index'])->name('index'); // admin.exams.index
+        Route::get('/create', [ExamController::class, 'create'])->name('create'); // admin.exams.create
+        Route::post('/store', [ExamController::class, 'store'])->name('store'); // admin.exams.store
+        Route::get('/get-questions/{catId}', [ExamController::class, 'getQuestionsByCategory'])->name('get_questions');
+        Route::get('/edit/{id}', [ExamController::class, 'edit'])->name('edit');
+        Route::delete('/delete/{id}', [ExamController::class, 'destroy'])->name('delete');
     });
 
     // 4. Other Modules (Static Views)

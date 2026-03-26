@@ -9,22 +9,35 @@ use Illuminate\Support\Facades\DB;
 
 class AdminQuestionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $questions = DB::table('questions')
+        // Pehle categories fetch karo filter dropdown ke liye
+        $categories = DB::table('skills_categories')->get();
+
+        // Query build karo
+        $query = DB::table('questions')
             ->join('skills_categories', 'questions.skills_category_id', '=', 'skills_categories.id')
             ->join('skills_subcategories', 'questions.skills_subcategory_id', '=', 'skills_subcategories.id')
-            ->select('questions.*', 'skills_categories.name as cat_name', 'skills_subcategories.name as subcat_name')
-            ->orderBy('questions.id', 'desc')
-            ->get();
+            ->select('questions.*', 'skills_categories.name as cat_name', 'skills_subcategories.name as subcat_name');
 
-        return view('frontend.adminPortal.dashboard.questionBank.index', compact('questions'));
+        // Filter by Category
+        if ($request->filled('category_id')) {
+            $query->where('questions.skills_category_id', $request->category_id);
+        }
+
+        // Filter by Subcategory
+        if ($request->filled('subcategory_id')) {
+            $query->where('questions.skills_subcategory_id', $request->subcategory_id);
+        }
+
+        $questions = $query->orderBy('questions.id', 'asc')->paginate(10)->withQueryString();
+        return view('frontend.adminPortal.dashboard.questionBank.showAllQuestions', compact('questions', 'categories'));
     }
 
     public function create()
     {
         $categories = DB::table('skills_categories')->get();
-        return view('frontend.adminPortal.dashboard.questionBank.create', compact('categories'));
+        return view('frontend.adminPortal.dashboard.questionBank.createQuestion', compact('categories'));
     }
 
     public function getSubcategories($categoryId)
@@ -40,6 +53,11 @@ class AdminQuestionController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'category_id' => 'required',
+            'subcategory_id' => 'required',
+            'questions' => 'required|array'
+        ]);
         try {
             DB::beginTransaction();
 
@@ -103,55 +121,70 @@ class AdminQuestionController extends Controller
             DB::table('questions')->where('id', $id)->delete();
 
             DB::commit();
-            return redirect()->back()->with('success', 'Bhai, question safely delete ho gaya!');
+            return redirect()->back()->with('success', 'Question deleted successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Locha ho gaya delete karte waqt: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error while delete question ' . $e->getMessage());
         }
     }
     public function update(Request $request, $id)
-{
-    try {
-        DB::beginTransaction();
-
-        // 1. Question details update
-        DB::table('questions')->where('id', $id)->update([
-            'skills_category_id' => $request->category_id,
-            'skills_subcategory_id' => $request->subcategory_id,
-            'question_text' => $request->question_text,
-            'ans_format' => $request->ans_format,
-            'difficulty_level' => $request->difficulty_level,
-            'updated_at' => now(),
+    {
+        // Validation add karein
+        $request->validate([
+            'question_text' => 'required',
+            'category_id' => 'required',
+            'subcategory_id' => 'required',
         ]);
 
-        // 2. Clear old options/answers and add new ones (Simple approach)
-        DB::table('question_options')->where('question_id', $id)->delete();
-        DB::table('question_answers')->where('question_id', $id)->delete();
+        try {
+            DB::beginTransaction();
 
-        if ($request->ans_format == 'MCQ') {
-            foreach ($request->options as $index => $optionText) {
-                DB::table('question_options')->insert([
-                    'question_id' => $id,
-                    'option_text' => $optionText,
-                    'is_correct' => ($request->correct_option == $index) ? 1 : 0,
-                    'created_at' => now(),
-                ]);
-            }
-        } else {
-            DB::table('question_answers')->insert([
-                'question_id' => $id,
-                'answer_text' => $request->correct_answer_text,
-                'created_at' => now(),
+            // 1. Question details update
+            DB::table('questions')->where('id', $id)->update([
+                'skills_category_id' => $request->category_id,
+                'skills_subcategory_id' => $request->subcategory_id,
+                'question_text' => $request->question_text,
+                'ans_format' => $request->ans_format,
+                'difficulty_level' => $request->difficulty_level,
+                'updated_at' => now(),
             ]);
-        }
 
-        DB::commit();
-        return redirect()->route('admin.questions.index')->with('success', 'Bhai, Question update ho gaya!');
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return back()->with('error', $e->getMessage());
+            if ($request->ans_format == 'MCQ') {
+
+                DB::table('question_options')->where('question_id', $id)->delete();
+
+                foreach ($request->options as $index => $optionText) {
+                    $path = null;
+                    // Nayi image check karein (Agar edit form mein image input hai)
+                    if ($request->hasFile("option_images.$index")) {
+                        $file = $request->file("option_images.$index");
+                        $name = time() . "_edit_$index." . $file->extension();
+                        $file->move(public_path('uploads/questions'), $name);
+                        $path = 'uploads/questions/' . $name;
+                    }
+
+                    DB::table('question_options')->insert([
+                        'question_id' => $id,
+                        'option_text' => $optionText,
+                        'path_format' => $path, // path update
+                        'is_correct' => ($request->correct_option == $index) ? 1 : 0,
+                        'created_at' => now(),
+                    ]);
+                }
+            } else {
+                DB::table('question_answers')->updateOrInsert(
+                    ['question_id' => $id],
+                    ['answer_text' => $request->correct_answer_text, 'updated_at' => now()]
+                );
+            }
+
+            DB::commit();
+            return redirect()->route('admin.questions.index')->with('success', 'Question updated successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', $e->getMessage());
+        }
     }
-}
 
     // 2. Edit Page (Sirf view dikhane ke liye)
     public function edit($id)
@@ -168,6 +201,6 @@ class AdminQuestionController extends Controller
             $question->answer_text = $answer->answer_text ?? '';
         }
 
-        return view('frontend.adminPortal.dashboard.questionBank.edit', compact('question', 'categories', 'options'));
+        return view('frontend.adminPortal.dashboard.questionBank.editQuestion', compact('question', 'categories', 'options'));
     }
 }

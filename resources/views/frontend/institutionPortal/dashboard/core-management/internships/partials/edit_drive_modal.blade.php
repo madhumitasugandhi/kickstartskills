@@ -1,7 +1,6 @@
 <div class="modal fade" id="editDriveModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-
+    <div class="modal-content glass-modal">
             <div class="modal-header">
             <h6 class="modal-title mb-0">Edit Internship Drive</h6>
             <small class="text-muted">Update drive details</small>

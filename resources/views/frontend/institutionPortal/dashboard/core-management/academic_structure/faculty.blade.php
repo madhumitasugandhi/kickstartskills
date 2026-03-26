@@ -68,14 +68,14 @@
                 <ul class="dropdown-menu dropdown-menu-end custom-dropdown">
 
                     <li>
-                        <button class="dropdown-item viewFacultyBtn"
-                            data-id="{{ $faculty->id }}">
+                        <button type="button" class="dropdown-item viewFacultyBtn"
+                            data-id="{{ $faculty->faculty_id }}">
                             <i class="bi bi-eye me-2"></i> View Details
                         </button>
                     </li>
                     <li>
-                        <button class="dropdown-item editFacultyBtn"
-                            data-id="{{ $faculty->id }}"
+                        <button type="button" class="dropdown-item editFacultyBtn"
+                            data-id="{{ $faculty->faculty_id }}"
                             data-name="{{ $faculty->name }}"
                             data-email="{{ $faculty->email }}"
                             data-phone="{{ $faculty->phone }}"
@@ -90,7 +90,7 @@
 
                     <li>
                         <button class="dropdown-item deleteFacultyBtn"
-                            data-id="{{ $faculty->id }}"
+                            data-id="{{ $faculty->faculty_id }}"
                             data-name="{{ $faculty->name }}">
                             <i class="bi bi-trash me-2 text-danger"></i> Delete Faculty
                         </button>
@@ -255,7 +255,7 @@
 
             <form id="editFacultyForm" method="POST">
                 @csrf
-
+                @method('POST')
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Faculty</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -462,112 +462,88 @@
         });
     });
 
-    /* ================= EDIT ================= */
     document.addEventListener('click', function(e) {
 
-        if (e.target.closest('.editFacultyBtn')) {
+let editBtn = e.target.closest('.editFacultyBtn');
+let viewBtn = e.target.closest('.viewFacultyBtn');
 
-            let button = e.target.closest('.editFacultyBtn');
-            let id = button.dataset.id;
+/* ================= EDIT ================= */
+if (editBtn) {
 
-            document.getElementById('edit_name').value = button.dataset.name;
-            document.getElementById('edit_email').value = button.dataset.email;
-            document.getElementById('edit_phone').value = button.dataset.phone;
-            document.getElementById('edit_designation').value = button.dataset.designation;
-            document.getElementById('edit_specialization').value = button.dataset.specialization;
-            document.getElementById('edit_experience').value = button.dataset.experience;
-            document.getElementById('edit_department').value = button.dataset.department;
+    let id = editBtn.getAttribute('data-id');
 
-            fetch(`/institution/core-management/academic-structure/faculty/edit/${id}`)
-                .then(res => res.json())
-                .then(data => {
+    document.getElementById('edit_name').value = editBtn.dataset.name;
+    document.getElementById('edit_email').value = editBtn.dataset.email;
+    document.getElementById('edit_phone').value = editBtn.dataset.phone;
+    document.getElementById('edit_designation').value = editBtn.dataset.designation;
+    document.getElementById('edit_specialization').value = editBtn.dataset.specialization;
+    document.getElementById('edit_experience').value = editBtn.dataset.experience;
+    document.getElementById('edit_department').value = editBtn.dataset.department;
 
-                    document.querySelectorAll('.edit-course-checkbox').forEach(cb => {
-                        cb.checked = false;
-                    });
+    // Set form action
+    document.getElementById('editFacultyForm').action =
+        "/institution/core-management/academic-structure/faculty/update/" + id;
 
-                    if (data.courses) {
-                        data.courses.forEach(course => {
-                            let checkbox = document.querySelector('#editCourse' + course.course_type_id);
-                            if (checkbox) {
-                                checkbox.checked = true;
-                            }
-                        });
-                    }
-                    setTimeout(() => {
-                        document.querySelectorAll('.edit-course-checkbox').forEach(cb => {
-                            cb.dispatchEvent(new Event('change'));
-                        });
-                    }, 200);
+    // Fetch courses
+    fetch("/institution/core-management/academic-structure/faculty/edit/" + id)
+        .then(res => res.json())
+        .then(data => {
 
-                });
-            // Show selected course chips in edit modal
             document.querySelectorAll('.edit-course-checkbox').forEach(cb => {
-                cb.addEventListener('change', function() {
-                    let container = document.getElementById('editSelectedCourses');
-                    container.innerHTML = '';
-
-                    document.querySelectorAll('.edit-course-checkbox:checked').forEach(c => {
-                        let chip = document.createElement('span');
-                        chip.className = 'chip-item';
-                        chip.innerHTML = '<span>' + c.dataset.name + '</span>';
-                        container.appendChild(chip);
-                    });
-                });
+                cb.checked = false;
             });
 
-            document.getElementById('editFacultyForm').action =
-                "/institution/core-management/academic-structure/faculty/update/" + id;
-
-            new bootstrap.Modal(document.getElementById('editFacultyModal')).show();
-        }
-
-    });
-
-    /* ================= VIEW ================= */
-
-    document.addEventListener('click', function(e) {
-
-        if (e.target.closest('.viewFacultyBtn')) {
-
-            let button = e.target.closest('.viewFacultyBtn');
-            let id = button.dataset.id;
-
-            fetch("/institution/core-management/academic-structure/faculty/edit/" + id)
-                .then(res => res.json())
-                .then(data => {
-
-                    document.getElementById('view_name').innerText = data.name ?? '';
-                    document.getElementById('view_email').innerText = data.email ?? '';
-                    document.getElementById('view_phone').innerText = data.phone ?? '';
-                    document.getElementById('view_designation').innerText = data.designation ?? '';
-                    document.getElementById('view_specialization').innerText = data.specialization ?? '';
-                    document.getElementById('view_experience').innerText = data.experience ?? '';
-
-                    if (data.department) {
-                        document.getElementById('view_department').innerText =
-                            data.department.department_name;
-                    }
-
-                    let container = document.getElementById('view_courses');
-                    container.innerHTML = '';
-
-                    if (data.courses && data.courses.length) {
-                        data.courses.forEach(course => {
-                            container.innerHTML +=
-                                '<span class="chip-item"><span>' + course.course_name + '</span></span>';
-                        });
-                    } else {
-                        container.innerHTML = '<span class="text-muted">No courses</span>';
-                    }
-
-                    let modal = new bootstrap.Modal(document.getElementById('viewFacultyModal'));
-                    modal.show();
+            if (data.courses) {
+                data.courses.forEach(course => {
+                    let checkbox = document.querySelector('#editCourse' + course.course_type_id);
+                    if (checkbox) checkbox.checked = true;
                 });
+            }
 
-        }
+        });
 
-    });
+    new bootstrap.Modal(document.getElementById('editFacultyModal')).show();
+}
+
+/* ================= VIEW ================= */
+if (viewBtn) {
+
+    let id = viewBtn.getAttribute('data-id');
+
+    fetch("/institution/core-management/academic-structure/faculty/edit/" + id)
+        .then(res => res.json())
+        .then(data => {
+
+            document.getElementById('view_name').innerText = data.name ?? '';
+            document.getElementById('view_email').innerText = data.email ?? '';
+            document.getElementById('view_phone').innerText = data.phone ?? '';
+            document.getElementById('view_designation').innerText = data.designation ?? '';
+            document.getElementById('view_specialization').innerText = data.specialization ?? '';
+            document.getElementById('view_experience').innerText = data.experience ?? '';
+
+            if (data.department) {
+                document.getElementById('view_department').innerText =
+                    data.department.department_name;
+            }
+
+            let container = document.getElementById('view_courses');
+            container.innerHTML = '';
+
+            if (data.courses && data.courses.length) {
+                data.courses.forEach(course => {
+                    container.innerHTML +=
+                        '<span class="chip-item"><span>' + course.course_name + '</span></span>';
+                });
+            } else {
+                container.innerHTML = '<span class="text-muted">No courses</span>';
+            }
+
+            new bootstrap.Modal(document.getElementById('viewFacultyModal')).show();
+        });
+
+}
+
+});
     document.querySelectorAll('.deleteFacultyBtn').forEach(button => {
         button.addEventListener('click', function() {
 

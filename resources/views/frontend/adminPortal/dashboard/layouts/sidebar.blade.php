@@ -33,6 +33,14 @@
                 <span class="badge bg-danger ms-auto" style="font-size: 0.65rem;">View</span>
             </a>
 
+            <a class="nav-link {{ request()->routeIs('admin.exams.*') ? 'active' : '' }} d-flex align-items-center"
+                href="{{ route('admin.exams.index') }}">
+                <i class="bi bi-journal-check fs-5"></i>
+                <span class="nav-label ms-3">Exam Management</span>
+                <span class="badge bg-danger ms-auto" style="font-size: 0.65rem;">New</span>
+            </a>
+
+
             <a class="nav-link {{ request()->routeIs('admin.drives') ? 'active' : '' }} d-flex align-items-center"
                 href="{{ route('admin.drives') }}">
                 <i class="bi bi-activity fs-5"></i>

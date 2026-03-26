@@ -114,21 +114,24 @@ function loadDrives() {
             html += `
 <div class="drive-card">
     <div class="drive-left">
+
         <div class="drive-header">
             <div class="company-avatar">${initials}</div>
             <div>
                 <h6 class="mb-0 fw-semibold">${drive.drive_name}</h6>
-                <small>${drive.company_name}</small>
+                <small class="">${drive.company_name}</small>
             </div>
         </div>
 
-        <p class="small mb-2">${drive.description ?? ''}</p>
+         <div class="drive-description">
+            <span><i class="bi bi-pencil"></i> ${drive.description ?? ''}</span>
+        </div>
 
         <div class="meta-row mb-2">
-            <span>${drive.drive_date ?? ''}</span>
-            <span>₹${drive.stipend ?? 0}</span>
-            <span>${drive.location ?? ''}</span>
+            <span><i class="bi bi-cash"></i>Stiphend: ₹${drive.stipend ?? 0}</span>
+            <span><i class="bi bi-geo-alt"></i>Location: ${drive.location ?? ''}</span>
         </div>
+
     </div>
 
     <div class="drive-right student-actions">
@@ -149,7 +152,8 @@ function loadDrives() {
         </ul>
 
     </div>
-</div>`;
+</div>
+`;
         });
 
         document.getElementById('driveList').innerHTML = html;
