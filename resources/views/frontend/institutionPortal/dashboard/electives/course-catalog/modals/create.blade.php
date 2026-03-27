@@ -10,14 +10,13 @@
 
             <!-- BODY -->
             <div class="modal-body p-4 p-md-5">
-                @include('frontend.institutionPortal.dashboard.programs.course-catalog.modals._form')
+                @include('frontend.institutionPortal.dashboard.electives.course-catalog.modals._form')
             </div>
 
             <!-- FOOTER -->
             <div class="modal-footer">
                 <button class="btn muted-btn" data-bs-dismiss="modal">Cancel</button>
-                <button class="btn btn-teal">Save Course</button>
-            </div>
+                <button class="btn btn-teal" onclick="saveCourse()">Save Course</button>            </div>
 
         </div>
     </div>

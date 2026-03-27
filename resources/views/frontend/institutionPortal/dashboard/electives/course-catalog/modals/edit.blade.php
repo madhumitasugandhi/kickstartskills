@@ -8,7 +8,7 @@
             </div>
 
             <div class="modal-body p-4 p-md-5">
-                @include('frontend.institutionPortal.dashboard.programs.course-catalog.modals._form')
+                @include('frontend.institutionPortal.dashboard.electives.course-catalog.modals._form')
             </div>
 
             <div class="modal-footer">

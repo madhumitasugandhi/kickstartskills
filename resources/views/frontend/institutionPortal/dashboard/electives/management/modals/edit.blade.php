@@ -8,41 +8,41 @@
             </div>
 
             <div class="modal-body px-4 pb-4">
-                <form class="row g-4">
+                <form id="editProgramForm">
 
-                    <div class="col-12">
-                        <label class="form-label small">Program Name *</label>
-                        <input type="text"
-                               class="form-control"
-                               value="Full Stack Web Development">
+                    <input type="hidden" id="edit_program_id">
+
+                    <div class="floating-field mb-4">
+                        <input type="text" id="edit_program_name" class="form-control" placeholder=" ">
+                        <label>Program Name *</label>
                     </div>
 
-                    <div class="col-12">
-                        <label class="form-label small">Department *</label>
-                        <select class="form-select">
-                            <option selected>Engineering</option>
-                            <option>Management</option>
-                        </select>
+                    <div class="floating-field mb-4">
+                        <select id="edit_department_id" class="form-select"></select>
+                        <label>Department *</label>
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label small">Duration *</label>
-                        <input type="text" class="form-control" value="6 months">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="floating-field mb-4">
+                                <input type="text" id="edit_duration" class="form-control" placeholder=" ">
+                                <label>Duration *</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="floating-field mb-4">
+                                <input type="number" id="edit_fees" class="form-control" placeholder=" ">
+                                <label>Fees *</label>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label small">Fees (₹) *</label>
-                        <input type="number" class="form-control" value="25000">
+                    <div class="floating-field mb-4">
+                        <textarea id="edit_description" class="form-control" rows="4" placeholder=" "></textarea>
+                        <label>Description *</label>
                     </div>
 
-                    <div class="col-12">
-                        <label class="form-label small">Description *</label>
-                        <textarea rows="4" class="form-control">
-Comprehensive web development program covering front-end and back-end technologies
-                        </textarea>
-                    </div>
-
-                    <div class="col-12 d-flex justify-content-end gap-3">
+                    <div class="d-flex justify-content-end gap-3">
                         <button type="button" class="muted-btn" data-bs-dismiss="modal">
                             Cancel
                         </button>
@@ -53,6 +53,7 @@ Comprehensive web development program covering front-end and back-end technologi
 
                 </form>
             </div>
+
         </div>
     </div>
 </div>

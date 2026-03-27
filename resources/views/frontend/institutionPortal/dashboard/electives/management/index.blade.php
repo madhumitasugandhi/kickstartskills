@@ -32,8 +32,8 @@
                         <i class="bi bi-book"></i>
                     </div>
                     <div>
-                        <h4 class="mb-0">4</h4>
-                        <p class=" mb-0">Total Programs</p>
+                    <h4 class="mb-0" id="totalPrograms">0</h4>
+                    <p class="mb-0">Total Programs</p>
                     </div>
                 </div>
             </div>
@@ -46,8 +46,8 @@
                         <i class="bi bi-check-circle"></i>
                     </div>
                     <div>
-                        <h4 class="mb-0">3</h4>
-                        <p class=" mb-0">Active Programs</p>
+                    <h4 class="mb-0" id="activePrograms">0</h4>
+                    <p class="mb-0">Active Programs</p>
                     </div>
                 </div>
             </div>
@@ -94,21 +94,24 @@
                 <div class="input-group-custom">
                     <i class="bi bi-search"></i>
                     <input type="text"
-                           class="form-control"
-                           placeholder="Search programs...">
+       id="programSearch"
+       class="form-control"
+       placeholder="Search programs...">
                 </div>
             </div>
 
             <div class="col-md-3">
-                <select class="form-select">
-                    <option>All Departments</option>
-                </select>
+            <select class="form-select" id="departmentFilter">
+    <option value="">All Departments</option>
+</select>
             </div>
 
             <div class="col-md-3">
-                <select class="form-select">
-                    <option>All Status</option>
-                </select>
+            <select class="form-select" id="statusFilter">
+    <option value="">All Status</option>
+    <option value="1">Active</option>
+    <option value="0">Inactive</option>
+</select>
             </div>
         </div>
     </div>
@@ -117,8 +120,9 @@
         PROGRAMS HEADER
     ====================================================== --}}
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h6 class="fw-semibold mb-0">Programs (1)</h6>
-
+    <h6 class="fw-semibold mb-0">
+    Programs (<span id="programCount">0</span>)
+</h6>
         <button class="btn btn-link p-0">
             <i class="bi bi-download fs-5"></i>
         </button>
@@ -144,24 +148,6 @@
 @include('frontend.institutionPortal.dashboard.electives.management.scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-
-    // Toggle kebab menu
-    document.querySelectorAll('.kebab-toggle').forEach(button => {
-        button.addEventListener('click', function (e) {
-            e.stopPropagation();
-
-            // Close all other open menus
-            document.querySelectorAll('.kebab-menu').forEach(menu => {
-                if (menu !== this.nextElementSibling) {
-                    menu.classList.remove('show');
-                }
-            });
-
-            // Toggle current menu
-            const menu = this.nextElementSibling;
-            menu.classList.toggle('show');
-        });
-    });
 
     // Close menu when clicking outside
     document.addEventListener('click', function () {

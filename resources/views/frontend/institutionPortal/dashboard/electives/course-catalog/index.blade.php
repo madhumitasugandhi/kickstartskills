@@ -109,59 +109,76 @@
 
 
     <!-- ================= COURSE CARDS ================= -->
-    <div class="col-md-6">
+    <div class="row g-3">
+@foreach($electives as $course)
+<div class="col-md-6">
     <div class="program-card-custom glass-card p-4 h-100">
 
         <div class="d-flex justify-content-between align-items-start mb-2">
-            <h5 class="fw-bold mb-0">Introduction to React.js</h5>
-            <span class="status-pill active">Published</span>
+            <h5 class="fw-bold mb-0">{{ $course->elective_title }}</h5>
+
+            <div class="dropdown">
+                <button class="icon-btn" data-bs-toggle="dropdown">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item viewCourse"
+                           data-id="{{ $course->elective_id }}">
+                           View
+                        </a>
+                    </li>
+                    <li>
+                    <a class="dropdown-item" onclick="editCourse({{ $course->elective_id }})">Edit</a>
+                    </li>
+                    <li>
+                    <a class="dropdown-item text-danger" onclick="deleteCourse({{ $course->elective_id }})">Delete</a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                    <a class="dropdown-item" onclick="toggleStatus({{ $course->elective_id }})">
+    {{ $course->status ? 'Deactivate' : 'Activate' }}
+</a>
+                    </li>
+                </ul>
+            </div>
         </div>
 
-        <p class="small  mb-2">by Dr. Sarah Johnson</p>
+        <p class="small mb-2">by {{ $course->instructor_name }}</p>
 
         <div class="d-flex gap-2 mb-3 flex-wrap">
-            <span class="skill-tag">Programming</span>
-            <span class="skill-tag highlight">Beginner</span>
+            <span class="skill-tag">{{ $course->category->category_name ?? '' }}</span>
+
+            @foreach($course->skills as $skill)
+                <span class="skill-tag highlight">
+                    {{ $skill->subcategory_name }}
+                </span>
+            @endforeach
         </div>
 
-        <p class="mb-3 ">
-            Learn the fundamentals of React.js and build modern web applications.
-        </p>
+        <p class="mb-3">{{ $course->description }}</p>
 
-        <div class="row g-2 small  mb-3">
+        <div class="row g-2 small mb-3">
             <div class="col-6">
-                <i class="bi bi-people me-1"></i> 234 / 300
+                <i class="bi bi-clock me-1"></i> {{ $course->duration }}
             </div>
             <div class="col-6">
-                <i class="bi bi-star-fill me-1"></i> 4.8 (156)
+                <i class="bi bi-calendar me-1"></i> {{ $course->start_date }}
             </div>
-            <div class="col-6">
-                <i class="bi bi-clock me-1"></i> 8 weeks
-            </div>
-        </div>
-
-        <div class="progress mb-3" style="height: 5px;">
-            <div class="progress-bar bg-success" style="width: 78%"></div>
         </div>
 
         <div class="d-flex justify-content-between align-items-center">
-            <strong class="text-teal">₹15,000</strong>
+            <strong class="text-teal">₹{{ $course->price }}</strong>
 
-            <div class="d-flex gap-2">
-                <button class="btn btn-outline-teal btn-sm"
-                        data-bs-toggle="modal"
-                        data-bs-target="#viewCourseModal">
-                    View
-                </button>
-                <button class="btn btn-teal btn-sm"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editCourseModal">
-                    Edit
-                </button>
-            </div>
+            <span class="status-pill {{ $course->status ? 'active' : 'inactive' }}">
+                {{ $course->status ? 'Active' : 'Inactive' }}
+            </span>
         </div>
 
     </div>
+</div>
+@endforeach
 </div>
 
 </div>
