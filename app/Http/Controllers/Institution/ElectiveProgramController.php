@@ -104,4 +104,26 @@ class ElectiveProgramController extends Controller
 
     return response()->json($departments);
 }
+
+public function stats()
+{
+    return response()->json([
+        'total' => Elective::count(),
+        'active' => Elective::where('status',1)->count(),
+        'inactive' => Elective::where('status',0)->count()
+    ]);
+}
+
+public function changeStatus(Request $request)
+{
+    $program = Elective::findOrFail($request->id);
+
+    $program->status = !$program->status;
+    $program->save();
+
+    return response()->json([
+        'status' => true
+    ]);
+}
+
 }
