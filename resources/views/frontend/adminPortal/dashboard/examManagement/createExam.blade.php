@@ -32,7 +32,8 @@
         margin-top: 10px;
     }
 
-    .table th td {
+    .table th,
+    td {
         border-bottom: 1px solid var(--border-color) !important;
         color: var(--text-main) !important;
         background-color: transparent !important;
@@ -126,14 +127,15 @@
                     </div>
 
                     <div class="table-responsive border rounded p-3"
-                        style="background: var(--bg-sidebar); border-color: var(--border-color) !important;">
+                        style="background: var(--bg-sidebar) !important; border-color: var(--border-color) !important;">
                         <table id="questionsTable" class="table table-hover align-middle mb-0 w-100">
                             <thead>
                                 <tr>
                                     <th width="50"><input type="checkbox" id="select_all_q" class="form-check-input">
                                     </th>
-                                    <th class="--text-main">Question Text</th>
-                                    <th width="120" class="--text-main">Difficulty</th>
+                                    <th class="text-main">Question Text</th>
+                                    <th class="text-main">Sub-Category</th>
+                                    <th width="120" class="text-main">Difficulty</th>
                                 </tr>
                             </thead>
                             <tbody id="questions_list"></tbody>
@@ -159,18 +161,23 @@
     $(document).ready(function() {
         let qTable = null;
 
+        // Category change par questions fetch karo
         $('#exam_category_id').on('change', function() {
             let catId = $(this).val();
             let container = $('#questions_list');
 
-            if(!catId) { $('#questions_section').hide(); return; }
+            if(!catId) {
+                $('#questions_section').hide();
+                return;
+            }
 
             $('#questions_section').show();
-            container.html('<tr><td colspan="3" class="text-center py-3 text-main">Loading questions...</td></tr>');
+            container.html('<tr><td colspan="4" class="text-center py-3 text-main">Loading questions...</td></tr>');
 
             let url = "{{ route('admin.exams.get_questions', ':id') }}".replace(':id', catId);
 
             $.get(url, function(data) {
+                // Purani table destroy karo agar exists karti hai
                 if ($.fn.DataTable.isDataTable('#questionsTable')) {
                     $('#questionsTable').DataTable().destroy();
                 }
@@ -178,33 +185,51 @@
                 let html = '';
                 if(data.length > 0) {
                     $.each(data, function(i, q) {
+                        let subCategory = q.sub_name ? q.sub_name : '<span class="text-danger">Not Assigned</span>';
+
                         html += `
                             <tr>
                                 <td><input type="checkbox" name="questions_id[]" value="${q.id}" class="form-check-input q-checkbox"></td>
-                                <td class=" small" style="white-space: normal;">${q.question_text}</td>
-                                <td><span class="badge bg-soft-primary text-primary border border-primary small">${q.difficulty_level}</span></td>
+                                <td><div class="small fw-bold mb-1 text-white">${q.question_text}</div></td>
+                                <td>
+                                    <div class="d-flex align-items-center" style="font-size: 0.72rem;">
+                                        <span class="text-info fw-bold">${subCategory}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-soft-primary text-primary border border-primary small">
+                                        ${q.difficulty_level}
+                                    </span>
+                                </td>
                             </tr>`;
                     });
                     container.html(html);
 
+                    // DataTable initialize karo
                     qTable = $('#questionsTable').DataTable({
                         "pageLength": 10,
                         "language": { "search": "Filter:", "lengthMenu": "_MENU_ entries" },
                         "columnDefs": [{ "orderable": false, "targets": 0 }]
                     });
+                    updateCount();
                 } else {
-                    container.html('<tr><td colspan="3" class="text-center py-4 text-danger">No questions found.</td></tr>');
+                    container.html('<tr><td colspan="4" class="text-center py-4 text-danger">Bhai, is category mein koi questions nahi mile!</td></tr>');
                 }
+            }).fail(function() {
+                alert("Server error: Questions fetch nahi ho paye.");
             });
         });
 
         // Select All (Handles all pages in DataTable)
         $(document).on('change', '#select_all_q', function() {
-            let rows = qTable.rows({ 'search': 'applied' }).nodes();
-            $('input[type="checkbox"]', rows).prop('checked', this.checked);
-            updateCount();
+            if (qTable) {
+                let rows = qTable.rows({ 'search': 'applied' }).nodes();
+                $('input[type="checkbox"]', rows).prop('checked', this.checked);
+                updateCount();
+            }
         });
 
+        // Individual Checkbox change
         $(document).on('change', '.q-checkbox', function() {
             updateCount();
         });
