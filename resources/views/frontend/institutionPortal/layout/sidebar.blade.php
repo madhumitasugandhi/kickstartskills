@@ -66,10 +66,10 @@
                 </div>
             </div>
 
-             <!-- Electives -->
+            <!-- Electives -->
             <div class="sidebar-dropdown">
                 <a href="javascript:void(0)" class="nav-item-custom dropdown-toggle-custom"
-                   onclick="toggleDropdown(this)">
+                    onclick="toggleDropdown(this)">
                     <i class="bi bi-journal-bookmark me-2"></i>
                     <span class="menu-text">Electives</span>
                     <i class="bi bi-chevron-down ms-auto dropdown-arrow"></i>
@@ -79,10 +79,10 @@
                         <i class="bi bi-kanban me-2"></i> Management
                     </a>
                     <a href="{{ route('institution.electives.elective-courses.index') }}"
-   class="nav-item-custom sub-item 
-   {{ request()->routeIs('institution.electives.elective-courses.*') ? 'active' : '' }}">
-    <i class="bi bi-search me-2"></i> Course Catalog
-</a>
+                        class="nav-item-custom sub-item 
+                       {{ request()->routeIs('institution.electives.elective-courses.*') ? 'active' : '' }}">
+                        <i class="bi bi-search me-2"></i> Course Catalog
+                    </a>
                     <a href="{{ route('institution.electives.programs-assessment') }}" class="nav-item-custom sub-item">
                         <i class="bi bi-clipboard-check me-2"></i> Assessment
                     </a>
@@ -123,10 +123,10 @@
                     <i class="bi bi-chevron-down ms-auto dropdown-arrow"></i>
                 </a>
                 <div class="dropdown-menu-custom">
-                    <a href="{{ route('institution.faculty-management') }}" class="nav-item-custom sub-item">
+                    <a href="{{ route('institution.faculties.faculty-management.management') }}" class="nav-item-custom sub-item {{ request()->routeIs('institution.faculties.faculty-management.management*') ? 'active' : '' }}">
                         <i class="bi bi-people-fill me-2"></i> Management
                     </a>
-                    <a href="{{ route('institution.faculty-assignments') }}" class="nav-item-custom sub-item">
+                    <a href="{{ route('institution.faculties.faculty-assignments') }}" class="nav-item-custom sub-item {{ request()->routeIs('institution.faculties.faculty-assignments*') ? 'active' : '' }}">
                         <i class="bi bi-diagram-2 me-2"></i> Assignments
                     </a>
                 </div>
