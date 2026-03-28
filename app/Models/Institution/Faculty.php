@@ -4,8 +4,9 @@ namespace App\Models\Institution;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Institution\Department;
+use App\Models\Institution\InstitutionDepartment;
 use App\Models\Institution\CourseType;
+use App\Models\Institution\ElectiveCourses;
 
 class Faculty extends Model
 {
@@ -23,6 +24,7 @@ class Faculty extends Model
         'email',
         'phone',
         'designation',
+        'employment_type', 
         'specialization',
         'experience',
         'status',
@@ -31,7 +33,7 @@ class Faculty extends Model
 
     public function department()
     {
-        return $this->belongsTo(InstitutionDepartment::class, 'department_id');
+        return $this->belongsTo(InstitutionDepartment::class, 'department_id','department_id');
     }
 
     public function courses()
@@ -45,4 +47,13 @@ class Faculty extends Model
             'course_type_id'
         );
     }
+
+    public function electives()
+{
+    return $this->hasMany(
+        ElectiveCourses::class,
+        'faculty_id',
+        'faculty_id'
+    );
+}
 }

@@ -7,6 +7,6 @@ class SkillsCategory extends Model
 {
     public function subcategories()
 {
-    return $this->hasMany(SkillSubcategory::class, 'skills_category_id');
+    return $this->hasMany(SkillSubcategory::class, 'skills_category_id','id');
 }
 }
