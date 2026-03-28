@@ -13,7 +13,7 @@ use App\Http\Controllers\Institution\InstitutionDepartmentController;
 use App\Http\Controllers\Institution\CourseTypeController;
 use App\Http\Controllers\Institution\CourseRequirementController;
 use App\Http\Controllers\Institution\InstitutionDriveController;
-use App\Http\Controllers\Institution\FacultyController; 
+use App\Http\Controllers\Institution\FacultyController;
 use App\Http\Controllers\Institution\ElectiveProgramController;
 use App\Http\Controllers\Institution\ElectivecourseController;
 
@@ -380,15 +380,7 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
             Route::post('/update/{id}', [FacultyController::class, 'update'])->name('update');
             Route::delete('/delete/{id}', [FacultyController::class, 'destroy'])->name('delete');
         });
-        Route::prefix('academic-structure/faculty')->name('academic-structure.faculty.')->group(function () {
-            Route::get('/', [FacultyController::class, 'index'])->name('index');
-            Route::get('/list', [FacultyController::class, 'list'])->name('list');
-            Route::post('/store', [FacultyController::class, 'store'])->name('store');
-            Route::get('/edit/{id}', [FacultyController::class, 'edit'])->name('edit');
-            Route::post('/update/{id}', [FacultyController::class, 'update'])->name('update');
-            Route::delete('/delete/{id}', [FacultyController::class, 'destroy'])->name('delete');
-        });
-
+       
 
         Route::prefix('internships')->name('internships.')->group(function () {
 
@@ -488,24 +480,51 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
     });
 
     // Students
+
+    //Overview
     Route::get('/students-overview', function () {
         return view('frontend.institutionPortal.dashboard.students.overview.index');
     })->name('students-overview');
+
+
+    //Dashboard
     Route::get('/data-dashboard', function () {
         return view('frontend.institutionPortal.dashboard.students.data-dashboard.index');
     })->name('data-dashboard');
+
+    //Enrollment
     Route::get('/enrollment', function () {
         return view('frontend.institutionPortal.dashboard.students.enrollment.index');
     })->name('enrollment');
+
+    //Academic
     Route::get('/academic-records', function () {
         return view('frontend.institutionPortal.dashboard.students.academic-records.index');
     })->name('academic-records');
-    Route::get('/faculty-management', function () {
-        return view('frontend.institutionPortal.dashboard.faculty.management.index');
-    })->name('faculty-management');
-    Route::get('/faculty-assignments', function () {
-        return view('frontend.institutionPortal.dashboard.faculty.assignment.index');
-    })->name('faculty-assignments');
+
+
+    //Faculties
+    Route::prefix('faculties')->name('faculties.')->group(function () {
+
+        // Management
+
+        Route::prefix('faculty-management')->name('faculty-management.')->group(function () {
+            Route::get('/', [FacultyController::class, 'management'])->name('management');
+            Route::get('/list', [FacultyController::class, 'list'])->name('list');
+            Route::post('/store', [FacultyController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [FacultyController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [FacultyController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [FacultyController::class, 'destroy'])->name('delete');
+            Route::get('/stats', [FacultyController::class, 'stats'])->name('stats');
+        });
+
+        // Assignments
+        Route::get('/faculty-assignments', [FacultyController::class, 'assignments'])
+            ->name('faculty-assignments');
+    });
+
+
+
     Route::get('/analytics-performance', function () {
         return view('frontend.institutionPortal.dashboard.analytics.performance.index');
     })->name('analytics-performance');
@@ -533,7 +552,7 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
         return view('frontend.institutionPortal.dashboard.notifications.index');
     })->name('notifications');
 });
-    
+
 
 
 
