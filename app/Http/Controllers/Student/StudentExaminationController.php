@@ -13,10 +13,10 @@ class StudentExaminationController extends Controller
 {
     public function takeTestIndex()
     {
-        $user = \Auth::user();
+        $user = Auth::user();
 
         // Just fetch everything that is Published
-        $availableExams = \DB::table('exams')
+        $availableExams = DB::table('exams')
             ->where('status', 'Published')
             ->get();
 
@@ -27,10 +27,10 @@ class StudentExaminationController extends Controller
     public function startTest($id)
     {
         // Yeh line missing thi, isliye error aa raha tha
-        $user = \Auth::user();
+        $user = Auth::user();
 
-        $exam = \DB::table('exams')->where('id', $id)->first();
-        $questions = \DB::table('questions')->where('exam_id', $id)->get();
+        $exam = DB::table('exams')->where('id', $id)->first();
+        $questions = DB::table('questions')->where('exam_id', $id)->get();
 
         // Ab 'user' compact mein kaam karega
         return view('frontend.studentPortal.dashboard.examinations.liveQuizIndex', compact('exam', 'questions', 'user'));
@@ -76,10 +76,10 @@ class StudentExaminationController extends Controller
 
     public function results()
     {
-        $user = \Auth::user();
+        $user = Auth::user();
 
         // 1. Fetch real results with Exam details
-        $results = \DB::table('student_results')
+        $results = DB::table('student_results')
             ->join('exams', 'student_results.exam_id', '=', 'exams.id')
             ->where('student_results.user_id', $user->id)
             ->select('student_results.*', 'exams.exam_title', 'exams.skill_category', 'exams.duration_minutes as total_time')

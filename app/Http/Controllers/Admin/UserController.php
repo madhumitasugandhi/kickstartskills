@@ -76,10 +76,10 @@ class UserController extends Controller
             'mentor_id' => 'nullable|exists:users,id',
         ]);
 
-        \App\Models\User::create([
+        User::create([
             'full_name' => $request->full_name,
             'email' => $request->email,
-            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+            'password' =>Hash::make($request->password),
             'admin_role_id' => $request->admin_role_id,
             'account_status' => $request->account_status,
             'mentor_id' => $request->mentor_id,
