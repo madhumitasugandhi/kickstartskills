@@ -268,7 +268,7 @@
             <div>
                 <h6 class="fw-bold text-main m-0">{{ $res->exam_title }}</h6>
                 <div class="d-flex gap-2 mt-1">
-                    <span class="badge bg-primary bg-opacity-10 text-primary">{{ $res->skill_category }}</span>
+                    <span class="badge bg-primary bg-opacity-10 text-primary">{{ $res->skill_name ?? 'General' }}</span>
                 </div>
             </div>
         </div>

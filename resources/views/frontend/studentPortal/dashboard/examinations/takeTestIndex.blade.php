@@ -163,58 +163,58 @@
     </div>
 
     @forelse($availableExams as $exam)
-        <div class="card-custom mb-4 p-4">
-            <div class="d-flex align-items-start gap-4 mb-3">
-                <div class="exam-icon-box">
-                    <i class="bi bi-file-earmark-text"></i>
-                </div>
-                <div>
-                    <h5 class="fw-bold text-main mb-1">{{ $exam->exam_title }}</h5>
-                    <p class="text-blue small mb-0">{{ $exam->skill_category }} Assessment</p>
+    <div class="card-custom mb-4 p-4">
+        <div class="d-flex align-items-start gap-4 mb-3">
+            <div class="exam-icon-box">
+                <i class="bi bi-file-earmark-text"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold text-main mb-1">{{ $exam->exam_title }}</h5>
+<p class="text-blue small mb-0">{{ $exam->skill_name ?? 'Skill' }} Assessment</p>            </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-4 mb-3 pb-3 border-bottom"
+            style="border-color: var(--border-color) !important;">
+            <div class="meta-item">
+                <div class="d-flex flex-column">
+                    <span class="meta-label">Duration</span>
+                    <span class="meta-value">{{ $exam->duration_minutes }} mins</span>
                 </div>
             </div>
-
-            <div class="d-flex flex-wrap gap-4 mb-3 pb-3 border-bottom" style="border-color: var(--border-color) !important;">
-                <div class="meta-item">
-                    <div class="d-flex flex-column">
-                        <span class="meta-label">Duration</span>
-                        <span class="meta-value">{{ $exam->duration_minutes }} mins</span>
-                    </div>
-                </div>
-                <div class="meta-item">
-                    <div class="d-flex flex-column">
-                        <span class="meta-label">Questions</span>
-                        <span class="meta-value">{{ $exam->total_marks }}</span>
-                    </div>
-                </div>
-                <div class="meta-item">
-                    <div class="d-flex flex-column">
-                        <span class="meta-label">Pass Score</span>
-                        <span class="meta-value">{{ $exam->passing_score }}%</span>
-                    </div>
+            <div class="meta-item">
+                <div class="d-flex flex-column">
+                    <span class="meta-label">Questions</span>
+                    <span class="meta-value">{{ $exam->total_marks }}</span>
                 </div>
             </div>
-
-            <div class="d-flex justify-content-end">
-                <a href="{{ route('student.exam.start', $exam->id) }}" class="btn-start text-decoration-none">
-                    <i class="bi bi-play-fill fs-5"></i> Start Test
-                </a>
+            <div class="meta-item">
+                <div class="d-flex flex-column">
+                    <span class="meta-label">Pass Score</span>
+                    <span class="meta-value">{{ $exam->passing_score }}%</span>
+                </div>
             </div>
         </div>
 
-    @empty
-        <div class="card-custom text-center py-5">
-            <div class="exam-icon-box mx-auto mb-3" style="background: var(--soft-red); color: var(--text-red);">
-                <i class="bi bi-exclamation-circle"></i>
-            </div>
-            <h5 class="fw-bold text-main">No Exams Found</h5>
-            <p class="--text-muted">We couldn't find exams matching the skills in your portfolio.<br>
-                Add skills like <strong>Next.js</strong> or <strong>Angular</strong> to see available tests.</p>
-
-            <a href="{{ route('student.profile.portfolio') }}" class="btn btn-primary mt-3 px-4 shadow-sm">
-                <i class="bi bi-person-badge me-2"></i> Go to Portfolio to Add Skills
+        <div class="d-flex justify-content-end">
+            <a href="{{ route('student.exam.start', $exam->id) }}" class="btn-start text-decoration-none">
+                <i class="bi bi-play-fill fs-5"></i> Start Test
             </a>
         </div>
+    </div>
+
+    @empty
+    <div class="card-custom text-center py-5">
+        <div class="exam-icon-box mx-auto mb-3" style="background: var(--soft-red); color: var(--text-red);">
+            <i class="bi bi-exclamation-circle"></i>
+        </div>
+        <h5 class="fw-bold text-main">No Exams Found</h5>
+        <p class="--text-muted">We couldn't find exams matching the skills in your portfolio.<br>
+            Add skills like <strong>Next.js</strong> or <strong>Angular</strong> to see available tests.</p>
+
+        <a href="{{ route('student.profile.portfolio') }}" class="btn btn-primary mt-3 px-4 shadow-sm">
+            <i class="bi bi-person-badge me-2"></i> Go to Portfolio to Add Skills
+        </a>
+    </div>
     @endforelse
 </div>
 @endsection

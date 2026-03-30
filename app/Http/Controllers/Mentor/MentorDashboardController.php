@@ -23,7 +23,7 @@ class MentorDashboardController extends Controller
             // Count active sessions for this mentor
             'active_sessions' => DB::table('sessions')
                 ->where('mentor_id', $mentorId)
-                ->where('status', 'active')
+                ->where('status', 'scheduled')
                 ->count(),
 
             // Count job applications marked as 'Hired' for this mentor's students
@@ -44,8 +44,7 @@ class MentorDashboardController extends Controller
             // Count sessions happening within the next 24 hours
             'sessions_today' => DB::table('sessions')
                 ->where('mentor_id', $mentorId)
-                ->where('status', 'active')
-                ->whereBetween('last_activity', [time(), time() + 86400]) // next 24 hours
+                ->where('session_date', now()->format('Y-m-d'))
                 ->count(),
         ];
 
@@ -71,6 +70,6 @@ class MentorDashboardController extends Controller
                 ->where('mentor_id', auth()->id())
                 ->firstOrFail();
 
-    return view('frontend.mentorPortal.dashboard.students.studentProfile', compact('student'));
-}
+        return view('frontend.mentorPortal.dashboard.students.studentProfile', compact('student'));
+    }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Student;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MentorProfile extends Model
+class StudentProfile extends Model
 {
     // This allows Laravel to save data to your 45 tables
     protected $guarded = [];
