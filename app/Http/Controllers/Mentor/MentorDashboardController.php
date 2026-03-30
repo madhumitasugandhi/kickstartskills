@@ -21,9 +21,10 @@ class MentorDashboardController extends Controller
                 ->count(),
 
             // Count active sessions for this mentor
-            'active_sessions' => \DB::table('sessions')
+            // Line 24-28 update:
+            'active_sessions' => \DB::table('mentor_sessions')
                 ->where('mentor_id', $mentorId)
-                ->where('status', 'active')
+                ->where('status', 'scheduled')
                 ->count(),
 
             // Count job applications marked as 'Hired' for this mentor's students
@@ -42,10 +43,9 @@ class MentorDashboardController extends Controller
                 ->count(),
 
             // Count sessions happening within the next 24 hours
-            'sessions_today' => \DB::table('sessions')
+            'sessions_today' => \DB::table('mentor_sessions')
                 ->where('mentor_id', $mentorId)
-                ->where('status', 'active')
-                ->whereBetween('last_activity', [time(), time() + 86400]) // next 24 hours
+                ->where('session_date', now()->format('Y-m-d'))
                 ->count(),
         ];
 
@@ -55,22 +55,25 @@ class MentorDashboardController extends Controller
             ->where('admin_role_id', 5) // Role 5 = Student
             ->get();
 
-        $upcomingSessions = \DB::table('sessions')
-            ->join('users', 'sessions.user_id', '=', 'users.id')
-            ->where('sessions.mentor_id', $mentorId)
-            ->select('sessions.*', 'users.full_name as student_name')
+        // Line 57 onwards...
+        $upcomingSessions = \DB::table('mentor_sessions')
+            ->where('mentor_id', $mentorId)
+            ->where('session_date', '>=', now()->format('Y-m-d'))
+            ->orderBy('session_date', 'asc')
+            ->orderBy('session_time', 'asc')
+            ->limit(5)
             ->get();
 
         return view('frontend.mentorPortal.dashboard.dashboardIndex', compact('stats', 'students', 'upcomingSessions'));
     }
 
     public function showStudent($id)
-{
-    // Find the student, but only if they belong to the logged-in mentor
-    $student = \App\Models\User::where('id', $id)
-                ->where('mentor_id', auth()->id())
-                ->firstOrFail();
+    {
+        // Find the student, but only if they belong to the logged-in mentor
+        $student = \App\Models\User::where('id', $id)
+            ->where('mentor_id', auth()->id())
+            ->firstOrFail();
 
-    return view('frontend.mentorPortal.dashboard.students.studentProfile', compact('student'));
-}
+        return view('frontend.mentorPortal.dashboard.students.studentProfile', compact('student'));
+    }
 }
