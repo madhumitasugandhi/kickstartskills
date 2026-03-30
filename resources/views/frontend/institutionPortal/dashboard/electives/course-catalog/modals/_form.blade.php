@@ -1,37 +1,39 @@
-<form id="courseForm">
-<div class="row g-4">
+<form id="{{ $formId ?? 'courseForm' }}">
+    <div class="row g-4">
 
     <input type="hidden" name="elective_id" id="edit_id">
 
+    <div class="row g-4">
+
     <!-- Course Title -->
     <div class="col-md-6 floating-field">
-        <input type="text" name="elective_title" id="elective_title" class="form-control" placeholder=" " required>
+        <input type="text" name="elective_title" id="elective_title" class="form-control" placeholder=" ">
         <label>Course Title *</label>
     </div>
 
-    <!-- Instructor -->
-    <div class="col-md-6 floating-field">
-        <input type="text" name="instructor_name" id="instructor_name" class="form-control" placeholder=" " required>
-        <label>Instructor *</label>
-    </div>
-
-    <!-- Category -->
-    <div class="col-md-4">
-        <label class="form-label small">Category *</label>
-        <select name="category_id" id="category_id" class="form-select" onchange="loadSkills(this.value)">
-            <option value="">Select Category</option>
-            @foreach($categories as $category)
-                <option value="{{ $category->category_id }}">
-                    {{ $category->category_name }}
+    <!-- Faculty -->
+    <div class="col-md-6">
+        <label class="form-label small">Faculty *</label>
+        <select name="faculty_id" id="faculty_id" class="form-select">
+            <option value="">Select Faculty</option>
+            @foreach($faculties as $faculty)
+                <option value="{{ $faculty->faculty_id }}">
+                    {{ $faculty->name }}
                 </option>
             @endforeach
         </select>
     </div>
 
-    <!-- Skills -->
+    <!-- Category -->
     <div class="col-md-4">
-        <label class="form-label small">Skills *</label>
-        <select name="skills[]" id="skills" class="form-select" multiple>
+        <label class="form-label small">Category *</label>
+        <select name="category_id" id="category_id" class="form-select" >
+            <option value="">Select Category</option>
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}">
+                    {{ $category->name }}
+                </option>
+            @endforeach
         </select>
     </div>
 
@@ -53,13 +55,10 @@
         <label>Start Date *</label>
     </div>
 
-    <!-- Status -->
-    <div class="col-md-4">
-        <label class="form-label small">Status</label>
-        <select name="status" id="status" class="form-select">
-            <option value="1">Active</option>
-            <option value="0">Inactive</option>
-        </select>
+    <!-- Skills -->
+    <div class="col-md-8">
+        <label class="form-label small">Skills *</label>
+        <div id="skillsContainer" class="skills-checkbox-grid"></div>
     </div>
 
     <!-- Description -->
@@ -67,6 +66,8 @@
         <textarea rows="3" name="description" id="description" class="form-control" placeholder=" "></textarea>
         <label>Description</label>
     </div>
+
+</div>
 
 </div>
 </form>

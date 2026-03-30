@@ -10,6 +10,6 @@ class SkillSubcategory extends Model
 
     public function category()
     {
-        return $this->belongsTo(SkillsCategory::class, 'skills_category_id');
+        return $this->belongsTo(SkillsCategory::class, 'skills_category_id','id');
     }
 }

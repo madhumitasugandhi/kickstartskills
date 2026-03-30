@@ -8,13 +8,12 @@
             </div>
 
             <div class="modal-body p-4 p-md-5">
-                @include('frontend.institutionPortal.dashboard.electives.course-catalog.modals._form')
-            </div>
+    @include('frontend.institutionPortal.dashboard.electives.course-catalog.modals._form', ['formId' => 'editCourseForm'])
+</div>
 
             <div class="modal-footer">
                 <button class="btn muted-btn" data-bs-dismiss="modal">Cancel</button>
-                <button class="btn btn-teal">Update Course</button>
-            </div>
+                <button class="btn btn-teal" onclick="updateCourse()">Update Course</button>            </div>
 
         </div>
     </div>
