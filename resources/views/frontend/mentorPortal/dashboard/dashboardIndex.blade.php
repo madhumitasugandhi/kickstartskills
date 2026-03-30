@@ -188,33 +188,46 @@
             <h6 class="fw-bold mb-3 text-main">Upcoming Sessions</h6>
             <div class="d-flex flex-column gap-2 mb-3">
                 @forelse($upcomingSessions as $session)
-                <div class="d-flex align-items-start gap-3 p-2 rounded-3 border border-dark-subtle">
-                    <div class="bg-soft-blue p-2 rounded-2 text-blue mt-1"><i class="bi bi-people"></i></div>
-                    <div>
-                        <h6 class="fw-bold text-main mb-0" style="font-size: 0.85rem;">{{
-                            base64_decode($session->payload) }}</h6>
-                        <small class="text-muted-custom d-block">{{ $session->student_name }}</small>
-                        <small class="text-blue fw-bold" style="font-size: 0.7rem;">
-                            {{ \Carbon\Carbon::createFromTimestamp($session->last_activity)->diffForHumans() }}
-                        </small>
+                <div class="d-flex align-items-start gap-3 p-2 rounded-3 border border-dark-subtle"
+                    style="background-color: var(--bg-hover);">
+                    <div class="bg-soft-blue p-2 rounded-2 text-blue mt-1">
+                        <i class="bi bi-calendar-event"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        {{-- FIXED: 'payload' ki jagah 'session_title' use kiya --}}
+                        <h6 class="fw-bold text-main mb-0" style="font-size: 0.85rem;">
+                            {{ $session->session_title }}
+                        </h6>
+                        <div class="d-flex justify-content-between align-items-center mt-1">
+                            {{-- FIXED: 'last_activity' ki jagah 'session_time' use kiya --}}
+                            <small class="text-muted-custom" style="font-size: 0.75rem;">
+                                <i class="bi bi-clock me-1"></i> {{ date('h:i A', strtotime($session->session_time)) }}
+                            </small>
+                            <small class="text-blue fw-bold" style="font-size: 0.7rem;">
+                                {{ \Carbon\Carbon::parse($session->session_date)->format('d M') }}
+                            </small>
+                        </div>
                     </div>
                 </div>
                 @empty
-                <p class="--text-muted small text-center">No upcoming sessions.</p>
+                <div class="text-center py-3">
+                    <p class="text-muted small mb-0">No upcoming sessions scheduled.</p>
+                </div>
                 @endforelse
             </div>
-            <button class="btn btn-primary w-100 fw-bold" data-bs-toggle="modal" data-bs-target="#scheduleModal"
-                style="background-color: var(--accent-color); border: none;">
+            {{-- Is button ko replace karo --}} <a href="{{ route('mentor.sessions.schedule') }}"
+                class="btn btn-primary w-100 fw-bold" style="background-color: var(--accent-color); border: none;">
                 <i class="bi bi-plus me-1"></i> Schedule Session
-            </button>
+            </a>
         </div>
 
         {{-- QUICK ACTIONS (Keeping this for you!) --}}
         <div class="card-custom mb-0">
             <h6 class="fw-bold mb-3 text-main">Quick Actions</h6>
             <div class="d-flex flex-column gap-2">
-                <button class="btn-quick-action m-0 d-flex justify-content-between align-items-center"
-                    data-bs-toggle="modal" data-bs-target="#scheduleModal">
+                {{-- "Schedule Meeting" wali button ko isse replace karo --}}
+                <a href="{{ route('mentor.sessions.schedule') }}"
+                    class="btn-quick-action m-0 d-flex justify-content-between align-items-center text-decoration-none">
                     <div class="d-flex align-items-center gap-3">
                         <div class="action-icon bg-soft-blue text-blue"
                             style="width: 32px; height: 32px; font-size: 0.9rem;">
@@ -223,7 +236,7 @@
                         <span class="fw-medium text-main">Schedule Meeting</span>
                     </div>
                     <i class="bi bi-chevron-right small text-muted-custom"></i>
-                </button>
+                </a>
 
                 <button class="btn-quick-action m-0 d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center gap-3">
@@ -273,73 +286,4 @@
     </div>
 </div>
 
-<div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content card-custom border-0 shadow-lg">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="fw-bold text-main m-0"><i class="bi bi-calendar-plus me-2 text-accent"></i>Schedule New
-                    Session</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <form action="{{ route('mentor.sessions.store') }}" method="POST">
-                @csrf
-                <div class="modal-body py-4">
-                    <div class="mb-4">
-                        <label class="form-label fw-bold small text-main">SELECT STUDENT</label>
-                        <select name="student_id" class="form-select select2-dropdown" required>
-                            <option value="" selected disabled>Search student name...</option>
-
-                            @forelse($students as $student)
-                            {{-- This is the magic line --}}
-                            <option value="{{ $student->id }}">{{ $student->full_name }}</option>
-                            @empty
-                            <option value="" disabled>No students assigned to you yet</option>
-                            @endforelse
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label fw-bold small text-main">SESSION TOPIC</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-soft-orange border-0 text-accent"><i
-                                    class="bi bi-chat-dots"></i></span>
-                            <input type="text" name="topic" class="form-control bg-light border-0"
-                                placeholder="e.g. Code Review, Portfolio Discussion" required>
-                        </div>
-                    </div>
-
-                    <div class="mb-0">
-                        <label class="form-label fw-bold small text-main">DATE & TIME</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-soft-orange border-0 text-accent"><i
-                                    class="bi bi-clock"></i></span>
-                            <input type="datetime-local" name="session_date" class="form-control bg-light border-0"
-                                required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer border-0 pt-0">
-                    <button type="button" class="btn btn-light text-muted-custom fw-bold px-4"
-                        data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary fw-bold px-4"
-                        style="background-color: var(--accent-color); border: none;">
-                        Schedule Now
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script>
-    $(document).ready(function() {
-        $('.select2-dropdown').select2({
-            dropdownParent: $('#scheduleModal'),
-            width: '100%',
-            placeholder: "Type student name..."
-        });
-    });
-</script>
 @endsection

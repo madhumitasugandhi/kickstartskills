@@ -215,7 +215,7 @@
         </div>
 
         <button onclick="toggleTheme()" class="btn btn-link text-muted-custom p-0 text-decoration-none user-info">
-           <i id="themeIconSidebar" class="bi bi-moon-stars"></i>
+           <i id="themeIconSidebar" class="bi bi-moon"></i>
         </button>
     </div>
 </div>
