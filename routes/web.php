@@ -146,7 +146,7 @@ Route::prefix('student')->middleware(['auth', 'student'])->group(function () {
         // Test Submission: Logic to calculate and save marks
         Route::post('/submit-quiz', [StudentExaminationController::class, 'submitQuiz'])->name('submit');
     });
-});
+}); 
 
 /*Learning section Group Routes*/
 Route::prefix('student/dashboard/learning')->name('student.learning.')->group(function () {

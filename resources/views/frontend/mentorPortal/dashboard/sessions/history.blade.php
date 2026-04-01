@@ -23,7 +23,6 @@
     <h6 class="fw-bold text-main mb-3">Filters & Search</h6>
     <form id="filterForm" action="{{ route('mentor.sessions.history') }}" method="GET">
         <div class="row g-3 align-items-end">
-            {{-- Search Input --}}
             <div class="col-lg-6">
                 <div class="input-group">
                     <span class="input-group-text border-end-0 d-flex align-items-center justify-content-center"
@@ -36,7 +35,6 @@
                 </div>
             </div>
 
-            {{-- Status Filter --}}
             <div class="col-md-3">
                 <label class="form-label small text-muted-custom fw-bold mb-1">Status Filter</label>
                 <select name="status" class="form-select filter-select"
@@ -49,7 +47,6 @@
                 </select>
             </div>
 
-            {{-- Time Period Filter --}}
             <div class="col-md-3">
                 <label class="form-label small text-muted-custom fw-bold mb-1">Time Period</label>
                 <select name="period" class="form-select filter-select"
@@ -63,25 +60,6 @@
             </div>
         </div>
     </form>
-
-    <div class="d-flex justify-content-around mt-4 pt-3 border-top"
-        style="border-color: var(--border-color) !important;">
-        <div class="text-center">
-            <i class="bi bi-calendar-check text-primary mb-1 d-block"></i>
-            <span class="fw-bold text-primary fs-5">{{ count($sessions) }}</span>
-            <span class="d-block text-muted-custom small" style="font-size: 0.7rem;">Sessions Found</span>
-        </div>
-        <div class="text-center">
-            <i class="bi bi-check-circle text-success mb-1 d-block"></i>
-            <span class="fw-bold text-success fs-5">{{ $stats['completed'] ?? 0 }}</span>
-            <span class="d-block text-muted-custom small" style="font-size: 0.7rem;">Completed</span>
-        </div>
-        <div class="text-center">
-            <i class="bi bi-star text-accent mb-1 d-block"></i>
-            <span class="fw-bold text-accent fs-5">{{ $stats['avg_rating'] }}</span>
-            <span class="d-block text-muted-custom small" style="font-size: 0.7rem;">Avg Rating</span>
-        </div>
-    </div>
 </div>
 
 {{-- 3. Stats Cards Row --}}
@@ -98,7 +76,7 @@
         <div class="card-custom text-center py-4 mb-0 h-100 border border-primary-subtle"
             style="background-color: rgba(13, 110, 253, 0.1);">
             <i class="bi bi-clock fs-1 text-primary mb-2"></i>
-            <h3 class="fw-bold text-primary mb-1">{{ $stats['total_hours'] }}h</h3>
+            <h3 class="fw-bold text-primary mb-1">{{ $stats['total_hours'] ?? 0 }}h</h3>
             <span class="text-muted-custom fw-medium">Total Hours</span>
         </div>
     </div>
@@ -106,7 +84,7 @@
         <div class="card-custom text-center py-4 mb-0 h-100 border border-warning-subtle"
             style="background-color: var(--soft-accent);">
             <i class="bi bi-star fs-1 text-accent mb-2"></i>
-            <h3 class="fw-bold text-accent mb-1">{{ $stats['avg_rating'] }}</h3>
+            <h3 class="fw-bold text-accent mb-1">{{ $stats['avg_rating'] ?? '0.0' }}</h3>
             <span class="text-muted-custom fw-medium">Average Rating</span>
         </div>
     </div>
@@ -116,11 +94,29 @@
 
 {{-- 4. Sessions Loop --}}
 @forelse($sessions as $session)
-<div class="card-custom mb-4 {{ $session->status == 'canceled' ? 'opacity-75' : '' }}">
+@php
+// Notebook Agenda: Status Logic (Scheduled = Green, Past = Completed)
+$sessionDT = \Carbon\Carbon::parse($session->session_date . ' ' . $session->session_time);
+$isPast = $sessionDT->isPast();
+
+if($session->status == 'cancelled' || $session->status == 'canceled') {
+$badgeClass = 'bg-soft-red text-red';
+$statusLabel = 'Canceled';
+} elseif($isPast) {
+$badgeClass = 'bg-soft-info text-info'; // Completed sessions Blue ya Info
+$statusLabel = 'Completed';
+} else {
+$badgeClass = 'bg-soft-green text-green'; // Future scheduled hamesha Green
+$statusLabel = 'Scheduled';
+}
+@endphp
+
+<div
+    class="card-custom mb-4 {{ ($session->status == 'cancelled' || $session->status == 'canceled') ? 'opacity-75 shadow-none' : '' }}">
     <div class="d-flex justify-content-between align-items-start mb-3">
         <div class="d-flex align-items-start gap-3">
             <div class="bg-soft-orange text-accent p-3 rounded-3 d-flex align-items-center justify-content-center">
-                <i class="bi {{ $session->session_type == 'Group Discussion' ? 'bi-people' : 'bi-eye' }} fs-4"></i>
+                <i class="bi {{ $session->session_type == 'Group Discussion' ? 'bi-people' : 'bi-person' }} fs-4"></i>
             </div>
             <div>
                 <h5 class="fw-bold text-main mb-1">{{ $session->session_title }}</h5>
@@ -128,33 +124,54 @@
                         }}</span></p>
             </div>
         </div>
-        <span
-            class="badge {{ $session->status == 'completed' ? 'bg-soft-green text-green' : 'bg-soft-red text-red' }} rounded-pill px-3 py-2">
-            {{ ucfirst($session->status) }}
+        <span class="badge {{ $badgeClass }} rounded-pill px-3 py-2">
+            <i class="bi bi-circle-fill me-1" style="font-size: 6px;"></i> {{ $statusLabel }}
         </span>
     </div>
 
     <div class="row g-3 mb-4">
         <div class="col-6 col-md-3">
-            <small class="text-muted-custom d-block mb-1">Date</small>
-            <div class="d-flex align-items-center gap-2 text-main fw-medium">
-                <i class="bi bi-calendar3 text-primary"></i> {{ date('d M Y', strtotime($session->session_date)) }}
+            <small class="text-muted-custom d-block mb-1">DATE & TIME</small>
+            <div class="text-main fw-bold">
+                <i class="bi bi-calendar3 text-primary me-1"></i> {{ date('d M Y', strtotime($session->session_date)) }}
+                <div class="small text-muted-custom fw-normal mt-1"><i class="bi bi-clock me-1"></i> {{ date('h:i A',
+                    strtotime($session->session_time)) }}</div>
             </div>
         </div>
-        <div class="col-6 col-md-3">
-            <small class="text-muted-custom d-block mb-1">Duration</small>
+        <div class="col-6 col-md-2">
+            <small class="text-muted-custom d-block mb-1">DURATION</small>
             <div class="d-flex align-items-center gap-2 text-main fw-medium">
-                <i class="bi bi-hourglass-split text-primary"></i> {{ $session->duration }}
+                <i class="bi bi-hourglass-split text-primary"></i> {{ $session->duration }} mins
+            </div>
+        </div>
+
+        {{-- Meeting Link in Card --}}
+        <div class="col-12 col-md-7">
+            <small class="text-muted-custom d-block mb-1">MEETING ACCESS</small>
+            <div class="p-2 rounded-3 border border-dark-subtle d-flex justify-content-between align-items-center">
+                <div class="text-truncate me-2 small"><i class="bi bi-link-45deg text-primary fs-5"></i> {{
+                    $session->meeting_url ?? 'No link added' }}</div>
+                @if(!$isPast && $session->status == 'scheduled')
+                <a href="{{ $session->meeting_url }}" target="_blank"
+                    class="btn btn-sm btn-primary px-3 fw-bold shadow-sm">Join Now</a>
+                @else
+                <button class="btn btn-sm btn-secondary px-3 fw-bold disabled">Join Now</button>
+                @endif
             </div>
         </div>
     </div>
 
+    {{-- Agenda Point-wise in Card --}}
     @if($session->agenda)
     <div class="p-3 rounded-3 mb-3 border border-dark-subtle" style="background-color: var(--bg-hover);">
         <div class="d-flex align-items-center gap-2 mb-2 text-muted-custom small fw-bold">
-            <i class="bi bi-list-ul"></i> Agenda:
+            <i class="bi bi-list-ul"></i> Agenda Points:
         </div>
-        <p class="text-main mb-0 small">{{ $session->agenda }}</p>
+        <ul class="text-main mb-0 small ps-4">
+            @foreach(explode(',', $session->agenda) as $point)
+            @if(trim($point)) <li class="mb-1">{{ trim($point) }}</li> @endif
+            @endforeach
+        </ul>
     </div>
     @endif
 
@@ -164,14 +181,14 @@
                 data-title="{{ $session->session_title }}"
                 data-date="{{ date('d M Y', strtotime($session->session_date)) }}"
                 data-duration="{{ $session->duration }}" data-agenda="{{ $session->agenda ?? 'N/A' }}"
-                data-desc="{{ $session->description ?? 'No description' }}" data-bs-toggle="modal"
+                data-desc="{{ $session->description ?? 'No description provided' }}"
+                data-link="{{ $session->meeting_url }}" data-status="{{ $statusLabel }}" data-bs-toggle="modal"
                 data-bs-target="#summaryModal">
                 <i class="bi bi-eye me-2"></i> View Summary
             </button>
         </div>
         <div class="col-md-6">
-            <a href="{{ route('mentor.sessions.edit', $session->id) }}" class="btn btn-outline-secondary w-100 fw-bold"
-                style="border-color: var(--border-color); color: var(--text-muted);">
+            <a href="{{ route('mentor.sessions.edit', $session->id) }}" class="btn btn-outline-secondary w-100 fw-bold">
                 <i class="bi bi-arrow-repeat me-2"></i> Re-schedule
             </a>
         </div>
@@ -179,7 +196,7 @@
 </div>
 @empty
 <div class="card-custom text-center py-5">
-    <p class="--text-muted mb-0">No past sessions found matching your filters.</p>
+    <p class="text-muted-custom mb-0">No past sessions found matching your filters.</p>
 </div>
 @endforelse
 
@@ -212,13 +229,20 @@
                 <div class="mb-4">
                     <label class="small text-muted-custom fw-bold d-block mb-1">AGENDA</label>
                     <div id="modal-agenda" class="p-3 rounded-3 bg-bg-hover text-main small border border-dark-subtle"
-                        style="min-height: 50px;">
-                    </div>
+                        style="min-height: 50px;"></div>
                 </div>
 
                 <div class="mb-0">
                     <label class="small text-muted-custom fw-bold d-block mb-1">DESCRIPTION</label>
                     <p id="modal-desc" class="text-muted-custom small mb-0"></p>
+                </div>
+
+                {{-- Join Link in Modal (Notebook Logic) --}}
+                <div class="mt-4 pt-3 border-top border-dark-subtle" id="modal-join-section">
+                    <label class="small text-muted-custom fw-bold d-block mb-2">MEETING ACTION</label>
+                    <a href="#" id="modal-join-btn" target="_blank" class="btn btn-success w-100 fw-bold">
+                        <i class="bi bi-camera-video me-2"></i> Join Meeting Now
+                    </a>
                 </div>
             </div>
             <div class="modal-footer border-0">
@@ -228,40 +252,47 @@
     </div>
 </div>
 
-{{-- 6. Scripts --}}
+{{-- Scripts --}}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        // --- Modal Data Loading Logic ---
         $(document).on('click', '.view-summary-btn', function() {
             const title = $(this).data('title');
             const date = $(this).data('date');
             const duration = $(this).data('duration');
             const agenda = $(this).data('agenda');
             const desc = $(this).data('desc');
+            const link = $(this).data('link');
+            const status = $(this).data('status');
 
             $('#modal-title').html(title);
             $('#modal-date').html(date);
-            $('#modal-duration').html(duration);
-            $('#modal-agenda').html(agenda);
+            $('#modal-duration').html(duration + ' mins');
             $('#modal-desc').html(desc);
 
+            // Join Button Logic in Modal
+            if(status === 'Scheduled' && link) {
+                $('#modal-join-btn').attr('href', link).show();
+                $('#modal-join-section').show();
+            } else {
+                $('#modal-join-section').hide();
+            }
+
             if(!agenda || agenda.trim() == "" || agenda == "N/A") {
-                $('#modal-agenda').html('<span class="text-muted italic">No agenda provided</span>');
+                $('#modal-agenda').html('<span class="text-muted">No agenda provided</span>');
+            } else {
+                let points = agenda.split(/[,\n]/);
+                let listHtml = '<ul class="mb-0 ps-3">';
+                points.forEach(function(point) {
+                    if(point.trim()) listHtml += '<li class="mb-1">' + point.trim() + '</li>';
+                });
+                listHtml += '</ul>';
+                $('#modal-agenda').html(listHtml);
             }
         });
 
-        // --- Filter Auto-submit Logic ---
         $('.filter-select').on('change', function() {
             $('#filterForm').submit();
-        });
-
-        let typingTimer;
-        $('#searchInput').on('keyup', function() {
-            clearTimeout(typingTimer);
-            typingTimer = setTimeout(function() {
-                $('#filterForm').submit();
-            }, 500);
         });
     });
 </script>
