@@ -1,85 +1,74 @@
-<div class="setup-step" id="academicStep">
+<div id="academicStep">
 
     <!-- SESSION DATA -->
     <div id="academicData"
-     data-session='@json($sessionData["academic"] ?? [])'>
-</div>
-    <!-- ================= HEADER ================= -->
-    <div class="mb-4">
-        <h6 class="section-title-custom mb-1">Academic Structure</h6>
-        <p class="small">
-            Define your institution's departments and academic programs
-        </p>
+         data-session='@json($sessionData["academic"] ?? [])'>
     </div>
 
-    <!-- ================= DEPARTMENTS ================= -->
-    <div class="form-section">
+    <!-- HEADER -->
+    <div class="mb-3">
+        <div class="ui-section-title">ACADEMIC STRUCTURE</div>
+        <small class="">
+            Define your institution's departments and academic programs
+        </small>
+    </div>
+
+    <!-- DEPARTMENTS -->
+    <div class="ui-section">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <label class="form-label-custom mb-0">Departments</label>
-            <span class="small">At least one required</span>
+            <label class="ui-label mb-0">Departments</label>
+            <small class="">At least one required</small>
         </div>
 
         <div class="d-flex gap-2 mb-3">
-            <div class="input-group-custom flex-grow-1">
+            <div class="ui-input-icon flex-grow-1">
                 <i class="bi bi-diagram-3"></i>
-                <input type="text" id="deptInput" class="form-control ps-5"
+                <input type="text" id="deptInput" class="form-control"
                        placeholder="e.g. Computer Science, Mechanical Eng.">
             </div>
 
-            <button type="button" class="btn btn-success"
-                    id="addDeptBtn"
-                    style="width: 48px; background-color: var(--primary-teal); border: none;">
-                <i class="bi bi-plus-lg text-white"></i>
+            <button type="button" class="btn btn-primary" id="addDeptBtn">
+                <i class="bi bi-plus-lg"></i>
             </button>
         </div>
 
-        <div class="added-box d-none" id="deptListWrapper">
-            <small class="fw-medium d-block mb-2">Added Departments</small>
-            <div class="chip-container" id="deptList"></div>
+        <div class="ui-chip-wrapper d-none" id="deptListWrapper">
+            <small class=" d-block mb-2">Added Departments</small>
+            <div class="ui-chips" id="deptList"></div>
         </div>
 
     </div>
 
-    <!-- ================= DIVIDER ================= -->
-    <div class="text-center my-4">
-        <span class="badge rounded-pill px-3 py-1"
-              style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);">
-            Programs
-        </span>
-    </div>
-
-    <!-- ================= PROGRAMS ================= -->
-    <div class="form-section">
+    <!-- PROGRAMS -->
+    <div class="ui-section">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <label class="form-label-custom mb-0">Academic Programs</label>
-            <span class="small">Minimum one</span>
+            <label class="ui-label mb-0">Academic Programs</label>
+            <small class="">Minimum one</small>
         </div>
 
         <div class="d-flex gap-2 mb-3">
-            <div class="input-group-custom flex-grow-1">
+            <div class="ui-input-icon flex-grow-1">
                 <i class="bi bi-journal-bookmark"></i>
-                <input type="text" id="programInput" class="form-control ps-5"
+                <input type="text" id="programInput" class="form-control"
                        placeholder="e.g. B.Tech, M.S., Ph.D.">
             </div>
 
-            <button type="button" class="btn"
-                    id="addProgramBtn"
-                    style="width: 48px; background-color: #3b82f6; border: none;">
-                <i class="bi bi-plus-lg text-white"></i>
+            <button type="button" class="btn btn-info" id="addProgramBtn">
+                <i class="bi bi-plus-lg"></i>
             </button>
         </div>
 
-        <div class="added-box d-none" id="programListWrapper">
-            <small class="fw-medium d-block mb-2">Added Programs</small>
-            <div class="chip-container" id="programList"></div>
+        <div class="ui-chip-wrapper d-none" id="programListWrapper">
+            <small class=" d-block mb-2">Added Programs</small>
+            <div class="ui-chips" id="programList"></div>
         </div>
 
     </div>
 
-    <!-- ================= WARNING ================= -->
-    <div class="academic-warning d-none mt-3" id="academicWarning">
+    <!-- WARNING -->
+    <div class="ui-alert d-none mt-3" id="academicWarning">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <span>
             Please add at least one department and one academic program to continue
@@ -112,7 +101,7 @@ function initAcademicStep(){
 
     function createChip(text, container) {
         const chip = document.createElement('div');
-        chip.className = 'chip-item';
+        chip.className = 'ui-chip';
 
         chip.innerHTML = `
             <span>${text}</span>

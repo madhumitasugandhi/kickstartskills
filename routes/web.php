@@ -369,7 +369,6 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
             Route::delete('/delete/{id}', [InstitutionDepartmentController::class, 'destroy'])->name('delete');
         });
 
-        Route::prefix('academic-structure/programs')->name('academic-structure.programs.')->group(function () {
             Route::prefix('academic-structure/programs')->name('academic-structure.programs.')->group(function () {
 
                 Route::post('/store', [InstitutionProgramController::class, 'store'])->name('store');
@@ -507,12 +506,26 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
         Route::get('/academic-records', function () {
             return view('frontend.institutionPortal.dashboard.students.academic-records.index');
         })->name('academic-records');
-        Route::get('/faculty-management', function () {
-            return view('frontend.institutionPortal.dashboard.faculty.management.index');
-        })->name('faculty-management');
-        Route::get('/faculty-assignments', function () {
-            return view('frontend.institutionPortal.dashboard.faculty.assignment.index');
-        })->name('faculty-assignments');
+
+        // Faculty
+        Route::prefix('faculties')->name('faculties.')->group(function () {
+            // Management
+            Route::prefix('faculty-management')->name('faculty-management.')->group(function () {
+                Route::get('/', [FacultyController::class, 'management'])->name('management');
+                Route::get('/list', [FacultyController::class, 'list'])->name('list');
+                Route::post('/store', [FacultyController::class, 'store'])->name('store');
+                Route::get('/edit/{id}', [FacultyController::class, 'edit'])->name('edit');
+                Route::post('/update/{id}', [FacultyController::class, 'update'])->name('update');
+                Route::delete('/delete/{id}', [FacultyController::class, 'destroy'])->name('delete');
+                Route::get('/stats', [FacultyController::class, 'stats'])->name('stats');
+            });
+            // Assignments
+            Route::get('/faculty-assignments', [FacultyController::class, 'assignments'])
+                ->name('faculty-assignments');
+        });
+    
+
+        // Analytics
         Route::get('/analytics-performance', function () {
             return view('frontend.institutionPortal.dashboard.analytics.performance.index');
         })->name('analytics-performance');
@@ -520,31 +533,7 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
             return view('frontend.institutionPortal.dashboard.analytics.reports.index');
         })->name('analytics-reports');
 
-        // Students
-        Route::get('/students-overview', function () {
-            return view('frontend.institutionPortal.dashboard.students.overview.index');
-        })->name('students-overview');
-        Route::get('/data-dashboard', function () {
-            return view('frontend.institutionPortal.dashboard.students.data-dashboard.index');
-        })->name('data-dashboard');
-        Route::get('/enrollment', function () {
-            return view('frontend.institutionPortal.dashboard.students.enrollment.index');
-        })->name('enrollment');
-        Route::get('/academic-records', function () {
-            return view('frontend.institutionPortal.dashboard.students.academic-records.index');
-        })->name('academic-records');
-        Route::get('/faculty-management', function () {
-            return view('frontend.institutionPortal.dashboard.faculty.management.index');
-        })->name('faculty-management');
-        Route::get('/faculty-assignments', function () {
-            return view('frontend.institutionPortal.dashboard.faculty.assignment.index');
-        })->name('faculty-assignments');
-        Route::get('/analytics-performance', function () {
-            return view('frontend.institutionPortal.dashboard.analytics.performance.index');
-        })->name('analytics-performance');
-        Route::get('/analytics-reports', function () {
-            return view('frontend.institutionPortal.dashboard.analytics.reports.index');
-        })->name('analytics-reports');
+    
 
 
         Route::get('/advanced-dashboard', function () {
@@ -566,26 +555,7 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
             return view('frontend.institutionPortal.dashboard.notifications.index');
         })->name('notifications');
     });
-    Route::get('/advanced-dashboard', function () {
-        return view('frontend.institutionPortal.dashboard.analytics.advanced-dashboard.index');
-    })->name('advanced-dashboard');
-    Route::get('/communication-announcements', function () {
-        return view('frontend.institutionPortal.dashboard.communication.announcements.index');
-    })->name('communication-announcements');
-    Route::get('/communication-messaging', function () {
-        return view('frontend.institutionPortal.dashboard.communication.messaging.index');
-    })->name('communication-messaging');
-    Route::get('/compliance-reports', function () {
-        return view('frontend.institutionPortal.dashboard.compliance-reports.index');
-    })->name('compliance-reports');
-    Route::get('/settings', function () {
-        return view('frontend.institutionPortal.dashboard.settings.index');
-    })->name('settings');
-    Route::get('/notifications', function () {
-        return view('frontend.institutionPortal.dashboard.notifications.index');
-    })->name('notifications');
-});
-
+   
 
 /*|------------------------------------------------End Institution Portal Routes--------------------------------------------------|*/
 

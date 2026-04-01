@@ -63,7 +63,7 @@ class StudentProfileController extends Controller
     public function academicUpdate(Request $request)
     {
 
-        $user = \Auth::user();
+        $user = Auth::user();
 
         // Validation
         $request->validate([
@@ -101,7 +101,7 @@ class StudentProfileController extends Controller
         ];
 
         // Magic Function: Update if exists, else Insert
-        \DB::table('student_academics')->updateOrInsert(
+        DB::table('student_academics')->updateOrInsert(
             ['user_id' => $user->id],
             $data
         );
@@ -112,15 +112,15 @@ class StudentProfileController extends Controller
     // 1. Portfolio Page
     public function portfolioIndex()
     {
-        $user = \Auth::user();
+        $user = Auth::user();
 
         // 1. Fetch Projects
-        $projects = \DB::table('student_projects')
+        $projects = DB::table('student_projects')
             ->where('user_id', $user->id)
             ->get();
 
         // 2. Fetch Skills
-        $skills = \DB::table('student_skills')
+        $skills = DB::table('student_skills')
             ->where('user_id', $user->id)
             ->get();
 
@@ -128,11 +128,11 @@ class StudentProfileController extends Controller
         $categories = \App\Models\SkillsCategory::with('subcategories')->get();
 
         // 4. Fetch Profile (The fix for your error)
-        $profile = \DB::table('student_profiles')
+        $profile = DB::table('student_profiles')
             ->where('user_id', $user->id)
             ->first(); // Returns null if no record found
 
-        $achievements = \DB::table('student_achievements')->where('user_id', $user->id)->get();
+        $achievements = DB::table('student_achievements')->where('user_id', $user->id)->get();
         // Pass 'profile' into the compact array
         return view(
             'frontend.studentPortal.dashboard.profile.portfolioIndex',
@@ -152,7 +152,7 @@ class StudentProfileController extends Controller
         }
         // --- DEBUG END ---
 
-        $user = \Auth::user();
+        $user = Auth::user();
         $data = [
             'bio' => $request->bio,
             'linkedin_url' => $request->linkedin_url,
@@ -175,7 +175,7 @@ class StudentProfileController extends Controller
             $data['resume_url'] = $fileName;
         }
 
-        \DB::table('student_profiles')->updateOrInsert(
+        DB::table('student_profiles')->updateOrInsert(
             ['user_id' => $user->id],
             $data
         );
@@ -184,7 +184,7 @@ class StudentProfileController extends Controller
     }
     public function skillStore(Request $request)
     {
-        $user = \Auth::user();
+        $user = Auth::user();
 
         $request->validate([
             'skill_name' => 'required',
@@ -192,7 +192,7 @@ class StudentProfileController extends Controller
             'type' => 'required'
         ]);
 
-        \DB::table('student_skills')->insert([
+        DB::table('student_skills')->insert([
             'user_id' => $user->id,
             'skill_name' => $request->skill_name,
             'type' => $request->type,
@@ -205,9 +205,9 @@ class StudentProfileController extends Controller
 
     public function skillDelete($id)
     {
-        \DB::table('student_skills')
+        DB::table('student_skills')
             ->where('id', $id)
-            ->where('user_id', \Auth::id())
+            ->where('user_id', Auth::id())
             ->delete();
 
         return back()->with('success', 'Skill removed.');
@@ -216,9 +216,9 @@ class StudentProfileController extends Controller
     // 2. For save new project
     public function projectStore(Request $request)
     {
-        $user = \Auth::user();
+        $user = Auth::user();
 
-        \DB::table('student_projects')->insert([
+        DB::table('student_projects')->insert([
             'user_id' => $user->id,
             'project_title' => $request->project_title,
             'project_description' => $request->project_description,
@@ -234,10 +234,10 @@ class StudentProfileController extends Controller
 
     public function projectDelete($id)
     {
-        $user = \Auth::user();
+        $user = Auth::user();
 
         // Ensure the project belongs to the logged-in user before deleting
-        \DB::table('student_projects')
+        DB::table('student_projects')
             ->where('id', $id)
             ->where('user_id', $user->id)
             ->delete();
@@ -247,8 +247,8 @@ class StudentProfileController extends Controller
 
     public function achievementStore(Request $request)
     {
-        \DB::table('student_achievements')->insert([
-            'user_id' => \Auth::id(),
+        DB::table('student_achievements')->insert([
+            'user_id' => Auth::id(),
             'title' => $request->title,
             'organization' => $request->organization,
             'description' => $request->description,
@@ -260,9 +260,9 @@ class StudentProfileController extends Controller
 
     public function achievementDelete($id)
     {
-        \DB::table('student_achievements')
+        DB::table('student_achievements')
             ->where('id', $id)
-            ->where('user_id', \Auth::id())
+            ->where('user_id', Auth::id())
             ->delete();
 
         return back()->with('success', 'Achievement removed!');

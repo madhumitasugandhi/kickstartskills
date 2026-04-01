@@ -44,6 +44,7 @@ class MentorDashboardController extends Controller
             }
         }
 
+        // Stats Logic (Jo aapke paas pehle se hai...)
         $stats = [
             'assigned_students' => User::where('mentor_id', $mentorId)->where('admin_role_id', 5)->count(),
 
@@ -95,6 +96,7 @@ class MentorDashboardController extends Controller
             ->limit(5)
             ->get();
 
+        return view('frontend.mentorPortal.dashboard.dashboardIndex', compact('stats', 'students', 'upcomingSessions', 'currentSession'));
         return view('frontend.mentorPortal.dashboard.dashboardIndex', compact('stats', 'students', 'upcomingSessions', 'currentSession'));
     }
 

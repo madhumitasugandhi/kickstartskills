@@ -1,7 +1,7 @@
 <div id="sidebar" class="d-flex flex-column">
 
     <!-- ================= HEADER (FIXED) ================= -->
-    <div class="px-3 py-3 border-bottom border-secondary d-flex align-items-center">
+    <div class="px-3 py-3 d-flex align-items-center" style="border-bottom:1px solid var(--border-color);">
         <i class="bi bi-buildings fs-4 me-2 text-teal"></i>
         <span class="fw-bold menu-text">Institution Portal</span>
     </div>
@@ -50,7 +50,7 @@
                     </a>
 
                     <a href="{{ route('institution.core.internships.index') }}"
-                        class="nav-item-custom sub-item {{ request()->routeIs('institution.core.internships.*') ? 'active' : '' }}">
+                        class="nav-item-custom sub-item {{ request()->routeIs('institution.core.internships*') ? 'active' : '' }}">
                         <i class="bi bi-briefcase me-2"></i> Internships
                     </a>
 
@@ -190,7 +190,7 @@
     </div>
 
     <!-- ================= FOOTER (FIXED) ================= -->
-    <div class="sidebar-footer px-3 py-2 border-top border-secondary d-flex align-items-center justify-content-between">
+    <div class="sidebar-footer px-3 py-2 d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center">
             <div class="rounded-circle d-flex align-items-center justify-content-center me-2"
                 style="width:35px;height:35px;background:rgba(45,212,191,0.18);">

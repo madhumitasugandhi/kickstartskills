@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -114,7 +115,7 @@ class StudentAuthController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            \Log::error('Registration Error: ' . $e->getMessage());
+            Log::error('Registration Error: ' . $e->getMessage());
             return back()->withInput()->with('error', 'Registration failed: ' . $e->getMessage());
         }
     }

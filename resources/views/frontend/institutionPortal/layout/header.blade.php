@@ -1,10 +1,14 @@
 <header class="top-header">
 
-    <!-- LEFT -->
     <div class="header-left">
         <button id="sidebarToggle" class="icon-btn">
             <i class="bi bi-list fs-4"></i>
         </button>
+
+        <!-- Dynamic Page Icon -->
+        <div class="page-icon">
+            <i class="@yield('page_icon', 'bi bi-speedometer2')"></i>
+        </div>
 
         <div class="page-title">
             <h5>@yield('page_title', 'Institution Dashboard')</h5>
@@ -12,21 +16,16 @@
         </div>
     </div>
 
-    <!-- RIGHT -->
     <div class="header-right">
-
-        <!-- Notification -->
         <button class="icon-btn notification-btn">
             <i class="bi bi-bell"></i>
             <span class="notification-badge">5</span>
         </button>
 
-        <!-- Theme -->
         <button id="themeToggle" class="icon-btn theme-toggle-btn">
             <i class="bi bi-moon"></i>
         </button>
 
-        <!-- Profile -->
         <div class="dropdown">
             <button class="icon-btn" data-bs-toggle="dropdown">
                 <div class="profile-circle">
@@ -34,9 +33,9 @@
                 </div>
             </button>
 
-            <ul class="dropdown-menu dropdown-menu-end ui-dropdown-menu">
-                <li class="px-3 py-2 text-main">
-                    <small class="">Logged in as</small><br>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li class="px-3 py-2">
+                    <small class="text-muted">Logged in as</small><br>
                     <strong>{{ session('institution_name') }}</strong>
                 </li>
                 <li><hr class="dropdown-divider"></li>
@@ -50,7 +49,6 @@
                 </li>
             </ul>
         </div>
-
     </div>
 
 </header>
