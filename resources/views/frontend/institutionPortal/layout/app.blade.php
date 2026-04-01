@@ -9,28 +9,33 @@
     <link rel="stylesheet" href="{{ asset('assets/css/institute.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
-        (function() {
-            const theme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.classList.add(theme + '-mode');
-        })();
-    </script>
+(function() {
+    const theme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.classList.add(theme);
+})();
+</script>
 </head>
-<body class="dark-mode"> <div class="layout-wrapper">
+<body>
+
+<div class="layout-wrapper">
+    
     @include('frontend.institutionPortal.layout.sidebar')
 
-    <div class="w-100 d-flex flex-column" style="min-width: 0;">
+    <div class="main-wrapper">
         @include('frontend.institutionPortal.layout.header')
+
         <main class="content-area">
             @yield('content')
         </main>
     </div>
+
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const body = document.body;
-        const sidebar = document.getElementById("sidebar");
+        const root = document.documentElement;
+                const sidebar = document.getElementById("sidebar");
         const sidebarToggle = document.getElementById("sidebarToggle") || null;
         
         // Select all buttons for theme toggling (Header and Sidebar)
@@ -47,25 +52,21 @@
             });
         }
 
-        // 1. Initial Theme Load
-        const currentTheme = localStorage.getItem("theme") || "dark";
-        if (currentTheme === "light") {
-            body.classList.add("light-mode");
-            body.classList.remove("dark-mode");
-            updateIcons(true);
-        } else {
-            updateIcons(false);
-        }
+        // Initial Theme Load
+const currentTheme = localStorage.getItem("theme") || "dark";
+root.classList.remove("light", "dark");
+root.classList.add(currentTheme);
 
-        // 2. Global Toggle Logic
-        themeToggles.forEach(btn => {
-            btn.addEventListener("click", () => {
-                const isLight = body.classList.toggle("light-mode");
-                body.classList.toggle("dark-mode", !isLight);
-                localStorage.setItem("theme", isLight ? "light" : "dark");
-                updateIcons(isLight);
-            });
-        });
+// Toggle Theme
+themeToggles.forEach(btn => {
+    btn.addEventListener("click", () => {
+        const isLight = root.classList.contains("light");
+        root.classList.toggle("light", !isLight);
+        root.classList.toggle("dark", isLight);
+        localStorage.setItem("theme", isLight ? "dark" : "light");
+        updateIcons(!isLight);
+    });
+});
 
         // 3. Sidebar Collapse Logic
         sidebarToggle.addEventListener("click", () => {
@@ -108,7 +109,6 @@ Swal.fire({
 });
 </script>
 @endif
-<!-- ✅ STACKED PAGE SCRIPTS -->
 @stack('scripts')
 </body>
 </html>

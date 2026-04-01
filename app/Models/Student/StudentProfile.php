@@ -3,6 +3,7 @@
 namespace App\Models\Student;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class StudentProfile extends Model
 {

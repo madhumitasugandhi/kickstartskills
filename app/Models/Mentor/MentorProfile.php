@@ -3,6 +3,7 @@
 namespace App\Models\Mentor;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class MentorProfile extends Model
 {

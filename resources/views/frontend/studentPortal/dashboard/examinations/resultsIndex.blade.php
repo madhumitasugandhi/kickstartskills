@@ -61,6 +61,7 @@
         border-radius: 12px;
         padding: 24px;
         margin-bottom: 24px;
+        cursor: pointer;
     }
 
     /* Result Icon */
@@ -161,35 +162,63 @@
     </div>
 
     <!-- 2. Filters -->
-    <div class="mb-4">
-        <h6 class="fw-bold text-main mb-3"><i class="bi bi-funnel me-2 text-primary"></i>Filters & Sorting</h6>
-        <div class="row g-3">
-            <div class="col-md-3">
-                <select class="form-select bg-white border-0 shadow-sm">
-                    <option>All Subjects</option>
-                    <option>Math</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <select class="form-select bg-white border-0 shadow-sm">
-                    <option>All Time</option>
-                    <option>Last Month</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <select class="form-select bg-white border-0 shadow-sm">
-                    <option>All Types</option>
-                    <option>Quiz</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <select class="form-select bg-white border-0 shadow-sm">
-                    <option>Recent</option>
-                    <option>Oldest</option>
-                </select>
-            </div>
+    <form method="GET" action="{{ route('student.exam.results') }}">
+<div class="mb-4">
+    <h6 class="fw-bold text-main mb-3">
+        <i class="bi bi-funnel me-2 text-primary"></i>Filters & Sorting
+    </h6>
+
+    <div class="row g-3">
+        <!-- Subject -->
+        <div class="col-md-3">
+            <select name="subject" class="form-select bg-white border-0 shadow-sm">
+                <option value="All">All Subjects</option>
+                @foreach($subjects as $subject)
+                    <option value="{{ $subject }}" 
+                        {{ request('subject') == $subject ? 'selected' : '' }}>
+                        {{ $subject }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <!-- Time -->
+        <div class="col-md-3">
+            <select name="time" class="form-select bg-white border-0 shadow-sm">
+                <option value="">All Time</option>
+                <option value="week" {{ request('time')=='week'?'selected':'' }}>Last Week</option>
+                <option value="month" {{ request('time')=='month'?'selected':'' }}>Last Month</option>
+            </select>
+        </div>
+
+        <!-- Type -->
+        <div class="col-md-3">
+            <select name="type" class="form-select bg-white border-0 shadow-sm">
+                <option value="All">All Types</option>
+                <option value="Quiz" {{ request('type')=='Quiz'?'selected':'' }}>Quiz</option>
+                <option value="Practice" {{ request('type')=='Practice'?'selected':'' }}>Practice</option>
+            </select>
+        </div>
+
+        <!-- Sorting -->
+        <div class="col-md-3">
+            <select name="sort" class="form-select bg-white border-0 shadow-sm">
+                <option value="recent">Recent</option>
+                <option value="oldest" {{ request('sort')=='oldest'?'selected':'' }}>Oldest</option>
+            </select>
         </div>
     </div>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">
+            Apply Filters
+        </button>
+        <a href="{{ route('student.exam.results') }}" class="btn btn-light">
+            Reset
+        </a>
+    </div>
+</div>
+</form>
 
     <!-- 3. Performance Analytics (Grid) -->
     <div class="row g-4 mb-5">
@@ -220,23 +249,22 @@
                 <h6 class="fw-bold text-main mb-4"><i class="bi bi-book me-2 text-primary"></i>Subject-wise Analysis
                 </h6>
 
-                <div class="p-3 rounded mb-2 d-flex justify-content-between align-items-center border"
-                    style="border-color: var(--border-color);">
-                    <div>
-                        <div class="fw-bold text-main">Mathematics</div>
-                        <small class="" style="color: var(--text-muted)">Avg: 82.5%</small>
-                    </div>
-                    <span class="text-success small fw-bold"><i class="bi bi-arrow-up"></i> +8.2%</span>
-                </div>
+                @foreach($subjectPerformance as $sub)
+<div class="p-3 rounded mb-2 d-flex justify-content-between align-items-center border"
+    style="border-color: var(--border-color);">
+    <div>
+        <div class="fw-bold text-main">{{ $sub->subject }}</div>
+        <small style="color: var(--text-muted)">
+            Accuracy: {{ number_format($sub->accuracy,1) }}%
+        </small>
+    </div>
 
-                <div class="p-3 rounded d-flex justify-content-between align-items-center border"
-                    style="border-color: var(--border-color);">
-                    <div>
-                        <div class="fw-bold text-main">Physics</div>
-                        <small class="" style="color: var(--text-muted)">Avg: 68.3%</small>
-                    </div>
-                    <span class="text-danger small fw-bold"><i class="bi bi-arrow-down"></i> -2.1%</span>
-                </div>
+    <span class="fw-bold 
+        {{ $sub->accuracy >= 70 ? 'text-success' : ($sub->accuracy >= 40 ? 'text-warning' : 'text-danger') }}">
+        {{ number_format($sub->accuracy,1) }}%
+    </span>
+</div>
+@endforeach
             </div>
         </div>
 
@@ -245,10 +273,10 @@
             <div class="card-custom h-100 mb-0">
                 <h6 class="fw-bold text-main mb-4"><i class="bi bi-lightbulb me-2 text-warning"></i>Recommendations</h6>
                 <ul class="custom-list">
-                    <li>Focus on Physics problem-solving techniques</li>
-                    <li>Practice more Chemistry numerical problems</li>
-                    <li>Maintain consistent performance in Mathematics</li>
-                </ul>
+@foreach($recommendations as $rec)
+    <li>{{ $rec }}</li>
+@endforeach
+</ul>
             </div>
         </div>
     </div>
@@ -279,21 +307,104 @@
         </div>
 
         <div class="text-center">
-            <div
-                class="grade-circle-sm {{ $res->score >= 50 ? 'bg-success bg-opacity-10 text-success' : 'bg-danger bg-opacity-10 text-danger' }}">
-                {{ $res->score >= 80 ? 'A' : ($res->score >= 60 ? 'B' : ($res->score >= 40 ? 'C' : 'F')) }}
+            @php
+            $grade = 'F';
+            if($res->score >= 80) $grade = 'A';
+            elseif($res->score >= 60) $grade = 'B';
+            elseif($res->score >= 40) $grade = 'C';
+            @endphp
+
+            <div class="grade-circle-sm {{ $res->status == 'Passed' ? 'bg-success bg-opacity-10 text-success' : 'bg-danger bg-opacity-10 text-danger' }}">
+                {{ $grade }}
             </div>
             <small class="fw-bold">{{ number_format($res->score, 1) }}%</small>
         </div>
     </div>
 
-    <div class="modal fade" id="resultModal{{ $res->id }}" tabindex="-1" aria-hidden="true">
-        ... (Modal code here) ...
+    <div class="modal fade" id="resultModal{{ $res->id }}" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">{{ $res->exam_title }}</h5>
+                    <button type="button" class="btn-close border border-primary" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+
+                    @php
+                    $wrong = $res->total_questions - $res->correct_answers;
+                    $skipped = $res->total_questions - ($res->correct_answers + $wrong);
+                    $minutes = floor($res->time_taken / 60);
+                    $seconds = $res->time_taken % 60;
+                    @endphp
+
+                    <h6 class="text-primary fw-bold mb-3">Performance Overview</h6>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="stat-row">
+                                <span>Score</span>
+                                <span class="fw-bold">
+                                    {{ $res->correct_answers }}/{{ $res->total_questions }}
+                                    ({{ number_format($res->score,1) }}%)
+                                </span>
+                            </div>
+
+                            <div class="stat-row">
+                                <span>Status</span>
+                                <span class="fw-bold {{ $res->status == 'Passed' ? 'text-success' : 'text-danger' }}">
+                                    {{ $res->status }}
+                                </span>
+                            </div>
+
+                            <div class="stat-row">
+                                <span>Attempt No</span>
+                                <span class="fw-bold">{{ $res->attempt_no }}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="stat-row">
+                                <span>Time Taken</span>
+                                <span class="fw-bold">
+                                    {{ $minutes }}m {{ $seconds }}s
+                                </span>
+                            </div>
+
+                            <div class="stat-row">
+                                <span>Exam Duration</span>
+                                <span class="fw-bold">
+                                    {{ $res->total_time }} mins
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h6 class="text-primary fw-bold mb-3">Answer Breakdown</h6>
+                    <div class="d-flex gap-4 mb-4">
+                        <div class="text-success">
+                            <i class="bi bi-check-circle-fill me-1"></i>
+                            Correct: {{ $res->correct_answers }}
+                        </div>
+                        <div class="text-danger">
+                            <i class="bi bi-x-circle-fill me-1"></i>
+                            Wrong: {{ $wrong }}
+                        </div>
+                        <div class="text-secondary">
+                            <i class="bi bi-dash-circle-fill me-1"></i>
+                            Skipped: {{ $skipped }}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-light text-muted" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     @empty
     <div class="card-custom text-center py-5">
-        <p class="text-muted m-0">No recent test results found.</p>
+        <p class="m-0">No recent test results found.</p>
     </div>
     @endforelse
 

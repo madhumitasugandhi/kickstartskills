@@ -1,91 +1,104 @@
 <div id="courseDBData"
      data-courses='@json($institution->courseTypes ?? [])'>
 </div>
-<div class="setup-step" id="courseStep">
+
 <div id="courseData"
      data-session='@json($sessionData["courses"] ?? [])'>
 </div>
-    <div class="mb-4">
-        <h6 class="section-title-custom mb-1">Course Catalog Setup</h6>
-        <p class=" small">Configure course types, durations, and student requirements for your institution</p>
+
+<div id="courseStep">
+
+    <!-- HEADER -->
+    <div class="mb-3">
+        <div class="ui-section-title">COURSE CATALOG SETUP</div>
+        <small class="text-muted">
+            Configure course types, durations, and student requirements
+        </small>
     </div>
 
-    {{-- Add Course Type Section --}}
-    <div class="config-card p-4 mb-4" id="courseInputForm">
-        <h6 class="text-main fw-semibold mb-4" style="font-size: 0.95rem;">
-            <i class="bi bi-plus-circle me-2 text-primary-teal"></i>Course Types Configuration
-        </h6>
+    <!-- ADD COURSE TYPE -->
+    <div class="ui-section">
 
-        {{-- Course Name --}}
-        <div class="mb-4">
-            <label class="form-label-custom">Course Type Name</label>
-            <div class="input-group-custom">
+        <div class="ui-section-title mb-3">Course Type Configuration</div>
+
+        <!-- Course Name -->
+        <div class="mb-3">
+            <label class="ui-label">Course Type Name</label>
+            <div class="ui-input-icon">
                 <i class="bi bi-journal-text"></i>
-                <input type="text" id="courseTypeName" class="form-control ps-5" placeholder="e.g. MCA, BTech, MBA">
+                <input type="text" id="courseTypeName" class="form-control"
+                       placeholder="e.g. MCA, BTech, MBA">
             </div>
         </div>
 
-        {{-- Duration --}}
-        <div class="row g-3 mb-4">
+        <!-- Duration -->
+        <div class="row g-3 mb-3">
             <div class="col-md-6">
-                <label class="form-label-custom">Duration (Years)</label>
-                <div class="input-group-custom">
+                <label class="ui-label">Duration (Years)</label>
+                <div class="ui-input-icon">
                     <i class="bi bi-calendar-range"></i>
-                    <input type="number" id="durationYears" placeholder="Years" class="form-control ps-5">
+                    <input type="number" id="durationYears" class="form-control">
                 </div>
             </div>
+
             <div class="col-md-6">
-                <label class="form-label-custom">Duration (Months)</label>
-                <div class="input-group-custom">
+                <label class="ui-label">Duration (Months)</label>
+                <div class="ui-input-icon">
                     <i class="bi bi-clock-history"></i>
-                    <input type="number" id="durationMonths" placeholder="Months" class="form-control ps-5">
+                    <input type="number" id="durationMonths" class="form-control">
                 </div>
             </div>
         </div>
 
-        {{-- Code Extension --}}
-        <div class="mb-4">
-            <label class="form-label-custom d-flex justify-content-between">
-                Course Code Extension (2–3 chars)
-                <span class=" char-counter" style="font-size: 10px;">0/3</span>
+        <!-- Code Extension -->
+        <div class="mb-3">
+            <label class="ui-label d-flex justify-content-between">
+                Course Code Extension
+                <span class="char-counter small">0/3</span>
             </label>
-            <div class="input-group-custom">
+            <div class="ui-input-icon">
                 <i class="bi bi-hash"></i>
-                <input type="text" id="codeExtension" maxlength="3" placeholder="e.g. BT" class="form-control ps-5">
+                <input type="text" id="codeExtension" maxlength="3"
+                       class="form-control" placeholder="e.g. BT">
             </div>
         </div>
 
-        {{-- Background Requirements --}}
-        <div class="mb-4">
-            <label class="form-label-custom mb-3">Background Requirements</label>
-            <div class="d-flex flex-wrap gap-2" id="requirementContainer">
-                
-
-            @foreach($requirements as $req)
-    <button type="button"
-        class="btn btn-sm requirement-btn"
-        data-id="{{ $req->requirement_id }}"
-        onclick="toggleRequirement(this)">
-        {{ $req->requirement_name }}
-    </button>
-@endforeach
+        <!-- Requirements -->
+        <div class="mb-3">
+            <label class="ui-label mb-2">Background Requirements</label>
+            <div class="ui-chips">
+                @foreach($requirements as $req)
+                    <button type="button"
+                        class="ui-chip selectable-chip"
+                        data-id="{{ $req->requirement_id }}"
+                        onclick="toggleRequirement(this)">
+                        {{ $req->requirement_name }}
+                    </button>
+                @endforeach
             </div>
         </div>
 
-        <button type="button" id="addCourseTypeBtn" class="btn btn-success w-100 py-2 fw-semibold mt-2" style="background-color: var(--primary-teal); border: none;">
-            <i class="bi bi-plus-lg me-2"></i> Add Course Type to Catalog
+        <button type="button" id="addCourseTypeBtn"
+                class="btn btn-primary w-100">
+            <i class="bi bi-plus-lg me-2"></i>
+            Add Course Type to Catalog
         </button>
     </div>
 
-    {{-- List of Added Courses --}}
-    <div class="config-card p-4">
-        <h6 class="text-main fw-semibold mb-4" style="font-size: 0.95rem;">
-            Configured Course Types <span class="badge rounded-pill ms-2" id="courseCountBadge" style="background: var(--active-bg); color: var(--primary-teal); font-size: 12px;">0</span>
-        </h6>
+    <!-- CONFIGURED COURSES -->
+    <div class="ui-section">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="ui-section-title mb-0">Configured Course Types</div>
+            <span class="ui-badge" id="courseCountBadge">0</span>
+        </div>
+
         <div id="courseListContainer">
-            <div class="text-center  py-3 empty-state">No courses added yet.</div>
+            <div class="text-center py-3 text-muted">
+                No courses added yet.
+            </div>
         </div>
     </div>
+
 </div>
 
 <script>
@@ -190,13 +203,12 @@ function initCourseStep(){
 
             const courseItem = document.createElement('div');
 
-            courseItem.className =
-                'configured-item d-flex justify-content-between align-items-start mb-3 p-3';
+            courseItem.className = 'ui-list-item';
 
             courseItem.innerHTML = `
                 <div>
                     <div class="fw-bold mb-1"
-                        style="color: var(--primary-teal); font-size: 15px;">
+                        style="color: var(--primary); font-weight:600;">
                         ${course.name}
                     </div>
 
