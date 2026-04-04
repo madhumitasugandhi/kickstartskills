@@ -4,18 +4,16 @@
         We'll send you a verification code to reset your password
     </p>
 
-    <form onsubmit="switchStep(2); return false;">
+    <form id="otp-send-form">
+        @csrf
         <div class="mb-3 text-start">
-            <label class="form-label small ms-1 mb-2 fw-bold text-white opacity-90">Email address</label>
             <div class="input-group-custom">
                 <i class="bi bi-envelope input-icon"></i>
-                <input type="email" class="custom-input" placeholder="student@kickstartskills.com" required>
+                <input type="email" name="email" id="reset-email" class="custom-input"
+                    placeholder="hr@kickstartskills.com" required>
             </div>
         </div>
-
-        <button type="submit" class="btn-action">
-            Send Reset Code
-        </button>
+        <button type="submit" class="btn-action" id="send-otp-btn">Send Reset Code</button>
     </form>
 
     <div class="mt-2">

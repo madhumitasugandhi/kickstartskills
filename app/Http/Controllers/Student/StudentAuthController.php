@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Student;
 
+use App\Services\EmailService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +42,7 @@ class StudentAuthController extends Controller
 
         return back()->withErrors(['email' => 'The provided credentials do not match.']);
     }
-    public function register(Request $request)
+    public function register(Request $request, \App\Services\EmailService $emailService)
     {
         try {
             // 1. Validation
@@ -108,6 +109,17 @@ class StudentAuthController extends Controller
             // }
             DB::commit();
 
+            $emailService->sendHtmlEmail(
+                $user->email,
+                'Welcome to KickStartSkills!',
+                'emails.student_welcome', // Ye view file banani padegi
+                [
+                    'name' => $user->full_name,
+                    'email' => $user->email,
+                    'password' => $request->password,
+                    'role' => 'Student'
+                ]
+            );
             // 4. Log in and Redirect
             Auth::login($user);
 
@@ -132,5 +144,11 @@ class StudentAuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('student.login');
+    }
+
+    public function showForgotPassword()
+    {
+        // Check kar lena ki path sahi hai (resources/views/frontend/studentPortal/auth/forget_password.blade.php)
+        return view('frontend.studentPortal.auth.forgot_password');
     }
 }

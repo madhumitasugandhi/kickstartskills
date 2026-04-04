@@ -408,12 +408,12 @@
                 <button type="submit" class="btn-login">Access Mentor Portal</button>
             </form>
 
-            <div class="text-center mt-4">
+            {{-- <div class="text-center mt-4">
                 <p class="small text-muted-custom mb-0">
                     Want to become a mentor?
                     <a href="/mentor/register" class="link-custom ms-1">Apply as Mentor</a>
                 </p>
-            </div>
+            </div> --}}
         </div>
     </div>
 

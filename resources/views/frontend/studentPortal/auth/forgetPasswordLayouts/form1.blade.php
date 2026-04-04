@@ -4,19 +4,17 @@
         We'll send you a verification code to reset your password
     </p>
 
-    <form onsubmit="switchStep(2); return false;">
-        <div class="mb-3 text-start">
-            <label class="form-label small ms-1 mb-2 fw-bold text-white opacity-90">Email address</label>
-            <div class="input-group-custom">
-                <i class="bi bi-envelope input-icon"></i>
-                <input type="email" class="custom-input" placeholder="student@kickstartskills.com" required>
-            </div>
+    <form id="otp-send-form">
+    @csrf
+    <div class="mb-3 text-start">
+        <label class="form-label small ms-1 mb-2 fw-bold text-white opacity-90">Email address</label>
+        <div class="input-group-custom">
+            <i class="bi bi-envelope input-icon"></i>
+            <input type="email" name="email" id="reset-email" class="custom-input" placeholder="student@kickstartskills.com" required>
         </div>
-
-        <button type="submit" class="btn-action">
-            Send Reset Code
-        </button>
-    </form>
+    </div>
+    <button type="submit" class="btn-action" id="send-otp-btn">Send Reset Code</button>
+</form>
 
     <div class="mt-2">
         <a href="{{ url('/student-login') }}" class="link-back">

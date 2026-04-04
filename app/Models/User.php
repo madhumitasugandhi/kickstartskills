@@ -33,6 +33,7 @@ class User extends Authenticatable
         'institution_name',
         'admin_role_id',
         'account_status',
+        'remember_token',
     ];
 
     /**
