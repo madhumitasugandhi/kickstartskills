@@ -36,6 +36,9 @@ use App\Http\Controllers\Mentor\MentorStudentController;
 use App\Http\Controllers\Student\StudentAuthController;
 use App\Http\Controllers\Student\StudentProfileController;
 use App\Http\Controllers\Student\StudentExaminationController;
+
+use App\Http\Controllers\HR\HRAuthController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -696,19 +699,16 @@ Route::prefix('mentor')->name('mentor.')->middleware(['auth', 'mentor'])->group(
 /*|------------------------------------------------End Mentor Portal Routes--------------------------------------------------|*/
 
 /*|------------------------------------------------Start HR Portal Routes--------------------------------------------------|*/
+
 //login
-Route::get('/hr-login', function () {
-    return view('frontend.hrPortal.auth.hr_login');
-});
-//forgot password
-Route::get('/hr/forgot-password', function () {
-    return view('frontend.hrPortal.auth.forgot_password');
-});
+Route::get('/hr-login', [HRAuthController::class, 'showLoginForm'])->name('hr.login');
+Route::post('/hr-login', [HRAuthController::class, 'login'])->name('hr.login.submit');
+// HR Forgot Password
+Route::get('/hr/forgot-password', [HRAuthController::class, 'showForgotPassword'])->name('hr.forgot_password');
 //register
-Route::get('/hr/register', function () {
-    return view('frontend.hrPortal.auth.register');
-});
-Route::prefix('hr')->name('hr.')->group(function () {
+
+// Protected HR Portal Routes (Sirf Login ke baad access honge)
+Route::middleware(['is_hr'])->prefix('hr')->name('hr.')->group(function () {
 
     // 1. Dashboard
     Route::get('/dashboard', function () {
@@ -730,7 +730,7 @@ Route::prefix('hr')->name('hr.')->group(function () {
         return view('frontend.hrPortal.dashboard.corporateDrives');
     })->name('drives');
 
-    // 5. Drive Analytics (Matches sidebar: route('hr.analytics'))
+    // 5. Drive Analytics
     Route::get('/drive-analytics', function () {
         return view('frontend.hrPortal.dashboard.driveAnalytics');
     })->name('analytics');
@@ -759,6 +759,9 @@ Route::prefix('hr')->name('hr.')->group(function () {
     Route::get('/settings', function () {
         return view('frontend.hrPortal.dashboard.settings');
     })->name('settings');
+
+    // Logout Route (Recommended to be inside protected group)
+    Route::post('/logout', [HRAuthController::class, 'logout'])->name('logout');
 });
 /*|------------------------------------------------End HR Portal Routes--------------------------------------------------|*/
 
