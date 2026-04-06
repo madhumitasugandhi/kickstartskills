@@ -1,8 +1,6 @@
 <div class="glass-card">
     <h5 class="fw-bold mb-2">Security Verification</h5>
-    <p class="text-white opacity-75 small mb-4 px-2">
-        A 6-digit code has been sent to your admin email.
-    </p>
+    <p class="text-white opacity-75 small mb-4 px-2">Check your inbox for the 6-digit code</p>
 
     <form id="otp-verify-form">
         @csrf
@@ -29,7 +27,7 @@
     </form>
 
     <div class="mt-2">
-        <a href="#" class="link-back text-decoration-none">
+        <a href="{{ route('admin.forgot_password') }}" class="link-back text-decoration-none">
             Code not received? <span class="fw-bold text-white">Resend</span>
         </a>
     </div>

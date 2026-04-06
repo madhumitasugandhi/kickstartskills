@@ -402,7 +402,7 @@
                         <input class="form-check-input" type="checkbox" id="remember" name="remember">
                         <label class="form-check-label small text-muted-custom" for="remember">Remember me</label>
                     </div>
-                    <a href="/mentor/forgot-password" class="small link-custom">Forgot password?</a>
+                    <a href="{{ route('mentor.forgot_password') }}" class="small link-custom">Forgot password?</a>
                 </div>
 
                 <button type="submit" class="btn-login">Access Mentor Portal</button>

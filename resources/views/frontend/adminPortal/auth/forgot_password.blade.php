@@ -370,7 +370,7 @@
         <li></li>
     </ul>
 
-    <a href="{{ url('/admin-login') }}" class="nav-btn back-btn">
+    <a href="{{ route('admin.login') }}" class="nav-btn back-btn">
         <i class="bi bi-arrow-left"></i>
     </a>
 
@@ -383,7 +383,7 @@
 
         <h2 class="fw-bold mb-2" id="page-title">Forgot Password?</h2>
         <p class="opacity-75 mb-4 text-center" style="max-width: 300px;" id="page-subtitle">
-            Enter your email to receive a reset link
+            Enter your email to receive a reset code
         </p>
 
         <div class="steps-container">
@@ -427,13 +427,13 @@
 
         if (step === 1) {
             title.text("Forgot Password?");
-            sub.text("Enter your email to receive a reset link");
+            sub.text("Enter your email to receive a reset code");
         } else if (step === 2) {
             title.text("Verification");
-            sub.text("Check your admin email for the 6-digit code");
+            sub.text("Check your inbox for the 6-digit code");
         } else if (step === 3) {
             title.text("Reset Password");
-            sub.text("Create a new secure admin password");
+            sub.text("Create a new secure password");
         }
     }
 

@@ -7,7 +7,7 @@
     <form id="otp-send-form">
         @csrf
         <div class="mb-3 text-start">
-            <label class="form-label small ms-1 mb-2 fw-bold text-white opacity-90">Admin Email</label>
+            <label class="form-label small ms-1 mb-2 fw-bold text-white opacity-90">Email address</label>
             <div class="input-group-custom">
                 <i class="bi bi-envelope-fill input-icon"></i>
                 <input type="email" name="email" id="reset-email" class="custom-input"
@@ -16,13 +16,13 @@
         </div>
 
         <button type="submit" class="btn-action" id="send-otp-btn">
-            Authorize & Send Code
+             Send Rest Code
         </button>
     </form>
 
     <div class="mt-2">
-        <a href="{{ url('/admin-login') }}" class="link-back">
-            <i class="bi bi-arrow-left me-1"></i> Back to Admin Login
+        <a href="{{ route('admin.login') }}" class="link-back">
+            Remember your password? <span class="fw-bold ms-1 text-white">Sign in</span>
         </a>
     </div>
 </div>

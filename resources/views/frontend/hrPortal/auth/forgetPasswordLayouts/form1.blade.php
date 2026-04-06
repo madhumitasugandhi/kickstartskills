@@ -7,8 +7,9 @@
     <form id="otp-send-form">
         @csrf
         <div class="mb-3 text-start">
+            <label class="form-label small ms-1 mb-2 fw-bold text-white opacity-90">Email address</label>
             <div class="input-group-custom">
-                <i class="bi bi-envelope input-icon"></i>
+                <i class="bi bi-envelope-fill input-icon"></i>
                 <input type="email" name="email" id="reset-email" class="custom-input"
                     placeholder="hr@kickstartskills.com" required>
             </div>
@@ -17,7 +18,7 @@
     </form>
 
     <div class="mt-2">
-        <a href="{{ url('/hr-login') }}" class="link-back">
+        <a href="{{ route('hr.login') }}" class="link-back">
             Remember your password? <span class="fw-bold ms-1 text-white">Sign in</span>
         </a>
     </div>

@@ -362,7 +362,7 @@
         <li></li>
     </ul>
 
-    <a href="{{ url('/mentor-login') }}" class="nav-btn back-btn">
+    <a href="{{ route('mentor.login') }}" class="nav-btn back-btn">
         <i class="bi bi-arrow-left"></i>
     </a>
 
@@ -375,15 +375,15 @@
 
         <h2 class="fw-bold mb-2" id="page-title">Forgot Password?</h2>
         <p class="opacity-75 mb-4 text-center" style="max-width: 300px;" id="page-subtitle">
-            Enter your email to receive a reset link
-        </p>
+            Enter your email to receive a reset code
+         </p>
 
         <div class="steps-container">
-            <div class="step active" onclick="switchStep(1)" id="step-1-btn">1</div>
+            <div class="step active" id="step-1-btn">1</div>
             <div class="step-line"></div>
-            <div class="step" onclick="switchStep(2)" id="step-2-btn">2</div>
+            <div class="step" id="step-2-btn">2</div>
             <div class="step-line"></div>
-            <div class="step" onclick="switchStep(3)" id="step-3-btn">3</div>
+            <div class="step" id="step-3-btn">3</div>
         </div>
 
         <div id="step-1-form">
@@ -409,7 +409,7 @@
 
         const title = $('#page-title');
         const sub = $('#page-subtitle');
-        if(step === 1) { title.text("Forgot Password?"); sub.text("Enter your email to receive a reset link"); }
+        if(step === 1) { title.text("Forgot Password?"); sub.text("Enter your email to receive a reset code"); }
         else if(step === 2) { title.text("Verification"); sub.text("Check your inbox for the 6-digit code"); }
         else if(step === 3) { title.text("Reset Password"); sub.text("Create a new secure password"); }
     }

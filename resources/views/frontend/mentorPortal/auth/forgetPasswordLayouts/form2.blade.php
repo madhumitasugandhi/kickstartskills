@@ -1,8 +1,6 @@
 <div class="glass-card">
     <h5 class="fw-bold mb-2">Enter Verification Code</h5>
-    <p class="text-white opacity-75 small mb-4 px-2">
-        Check your inbox for the 6-digit code we just sent.
-    </p>
+    <p class="text-white opacity-75 small mb-4 px-2">Check your inbox for the 6-digit code</p>
 
     <form id="otp-verify-form">
         @csrf
@@ -29,7 +27,7 @@
     </form>
 
     <div class="mt-2">
-        <a href="#" class="link-back">
+        <a href="{{ route('mentor.forgot_password') }}" class="link-back">
             Didn't receive code? <span class="fw-bold ms-1 text-white">Resend</span>
         </a>
     </div>

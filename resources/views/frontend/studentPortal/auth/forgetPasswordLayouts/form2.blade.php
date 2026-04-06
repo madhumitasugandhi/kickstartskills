@@ -23,9 +23,9 @@
 
         <button type="submit" class="btn-action">Verify Code</button>
     </form>
-    
+
     <div class="mt-2">
-        <a href="#" class="link-back">
+        <a href="{{ route('student.forgot_password') }}" class="link-back">
             Didn't receive code? <span class="fw-bold ms-1 text-white">Resend</span>
         </a>
     </div>

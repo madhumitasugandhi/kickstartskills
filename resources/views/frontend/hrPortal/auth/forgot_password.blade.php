@@ -356,6 +356,23 @@
         .link-back:hover {
             opacity: 1;
         }
+
+        .input-icon {
+            color: #4b5563 !important;
+            opacity: 1;
+        }
+
+        body.dark-mode .input-icon {
+            color: #94a3b8 !important;
+        }
+
+        .auth-container {
+            max-width: 430px !important;
+        }
+
+        .custom-input:focus+.input-icon {
+            color: #6d07c7 !important;
+        }
     </style>
 </head>
 
@@ -369,7 +386,7 @@
         <li></li>
     </ul>
 
-    <a href="{{ url('/hr-login') }}" class="nav-btn back-btn">
+    <a href="{{ route('hr.login') }}" class="nav-btn back-btn">
         <i class="bi bi-arrow-left"></i>
     </a>
 
@@ -382,24 +399,24 @@
 
         <h2 class="fw-bold mb-2" id="page-title">Forgot Password?</h2>
         <p class="opacity-75 mb-4 text-center" style="max-width: 300px;" id="page-subtitle">
-            Enter your email to receive a reset link
+            Enter your email to receive a reset code
         </p>
 
         <div class="steps-container">
-            <div class="step active" onclick="switchStep(1)" id="step-1-btn">1</div>
+            <div class="step active" id="step-1-btn">1</div>
             <div class="step-line"></div>
-            <div class="step" onclick="switchStep(2)" id="step-2-btn">2</div>
+            <div class="step" id="step-2-btn">2</div>
             <div class="step-line"></div>
-            <div class="step" onclick="switchStep(3)" id="step-3-btn">3</div>
+            <div class="step" id="step-3-btn">3</div>
         </div>
 
-        <div id="step-1-form">
+        <div id="step-1-form" style="width: 100%;">
             @include('frontend.hrPortal.auth.forgetPasswordLayouts.form1')
         </div>
-        <div id="step-2-form" style="display: none;">
+        <div id="step-2-form" style="display: none; width: 100%;">
             @include('frontend.hrPortal.auth.forgetPasswordLayouts.form2')
         </div>
-        <div id="step-3-form" style="display: none;">
+        <div id="step-3-form" style="display: none; width: 100%;">
             @include('frontend.hrPortal.auth.forgetPasswordLayouts.form3')
         </div>
 
@@ -419,13 +436,13 @@
 
         if(step === 1) {
             title.text("Forgot Password?");
-            sub.text("Enter your email to receive a reset link");
+            sub.text("Enter your email to receive a reset code");
         } else if(step === 2) {
             title.text("Verification");
             sub.text("Check your inbox for the 6-digit code");
         } else if(step === 3) {
             title.text("Reset Password");
-            sub.text("Create a new strong password for your account");
+            sub.text("Create a new secure password");
         }
     }
 

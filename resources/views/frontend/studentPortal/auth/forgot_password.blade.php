@@ -129,7 +129,7 @@
 
         .auth-container {
             width: 100%;
-            max-width: 460px;
+            max-width: 460px !important;
             padding: 15px;
             z-index: 10;
             display: flex;
@@ -194,9 +194,34 @@
             border: 1px solid var(--card-border);
             box-shadow: var(--card-shadow);
             border-radius: 28px;
-            padding: 2.5rem 2rem;
+            padding: 2.5rem 2rem !important;
             width: 100%;
             text-align: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4b5563 !important;
+            font-size: 1.1rem;
+            z-index: 5;
+            opacity: 1;
+        }
+
+        body.dark-mode .input-icon {
+            color: #cbd5e1 !important;
+        }
+
+        .custom-input:focus+.input-icon {
+            color: var(--btn-bg) !important;
+            opacity: 1;
+        }
+
+        .input-group-custom {
+            position: relative;
+            text-align: left;
         }
 
         .custom-input {
@@ -220,6 +245,21 @@
             border: none;
             cursor: pointer;
         }
+
+        .link-back {
+            color: var(--text-main);
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 1.5rem;
+            transition: opacity 0.2s;
+            opacity: 0.8;
+        }
+
+        .link-back:hover {
+            opacity: 1;
+        }
     </style>
 </head>
 
@@ -233,7 +273,7 @@
         <li></li>
     </ul>
 
-    <a href="{{ url('/student-login') }}" class="nav-btn back-btn">
+    <a  href="{{ route('student.login') }}" class="nav-btn back-btn">
         <i class="bi bi-arrow-left"></i>
     </a>
 
@@ -242,7 +282,7 @@
     </button>
 
     <div class="auth-container">
-        <div class="icon-box"><i class="bi bi-key-fill"></i></div>
+        <div class="icon-box"><i class="bi bi-shield-lock-fill"></i></div>
 
         <h2 class="fw-bold mb-2" id="page-title">Forgot Password?</h2>
         <p class="opacity-75 mb-4 text-center" style="max-width: 300px;" id="page-subtitle">
@@ -285,9 +325,16 @@
             // Update Text
             const title = $('#page-title');
             const sub = $('#page-subtitle');
-            if(step === 1) { title.text("Forgot Password?"); sub.text("Enter your email to receive a reset code"); }
-            else if(step === 2) { title.text("Verification"); sub.text("Check your inbox for the 6-digit code"); }
-            else if(step === 3) { title.text("Reset Password"); sub.text("Create a new secure password"); }
+            if (step === 1) {
+                title.text("Forgot Password?");
+                sub.text("Enter your email to receive a reset code");
+            } else if (step === 2) {
+                title.text("Verification");
+                sub.text("Check your inbox for the 6-digit code");
+            } else if (step === 3) {
+                title.text("Reset Password");
+                sub.text("Create a new secure password");
+            }
         }
 
         // --- 2. AJAX LOGIC ---
@@ -299,7 +346,7 @@
             $('#send-otp-btn').prop('disabled', true).text('Sending...');
 
             $.post("{{ route('auth.password.sendOtp') }}", $(this).serialize(), function(res) {
-                if(res.success) {
+                if (res.success) {
                     switchStep(2);
                 } else {
                     alert(res.message);
@@ -310,24 +357,24 @@
 
         // Step 2: Verify OTP
         $('#otp-verify-form').on('submit', function(e) {
-    e.preventDefault();
+            e.preventDefault();
 
-    // Check if OTP is full
-    if($('#input-otp').val().length < 6) {
-        alert("Please enter the full 6-digit code.");
-        return;
-    }
+            // Check if OTP is full
+            if ($('#input-otp').val().length < 6) {
+                alert("Please enter the full 6-digit code.");
+                return;
+            }
 
-    let formData = $(this).serialize() + "&email=" + $('#reset-email').val();
+            let formData = $(this).serialize() + "&email=" + $('#reset-email').val();
 
-    $.post("{{ route('auth.password.verifyOtp') }}", formData, function(res) {
-        if(res.success) {
-            switchStep(3);
-        } else {
-            alert(res.message);
-        }
-    });
-});
+            $.post("{{ route('auth.password.verifyOtp') }}", formData, function(res) {
+                if (res.success) {
+                    switchStep(3);
+                } else {
+                    alert(res.message);
+                }
+            });
+        });
 
         // Step 3: Update Password
         $('#password-reset-final-form').on('submit', function(e) {
@@ -335,7 +382,7 @@
             let formData = $(this).serialize() + "&email=" + $('#reset-email').val() + "&otp=" + $('#input-otp').val();
 
             $.post("{{ route('auth.password.update') }}", formData, function(res) {
-                if(res.success) {
+                if (res.success) {
                     alert('Success! Your password has been changed.');
                     window.location.href = "{{ route('student.login') }}";
                 } else {
@@ -344,34 +391,34 @@
             });
         });
         $(document).ready(function() {
-    const inputs = $('.otp-box');
+            const inputs = $('.otp-box');
 
-    // Auto-focus and Value gathering
-    inputs.on('input', function() {
-        const val = $(this).val();
+            // Auto-focus and Value gathering
+            inputs.on('input', function() {
+                const val = $(this).val();
 
-        // Agle box pe jao
-        if (val && $(this).next().length) {
-            $(this).next().focus();
-        }
+                // Agle box pe jao
+                if (val && $(this).next().length) {
+                    $(this).next().focus();
+                }
 
-        // Saare boxes ko jod kar hidden input mein dalo
-        let fullOtp = "";
-        inputs.each(function() {
-            fullOtp += $(this).val();
+                // Saare boxes ko jod kar hidden input mein dalo
+                let fullOtp = "";
+                inputs.each(function() {
+                    fullOtp += $(this).val();
+                });
+                $('#input-otp').val(fullOtp);
+
+                console.log("Current OTP gathered:", fullOtp); // Debugging ke liye console dekho
+            });
+
+            // Backspace support
+            inputs.on('keydown', function(e) {
+                if (e.key === 'Backspace' && !$(this).val() && $(this).prev().length) {
+                    $(this).prev().focus();
+                }
+            });
         });
-        $('#input-otp').val(fullOtp);
-
-        console.log("Current OTP gathered:", fullOtp); // Debugging ke liye console dekho
-    });
-
-    // Backspace support
-    inputs.on('keydown', function(e) {
-        if (e.key === 'Backspace' && !$(this).val() && $(this).prev().length) {
-            $(this).prev().focus();
-        }
-    });
-});
 
         // --- THEME TOGGLE ---
         function toggleTheme() {
@@ -379,6 +426,7 @@
             const isDark = $('#app-body').hasClass('dark-mode');
             $('#theme-icon').attr('class', isDark ? 'bi bi-sun' : 'bi bi-moon');
         }
+
     </script>
 </body>
 
