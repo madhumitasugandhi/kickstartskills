@@ -31,6 +31,7 @@ use App\Http\Controllers\Mentor\MentorAuthController;
 use App\Http\Controllers\Mentor\MentorDashboardController;
 use App\Http\Controllers\Mentor\MentorSessionController;
 use App\Http\Controllers\Mentor\MentorStudentController;
+use App\Http\Controllers\Mentor\MentorProfileController;
 
 
 use App\Http\Controllers\Student\StudentAuthController;
@@ -687,13 +688,13 @@ Route::prefix('mentor')->name('mentor.')->middleware(['auth', 'mentor'])->group(
         return view('frontend.mentorPortal.dashboard.general.notifications');
     })->name('notifications');
 
-    Route::get('/profile', function () {
-        return view('frontend.mentorPortal.dashboard.general.profile');
-    })->name('profile');
+    Route::get('/profile', [MentorProfileController::class, 'index'])->name('profile');
+    Route::post('/profile/update', [MentorProfileController::class, 'update'])->name('profile.update');
 
     Route::get('/settings', function () {
         return view('frontend.mentorPortal.dashboard.general.settings');
     })->name('settings');
+    
 });
 
 /*|------------------------------------------------End Mentor Portal Routes--------------------------------------------------|*/
