@@ -13,40 +13,53 @@ class StudentProfileController extends Controller
 {
     public function index()
     {
+        // Eager load relationships for cleaner code
         $user = Auth::user();
-        // Splitting full_name back into first and last for the form inputs
+
+        // Student Profile ka data fetch karo
+        $profile = DB::table('student_profiles')->where('user_id', $user->id)->first();
+
+        // Splitting full_name
         $nameParts = explode(' ', $user->full_name, 2);
         $firstName = $nameParts[0] ?? '';
         $lastName = $nameParts[1] ?? '';
 
-        // Change line 20 to this:
-        return view('frontend.studentPortal.dashboard.profile.personalInfoIndex', compact('user', 'firstName', 'lastName'));
+        return view('frontend.studentPortal.dashboard.profile.personalInfoIndex', compact('user', 'firstName', 'lastName', 'profile'));
     }
+
     public function update(Request $request)
     {
         $user = User::find(Auth::id());
 
+        // Validation wahi rahegi
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'phone' => 'nullable|string|max:15',
             'gender' => 'nullable|string',
-            'dob' => 'nullable|string',
+            'dob' => 'nullable|date',
             'blood_group' => 'nullable|string',
         ]);
 
-        // Update fields
-        $user->full_name = $request->first_name . ' ' . $request->last_name;
-        $user->phone = $request->phone;
-        $user->email = $request->email;
-        $user->gender = $request->gender;
-        $user->dob = $request->dob;
-        $user->blood_group = $request->blood_group;
+        // PART 1: Core details ko 'users' table mein update karo
+        $user->update([
+            'full_name' => $request->first_name . ' ' . $request->last_name,
+            'email' => $request->email,
+        ]);
 
-        $user->save();
+        DB::table('student_profiles')->updateOrInsert(
+            ['user_id' => $user->id], // Is ID ke bande ka data update karo
+            [
+                'phone' => $request->phone,
+                'gender' => $request->gender,
+                'dob' => $request->dob,
+                'blood_group' => $request->blood_group,
+                'updated_at' => now(),
+            ]
+        );
 
-        return back()->with('success', 'Your profile has been updated successfully!');
+        return back()->with('success', 'Profile updated successfully!');
     }
 
     public function academicIndex()
