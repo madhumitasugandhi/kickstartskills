@@ -67,12 +67,12 @@ class User extends Authenticatable
 
     public function studentProfile()
     {
-        return $this->hasOne(StudentProfile::class);
+        return $this->hasOne(\App\Models\Student\StudentProfile::class, 'user_id');
     }
 
     public function mentorProfile()
     {
-        return $this->hasOne(MentorProfile::class);
+        return $this->hasOne(\App\Models\Mentor\MentorProfile::class, 'user_id');
     }
 
     public function hrProfile()
