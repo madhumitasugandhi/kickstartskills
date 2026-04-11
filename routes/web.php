@@ -368,11 +368,11 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
         Route::prefix('drive-management')->name('drive-management.')->group(function () {
 
             Route::get('/', [DriveManagementController::class, 'index'])->name('index');
-        
+
             Route::post('/approve/{id}', [DriveManagementController::class, 'approve'])->name('approve');
-        
+
             Route::post('/reject/{id}', [DriveManagementController::class, 'reject'])->name('reject');
-        
+
         });
 
         // Academic Structure
@@ -425,7 +425,7 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
             Route::post('/update/{id}', [FacultyController::class, 'update'])->name('update');
             Route::delete('/delete/{id}', [FacultyController::class, 'destroy'])->name('delete');
         });
-      
+
 
 
         Route::prefix('internships')->name('internships.')->group(function () {
@@ -733,7 +733,7 @@ Route::prefix('mentor')->name('mentor.')->middleware(['auth', 'mentor'])->group(
     Route::get('/settings', function () {
         return view('frontend.mentorPortal.dashboard.general.settings');
     })->name('settings');
-    
+
 });
 
 /*|------------------------------------------------End Mentor Portal Routes--------------------------------------------------|*/
