@@ -411,13 +411,6 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
         });
 
         Route::prefix('academic-structure/programs')->name('academic-structure.programs.')->group(function () {
-        Route::prefix('academic-structure/programs')->name('academic-structure.programs.')->group(function () {
-
-            Route::post('/store', [InstitutionProgramController::class, 'store'])->name('store');
-            Route::get('/edit/{id}', [InstitutionProgramController::class, 'edit'])->name('edit');
-            Route::post('/update/{id}', [InstitutionProgramController::class, 'update'])->name('update');
-            Route::delete('/delete/{id}', [InstitutionProgramController::class, 'destroy'])->name('delete');
-        });
             Route::post('/store', [InstitutionProgramController::class, 'store'])->name('store');
             Route::get('/edit/{id}', [InstitutionProgramController::class, 'edit'])->name('edit');
             Route::post('/update/{id}', [InstitutionProgramController::class, 'update'])->name('update');
@@ -435,7 +428,6 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
       
 
 
-        Route::prefix('internships')->name('internships.')->group(function () {
         Route::prefix('internships')->name('internships.')->group(function () {
 
             /* =============================
@@ -753,10 +745,9 @@ Route::get('/hr-login', [HRAuthController::class, 'showLoginForm'])->name('hr.lo
 Route::post('/hr-login', [HRAuthController::class, 'login'])->name('hr.login.submit');
 // HR Forgot Password
 Route::get('/hr/forgot-password', [HRAuthController::class, 'showForgotPassword'])->name('hr.forgot_password');
-//register
 
 // Protected HR Portal Routes (Sirf Login ke baad access honge)
-Route::middleware(['is_hr'])->prefix('hr')->name('hr.')->group(function () {
+ Route::middleware(['is_hr'])->prefix('hr')->name('hr.')->group(function () {
 
     // 1. Dashboard
     Route::get('/dashboard', function () {
@@ -811,6 +802,7 @@ Route::middleware(['is_hr'])->prefix('hr')->name('hr.')->group(function () {
     // Logout Route (Recommended to be inside protected group)
     Route::post('/logout', [HRAuthController::class, 'logout'])->name('logout');
 });
+
 /*|------------------------------------------------End HR Portal Routes--------------------------------------------------|*/
 
 /*|------------------------------------------------Start Admin Portal Routes--------------------------------------------------|*/
