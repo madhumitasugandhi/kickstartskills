@@ -16,7 +16,6 @@ class InstitutionAuthController extends Controller
 
     public function showLogin(Request $request)
     {
-
         if (Session::has('institution_id')) {
             return redirect('/institution/dashboard');
         }
@@ -24,33 +23,43 @@ class InstitutionAuthController extends Controller
         return view('frontend.institutionPortal.auth.institutelogin');
     }
 
-
-
-    // AdminAuthController.php
     public function login(Request $request)
     {
-        // 1. Check user manually
-        $user = User::where('email', $request->email)->first();
+        // Validate
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            // 2. Manual Session
-            Session::put('admin_id', $user->id);
+        // 🔥 Correct Model (Institution)
+        $institution = Institution::where('email', $request->email)->first();
 
-            // 3. Manual Remember Me (Exactly like Institution)
+        // 🔥 Check password (password_hash column)
+        if ($institution && Hash::check($request->password, $institution->password_hash)) {
+
+            // Session set
+            Session::put('institution_id', $institution->institution_id);
+
+            // Remember Me
             if ($request->remember) {
                 $token = Str::random(60);
-                $user->update(['remember_token' => $token]);
-                Cookie::queue('admin_remember', $token, 525600); // 1 saal
+
+                $institution->update([
+                    'remember_token' => $token
+                ]);
+
+                Cookie::queue('institution_remember', $token, 525600); // 1 year
             }
-            return redirect('/admin/dashboard');
+
+            return redirect('/institution/dashboard');
         }
+
+        // ❌ Login failed
+        return back()->with('error', 'Invalid email or password');
     }
-
-
 
     public function logout()
     {
-
         $token = Cookie::get('institution_remember');
 
         if ($token) {
@@ -58,12 +67,10 @@ class InstitutionAuthController extends Controller
                 ->update(['remember_token' => null]);
         }
 
-        Session::flush();
+        Session::forget('institution_id');
 
         Cookie::queue(Cookie::forget('institution_remember'));
 
         return redirect('/institution-login');
-
     }
-
 }
