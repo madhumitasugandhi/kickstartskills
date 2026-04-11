@@ -4,25 +4,33 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use App\Models\User;
 
 class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
+        // 1. Agar Auth session khali hai, toh check karo Manual Session ya Cookie
+        if (!Auth::check()) {
+            $adminId = session('admin_id') ?? $request->cookie('admin_permanent_login');
+
+            if ($adminId) {
+                $user = \App\Models\User::find($adminId);
+                if ($user && ($user->admin_role_id == 1 || $user->admin_role_id == 2)) {
+                    Auth::login($user, true); // Wapas login karwa do
+                    session(['admin_id' => $user->id]); // Session refresh
+                }
+            }
+        }
+
+        // 2. Final Guard Check
         if (Auth::check()) {
             $user = Auth::user();
-
-            // Controller wala same logic yahan bhi lagao
-            if ($user->admin_role_id == User::ROLE_SUPER_ADMIN || $user->admin_role_id == User::ROLE_ADMIN_STAFF) {
+            if ($user->admin_role_id == 1 || $user->admin_role_id == 2) {
                 return $next($request);
             }
-
-            // Agar admin role nahi hai toh logout karwa do
-            Auth::logout();
-            return redirect()->route('admin.login')->withErrors(['email' => 'Unauthorized access.']);
         }
 
         return redirect()->route('admin.login');

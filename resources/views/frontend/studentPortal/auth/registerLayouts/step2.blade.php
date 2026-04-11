@@ -51,20 +51,7 @@
     <hr class="border-white opacity-25 my-4">
 
     <h6 class="text-white fw-bold mb-2">Skills & Learning Goals</h6>
-    <div class="mb-3">
-        <label class="small text-white-50 d-block mb-2">Current Skills</label>
-        <div id="currentSkillsContainer" class="d-flex flex-wrap gap-2"
-            style="min-height: 40px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; padding: 5px;">
-        </div>
-    </div>
 
-    <div class="mb-4">
-        <label class="small text-white-50 d-block mb-2">Learning Goals</label>
-        <div id="learningGoalsContainer" class="d-flex flex-wrap gap-2"
-            style="min-height: 40px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; padding: 5px;">
-        </div>
-    </div>
-    <h6 class="text-white fw-bold mb-2">Browse Category</h6>
     <div class="skills-scroll-container mt-3">
         <div class="accordion accordion-flush" id="categoryAccordion">
             @foreach($skillsCategories as $category)
@@ -90,6 +77,22 @@
             @endforeach
         </div>
     </div>
+
+    <div class="mb-3">
+        <label class="small text-white-50 d-block mb-2">Current Skills</label>
+        <div id="currentSkillsContainer" class="d-flex flex-wrap gap-2"
+            style="min-height: 40px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; padding: 5px;">
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label class="small text-white-50 d-block mb-2">Learning Goals</label>
+        <div id="learningGoalsContainer" class="d-flex flex-wrap gap-2"
+            style="min-height: 40px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; padding: 5px;">
+        </div>
+    </div>
+
+
 
     <div class="mt-4">
         <button type="button" class="btn-action w-100 mb-2" onclick="switchStep(3)">Continue</button>

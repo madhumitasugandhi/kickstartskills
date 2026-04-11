@@ -24,7 +24,7 @@
 
             /* ACCENT COLORS (HR PURPLE THEME) */
             --accent-color: #7c3aed; /* Primary Purple */
-            --soft-accent: #f3e8ff;  /* Soft Purple Background */
+            --soft-accent: #e6d7f6;  /* Soft Purple Background */
 
             /* Utility Colors */
             --soft-blue: #e7f1ff; --text-blue: #0d6efd;

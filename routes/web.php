@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GeoController;
 use App\Http\Controllers\ExamController;
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
+
 use App\Http\Controllers\Institution\InstitutionAuthController;
 use App\Http\Controllers\Institution\InstitutionController;
 use App\Http\Controllers\Institution\InstitutionProgramController;
@@ -23,7 +25,6 @@ use App\Http\Controllers\Institution\DriveManagementController;
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ForgotPasswordController;
 use App\Http\Controllers\Admin\AdminQuestionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\DriveApprovalController;
@@ -33,6 +34,7 @@ use App\Http\Controllers\Mentor\MentorDashboardController;
 use App\Http\Controllers\Mentor\MentorSessionController;
 use App\Http\Controllers\Mentor\MentorStudentController;
 use App\Http\Controllers\Mentor\DriveController;
+use App\Http\Controllers\Mentor\MentorProfileController;
 
 
 use App\Http\Controllers\Student\StudentAuthController;
@@ -40,6 +42,9 @@ use App\Http\Controllers\Student\StudentProfileController;
 use App\Http\Controllers\Student\StudentExaminationController;
 use App\Http\Controllers\Student\StudentPaymentController;
 use App\Http\Controllers\Student\StudentDriveController;
+
+use App\Http\Controllers\HR\HRAuthController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -75,6 +80,11 @@ Route::get('/', function () {
     return view('frontend.index');
 });
 
+// Common Password Reset Routes for Admin, Student, Mentor, Institution
+Route::post('/auth/password/send-otp', [ForgotPasswordController::class, 'sendOtp'])->name('auth.password.sendOtp');
+Route::post('/auth/password/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('auth.password.verifyOtp');
+Route::post('/auth/password/update', [ForgotPasswordController::class, 'resetPassword'])->name('auth.password.update');
+
 /*|------------------------------------------------Student Portal Auth--------------------------------------------------|*/
 // Student Login
 Route::get('/student-login', [StudentAuthController::class, 'showLogin'])->name('student.login');
@@ -87,16 +97,10 @@ Route::post('/student-logout', [StudentAuthController::class, 'logout'])->name('
 Route::get('/student/register', [StudentAuthController::class, 'showRegister'])->name('student.register');
 Route::post('/student/register', [StudentAuthController::class, 'register'])->name('student.register.submit');
 
-// Forgot Password
+// Forgot Password - Step Logic (Public)
 Route::get('/student/forgot-password', [StudentAuthController::class, 'showForgotPassword'])->name('student.forgot_password');
 
-/* 1. Student Dashboard (Home) */
-Route::get('/student/dashboard', function () {
-    // Points to: resources/views/frontend/studentPortal/dashboard/dashboardIndex.blade.php
-    return view('frontend.studentPortal.dashboard.dashboardIndex');
-})->name('student.dashboard');
-
-/* 2. Profile Section (Grouped Routes) */
+/* Student Portal (Protected) */
 Route::prefix('student')->middleware(['auth', 'student'])->group(function () {
 
     /* 1. Dashboard */
@@ -407,7 +411,13 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
         });
 
         Route::prefix('academic-structure/programs')->name('academic-structure.programs.')->group(function () {
+        Route::prefix('academic-structure/programs')->name('academic-structure.programs.')->group(function () {
 
+            Route::post('/store', [InstitutionProgramController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [InstitutionProgramController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [InstitutionProgramController::class, 'update'])->name('update');
+            Route::delete('/delete/{id}', [InstitutionProgramController::class, 'destroy'])->name('delete');
+        });
             Route::post('/store', [InstitutionProgramController::class, 'store'])->name('store');
             Route::get('/edit/{id}', [InstitutionProgramController::class, 'edit'])->name('edit');
             Route::post('/update/{id}', [InstitutionProgramController::class, 'update'])->name('update');
@@ -425,6 +435,7 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
       
 
 
+        Route::prefix('internships')->name('internships.')->group(function () {
         Route::prefix('internships')->name('internships.')->group(function () {
 
             /* =============================
@@ -595,9 +606,8 @@ Route::get('/mentor-login', [MentorAuthController::class, 'showLogin'])->name('m
 Route::post('/mentor-login', [MentorAuthController::class, 'login'])->name('mentor.login.submit');
 
 //forgot password
-Route::get('/mentor/forgot-password', function () {
-    return view('frontend.mentorPortal.auth.forgot_password');
-});
+Route::get('/mentor/forgot-password', [MentorAuthController::class, 'showForgotPassword'])->name('mentor.forgot_password');
+
 //register
 Route::get('/mentor/register', function () {
     return view('frontend.mentorPortal.auth.register');
@@ -725,31 +735,28 @@ Route::prefix('mentor')->name('mentor.')->middleware(['auth', 'mentor'])->group(
         return view('frontend.mentorPortal.dashboard.general.notifications');
     })->name('notifications');
 
-    Route::get('/profile', function () {
-        return view('frontend.mentorPortal.dashboard.general.profile');
-    })->name('profile');
+    Route::get('/profile', [MentorProfileController::class, 'index'])->name('profile');
+    Route::post('/profile/update', [MentorProfileController::class, 'update'])->name('profile.update');
 
     Route::get('/settings', function () {
         return view('frontend.mentorPortal.dashboard.general.settings');
     })->name('settings');
+    
 });
 
 /*|------------------------------------------------End Mentor Portal Routes--------------------------------------------------|*/
 
 /*|------------------------------------------------Start HR Portal Routes--------------------------------------------------|*/
+
 //login
-Route::get('/hr-login', function () {
-    return view('frontend.hrPortal.auth.hr_login');
-});
-//forgot password
-Route::get('/hr/forgot-password', function () {
-    return view('frontend.hrPortal.auth.forgot_password');
-});
+Route::get('/hr-login', [HRAuthController::class, 'showLoginForm'])->name('hr.login');
+Route::post('/hr-login', [HRAuthController::class, 'login'])->name('hr.login.submit');
+// HR Forgot Password
+Route::get('/hr/forgot-password', [HRAuthController::class, 'showForgotPassword'])->name('hr.forgot_password');
 //register
-Route::get('/hr/register', function () {
-    return view('frontend.hrPortal.auth.register');
-});
-Route::prefix('hr')->name('hr.')->group(function () {
+
+// Protected HR Portal Routes (Sirf Login ke baad access honge)
+Route::middleware(['is_hr'])->prefix('hr')->name('hr.')->group(function () {
 
     // 1. Dashboard
     Route::get('/dashboard', function () {
@@ -771,7 +778,7 @@ Route::prefix('hr')->name('hr.')->group(function () {
         return view('frontend.hrPortal.dashboard.corporateDrives');
     })->name('drives');
 
-    // 5. Drive Analytics (Matches sidebar: route('hr.analytics'))
+    // 5. Drive Analytics
     Route::get('/drive-analytics', function () {
         return view('frontend.hrPortal.dashboard.driveAnalytics');
     })->name('analytics');
@@ -800,6 +807,9 @@ Route::prefix('hr')->name('hr.')->group(function () {
     Route::get('/settings', function () {
         return view('frontend.hrPortal.dashboard.settings');
     })->name('settings');
+
+    // Logout Route (Recommended to be inside protected group)
+    Route::post('/logout', [HRAuthController::class, 'logout'])->name('logout');
 });
 /*|------------------------------------------------End HR Portal Routes--------------------------------------------------|*/
 
@@ -809,9 +819,7 @@ Route::get('/admin-login', [AuthController::class, 'showLoginForm'])->name('admi
 Route::post('/admin-login', [AuthController::class, 'login'])->name('admin.login.submit');
 
 // Forgot Password Routes
-Route::get('/admin-forgot-password', function () {
-    return view('frontend.adminPortal.auth.forgot_password');
-})->name('admin.forgot.password');
+Route::get('/admin/forgot-password', [AuthController::class, 'showForgotPassword'])->name('admin.forgot_password');
 
 Route::post('/admin/forgot-password/send-otp', [ForgotPasswordController::class, 'sendOtp'])->name('admin.otp.send');
 Route::post('/admin/forgot-password/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('admin.otp.verify');

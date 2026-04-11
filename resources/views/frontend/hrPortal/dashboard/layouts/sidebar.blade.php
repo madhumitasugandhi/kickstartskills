@@ -7,7 +7,7 @@
 
         <div class="d-lg-none --text-muted" id="sidebarCloseBtn" style="cursor: pointer;">
             <i class="bi bi-x-lg border rounded-2 d-flex align-items-center justify-content-center"
-               style="width: 32px; height: 32px; font-size: 16px; margin-top: -5px;"></i>
+                style="width: 32px; height: 32px; font-size: 16px; margin-top: -5px;"></i>
         </div>
     </div>
 
@@ -15,61 +15,61 @@
         <ul class="nav flex-column gap-1">
 
             <a class="nav-link {{ request()->routeIs('hr.dashboard') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('hr.dashboard') }}">
+                href="{{ route('hr.dashboard') }}">
                 <i class="bi bi-house-door fs-5"></i>
                 <span class="nav-label ms-3">Dashboard</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('hr.employees') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('hr.employees') }}">
+                href="{{ route('hr.employees') }}">
                 <i class="bi bi-people fs-5"></i>
                 <span class="nav-label ms-3">Employee Management</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('hr.recruitment') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('hr.recruitment') }}">
+                href="{{ route('hr.recruitment') }}">
                 <i class="bi bi-briefcase fs-5"></i>
                 <span class="nav-label ms-3">Recruitment Pipeline</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('hr.drives') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('hr.drives') }}">
+                href="{{ route('hr.drives') }}">
                 <i class="bi bi-bullseye fs-5"></i>
                 <span class="nav-label ms-3">Corporate Drives</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('hr.analytics') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('hr.analytics') }}">
+                href="{{ route('hr.analytics') }}">
                 <i class="bi bi-graph-up-arrow fs-5"></i>
                 <span class="nav-label ms-3">Drive Analytics</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('hr.performance') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('hr.performance') }}">
+                href="{{ route('hr.performance') }}">
                 <i class="bi bi-star fs-5"></i>
                 <span class="nav-label ms-3">Performance Reviews</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('hr.attendance') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('hr.attendance') }}">
+                href="{{ route('hr.attendance') }}">
                 <i class="bi bi-calendar-check fs-5"></i>
                 <span class="nav-label ms-3">Attendance Management</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('hr.reports') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('hr.reports') }}">
+                href="{{ route('hr.reports') }}">
                 <i class="bi bi-bar-chart-fill fs-5"></i>
                 <span class="nav-label ms-3">HR Analytics</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('hr.notifications') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('hr.notifications') }}">
+                href="{{ route('hr.notifications') }}">
                 <i class="bi bi-bell fs-5"></i>
                 <span class="nav-label ms-3">Notifications</span>
             </a>
 
             <a class="nav-link {{ request()->routeIs('hr.settings') ? 'active' : '' }} d-flex align-items-center"
-               href="{{ route('hr.settings') }}">
+                href="{{ route('hr.settings') }}">
                 <i class="bi bi-gear fs-5"></i>
                 <span class="nav-label ms-3">Settings</span>
             </a>
@@ -78,14 +78,16 @@
     </div>
 
     <div class="user-footer p-2 m-2">
-         <div class="d-flex align-items-center gap-2 p-2 rounded">
-             <div class="avatar rounded-circle bg-soft-orange text-accent d-flex align-items-center justify-content-center flex-shrink-0"
-                  style="width: 36px; height: 36px; font-weight: bold;">HM</div>
+        <div class="d-flex align-items-center gap-2 p-2 rounded" style="background: rgba(255,255,255,0.05);">
+            <div class="avatar rounded-circle  d-flex align-items-center justify-content-center flex-shrink-0"
+                style="background-color: var(--soft-accent); color: var(--accent-color); width: 36px; height: 36px; font-weight: bold; font-size: 0.85rem;">
+                {{ strtoupper(substr(Auth::user()->full_name, 0, 1)) }}
+            </div>
 
-             <div class="user-info flex-grow-1" style="line-height: 1.2;">
-                 <div class="fw-bold small text-main">HR Manager</div>
-                 <div class="text-muted-custom" style="font-size: 0.7rem;">Manager ID: HRM001</div>
-             </div>
-         </div>
+            <div class="user-info flex-grow-1 overflow-hidden" style="line-height: 1.2;">
+                <div class="fw-bold small text-main text-truncate">{{ Auth::user()->full_name }}</div>
+                <div class="text-muted-custom" style="font-size: 0.7rem;">HR Portal Access</div>
+            </div>
+        </div>
     </div>
 </nav>

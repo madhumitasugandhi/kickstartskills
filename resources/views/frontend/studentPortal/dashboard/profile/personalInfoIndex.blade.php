@@ -276,8 +276,8 @@
                     <label class="form-label">Mobile Number</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                        <input type="text" name="phone" class="form-control profile-input" value="{{ $user->phone }}"
-                            placeholder="Enter mobile number" disabled>
+                        <input type="text" name="phone" class="form-control profile-input"
+                            value="{{ $profile->phone ?? '' }}" placeholder="Enter mobile number" disabled>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -285,11 +285,14 @@
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-people"></i></span>
                         <select name="gender" class="form-select profile-input" disabled>
-                            <option value="" disabled {{ is_null($user->gender) ? 'selected' : '' }}>Select Gender
+                            <option value="" disabled {{ is_null($profile->gender ?? null) ? 'selected' : '' }}>Select
+                                Gender</option>
+                            <option value="Male" {{ ($profile->gender ?? '') == 'Male' ? 'selected' : '' }}>Male
                             </option>
-                            <option value="Male" {{ $user->gender == 'Male' ? 'selected' : '' }}>Male</option>
-                            <option value="Female" {{ $user->gender == 'Female' ? 'selected' : '' }}>Female</option>
-                            <option value="Other" {{ $user->gender == 'Other' ? 'selected' : '' }}>Other</option>
+                            <option value="Female" {{ ($profile->gender ?? '') == 'Female' ? 'selected' : '' }}>Female
+                            </option>
+                            <option value="Other" {{ ($profile->gender ?? '') == 'Other' ? 'selected' : '' }}>Other
+                            </option>
                         </select>
                     </div>
                 </div>

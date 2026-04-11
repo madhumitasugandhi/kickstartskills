@@ -327,7 +327,7 @@
         <li></li>
     </ul>
 
-    <a href="{{ url('/student-login') }}" class="nav-btn back-btn"><i class="bi bi-arrow-left"></i></a>
+    <a href="{{ route('student.login')}}" class="nav-btn back-btn"><i class="bi bi-arrow-left"></i></a>
     <button onclick="toggleTheme()" class="nav-btn theme-btn"><i id="theme-icon" class="bi bi-moon"></i></button>
 
     <div class="auth-container">
