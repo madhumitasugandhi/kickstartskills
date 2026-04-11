@@ -11,35 +11,20 @@ How can we reach your institution?
 <!-- COUNTRY + PHONE -->
 <div class="row">
 
-<div class="col-md-6">
+ <div class="col-md-6">
 
 <label class="small text-white opacity-75 ms-1 mb-1">Country</label>
 
 <div class="input-group-custom">
 <i class="bi bi-globe input-icon"></i>
-
-<select id="country" name="country_id" class="custom-input">
-
-<option value="">Select Country</option>
-
-@foreach($countries as $id => $name)
-
-<option value="{{ $id }}"
-{{ (old('country_id', $formData['country_id'] ?? '') == $id) ? 'selected' : '' }}>
-
-{{ $name }}
-
-</option>
-
-@endforeach
-
-</select>
-
+<input type="text" class="custom-input" value="India" disabled>
+<input type="hidden" name="country_id" id="country" value="101">
 </div>
 
 <div class="field-error" id="country-error"></div>
 
-</div>
+</div> 
+
 
 
 <div class="col-md-6">

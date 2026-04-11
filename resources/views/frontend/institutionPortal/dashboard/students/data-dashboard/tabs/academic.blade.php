@@ -1,78 +1,16 @@
-<style>
-    /* ===============================
-   ACADEMIC ANALYTICS (IMAGE MATCH)
-================================ */
+<div class="ui-card ui-analytics-card mb-4">
 
-/* CGPA rows */
-.analytics-row {
-    display: grid;
-    grid-template-columns: 120px 1fr 100px;
-    gap: 16px;
-    align-items: center;
-    margin-bottom: 14px;
-    font-size: 0.8rem;
-}
-
-.analytics-label {
-    color: var(--text-muted);
-}
-
-.analytics-count {
-    text-align: right;
-    color: var(--text-muted);
-}
-
-/* Attendance rows */
-.attendance-row {
-    display: grid;
-    grid-template-columns: 16px 1fr auto;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 12px;
-    font-size: 0.8rem;
-}
-
-.attendance-label {
-    color: var(--text-muted);
-}
-
-.attendance-count {
-    color: var(--text-muted);
-}
-
-/* Dots */
-.dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-}
-
-.dot.success { background: #10b981; }
-.dot.warning { background: #f59e0b; }
-.dot.info    { background: #3b82f6; }
-.dot.danger  { background: #ef4444; }
-
-/* Responsive */
-@media (max-width: 768px) {
-    .analytics-row {
-        grid-template-columns: 1fr;
-        gap: 6px;
-    }
-
-    .analytics-count {
-        text-align: left;
-    }
-}
-
-</style>
-<div class="glass-card analytics-card mb-4">
-
-    <h6 class="fw-semibold mb-4">Academic Performance Overview</h6>
+    <div class="ui-card-header">
+        <div>
+            <div class="ui-card-title">Academic Performance Overview</div>
+            <div class="ui-card-subtitle">CGPA & Attendance Distribution</div>
+        </div>
+    </div>
 
     {{-- ================= CGPA DISTRIBUTION ================= --}}
-    <div class="mb-4">
+    <div class="ui-section">
 
-        <small class="d-block mb-3">CGPA Distribution</small>
+        <div class="ui-section-title">CGPA Distribution</div>
 
         @php
             $cgpa = [
@@ -107,9 +45,9 @@
     </div>
 
     {{-- ================= ATTENDANCE ANALYSIS ================= --}}
-    <div>
+    <div class="ui-section">
 
-        <small class="d-block mb-3">Attendance Analysis</small>
+        <div class="ui-section-title">Attendance Analysis</div>
 
         <div class="attendance-row">
             <span class="dot success"></span>

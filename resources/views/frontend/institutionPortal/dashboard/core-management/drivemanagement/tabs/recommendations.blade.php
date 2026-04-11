@@ -20,7 +20,7 @@ $drives = [
 @endphp
 
 @foreach($drives as $index => $drive)
-<div class="glass-card mb-3 recommendation-card" data-drive="{{ $index }}">
+<div class="ui-section mb-3 recommendation-card" data-drive="{{ $index }}">
 
     <!-- HEADER -->
     <div class="d-flex justify-content-between align-items-start mb-2">

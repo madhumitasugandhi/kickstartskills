@@ -4,191 +4,23 @@
 @section('title', 'Enrollment Management')
 
 @section('content')
-<style>
- 
-/* ===============================
-   ENROLLMENT CARD – FINAL ALIGN
-================================ */
 
-.enrollment-meta {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(140px, 1fr));
-    gap: 18px;
-    margin-top: 6px;
-}
+<div class="content-area">
 
-.meta-item {
-    display: flex;
-    gap: 8px;
-    font-size: 0.75rem;
-}
-
-.meta-item i {
-    color: var(--text-muted);
-    margin-top: 2px;
-}
-
-.meta-item small {
-    color: var(--text-muted);
-    display: block;
-}
-
-.meta-item strong {
-    font-weight: 600;
-    font-size: 0.8rem;
-}
-
-/* Mobile */
-@media (max-width: 992px) {
-    .enrollment-meta {
-        grid-template-columns: repeat(2, 1fr);
-        row-gap: 12px;
-    }
-}
-
-/* ===============================
-   ENROLLMENT – RESPONSIVE SYSTEM
-================================ */
-
-/* DEFAULT (DESKTOP) */
-.enrollment-meta {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(140px, 1fr));
-    gap: 18px;
-    margin-top: 10px;
-}
-
-.meta-item {
-    display: flex;
-    gap: 8px;
-    font-size: 0.75rem;
-}
-
-.meta-item i {
-    color: var(--text-muted);
-    margin-top: 2px;
-}
-
-.meta-item small {
-    color: var(--text-muted);
-    display: block;
-}
-
-.meta-item strong {
-    font-weight: 600;
-    font-size: 0.8rem;
-}
-
-/* ===============================
-   LAPTOP (≤1199px)
-================================ */
-@media (max-width: 1199px) {
-    .enrollment-meta {
-        grid-template-columns: repeat(3, 1fr);
-        row-gap: 14px;
-    }
-}
-
-/* ===============================
-   TABLET (≤992px)
-================================ */
-@media (max-width: 992px) {
-
-    /* Header wraps */
-    .glass-card > .d-flex:first-child {
-        /* flex-direction: column; */
-        gap: 12px;
-    }
-
-    /* Status row moves below name */
-    .glass-card > .d-flex:first-child > .d-flex:last-child {
-        align-self: flex-start;
-    }
-
-    .enrollment-meta {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* ===============================
-   MOBILE (≤768px)
-================================ */
-@media (max-width: 768px) {
-
-    .company-avatar {
-        width: 42px;
-        height: 42px;
-        font-size: 0.9rem;
-    }
-
-    .glass-card {
-        padding: 16px;
-    }
-
-    /* Stack avatar + text */
-    .glass-card > .d-flex:first-child > .d-flex:first-child {
-        align-items: flex-start;
-    }
-
-    .enrollment-meta {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-
-    /* Status pills wrap nicely */
-    .glass-card .status-pill {
-        font-size: 0.7rem;
-        padding: 4px 10px;
-    }
-}
-
-/* ===============================
-   EXTRA SMALL (≤480px)
-================================ */
-@media (max-width: 480px) {
-
-    /* Full stack layout */
-    .glass-card > .d-flex:first-child {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .glass-card > .d-flex:first-child > .d-flex:first-child {
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    /* Status + kebab row */
-    .glass-card > .d-flex:first-child > .d-flex:last-child {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .enrollment-meta {
-        grid-template-columns: 1fr;
-    }
-
-    .meta-item {
-        font-size: 0.78rem;
-    }
-}
-
-</style>
-<div class="container-fluid p-4">
-
-    {{-- ================= HEADER ================= --}}
-    <div class="d-flex justify-content-between align-items-start mb-4">
+    {{-- ================= PAGE HEADER ================= --}}
+    <div class="ui-page-header d-flex justify-content-between align-items-start">
         <div>
             <h5 class="fw-semibold mb-1">Enrollment Management</h5>
-            <p class="small mb-0">
+            <small class="ui-muted">
                 Review and manage student enrollment applications
-            </p>
+            </small>
         </div>
 
         <button class="btn btn-teal btn-sm">
             <i class="bi bi-lightning me-1"></i> Bulk Actions
         </button>
     </div>
+
 
     {{-- ================= STATS ================= --}}
     <div class="row g-3 mb-4">
@@ -205,12 +37,12 @@
 
         @foreach($stats as $stat)
             <div class="col-md-6 col-lg-4">
-                <div class="glass-card d-flex align-items-center gap-3">
-                    <div class="stat-icon {{ $stat['class'] }}">
+                <div class="ui-stats-card">
+                    <div class="stats-icon {{ $stat['class'] }}">
                         <i class="bi {{ $stat['icon'] }}"></i>
                     </div>
                     <div>
-                        <small class="">{{ $stat['label'] }}</small>
+                        <small class="ui-muted">{{ $stat['label'] }}</small>
                         <h6 class="fw-semibold mb-0">{{ $stat['value'] }}</h6>
                     </div>
                 </div>
@@ -219,43 +51,54 @@
 
     </div>
 
+
     {{-- ================= FILTERS ================= --}}
-    <div class="glass-card mb-4">
+    <div class="ui-card mb-4">
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="input-group-custom flex-grow-1 me-3">
-                <i class="bi bi-search"></i>
-                <input class="form-control" placeholder="Search applications...">
-            </div>
-
-            <button class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-arrow-down-up"></i>
-                Sort by Date Applied
-            </button>
+        <div class="ui-card-header">
+            <div class="ui-card-title">Search & Filters</div>
+            <div class="ui-card-subtitle">Filter applications by status, program, or source</div>
         </div>
 
-        <div class="row g-3">
-            <div class="col-md-4">
-                <select class="form-select">
-                    <option>All Status</option>
-                </select>
+        <div class="ui-section">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="input-group-custom flex-grow-1 me-3">
+                    <i class="bi bi-search"></i>
+                    <input class="form-control" placeholder="Search applications...">
+                </div>
+
+                <button class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-down-up"></i>
+                    Sort by Date Applied
+                </button>
             </div>
-            <div class="col-md-4">
-                <select class="form-select">
-                    <option>All Programs</option>
-                </select>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <select class="form-select">
+                        <option>All Status</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select">
+                        <option>All Programs</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select">
+                        <option>All Sources</option>
+                    </select>
+                </div>
             </div>
-            <div class="col-md-4">
-                <select class="form-select">
-                    <option>All Sources</option>
-                </select>
-            </div>
+
         </div>
 
     </div>
 
+
     {{-- ================= APPLICATION LIST ================= --}}
-    <div class="drive-list">
+    <div class="ui-list">
 
         @php
             $apps = [
@@ -290,27 +133,23 @@
         @endphp
 
         @foreach($apps as $app)
-        <div class="glass-card position-relative">
+        <div class="ui-list-item enrollment-card">
 
-{{-- ================= HEADER ROW ================= --}}
-<div class="d-flex align-items-start justify-content-between mb-3">
-
-    {{-- LEFT --}}
-    <div class="d-flex align-items-center gap-3">
-        <div class="company-avatar">
+    <!-- LEFT: Avatar + Name -->
+    <div class="enroll-left">
+        <div class="ui-avatar">
             {{ strtoupper(substr($app['name'],0,1)) }}
         </div>
 
         <div>
             <h6 class="mb-0 fw-semibold">{{ $app['name'] }}</h6>
-            <small class="d-block">{{ $app['email'] }}</small>
+            <small class="ui-muted d-block">{{ $app['email'] }}</small>
             <div class="small">{{ $app['program'] }}</div>
         </div>
     </div>
 
-    {{-- RIGHT (STATUS + KEBAB) --}}
-    <div class="d-flex align-items-center gap-2">
-
+    <!-- STATUS -->
+    <div class="enroll-status">
         <span class="status-pill warning">{{ $app['priority'] }}</span>
         <span class="status-pill info">{{ $app['status'] }}</span>
 
@@ -325,76 +164,30 @@
                 <li class="danger">Reject</li>
             </ul>
         </div>
+    </div>
 
+    <!-- META GRID -->
+    <div class="enroll-meta">
+        <div><small>Applied</small><strong>{{ $app['applied'] }}</strong></div>
+        <div><small>Experience</small><strong>{{ $app['exp'] }}</strong></div>
+        <div><small>Education</small><strong>{{ $app['edu'] }}</strong></div>
+        <div><small>Documents</small><strong>{{ $app['docs'] }}</strong></div>
+        <div><small>Source</small><strong>{{ $app['source'] }}</strong></div>
+        <div><small>Score</small><strong>{{ $app['score'] }}</strong></div>
+    </div>
+
+    <!-- NOTE -->
+    <div class="enroll-note">
+        {{ $app['note'] }}
     </div>
 
 </div>
-
-{{-- ================= META ROW ================= --}}
-<div class="enrollment-meta">
-
-    <div class="meta-item">
-        <i class="bi bi-calendar"></i>
-        <div>
-            <small>Applied</small>
-            <strong>{{ $app['applied'] }}</strong>
-        </div>
-    </div>
-
-    <div class="meta-item">
-        <i class="bi bi-briefcase"></i>
-        <div>
-            <small>Experience</small>
-            <strong>{{ $app['exp'] }}</strong>
-        </div>
-    </div>
-
-    <div class="meta-item">
-        <i class="bi bi-mortarboard"></i>
-        <div>
-            <small>Education</small>
-            <strong>{{ $app['edu'] }}</strong>
-        </div>
-    </div>
-
-    <div class="meta-item">
-        <i class="bi bi-file-earmark"></i>
-        <div>
-            <small>Documents</small>
-            <strong>{{ $app['docs'] }}</strong>
-        </div>
-    </div>
-
-    <div class="meta-item">
-        <i class="bi bi-globe"></i>
-        <div>
-            <small>Source</small>
-            <strong>{{ $app['source'] }}</strong>
-        </div>
-    </div>
-
-    <div class="meta-item">
-        <i class="bi bi-heart"></i>
-        <div>
-            <small>Motivation</small>
-            <strong>{{ $app['score'] }}</strong>
-        </div>
-    </div>
-
-</div>
-
-{{-- ================= NOTE ================= --}}
-<small class="d-block mt-2">
-    {{ $app['note'] }}
-</small>
-
-</div>
-
         @endforeach
 
     </div>
 
 </div>
+
 
 <script>
 document.addEventListener('click', function (e) {
@@ -412,4 +205,5 @@ document.addEventListener('click', function (e) {
     }
 });
 </script>
+
 @endsection

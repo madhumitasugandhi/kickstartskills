@@ -1,44 +1,18 @@
-<style>
-    /* ===============================
-   BACKGROUND ANALYTICS
-================================ */
+<div class="ui-card ui-analytics-card mb-4">
 
-.background-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-    font-size: 0.8rem;
-}
-
-.background-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--text-muted);
-}
-
-.background-count {
-    color: var(--text-muted);
-}
-
-/* Reuse dot colors */
-.dot.success { background: #10b981; }
-.dot.warning { background: #f59e0b; }
-.dot.info    { background: #3b82f6; }
-.dot.danger  { background: #ef4444; }
-
-</style>
-<div class="glass-card analytics-card mb-4">
-
-    <h6 class="fw-semibold mb-4">Student Background Analysis</h6>
+    <div class="ui-card-header">
+        <div>
+            <div class="ui-card-title">Student Background Analysis</div>
+            <div class="ui-card-subtitle">Education, Experience & Location</div>
+        </div>
+    </div>
 
     {{-- ================= EDUCATIONAL BACKGROUND ================= --}}
-    <div class="mb-4">
+    <div class="ui-section">
 
-        <small class="d-block mb-3">
+        <div class="ui-section-title">
             Educational Background Distribution
-        </small>
+        </div>
 
         @php
             $education = [
@@ -65,11 +39,11 @@
     </div>
 
     {{-- ================= WORK EXPERIENCE ================= --}}
-    <div class="mb-4">
+    <div class="ui-section">
 
-        <small class="d-block mb-3">
+        <div class="ui-section-title">
             Work Experience Analysis
-        </small>
+        </div>
 
         @php
             $experience = [
@@ -95,11 +69,11 @@
     </div>
 
     {{-- ================= LOCATION DISTRIBUTION ================= --}}
-    <div>
+    <div class="ui-section">
 
-        <small class="d-block mb-3">
+        <div class="ui-section-title">
             Location Distribution
-        </small>
+        </div>
 
         @php
             $locations = [

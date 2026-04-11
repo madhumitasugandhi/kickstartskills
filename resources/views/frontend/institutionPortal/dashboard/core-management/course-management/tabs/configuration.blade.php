@@ -1,85 +1,80 @@
 <div class="configuration-wrapper">
 
-    <h6 class="fw-semibold mb-4">
-        Global Configuration Settings
-    </h6>
+    <div class="ui-section-title mb-3">
+        GLOBAL CONFIGURATION SETTINGS
+    </div>
 
     <div class="row g-4">
 
-        <!-- LEFT COLUMN -->
+        <!-- LEFT -->
         <div class="col-lg-4">
 
-            <!-- Institution Code -->
-            <div class="config-card mb-4">
-                <h6 class="mb-1">Institution Code Configuration</h6>
-                <p class="small mb-3">
+            <div class="ui-section mb-3">
+                <div class="fw-semibold mb-2">Institution Code Configuration</div>
+                <small class="">
                     Configure how student institution codes are generated
-                </p>
+                </small>
 
-                <div class="code-preview-box mb-3">
+                <div class="ui-preview-box mt-3">
                     <div class="small mb-1">Current Code Format:</div>
                     <div class="fw-medium">
                         INS + [Course Code] + [Year] + [Sequential Number]
                     </div>
-                    <div class="small mt-1">
-                        Examples: INS-BT-2024-001, INS-MT-2024-045
-                    </div>
                 </div>
 
-                <button class="btn btn-success btn-sm w-100">
-                    <i class="bi bi-gear me-1"></i>
+                <button class="btn btn-success btn-sm w-100 mt-3">
                     Configure Code Format
                 </button>
             </div>
 
-            <!-- Common Duration -->
-            <div class="config-card">
-                <h6 class="mb-2">Common Duration Templates</h6>
+            <!-- Duration -->
+            <div class="ui-section">
+                <div class="fw-semibold mb-2">Common Duration Templates</div>
 
-                <div class="duration-chips">
-                    <span class="duration-chip">1 Year</span>
-                    <span class="duration-chip">2 Years</span>
-                    <span class="duration-chip">3 Years</span>
-                    <span class="duration-chip">4 Years</span>
-                    <span class="duration-chip">6 Months</span>
-                    <span class="duration-chip">18 Months</span>
+                <div class="ui-chips">
+                    <span class="ui-chip">1 Year</span>
+                    <span class="ui-chip">2 Years</span>
+                    <span class="ui-chip">3 Years</span>
+                    <span class="ui-chip">4 Years</span>
+                    <span class="ui-chip">6 Months</span>
+                    <span class="ui-chip">18 Months</span>
                 </div>
             </div>
 
         </div>
 
-        <!-- RIGHT COLUMN -->
+        <!-- RIGHT -->
         <div class="col-lg-8">
 
-            <div class="config-card h-100">
+            <div class="ui-section h-100">
 
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex justify-content-between mb-3">
                     <div>
-                        <h6 class="mb-1">Background Requirements Templates</h6>
-                        <p class="small mb-0">
+                        <div class="fw-semibold">Background Requirements Templates</div>
+                        <small class="">
                             Predefined requirement templates for quick course setup
-                        </p>
+                        </small>
                     </div>
 
                     <button class="btn btn-outline-success btn-sm" id="addRequirementBtn">
-    <i class="bi bi-plus-lg"></i>
-</button>
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
                 </div>
 
-                <div class="template-list" id="requirementList">
-    @foreach($requirements as $req)
-        <div class="template-item" data-id="{{ $req->requirement_id }}">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-tag"></i>
-                <span>{{ $req->requirement_name }}</span>
-            </div>
+                <div id="requirementList">
+                    @foreach($requirements as $req)
+                    <div class="ui-list-item template-item" data-id="{{ $req->requirement_id }}">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-tag"></i>
+                            <span>{{ $req->requirement_name }}</span>
+                        </div>
 
-            <button class="icon-btn danger deleteRequirement">
-                <i class="bi bi-trash"></i>
-            </button>
-        </div>
-    @endforeach
-</div>
+                        <button class="icon-btn danger deleteRequirement">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                    @endforeach
+                </div>
 
             </div>
 

@@ -1,14 +1,14 @@
-<div class="glass-card mb-4">
+<div class="ui-section mb-4">
 
-    <!-- ================= SEARCH & FILTER ================= -->
+    <!-- SEARCH & FILTER -->
     <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
 
         <div class="input-group-custom flex-grow-1">
             <i class="bi bi-search"></i>
             <input type="text"
-       id="programSearch"
-       class="form-control ps-5"
-       placeholder="Search programs...">
+                   id="programSearch"
+                   class="form-control ps-5"
+                   placeholder="Search programs...">
         </div>
 
         <button class="btn btn-teal btn-sm" data-bs-toggle="modal" data-bs-target="#createProgramModal">
@@ -18,101 +18,101 @@
     </div>
 
     <!-- FILTER CHIPS -->
-    <div class="chip-container mt-3">
-    <span class="chip-item accreditation-chip active" data-dept="all">
-        <span>All Departments</span>
-    </span>
-
-    @foreach($departments as $dept)
-        <span class="chip-item accreditation-chip" data-dept="{{ $dept->department_id }}">
-            <span>{{ $dept->department_name }}</span>
+    <div class="ui-chips mt-3">
+        <span class="ui-chip accreditation-chip active" data-dept="all">
+            <span>All Departments</span>
         </span>
-    @endforeach
-</div>
 
-</div>
-
-<!-- ================= PROGRAM LIST ================= -->
-<div class="d-flex flex-column gap-3">
-
-    @foreach($programs as $program)
-
-    @php
-    $students = 0;
-    $percent = $program->max_intake > 0 ? round(($students / $program->max_intake) * 100, 1) : 0;
-    @endphp
-
-<div class="configured-item p-4" data-department="{{ $program->department_id }}">
-        <div class="d-flex justify-content-between align-items-start mb-3">
-
-            <div class="d-flex gap-3">
-                <div class="stat-icon info">
-                    <i class="bi bi-book"></i>
-                </div>
-
-                <div>
-                    <h6 class="mb-1">{{ $program->program_name }}</h6>
-                    <small>
-                        {{ $program->department->department_name ?? '' }} •
-                        {{ $program->duration }} •
-                        {{ $program->educationType->education_type_name ?? '' }}
-                    </small></br>
-                    <small>Coordinator : {{ $program->coordinator }}</small>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <button class="icon-btn" data-bs-toggle="dropdown">
-                    <i class="bi bi-three-dots-vertical"></i>
-                </button>
-
-                <ul class="dropdown-menu dropdown-menu-end custom-dropdown">
-                    <li>
-                        <button class="dropdown-item viewProgramBtn"
-                            data-id="{{ $program->program_id }}">
-                            <i class="bi bi-eye me-2"></i> View Details
-                        </button>
-                    </li>
-
-                    <li>
-                        <button class="dropdown-item editProgramBtn"
-                            data-id="{{ $program->program_id }}"
-                            data-name="{{ $program->program_name }}"
-                            data-coordinator="{{ $program->coordinator }}"
-                            data-duration="{{ $program->duration }}"
-                            data-semesters="{{ $program->semesters }}"
-                            data-intake="{{ $program->max_intake }}"
-                            data-department="{{ $program->department_id }}"
-                            data-education="{{ $program->education_type_id }}">
-                            <i class="bi bi-pencil me-2"></i> Edit Program
-                        </button>
-                    </li>
-
-                    <li>
-                        <button class="dropdown-item deleteProgramBtn"
-                            data-id="{{ $program->program_id }}"
-                            data-name="{{ $program->program_name }}">
-                            <i class="bi bi-trash me-2 text-danger"></i> Delete Program
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="meta-row mb-2">
-            <span><i class="bi bi-person-plus"></i> Max Intake {{ $program->max_intake }}</span>
-            <span><i class="bi bi-stack"></i> Semesters {{ $program->semesters }}</span>
-        </div>
-
-        <div class="progress-track">
-            <div class="progress-fill"
-                style="width: {{ min($percent, 100) }}%"></div>
-        </div>
-
+        @foreach($departments as $dept)
+            <span class="ui-chip accreditation-chip" data-dept="{{ $dept->department_id }}">
+                <span>{{ $dept->department_name }}</span>
+            </span>
+        @endforeach
     </div>
 
-    @endforeach
+</div>
 
+<!-- PROGRAM LIST -->
+<div class="d-flex flex-column gap-3">
+
+@foreach($programs as $program)
+
+@php
+$students = 0;
+$percent = $program->max_intake > 0 ? round(($students / $program->max_intake) * 100, 1) : 0;
+@endphp
+
+<div class="ui-card p-4 program-card" data-department="{{ $program->department_id }}">
+
+    <div class="d-flex justify-content-between align-items-start mb-3">
+
+        <div class="d-flex gap-3">
+            <div class="stat-icon info">
+                <i class="bi bi-book"></i>
+            </div>
+
+            <div>
+                <h6 class="mb-1">{{ $program->program_name }}</h6>
+                <small>
+                    {{ $program->department->department_name ?? '' }} •
+                    {{ $program->duration }} •
+                    {{ $program->educationType->education_type_name ?? '' }}
+                </small><br>
+                <small>Coordinator : {{ $program->coordinator }}</small>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="icon-btn" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots-vertical"></i>
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end custom-dropdown">
+                <li>
+                    <button class="dropdown-item viewProgramBtn"
+                        data-id="{{ $program->program_id }}">
+                        <i class="bi bi-eye me-2"></i> View Details
+                    </button>
+                </li>
+
+                <li>
+                    <button class="dropdown-item editProgramBtn"
+                        data-id="{{ $program->program_id }}"
+                        data-name="{{ $program->program_name }}"
+                        data-coordinator="{{ $program->coordinator }}"
+                        data-duration="{{ $program->duration }}"
+                        data-semesters="{{ $program->semesters }}"
+                        data-intake="{{ $program->max_intake }}"
+                        data-department="{{ $program->department_id }}"
+                        data-education="{{ $program->education_type_id }}">
+                        <i class="bi bi-pencil me-2"></i> Edit Program
+                    </button>
+                </li>
+
+                <li>
+                    <button class="dropdown-item deleteProgramBtn"
+                        data-id="{{ $program->program_id }}"
+                        data-name="{{ $program->program_name }}">
+                        <i class="bi bi-trash me-2 text-danger"></i> Delete Program
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="ui-meta mb-2">
+        <span><i class="bi bi-person-plus"></i> Max Intake {{ $program->max_intake }}</span>
+        <span><i class="bi bi-stack"></i> Semesters {{ $program->semesters }}</span>
+    </div>
+
+    <div class="ui-progress">
+        <div class="ui-progress-fill"
+             style="width: {{ min($percent, 100) }}%"></div>
+    </div>
+
+</div>
+
+@endforeach
 </div>
 
 <!-- ================= CREATE PROGRAM MODAL ================= -->
@@ -384,58 +384,54 @@
     </div>
 </div>
 
-<script>
-    // ================= EDIT  =================
-    document.querySelectorAll('.editProgramBtn').forEach(button => {
-        button.addEventListener('click', function() {
 
-            let id = this.dataset.id;
+    <script>
+document.addEventListener('click', function(e) {
 
-            document.getElementById('edit_program_name').value = this.dataset.name;
-            document.getElementById('edit_coordinator').value = this.dataset.coordinator;
-            document.getElementById('edit_duration').value = this.dataset.duration;
-            document.getElementById('edit_semesters').value = this.dataset.semesters;
-            document.getElementById('edit_intake').value = this.dataset.intake;
-            document.getElementById('edit_department').value = this.dataset.department;
-            document.getElementById('edit_education_type').value = this.dataset.education;
+    /* EDIT */
+    let editBtn = e.target.closest('.editProgramBtn');
+    if (editBtn) {
+        let id = editBtn.dataset.id;
 
-            document.getElementById('editProgramForm').action =
-                "/institution/core-management/academic-structure/programs/update/" + id;
+        document.getElementById('edit_program_name').value = editBtn.dataset.name;
+        document.getElementById('edit_coordinator').value = editBtn.dataset.coordinator;
+        document.getElementById('edit_duration').value = editBtn.dataset.duration;
+        document.getElementById('edit_semesters').value = editBtn.dataset.semesters;
+        document.getElementById('edit_intake').value = editBtn.dataset.intake;
+        document.getElementById('edit_department').value = editBtn.dataset.department;
+        document.getElementById('edit_education_type').value = editBtn.dataset.education;
 
-            new bootstrap.Modal(document.getElementById('editProgramModal')).show();
-        });
-    });
+        document.getElementById('editProgramForm').action =
+            "/institution/core-management/academic-structure/programs/update/" + id;
 
-    // ================= VIEW  =================
-    document.querySelectorAll('.viewProgramBtn').forEach(button => {
-        button.addEventListener('click', function() {
+        new bootstrap.Modal(document.getElementById('editProgramModal')).show();
+    }
 
-            let id = this.dataset.id;
+    /* VIEW */
+    let viewBtn = e.target.closest('.viewProgramBtn');
+    if (viewBtn) {
+        let id = viewBtn.dataset.id;
 
-            fetch(`/institution/core-management/academic-structure/programs/edit/${id}`)
-                .then(res => res.json())
-                .then(data => {
+        fetch(`/institution/core-management/academic-structure/programs/edit/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('view_title').innerText = data.program_name;
+                document.getElementById('view_department').innerText = data.department.department_name;
+                document.getElementById('view_education').innerText = data.education_type.education_type_name;
+                document.getElementById('view_duration').innerText = data.duration;
+                document.getElementById('view_coordinator').innerText = data.coordinator;
+                document.getElementById('view_semesters').innerText = data.semesters;
+                document.getElementById('view_intake').innerText = data.max_intake;
 
-                    document.getElementById('view_title').innerText = data.program_name;
-                    document.getElementById('view_department').innerText = data.department.department_name;
-                    document.getElementById('view_education').innerText = data.education_type.education_type_name;
-                    document.getElementById('view_duration').innerText = data.duration;
-                    document.getElementById('view_coordinator').innerText = data.coordinator;
-                    document.getElementById('view_semesters').innerText = data.semesters;
-                    document.getElementById('view_intake').innerText = data.max_intake;
+                new bootstrap.Modal(document.getElementById('viewProgramModal')).show();
+            });
+    }
 
-                    new bootstrap.Modal(document.getElementById('viewProgramModal')).show();
-                });
-        });
-    });
-
-    // ================= DELETE  =================
-
-document.querySelectorAll('.deleteProgramBtn').forEach(button => {
-    button.addEventListener('click', function() {
-
-        let id = this.dataset.id;
-        let name = this.dataset.name;
+    /* DELETE */
+    let deleteBtn = e.target.closest('.deleteProgramBtn');
+    if (deleteBtn) {
+        let id = deleteBtn.dataset.id;
+        let name = deleteBtn.dataset.name;
 
         Swal.fire({
             title: "Delete Program?",
@@ -447,7 +443,6 @@ document.querySelectorAll('.deleteProgramBtn').forEach(button => {
             confirmButtonText: "Yes, Delete"
         }).then((result) => {
             if (result.isConfirmed) {
-
                 let form = document.createElement('form');
                 form.method = 'POST';
                 form.action = "/institution/core-management/academic-structure/programs/delete/" + id;
@@ -468,45 +463,7 @@ document.querySelectorAll('.deleteProgramBtn').forEach(button => {
                 form.submit();
             }
         });
-    });
-});
+    }
 
-document.querySelectorAll('.chip-item').forEach(chip => {
-    chip.addEventListener('click', function() {
-
-        document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('active'));
-        this.classList.add('active');
-
-        let dept = this.dataset.dept;
-        let cards = document.querySelectorAll('.configured-item');
-
-        cards.forEach(card => {
-            if (dept === 'all') {
-                card.style.display = 'block';
-            } else {
-                if (card.dataset.department == dept) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            }
-        });
-    });
-});
-
-// ================= SEARCH  =================
-
-document.getElementById('programSearch').addEventListener('keyup', function() {
-    let value = this.value.toLowerCase();
-
-    document.querySelectorAll('.configured-item').forEach(card => {
-        let text = card.innerText.toLowerCase();
-
-        if (text.includes(value)) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
-    });
 });
 </script>

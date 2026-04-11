@@ -7,68 +7,70 @@
 <div class="container-fluid p-3 p-md-5">
 
     <!-- ================= HEADER ================= -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
-        <div>
-            <h1 class="h3 fw-bold mb-1">Faculty Management</h1>
-            <p class=" mb-0">
-                Manage faculty members, assignments, and performance
-            </p>
+    <div class="ui-page-header d-flex justify-content-between align-items-center">
+    <div class="d-flex gap-3 align-items-center">
+        <div class="ui-icon-box">
+            <i class="bi bi-person-badge"></i>
         </div>
-
-        <button class="btn btn-teal"
-            data-bs-toggle="modal"
-            data-bs-target="#addFacultyModal">
-            <i class="bi bi-person-plus me-2"></i> Add Faculty
-        </button>
+        <div>
+            <h5 class="mb-0">Faculty Management</h5>
+            <small class="ui-muted">Manage faculty members, assignments, and performance</small>
+        </div>
     </div>
 
+    <button class="btn btn-teal"
+        data-bs-toggle="modal"
+        data-bs-target="#addFacultyModal">
+        <i class="bi bi-person-plus me-2"></i> Add Faculty
+    </button>
+</div>
     <!-- ================= STATS ================= -->
     <div class="row g-3 mb-5" id="facultyStats">
     </div>
 
     <!-- ================= FILTERS ================= -->
-    <div class="glass-card p-4 mb-4">
-        <div class="row g-3 align-items-end">
+    <div class="ui-card mb-4">
+    <div class="row g-3 align-items-end">
 
-            <div class="col-12 col-lg-8">
-                <div class="input-group-custom">
-                    <i class="bi bi-search"></i>
-                    <input type="text" id="facultySearch" class="form-control" placeholder="Search faculty">
-                </div>
+        <div class="col-12 col-lg-8">
+            <div class="input-group-custom">
+                <i class="bi bi-search"></i>
+                <input type="text" id="facultySearch" class="form-control" placeholder="Search faculty">
             </div>
-
-            <div class="col-md-4 col-lg-2">
-                <label class="form-label small ">Department</label>
-                <select class="form-select" id="departmentFilter">
-                    <option value="">All Departments</option>
-                    @foreach($departments as $dept)
-                    <option value="{{ $dept->department_id }}">
-                        {{ $dept->department_name }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="col-md-4 col-lg-1">
-                <label class="form-label small ">Status</label>
-                <select class="form-select" id="statusFilter">
-                    <option value="">All Status</option>
-                    <option value="1">Active</option>
-                    <option value="0">On Leave</option>
-                </select>
-            </div>
-
-            <div class="col-md-4 col-lg-1">
-                <label class="form-label small ">Employment</label>
-                <select class="form-select" id="employmentFilter">
-                    <option value="">All Types</option>
-                    <option value="full_time">Full-time</option>
-                    <option value="part_time">Part-time</option>
-                </select>
-            </div>
-
         </div>
+
+        <div class="col-md-4 col-lg-2">
+            <label class="ui-label">Department</label>
+            <select class="form-select" id="departmentFilter">
+                <option value="">All Departments</option>
+                @foreach($departments as $dept)
+                <option value="{{ $dept->department_id }}">
+                    {{ $dept->department_name }}
+                </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="col-md-4 col-lg-1">
+            <label class="ui-label">Status</label>
+            <select class="form-select" id="statusFilter">
+                <option value="">All Status</option>
+                <option value="1">Active</option>
+                <option value="0">On Leave</option>
+            </select>
+        </div>
+
+        <div class="col-md-4 col-lg-1">
+            <label class="ui-label">Employment</label>
+            <select class="form-select" id="employmentFilter">
+                <option value="">All Types</option>
+                <option value="full_time">Full-time</option>
+                <option value="part_time">Part-time</option>
+            </select>
+        </div>
+
     </div>
+</div>
 
     <!-- ================= FACULTY CARD ================= -->
     <div id="facultyList"></div>
@@ -92,67 +94,55 @@
         let courses = '';
         if (faculty.courses) {
             faculty.courses.forEach(course => {
-                courses += `<span class="skill-tag">${course.course_name}</span>`;
+                courses += `<div class="ui-chip">${course.course_name}</div>`;
             });
         }
 
         html += `
-        <div class="glass-card p-4 mb-4">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="avatar-circle">
-                        ${faculty.name.charAt(0)}
-                    </div>
-                    <div>
-                        <h6 class="fw-bold mb-0">${faculty.name}</h6>
-                        <small>${faculty.designation ?? ''}</small>
-                        <div class="small mt-1">
-                            ${faculty.email ?? ''}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="d-flex align-items-center gap-2">
-                    <span class="status-pill active">
-                        ${faculty.employment_type ?? 'Full-time'}
-                    </span>
-
-                    <div class="dropdown">
-                        <button class="icon-btn dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="bi bi-three-dots-vertical"></i>
-                        </button>
-
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item viewFaculty" data-id="${faculty.faculty_id}">View</a></li>
-                            <li><a class="dropdown-item editFaculty" data-id="${faculty.faculty_id}">Edit</a></li>
-                            <li><a class="dropdown-item deleteFaculty" data-id="${faculty.faculty_id}">Delete</a></li>
-                        </ul>
-                    </div>
-                </div>
+<div class="ui-card">
+    <div class="ui-card-header">
+        <div class="d-flex align-items-center gap-3">
+            <div class="ui-avatar">
+                ${faculty.name.charAt(0)}
             </div>
-
-            <div class="row g-4 small">
-                <div class="col-6 col-md-3">
-                    <strong>${faculty.experience ?? 0} years</strong>
-                    <div>Experience</div>
-                </div>
-
-                <div class="col-6 col-md-3">
-                    <strong>${faculty.department?.department_name ?? ''}</strong>
-                    <div>Department</div>
-                </div>
-
-                <div class="col-6 col-md-3">
-                    <strong>${faculty.courses_count}</strong>
-                    <div>Courses Teaching</div>
-                </div>
-            </div>
-
-            <div class="mt-3 d-flex flex-wrap gap-2">
-                ${courses}
+            <div>
+                <div class="ui-card-title">${faculty.name}</div>
+                <div class="ui-card-subtitle">${faculty.designation ?? ''}</div>
+                <div class="ui-muted small">${faculty.email ?? ''}</div>
             </div>
         </div>
-        `;
+
+        <div class="d-flex align-items-center gap-2">
+            <span class="status-pill">
+                ${faculty.employment_type ?? 'Full-time'}
+            </span>
+
+            <div class="dropdown">
+                <button class="icon-btn dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+
+                <ul class="dropdown-menu ui-dropdown">
+                    <li><a class="dropdown-item viewFaculty" data-id="${faculty.faculty_id}">View</a></li>
+                    <li><a class="dropdown-item editFaculty" data-id="${faculty.faculty_id}">Edit</a></li>
+                    <li><a class="dropdown-item deleteFaculty text-danger" data-id="${faculty.faculty_id}">Delete</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui-meta">
+        <div><strong>${faculty.experience ?? 0} yrs</strong> Experience</div>
+        <div><strong>${faculty.department?.department_name ?? ''}</strong> Department</div>
+        <div><strong>${faculty.courses_count}</strong> Courses</div>
+    </div>
+
+    <div class="mt-3 ui-chips">
+        ${courses}
+    </div>
+</div>
+`;
+    
     });
 
     document.getElementById('facultyList').innerHTML = html;
@@ -306,36 +296,55 @@ selectedCourses.forEach(course => {
                 .then(data => {
 
                     let html = `
-        <div class="col-md-3">
-            <div class="glass-card p-4">
-                <p class="small mb-1">Total Faculty</p>
-                <h3>${data.total}</h3>
-            </div>
+<div class="col-md-3">
+    <div class="ui-stats-card">
+        <div class="stats-icon">
+            <i class="bi bi-people"></i>
         </div>
-
-        <div class="col-md-3">
-            <div class="glass-card p-4">
-                <p class="small mb-1">Active Faculty</p>
-                <h3>${data.active}</h3>
-            </div>
+        <div>
+            <h4>${data.total}</h4>
+            <small class="ui-muted">Total Faculty</small>
         </div>
+    </div>
+</div>
 
-        <div class="col-md-3">
-            <div class="glass-card p-4">
-                <p class="small mb-1">Full Time</p>
-                <h3>${data.full_time}</h3>
-            </div>
+<div class="col-md-3">
+    <div class="ui-stats-card">
+        <div class="stats-icon success">
+            <i class="bi bi-person-check"></i>
         </div>
-
-        <div class="col-md-3">
-            <div class="glass-card p-4">
-                <p class="small mb-1">Part Time</p>
-                <h3>${data.part_time}</h3>
-            </div>
+        <div>
+            <h4>${data.active}</h4>
+            <small class="ui-muted">Active Faculty</small>
         </div>
-        `;
+    </div>
+</div>
 
-                    document.getElementById('facultyStats').innerHTML = html;
+<div class="col-md-3">
+    <div class="ui-stats-card">
+        <div class="stats-icon info">
+            <i class="bi bi-briefcase"></i>
+        </div>
+        <div>
+            <h4>${data.full_time}</h4>
+            <small class="ui-muted">Full Time</small>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-3">
+    <div class="ui-stats-card">
+        <div class="stats-icon">
+            <i class="bi bi-clock"></i>
+        </div>
+        <div>
+            <h4>${data.part_time}</h4>
+            <small class="ui-muted">Part Time</small>
+        </div>
+    </div>
+</div>
+`;
+  document.getElementById('facultyStats').innerHTML = html;
                 });
         }
     });

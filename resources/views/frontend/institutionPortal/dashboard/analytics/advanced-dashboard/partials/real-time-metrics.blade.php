@@ -1,69 +1,19 @@
-<style>
-    /* ===============================
-   REAL-TIME METRICS – ADDONS
-================================ */
-
-/* Status dot */
-.dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.dot.success { background: #10b981; }
-.dot.warning { background: #f59e0b; }
-.dot.info    { background: #3b82f6; }
-.dot.danger  { background: #ef4444; }
-
-/* Health circle */
-.health-circle {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    margin: 0 auto;
-    font-size: 0.9rem;
-    border: 4px solid;
-}
-
-.health-circle.success {
-    color: #10b981;
-    border-color: rgba(16,185,129,0.6);
-}
-
-.health-circle.warning {
-    color: #f59e0b;
-    border-color: rgba(245,158,11,0.6);
-}
-
-/* Mobile spacing */
-@media (max-width: 768px) {
-    .health-circle {
-        width: 64px;
-        height: 64px;
-        font-size: 0.85rem;
-    }
-}
-
-</style>
-
 
 {{-- ================= REAL-TIME SYSTEM STATUS ================= --}}
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="ui-page-header d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex gap-3 align-items-center">
+        <div class="ui-icon-box">
+            <i class="bi bi-activity"></i>
+        </div>
+        <div>
+            <h5 class="mb-0">Real-time System Status</h5>
+            <small class="ui-muted">Live system metrics and monitoring</small>
+        </div>
+    </div>
 
-    <h6 class="fw-semibold d-flex align-items-center gap-2">
-        <i class="bi bi-activity text-teal"></i>
-        Real-time System Status
-    </h6>
-
-    <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">
+    <span class="ui-badge">
         ● All Systems Operational
     </span>
-
 </div>
 
 {{-- ================= METRIC CARDS ================= --}}
@@ -82,37 +32,36 @@
         ];
     @endphp
 
-    @foreach($metrics as $metric)
-        <div class="col-lg-3 col-md-6">
-            <div class="glass-card h-100 position-relative">
+@foreach($metrics as $metric)
+    <div class="col-lg-3 col-md-6">
+        <div class="ui-card h-100 position-relative">
 
-                <div class="stat-icon {{ $metric['class'] }}">
-                    <i class="bi {{ $metric['icon'] }}"></i>
-                </div>
-
-                <h5 class="fw-semibold mt-3 mb-1">{{ $metric['value'] }}</h5>
-                <small class="text-muted">{{ $metric['label'] }}</small>
-
-                <span class="position-absolute top-0 end-0 m-3">
-                    <span class="dot {{ $metric['class'] }}"></span>
-                </span>
-
+            <div class="stats-icon {{ $metric['class'] }}">
+                <i class="bi {{ $metric['icon'] }}"></i>
             </div>
-        </div>
-    @endforeach
 
+            <div class="ui-card-title mt-3">{{ $metric['value'] }}</div>
+            <div class="ui-card-subtitle">{{ $metric['label'] }}</div>
+
+            <span class="position-absolute top-0 end-0 m-3">
+                <span class="ui-dot {{ $metric['class'] }}"></span>
+            </span>
+
+        </div>
+    </div>
+@endforeach
 </div>
 
 {{-- ================= SYSTEM HEALTH OVERVIEW ================= --}}
-<div class="glass-card analytics-card">
+<div class="ui-card">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h6 class="fw-semibold d-flex align-items-center gap-2">
-            <i class="bi bi-shield-check text-teal"></i>
-            System Health Overview
-        </h6>
+    <div class="ui-card-header">
+        <div>
+            <div class="ui-card-title">System Health Overview</div>
+            <div class="ui-card-subtitle">Infrastructure health metrics</div>
+        </div>
 
-        <a href="#" class="small text-teal">
+        <a href="#" class="ui-link">
             <i class="bi bi-box-arrow-up-right me-1"></i> View Details
         </a>
     </div>
@@ -128,20 +77,19 @@
             ];
         @endphp
 
-        @foreach($health as $item)
+@foreach($health as $item)
             <div class="col-md-3 col-6">
 
-                <div class="health-circle {{ $item['class'] }}">
+                <div class="ui-health-circle {{ $item['class'] }}">
                     {{ $item['value'] }}%
                 </div>
 
-                <small class="text-muted d-block mt-2">
+                <small class="ui-muted d-block mt-2">
                     {{ $item['label'] }}
                 </small>
 
             </div>
         @endforeach
-
     </div>
 
 </div>

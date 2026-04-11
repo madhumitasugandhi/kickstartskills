@@ -1,119 +1,125 @@
-<div class="setup-step" id="regulatoryStep">
+<div id="regulatoryStep">
 
 <div id="regulatoryData"
      data-session='@json($sessionData["regulatory"] ?? [])'>
 </div>
 
-    <!-- ================= HEADER ================= -->
-    <div class="mb-4">
-        <h6 class="section-title-custom mb-1">Regulatory Information</h6>
-        <p class="small">
-            Provide regulatory compliance and accreditation details
-        </p>
+<!-- HEADER -->
+<div class="mb-3">
+    <div class="ui-section-title">REGULATORY INFORMATION</div>
+    <small class="">
+        Provide regulatory compliance and accreditation details
+    </small>
+</div>
+
+<div class="ui-section">
+
+    <!-- AISHE -->
+    <div class="mb-3">
+        <label class="ui-label">AISHE Code</label>
+        <div class="ui-input-icon">
+            <i class="bi bi-shield"></i>
+            <input type="text"
+                name="aishe_code"
+                value="{{ $sessionData['regulatory']['aishe_code'] ?? $institution->aishe_code }}"
+                class="form-control"
+                placeholder="AISHE Code">
+        </div>
+        <small class="">
+            U for Universities, C for Colleges, S for Standalone
+        </small>
     </div>
 
-    <div class="config-card p-4">
-
-        <!-- AISHE Code -->
-        <div class="mb-4">
-            <label class="form-label-custom">AISHE Code</label>
-            <div class="input-group-custom">
-                <i class="bi bi-shield"></i>
-                <input type="text"
-                    name="aishe_code"
-                    value="{{ $sessionData['regulatory']['aishe_code'] ?? $institution->aishe_code }}"
-                    class="form-control ps-5"
-                    placeholder="AISHE Code">
-            </div>
-            <small class="small">
-                U for Universities, C for Colleges, S for Standalone
-            </small>
+    <!-- AICTE -->
+    <div class="mb-3">
+        <label class="ui-label">AICTE Permanent ID</label>
+        <div class="ui-input-icon">
+            <i class="bi bi-gear"></i>
+            <input type="text"
+                name="aicte_id"
+                class="form-control"
+                value="{{ $sessionData['regulatory']['aicte_id'] ?? $institution->aicte_id }}"
+                placeholder="AICTE ID">
         </div>
-
-        <!-- AICTE ID -->
-        <div class="mb-4">
-            <label class="form-label-custom">AICTE Permanent ID</label>
-            <div class="input-group-custom">
-                <i class="bi bi-gear"></i>
-                <input type="text" name="aicte_id"
-                    class="form-control ps-5"
-                    value="{{ $sessionData['regulatory']['aicte_id'] ?? $institution->aicte_id }}"
-                    placeholder="AICTE ID">
-            </div>
-            <small class="small">
-                Required for technical/engineering institutions
-            </small>
-        </div>
-
-        <!-- UGC Number -->
-        <div class="mb-4">
-            <label class="form-label-custom">UGC Recognition Number</label>
-            <div class="input-group-custom">
-                <i class="bi bi-award"></i>
-                <input type="text"
-                    name="ugc_number"
-                    class="form-control ps-5"
-                    value="{{ $sessionData['regulatory']['ugc_number'] ?? $institution->ugc_number }}"
-                    placeholder="UGC Recognition Number">
-            </div>
-        </div>
-
-        <!-- University Affiliation -->
-        <div class="mb-4">
-            <label class="form-label-custom">University Affiliation</label>
-            <div class="input-group-custom">
-                <i class="bi bi-link-45deg"></i>
-                <input type="text" name="affiliated_university"
-                    class="form-control ps-5"
-                    value="{{ $sessionData['regulatory']['affiliated_university'] ?? $institution->affiliated_university }}"
-                    placeholder="Affiliated University Name">
-            </div>
-        </div>
-
-        <!-- ================= ACCREDITATIONS ================= -->
-        <div class="mb-4">
-            <label class="form-label-custom">Accreditations</label>
-            <small class="d-block mb-2">
-                Select all applicable accreditations
-            </small>
-
-            <div class="chip-container" id="accreditationContainer">
-                @foreach($accreditationBodies as $body)
-                <div class="chip-item accreditation-chip
-    {{ in_array($body->accreditation_body_id, $selectedAccreditations) ? 'active' : '' }}"
-    data-id="{{ $body->accreditation_body_id }}">
-                    {{ $body->body_name }}
-                </div>
-                @endforeach
-            </div>
-            <input type="hidden" name="accreditation_ids" id="accreditation_ids">
-        </div>
-
-        <!-- Selected Accreditations -->
-        <div id="selectedAccreditationsBox" class="mt-3 d-none">
-            <div class="added-box">
-                <div class="fw-semibold mb-1">
-                    Selected Accreditations (<span id="selectedCount">0</span>)
-                </div>
-                <div id="selectedAccreditationsText" class="small"></div>
-            </div>
-        </div>
-
-        <!-- ================= INFO NOTES ================= -->
-        <div class="academic-warning academic-warning--info mt-4">
-            <i class="bi bi-info-circle-fill"></i>
-            <div>
-                <strong>Important Notes</strong>
-                <ul class="mb-0 ps-3 mt-1">
-                    <li>AISHE code is mandatory for all institutions</li>
-                    <li>AICTE ID is required for technical programs</li>
-                    <li>UGC number is required for universities</li>
-                    <li>Verification may take 2–3 business days</li>
-                </ul>
-            </div>
-        </div>
-
+        <small class="">
+            Required for technical/engineering institutions
+        </small>
     </div>
+
+    <!-- UGC -->
+    <div class="mb-3">
+        <label class="ui-label">UGC Recognition Number</label>
+        <div class="ui-input-icon">
+            <i class="bi bi-award"></i>
+            <input type="text"
+                name="ugc_number"
+                class="form-control"
+                value="{{ $sessionData['regulatory']['ugc_number'] ?? $institution->ugc_number }}"
+                placeholder="UGC Recognition Number">
+        </div>
+    </div>
+
+    <!-- University -->
+    <div class="mb-3">
+        <label class="ui-label">University Affiliation</label>
+        <div class="ui-input-icon">
+            <i class="bi bi-link-45deg"></i>
+            <input type="text"
+                name="affiliated_university"
+                class="form-control"
+                value="{{ $sessionData['regulatory']['affiliated_university'] ?? $institution->affiliated_university }}"
+                placeholder="Affiliated University Name">
+        </div>
+    </div>
+
+    <div class="ui-divider"></div>
+
+    <!-- ACCREDITATIONS -->
+    <div class="mb-3">
+        <label class="ui-label">Accreditations</label>
+        <small class=" d-block mb-2">
+            Select all applicable accreditations
+        </small>
+
+        <div class="ui-chips" id="accreditationContainer">
+            @foreach($accreditationBodies as $body)
+            <div class="ui-chip selectable-chip accreditation-chip
+                {{ in_array($body->accreditation_body_id, $selectedAccreditations) ? 'active' : '' }}"
+                data-id="{{ $body->accreditation_body_id }}">
+                {{ $body->body_name }}
+            </div>
+            @endforeach
+        </div>
+
+        <input type="hidden" name="accreditation_ids" id="accreditation_ids">
+    </div>
+
+    <!-- Selected -->
+    <div id="selectedAccreditationsBox" class="mt-3 d-none">
+        <div class="ui-section">
+            <div class="fw-semibold mb-1">
+                Selected Accreditations
+                <span class="ui-badge" id="selectedCount">0</span>
+            </div>
+            <div id="selectedAccreditationsText" class="small "></div>
+        </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="ui-alert mt-3">
+        <i class="bi bi-info-circle-fill"></i>
+        <div>
+            <strong>Important Notes</strong>
+            <ul class="mb-0 mt-1">
+                <li>AISHE code is mandatory for all institutions</li>
+                <li>AICTE ID is required for technical programs</li>
+                <li>UGC number is required for universities</li>
+                <li>Verification may take 2–3 business days</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
 </div>
 
 <script>

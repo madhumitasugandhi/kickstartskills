@@ -367,6 +367,7 @@
         const currentTheme = localStorage.getItem('theme') || 'light';
         updateIcon(currentTheme);
     </script>
+    @stack('scripts')
 </body>
 
 </html>

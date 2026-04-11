@@ -2,77 +2,79 @@
 @section('page_title', 'Course Management')
 @section('title','Course Management')
 
-
 @section('content')
-<div class="container-fluid py-4 course-management">
+<div class="container-fluid py-4">
 
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-start mb-4">
+    <!-- PAGE HEADER -->
+    <div class="ui-page-header d-flex justify-content-between align-items-center mb-4">
         <div>
             <h5 class="fw-semibold mb-1">Course Management</h5>
-            <p class=" small mb-0">
+            <small class="">
                 Configure course types, durations, and student requirements
-            </p>
+            </small>
         </div>
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCourseTypeModal">
+
+        <button class="btn btn-success"
+                data-bs-toggle="modal"
+                data-bs-target="#addCourseTypeModal">
             <i class="bi bi-plus-lg me-1"></i> Add Course Type
         </button>
     </div>
 
+    <!-- STATS -->
     <div class="row g-3 mb-4">
-    <div class="col-md-4">
-        <div class="glass-card d-flex align-items-center gap-3">
-            <div class="stat-icon">
-                <i class="bi bi-grid"></i>
+        <div class="col-md-4">
+            <div class="ui-stats-card">
+                <div class="stats-icon">
+                    <i class="bi bi-grid"></i>
+                </div>
+                <div>
+                    <small>Total Types</small>
+                    <h4>{{ $courseTypes->count() }}</h4>
+                </div>
             </div>
-            <div>
-                <small class="">Total Types</small>
-                <h4 class="mb-0 text-teal">{{ $courseTypes->count() }}</h4>
+        </div>
+
+        <div class="col-md-4">
+            <div class="ui-stats-card">
+                <div class="stats-icon success">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+                <div>
+                    <small>Active Types</small>
+                    <h4>4</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="ui-stats-card">
+                <div class="stats-icon info">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div>
+                    <small>Total Students</small>
+                    <h4>1865</h4>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="glass-card d-flex align-items-center gap-3">
-            <div class="stat-icon success">
-                <i class="bi bi-check-circle"></i>
-            </div>
-            <div>
-                <small class="">Active Types</small>
-                <h4 class="mb-0 text-teal">4</h4>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="glass-card d-flex align-items-center gap-3">
-            <div class="stat-icon info">
-                <i class="bi bi-people"></i>
-            </div>
-            <div>
-                <small class="">Total Students</small>
-                <h4 class="mb-0 text-info">1865</h4>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-    <!-- Tabs -->
-    <div class="course-tabs mb-4 shadow-sm">
-    <button class="tab-btn active" data-tab="course-types">
-            <i class="bi bi-journal-bookmark"></i> Course Types
+    <!-- TABS -->
+    <div class="ui-tabs mb-4">
+        <button class="ui-tab active" data-tab="course-types">
+            <i class="bi bi-journal-bookmark me-1"></i> Course Types
         </button>
-        <button class="tab-btn" data-tab="configuration">
-            <i class="bi bi-gear"></i> Configuration
+        <button class="ui-tab" data-tab="configuration">
+            <i class="bi bi-gear me-1"></i> Configuration
         </button>
-        <button class="tab-btn" data-tab="analytics">
-            <i class="bi bi-bar-chart"></i> Analytics
+        <button class="ui-tab" data-tab="analytics">
+            <i class="bi bi-bar-chart me-1"></i> Analytics
         </button>
     </div>
 
-    <!-- Tab Content -->
-    <div class="course-tab-content">
+    <!-- TAB CONTENT -->
+    <div class="ui-section">
         <div id="course-types" class="tab-pane active">
             @include('frontend.institutionPortal.dashboard.core-management.course-management.tabs.course')
         </div>
@@ -95,32 +97,33 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-    /* ===========================
-       TAB SWITCHING (UNCHANGED)
-    ============================ */
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabPanes = document.querySelectorAll('.tab-pane');
+    /* ==========================================
+   TAB SWITCHING
+========================================== */
+const tabButtons = document.querySelectorAll('.ui-tab');
+const tabPanes = document.querySelectorAll('.tab-pane');
 
-    tabButtons.forEach(btn => {
-        btn.addEventListener('click', function () {
-            tabButtons.forEach(b => b.classList.remove('active'));
-            tabPanes.forEach(p => p.classList.remove('active'));
+function activateTab(tabId) {
+    tabButtons.forEach(b => b.classList.remove('active'));
+    tabPanes.forEach(p => p.classList.remove('active'));
 
-            this.classList.add('active');
-            const target = this.dataset.tab;
-            document.getElementById(target)?.classList.add('active');
-            const pane = document.getElementById(target);
-
-if (pane) {
-    pane.classList.add('active');
+    document.querySelector(`[data-tab="${tabId}"]`)?.classList.add('active');
+    document.getElementById(tabId)?.classList.add('active');
 }
-        });
+
+tabButtons.forEach(btn => {
+    btn.addEventListener('click', function () {
+        activateTab(this.dataset.tab);
     });
+});
+
+/* SET DEFAULT TAB */
+activateTab('course-types');
 
 
-    /* ===========================
+    /* ==========================================
        FLOATING LEGEND INPUTS
-    ============================ */
+    ========================================== */
     const legendMap = [
         "Course Type Name",
         "Duration (Years)",
@@ -152,236 +155,210 @@ if (pane) {
         });
     }
 
-    // 🔥 APPLY ON ADD MODAL OPEN
     const addModal = document.getElementById('addCourseTypeModal');
     addModal?.addEventListener('shown.bs.modal', function () {
         applyFloatingLegends(this);
     });
 
-    // 🔥 APPLY ON EDIT MODAL OPEN
     const editModal = document.getElementById('editCourseTypeModal');
     editModal?.addEventListener('shown.bs.modal', function () {
         applyFloatingLegends(this);
     });
 
-});
 
-// ADD COURSE
-document.getElementById('saveCourseBtn')?.addEventListener('click', function () {
+    /* ==========================================
+       ADD COURSE
+    ========================================== */
+    document.getElementById('saveCourseBtn')?.addEventListener('click', function () {
 
-const modal = document.getElementById('addCourseTypeModal');
+        const modal = document.getElementById('addCourseTypeModal');
 
-let formData = {
-    course_name: modal.querySelector('[name="course_name"]').value,
-    duration_years: modal.querySelector('[name="duration_years"]').value,
-    duration_months: modal.querySelector('[name="duration_months"]').value,
-    code_extension: modal.querySelector('[name="code_extension"]').value,
-};
+        let formData = {
+            course_name: modal.querySelector('[name="course_name"]').value,
+            duration_years: modal.querySelector('[name="duration_years"]').value,
+            duration_months: modal.querySelector('[name="duration_months"]').value,
+            code_extension: modal.querySelector('[name="code_extension"]').value,
+        };
 
-fetch('/institution/core-management/course-types/store', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-    },
-    body: JSON.stringify(formData)
-})
-.then(res => res.json())
-.then(data => {
-    if (data.status) {
-        Swal.fire({
-    icon: 'success',
-    title: 'Course Added',
-    text: data.message,
-    confirmButtonColor: '#16a085',
-    background: '#1e1e2f',
-    color: '#fff',
-    timer: 1800,
-    showConfirmButton: false
-}).then(() => {
-    location.reload();
-});
-    } else {
-        console.log(data);
-        alert('Error adding course');
-    }
-})
-.catch(err => console.log(err));
-});
-// UPDATE COURSE
-document.getElementById('updateCourseBtn')?.addEventListener('click', function () {
-
-let id = this.dataset.id;
-
-let formData = {
-    course_name: document.getElementById('edit_course_name').value,
-    duration_years: document.getElementById('edit_duration_years').value,
-    duration_months: document.getElementById('edit_duration_months').value,
-    code_extension: document.getElementById('edit_code_extension').value,
-};
-
-fetch(`/institution/core-management/course-types/update/${id}`, {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-    },
-    body: JSON.stringify(formData)
-})
-.then(res => res.json())
-.then(data => {
-    if (data.status) {
-        if (data.status) {
-    Swal.fire({
-        icon: 'success',
-        title: 'Course Updated',
-        text: data.message,
-        confirmButtonColor: '#16a085',
-        background: '#1e1e2f',
-        color: '#fff',
-        timer: 1800,
-        showConfirmButton: false
-    }).then(() => {
-        location.reload();
-    });
-}
-    } else {
-        console.log(data.errors);
-    }
-});
-});
-
-
-//Delete course
-document.querySelectorAll('.delete-btn').forEach(btn => {
-    btn.addEventListener('click', function () {
-
-        let id = this.dataset.id;
-
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-    btn.addEventListener('click', function () {
-
-        let id = this.dataset.id;
-
-        Swal.fire({
-            title: 'Delete Course?',
-            text: "This action cannot be undone",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#e74c3c',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Yes, Delete',
-            background: '#1e1e2f',
-            color: '#fff'
-        }).then((result) => {
-
-            if (result.isConfirmed) {
-
-                fetch(`/institution/core-management/course-types/delete/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status) {
-
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Deleted!',
-                            text: data.message,
-                            confirmButtonColor: '#16a085',
-                            background: '#1e1e2f',
-                            color: '#fff',
-                            timer: 1500,
-                            showConfirmButton: false
-                        }).then(() => {
-                            location.reload();
-                        });
-
-                    }
-                });
-
-            }
-        });
-    });
-});
-
-        fetch(`/institution/core-management/course-types/delete/${id}`, {
-            method: 'DELETE',
+        fetch('/institution/core-management/course-types/store', {
+            method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            }
+            },
+            body: JSON.stringify(formData)
         })
         .then(res => res.json())
         .then(data => {
             if (data.status) {
-                alert(data.message);
-                location.reload();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Course Added',
+                    text: data.message,
+                    confirmButtonColor: '#16a085',
+                    background: '#1e1e2f',
+                    color: '#fff',
+                    timer: 1800,
+                    showConfirmButton: false
+                }).then(() => location.reload());
             }
         });
     });
-});
 
-//Add Requirement
-document.getElementById('addRequirementBtn').addEventListener('click', async () => {
 
-    const name = prompt('Enter Requirement Name');
-    if (!name) return;
+    /* ==========================================
+       UPDATE COURSE
+    ========================================== */
+    document.getElementById('updateCourseBtn')?.addEventListener('click', function () {
 
-    const res = await fetch('/institution/core-management/requirements/store', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({ name })
+        let id = this.dataset.id;
+
+        let formData = {
+            course_name: document.getElementById('edit_course_name').value,
+            duration_years: document.getElementById('edit_duration_years').value,
+            duration_months: document.getElementById('edit_duration_months').value,
+            code_extension: document.getElementById('edit_code_extension').value,
+        };
+
+        fetch(`/institution/core-management/course-types/update/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Course Updated',
+                    text: data.message,
+                    confirmButtonColor: '#16a085',
+                    background: '#1e1e2f',
+                    color: '#fff',
+                    timer: 1800,
+                    showConfirmButton: false
+                }).then(() => location.reload());
+            }
+        });
     });
 
-    const data = await res.json();
 
-    if (data.status === 'success') {
+    /* ==========================================
+       DELETE COURSE
+    ========================================== */
+    document.addEventListener('click', function (e) {
 
-        const item = document.createElement('div');
-        item.className = 'template-item';
-        item.setAttribute('data-id', data.data.requirement_id);
+        if (e.target.closest('.delete-btn')) {
 
-        item.innerHTML = `
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-tag"></i>
-                <span>${data.data.requirement_name}</span>
-            </div>
-            <button class="icon-btn danger deleteRequirement">
-                <i class="bi bi-trash"></i>
-            </button>
-        `;
+            let id = e.target.closest('.delete-btn').dataset.id;
 
-        document.getElementById('requirementList').appendChild(item);
-    }
-});
+            Swal.fire({
+                title: 'Delete Course?',
+                text: "This action cannot be undone",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e74c3c',
+                confirmButtonText: 'Yes, Delete'
+            }).then((result) => {
 
-//Delete Requirement
-document.addEventListener('click', async function (e) {
+                if (result.isConfirmed) {
 
-if (e.target.closest('.deleteRequirement')) {
+                    fetch(`/institution/core-management/course-types/delete/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: data.message,
+                                confirmButtonColor: '#16a085',
+                                background: '#1e1e2f',
+                                color: '#fff',
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => location.reload());
+                        }
+                    });
 
-    const item = e.target.closest('.template-item');
-    const id = item.dataset.id;
+                }
+            });
+        }
 
-    if (!confirm('Delete this requirement?')) return;
+    });
 
-    await fetch(`/institution/core-management/requirements/delete/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+
+    /* ==========================================
+       ADD REQUIREMENT
+    ========================================== */
+    document.getElementById('addRequirementBtn')?.addEventListener('click', async () => {
+
+        const name = prompt('Enter Requirement Name');
+        if (!name) return;
+
+        const res = await fetch('/institution/core-management/requirements/store', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ name })
+        });
+
+        const data = await res.json();
+
+        if (data.status === 'success') {
+
+            const item = document.createElement('div');
+            item.className = 'ui-list-item template-item';
+            item.setAttribute('data-id', data.data.requirement_id);
+
+            item.innerHTML = `
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-tag"></i>
+                    <span>${data.data.requirement_name}</span>
+                </div>
+                <button class="icon-btn danger deleteRequirement">
+                    <i class="bi bi-trash"></i>
+                </button>
+            `;
+
+            document.getElementById('requirementList').appendChild(item);
         }
     });
 
-    item.remove();
-}
-});
 
+    /* ==========================================
+       DELETE REQUIREMENT
+    ========================================== */
+    document.addEventListener('click', async function (e) {
+
+        if (e.target.closest('.deleteRequirement')) {
+
+            const item = e.target.closest('.template-item');
+            const id = item.dataset.id;
+
+            if (!confirm('Delete this requirement?')) return;
+
+            await fetch(`/institution/core-management/requirements/delete/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            });
+
+            item.remove();
+        }
+    });
+
+});
 </script>
 
 @endpush

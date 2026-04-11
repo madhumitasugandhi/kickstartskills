@@ -4,15 +4,20 @@
 @section('title', 'Course Catalog')
 
 @section('content')
-<div class="container-fluid p-3 p-md-5">
+<div class="container-fluid py-4">
 
-    <!-- ================= HEADER ================= -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 fw-bold mb-1">Course Catalog Overview</h1>
-            <p class="small  mb-0">
-                Manage courses, visibility, enrollments, and pricing
-            </p>
+    <!-- ================= PAGE HEADER ================= -->
+    <div class="ui-page-header d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center gap-3">
+            <div class="ui-icon-box">
+                <i class="bi bi-book"></i>
+            </div>
+            <div>
+                <h5 class="mb-1">Course Catalog</h5>
+                <small class="ui-muted">
+                    Manage courses, visibility, enrollments, and pricing
+                </small>
+            </div>
         </div>
 
         <button class="btn btn-teal"
@@ -24,104 +29,103 @@
 
 
     <!-- ================= STATS ================= -->
-    <div class="row g-3 mb-1">
-    <div class="row g-3 mb-5">
+    <div class="row g-3 mb-4">
 
-<div class="col-md-3">
-    <div class="stat-card-custom p-4 glass-card">
-        <div class="d-flex align-items-center gap-3">
-            <div class="stat-icon"><i class="bi bi-book"></i></div>
-            <div>
-                <p class="small mb-0">Total Courses</p>
-                <h4 class="mb-0">{{ $totalCourses }}</h4>
+        <div class="col-md-3">
+            <div class="ui-stats-card">
+                <div class="stats-icon">
+                    <i class="bi bi-book"></i>
+                </div>
+                <div>
+                    <h4>{{ $totalCourses }}</h4>
+                    <small>Total Courses</small>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="col-md-3">
-    <div class="stat-card-custom p-4 glass-card">
-        <div class="d-flex align-items-center gap-3">
-            <div class="stat-icon"><i class="bi bi-check-circle"></i></div>
-            <div>
-                <p class="small mb-0">Active Courses</p>
-                <h4 class="mb-0">{{ $activeCourses }}</h4>
+        <div class="col-md-3">
+            <div class="ui-stats-card">
+                <div class="stats-icon success">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+                <div>
+                    <h4>{{ $activeCourses }}</h4>
+                    <small>Active Courses</small>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="col-md-3">
-    <div class="stat-card-custom p-4 glass-card">
-        <div class="d-flex align-items-center gap-3">
-            <div class="stat-icon"><i class="bi bi-x-circle"></i></div>
-            <div>
-                <p class="small mb-0">Inactive Courses</p>
-                <h4 class="mb-0">{{ $inactiveCourses }}</h4>
+        <div class="col-md-3">
+            <div class="ui-stats-card">
+                <div class="stats-icon danger">
+                    <i class="bi bi-x-circle"></i>
+                </div>
+                <div>
+                    <h4>{{ $inactiveCourses }}</h4>
+                    <small>Inactive Courses</small>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
-</div>
 
     </div>
+
 
     <!-- ================= FILTERS ================= -->
-    <div class="glass-card p-4 mb-4">
-    <h6 class="fw-semibold mb-3">Search & Filters</h6>
+    <div class="ui-card mb-4">
+        <div class="ui-card-title mb-3">Search & Filters</div>
 
-    <form method="GET">
-        <div class="row g-3">
+        <form method="GET">
+            <div class="row g-3">
 
-            <div class="col-md-4">
-                <input type="text"
-                       name="search"
-                       class="form-control"
-                       placeholder="Search courses"
-                       value="{{ request('search') }}">
+                <div class="col-md-4">
+                    <div class="input-group-custom">
+                        <i class="bi bi-search"></i>
+                        <input type="text"
+                               name="search"
+                               class="form-control"
+                               placeholder="Search courses"
+                               value="{{ request('search') }}">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <select name="category_id" class="form-select">
+                        <option value="">All Categories</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}"
+                                {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <select name="status" class="form-select">
+                        <option value="">All Status</option>
+                        <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <button class="btn btn-teal w-100">Filter</button>
+                </div>
+
             </div>
-
-            <div class="col-md-3">
-                <select name="category_id" class="form-select">
-                    <option value="">All Categories</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}"
-                            {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                            {{ $category->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="col-md-3">
-                <select name="status" class="form-select">
-                    <option value="">All Status</option>
-                    <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Active</option>
-                    <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Inactive</option>
-                </select>
-            </div>
-
-            <div class="col-md-2">
-                <button class="btn btn-teal w-100">Filter</button>
-            </div>
-
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 
 
     <!-- ================= LIST HEADER ================= -->
     <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="fw-semibold mb-0">
-    Courses ({{ $electives->count() }})
-</h5>
-        <div class="d-flex align-items-center gap-3">
+        <h6 class="mb-0">
+            Courses ({{ $electives->count() }})
+        </h6>
+
+        <div class="d-flex align-items-center gap-2">
             <button class="icon-btn">
                 <i class="bi bi-download"></i>
-            </button>
-            <button class="icon-btn">
-                <i class="bi bi-three-dots-vertical"></i>
             </button>
         </div>
     </div>
@@ -131,10 +135,17 @@
     <div class="row g-3">
         @foreach($electives as $course)
         <div class="col-md-6">
-            <div class="program-card-custom glass-card p-4 h-100">
+            <div class="ui-card h-100">
 
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <h5 class="fw-bold mb-0">{{ $course->elective_title }}</h5>
+                <div class="ui-card-header">
+                    <div>
+                        <div class="ui-card-title">
+                            {{ $course->elective_title }}
+                        </div>
+                        <div class="ui-card-subtitle">
+                            by {{ $course->faculty->name }}
+                        </div>
+                    </div>
 
                     <div class="dropdown">
                         <button class="icon-btn" data-bs-toggle="dropdown">
@@ -148,16 +159,20 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" onclick="editCourse({{ $course->elective_id }})">Edit</a>
+                                <a class="dropdown-item" onclick="editCourse({{ $course->elective_id }})">
+                                    Edit
+                                </a>
                             </li>
                             <li>
-                                <a class="dropdown-item text-danger" onclick="deleteCourse({{ $course->elective_id }})">Delete</a>
+                                <a class="dropdown-item text-danger"
+                                   onclick="deleteCourse({{ $course->elective_id }})">
+                                    Delete
+                                </a>
                             </li>
+                            <li><hr class="dropdown-divider"></li>
                             <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <a class="dropdown-item" onclick="toggleStatus({{ $course->elective_id }})">
+                                <a class="dropdown-item"
+                                   onclick="toggleStatus({{ $course->elective_id }})">
                                     {{ $course->status ? 'Deactivate' : 'Activate' }}
                                 </a>
                             </li>
@@ -165,28 +180,21 @@
                     </div>
                 </div>
 
-                <p class="small mb-2">by {{ $course->faculty->name }}</p>
+                <div class="ui-meta mt-2 mb-2">
+                    <span>{{ $course->category->name ?? '' }}</span>
+                    <span>{{ $course->duration }}</span>
+                    <span>{{ $course->start_date }}</span>
+                </div>
 
-                <div class="d-flex gap-2 mb-3 flex-wrap">
-                    <span class="skill-tag">{{ $course->category->name ?? '' }}</span>
-
+                <div class="d-flex flex-wrap gap-2 mb-2">
                     @foreach($course->skills as $skill)
-                    <span class="skill-tag highlight">
-                        {{ $skill->name }}
-                    </span>
+                        <span class="skill-chip">
+                            {{ $skill->name }}
+                        </span>
                     @endforeach
                 </div>
 
-                <p class="mb-3">{{ $course->description }}</p>
-
-                <div class="row g-2 small mb-3">
-                    <div class="col-6">
-                        <i class="bi bi-clock me-1"></i> {{ $course->duration }}
-                    </div>
-                    <div class="col-6">
-                        <i class="bi bi-calendar me-1"></i> {{ $course->start_date }}
-                    </div>
-                </div>
+                <p class="small mb-3">{{ $course->description }}</p>
 
                 <div class="d-flex justify-content-between align-items-center">
                     <strong class="text-teal">₹{{ $course->price }}</strong>
@@ -208,7 +216,7 @@
 @include('frontend.institutionPortal.dashboard.electives.course-catalog.modals.edit')
 @include('frontend.institutionPortal.dashboard.electives.course-catalog.modals.view')
 
-
 {{-- ================= SCRIPTS ================= --}}
 @include('frontend.institutionPortal.dashboard.electives.course-catalog.scripts')
+
 @endsection

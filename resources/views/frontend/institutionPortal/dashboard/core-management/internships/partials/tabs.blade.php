@@ -8,12 +8,12 @@ $tabs = [
 ];
 @endphp
 
-<div class="glass-card mb-4">
-    <div class="d-flex gap-3 flex-wrap">
+<div class="ui-card">
+    <div class="ui-tabs">
         @foreach($tabs as $key => $tabItem)
             <a href="{{ route('institution.core.internships.index', $key) }}"
-               class="tab-btn {{ $tab === $key ? 'active' : '' }}">
-                <i class="bi {{ $tabItem['icon'] }}"></i>
+               class="ui-tab {{ $tab === $key ? 'active' : '' }}">
+                <i class="bi {{ $tabItem['icon'] }} me-1"></i>
                 {{ $tabItem['label'] }}
             </a>
         @endforeach

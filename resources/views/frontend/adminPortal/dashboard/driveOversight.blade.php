@@ -16,48 +16,108 @@
         padding: 20px;
         height: 100%;
         position: relative;
-        display: flex; flex-direction: column; justify-content: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
-    .drive-stat-icon { font-size: 1.2rem; margin-bottom: 8px; display: block; }
-    .drive-stat-value { font-size: 1.6rem; font-weight: 700; color: var(--text-main); margin-bottom: 0; }
+    .drive-stat-icon {
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .drive-stat-value {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 0;
+    }
+
     .drive-stat-badge {
-        position: absolute; top: 20px; right: 20px;
-        font-size: 0.75rem; padding: 2px 8px; border-radius: 6px; font-weight: 600;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 0.75rem;
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-weight: 600;
     }
 
     /* Main Tabs Navigation */
     .drive-tabs {
         border-bottom: 1px solid var(--border-color);
         margin-bottom: 24px;
-        display: flex; gap: 32px;
-        overflow-x: auto; white-space: nowrap;
+        display: flex;
+        gap: 32px;
+        overflow-x: auto;
+        white-space: nowrap;
     }
-    .drive-tabs::-webkit-scrollbar { height: 0px; background: transparent; }
+
+    .drive-tabs::-webkit-scrollbar {
+        height: 0px;
+        background: transparent;
+    }
 
     .drive-tab-link {
-        background: none; border: none; color: var(--text-muted);
-        padding: 12px 0; font-weight: 500; position: relative; cursor: pointer; transition: color 0.2s;
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        padding: 12px 0;
+        font-weight: 500;
+        position: relative;
+        cursor: pointer;
+        transition: color 0.2s;
     }
-    .drive-tab-link:hover { color: var(--text-main); }
-    .drive-tab-link.active { color: #ef4444; } /* Red accent */
+
+    .drive-tab-link:hover {
+        color: var(--text-main);
+    }
+
+    .drive-tab-link.active {
+        color: #ef4444;
+    }
+
+    /* Red accent */
     .drive-tab-link.active::after {
-        content: ''; position: absolute; bottom: -1px; left: 0; width: 100%;
-        height: 2px; background-color: #ef4444;
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #ef4444;
     }
 
     /* Nested Analytics Tabs */
     .nested-tabs {
-        display: flex; gap: 16px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color);
-        overflow-x: auto; white-space: nowrap;
+        display: flex;
+        gap: 16px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--border-color);
+        overflow-x: auto;
+        white-space: nowrap;
     }
+
     .nested-tab-link {
-        background: none; border: none; color: var(--text-muted);
-        padding: 8px 12px; font-size: 0.8rem; cursor: pointer;
-        border-bottom: 2px solid transparent; transition: 0.2s;
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: 0.2s;
     }
-    .nested-tab-link:hover { color: var(--text-main); }
-    .nested-tab-link.active { color: #ef4444; border-bottom-color: #ef4444; }
+
+    .nested-tab-link:hover {
+        color: var(--text-main);
+    }
+
+    .nested-tab-link.active {
+        color: #ef4444;
+        border-bottom-color: #ef4444;
+    }
 
     /* Cards & Lists */
     .content-card {
@@ -69,42 +129,161 @@
     }
 
     .approval-card {
-        background-color: var(--bg-card); border: 1px solid var(--border-color);
-        border-radius: 12px; padding: 20px; margin-bottom: 16px;
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 16px;
         border-left: 4px solid var(--border-color);
     }
-    .border-urgent { border-left-color: #ef4444; }
-    .border-high { border-left-color: #f59e0b; }
+
+    .border-urgent {
+        border-left-color: #ef4444;
+    }
+
+    .border-high {
+        border-left-color: #f59e0b;
+    }
 
     /* Tags & Badges */
-    .tag-badge { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; display: inline-block; margin-right: 6px; }
-    .tag-company { background-color: rgba(16, 185, 129, 0.1); color: #10b981; }
-    .tag-urgent { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; }
-    .tag-mentor { background-color: rgba(59, 130, 246, 0.1); color: #3b82f6; }
-    .tag-high { background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+    .tag-badge {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 4px 8px;
+        border-radius: 4px;
+        display: inline-block;
+        margin-right: 6px;
+    }
+
+    .tag-company {
+        background-color: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+    }
+
+    .tag-urgent {
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+    }
+
+    .tag-mentor {
+        background-color: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+    }
+
+    .tag-high {
+        background-color: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+    }
 
     /* Action Buttons */
-    .btn-card-action { width: 100%; padding: 8px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; border: none; transition: 0.2s; }
-    .btn-approve { background-color: #10b981; color: white; }
-    .btn-reject { background-color: #ef4444; color: white; }
-    .btn-view { background-color: transparent; border: 1px solid var(--border-color); color: var(--text-muted); }
+    .btn-card-action {
+        width: 100%;
+        padding: 8px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        border: none;
+        transition: 0.2s;
+    }
+
+    .btn-approve {
+        background-color: #10b981;
+        color: white;
+    }
+
+    .btn-reject {
+        background-color: #ef4444;
+        color: white;
+    }
+
+    .btn-view {
+        background-color: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+    }
 
     /* Progress Bars */
-    .progress-thin { height: 4px; background-color: var(--bg-body); border-radius: 2px; margin-top: 4px; }
-    .skill-row { margin-bottom: 16px; }
+    .progress-thin {
+        height: 4px;
+        background-color: var(--bg-body);
+        border-radius: 2px;
+        margin-top: 4px;
+    }
+
+    .skill-row {
+        margin-bottom: 16px;
+    }
 
     /* Sidebar Widgets */
     .widget-card {
-        background-color: var(--bg-card); border: 1px solid var(--border-color);
-        border-radius: 12px; padding: 20px; margin-bottom: 24px;
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 24px;
     }
-    .alert-box-side { padding: 12px; border-radius: 8px; margin-bottom: 12px; border: 1px solid transparent; }
-    .alert-high { background-color: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); }
-    .alert-warn { background-color: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.2); }
-    .alert-info { background-color: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.2); }
+
+    .alert-box-side {
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        border: 1px solid transparent;
+    }
+
+    .alert-high {
+        background-color: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.2);
+    }
+
+    .alert-warn {
+        background-color: rgba(245, 158, 11, 0.1);
+        border-color: rgba(245, 158, 11, 0.2);
+    }
+
+    .alert-info {
+        background-color: rgba(59, 130, 246, 0.1);
+        border-color: rgba(59, 130, 246, 0.2);
+    }
 
     /* Form Elements */
-    .search-input-drive { background-color: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main); padding: 10px 16px; border-radius: 8px; width: 100%; }
+    .search-input-drive {
+        background-color: var(--bg-body);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        padding: 10px 16px;
+        border-radius: 8px;
+        width: 100%;
+    }
+    .border-success {
+    border-left-color: #10b981;
+}
+/* Glass Modal Theme */
+.glass-modal {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-main);
+}
+
+.glass-modal .modal-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.glass-modal .modal-footer {
+    border-top: 1px solid var(--border-color);
+}
+
+.modal-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+}
+
+.modal-value {
+    font-weight: 600;
+    color: var(--text-main);
+}
 </style>
 
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
@@ -121,30 +300,33 @@
 <div class="row g-4 mb-4">
     <div class="col-6 col-xl-3">
         <div class="drive-stat-card">
-            <i class="bi bi-graph-up-arrow drive-stat-icon text-danger"></i>
-            <span class="drive-stat-badge" style="background: rgba(16,185,129,0.1); color: #10b981;">+12%</span>
-            <h3 class="drive-stat-value">1,247</h3>
+            <i class="bi bi-hdd-network drive-stat-icon text-danger"></i>
+            <h3 class="drive-stat-value">{{ $total }}</h3>
+            <small class="--text-muted">Total Drives</small>
         </div>
     </div>
+
     <div class="col-6 col-xl-3">
         <div class="drive-stat-card">
-            <i class="bi bi-people drive-stat-icon text-danger"></i>
-            <span class="drive-stat-badge" style="background: rgba(16,185,129,0.1); color: #10b981;">+8%</span>
-            <h3 class="drive-stat-value">18,392</h3>
+            <i class="bi bi-person-workspace drive-stat-icon text-danger"></i>
+            <h3 class="drive-stat-value">{{ $mentorDrives }}</h3>
+            <small class="--text-muted">Mentor Drives</small>
         </div>
     </div>
+
     <div class="col-6 col-xl-3">
         <div class="drive-stat-card">
-            <i class="bi bi-award drive-stat-icon text-danger"></i>
-            <span class="drive-stat-badge" style="background: rgba(16,185,129,0.1); color: #10b981;">+2.1%</span>
-            <h3 class="drive-stat-value">76.3%</h3>
+            <i class="bi bi-check-circle drive-stat-icon text-danger"></i>
+            <h3 class="drive-stat-value">{{ $approvedCount }}</h3>
+            <small class="--text-muted">Approved Drives</small>
         </div>
     </div>
+
     <div class="col-6 col-xl-3">
         <div class="drive-stat-card">
-            <i class="bi bi-currency-dollar drive-stat-icon text-danger"></i>
-            <span class="drive-stat-badge" style="background: rgba(16,185,129,0.1); color: #10b981;">+15%</span>
-            <h3 class="drive-stat-value">₹2.4Cr</h3>
+            <i class="bi bi-broadcast drive-stat-icon text-danger"></i>
+            <h3 class="drive-stat-value">{{ $activeDrives }}</h3>
+            <small class="--text-muted">Live Drives</small>
         </div>
     </div>
 </div>
@@ -160,64 +342,153 @@
         </div>
 
         <div id="main-tab-approval" class="main-content-block">
-            <div class="d-flex flex-column flex-md-row gap-3 mb-4">
-                <div class="position-relative flex-grow-1">
-                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 --text-muted"></i>
-                    <input type="text" class="search-input-drive ps-5" placeholder="Search drives, companies, or submitters...">
-                </div>
-                <div class="d-flex gap-2">
-                    <select class="form-select w-auto bg-body border-secondary text-main">
-                        <option>All Drives</option>
-                        <option>Pending</option>
-                    </select>
-                    <button class="btn btn-danger text-white fw-bold text-nowrap"><i class="bi bi-check-all me-1"></i> Bulk Approve</button>
-                </div>
-            </div>
 
+            <!-- Search & Filter -->
+            <form method="GET" action="{{ route('admin.drives.index') }}">
+                <div class="d-flex flex-column flex-md-row gap-3 mb-4">
+                    <div class="position-relative flex-grow-1">
+                        <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 --text-muted"></i>
+                        <input type="text" name="search"
+                            value="{{ request('search') }}"
+                            class="search-input-drive ps-5"
+                            placeholder="Search drives...">
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <select name="status" class="form-select w-auto bg-body border-secondary text-main"
+                            onchange="this.form.submit()">
+                            <option value="">All Drives</option>
+                            <option value="pending" {{ request('status')=='pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="approved" {{ request('status')=='approved' ? 'selected' : '' }}>Approved</option>
+                            <option value="rejected" {{ request('status')=='rejected' ? 'selected' : '' }}>Rejected</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Pending Header -->
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="fw-bold text-main m-0"><i class="bi bi-clock-history me-2 text-danger"></i> Pending Approvals (3)</h6>
-                <span class="badge bg-soft-red text-danger">1 Urgent</span>
+                <h6 class="fw-bold text-main m-0">
+                    <i class="bi bi-clock-history me-2 text-danger"></i>
+                    Drives ({{ $drives->count() }})
+                </h6>
             </div>
 
-            <div class="approval-card border-urgent">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <div>
-                        <span class="tag-badge tag-company">COMPANY DRIVE</span>
-                        <span class="tag-badge tag-urgent">URGENT</span>
-                    </div>
-                    <small class="--text-muted">8h ago</small>
-                </div>
-                <h5 class="fw-bold text-main mb-1">Full-Stack Development Position</h5>
-                <p class="--text-muted small mb-2">StartupHub Incubator • Submitted by Mike Wilson</p>
-                <div class="mb-3">
-                    <span class="badge bg-warning text-dark" style="font-size: 0.65rem;">Requires additional verification</span>
-                </div>
-                <div class="row g-2">
-                    <div class="col-4"><button class="btn-card-action btn-view"><i class="bi bi-eye me-1"></i> Details</button></div>
-                    <div class="col-4"><button class="btn-card-action btn-approve"><i class="bi bi-check-lg me-1"></i> Approve</button></div>
-                    <div class="col-4"><button class="btn-card-action btn-reject"><i class="bi bi-x-lg me-1"></i> Reject</button></div>
-                </div>
+            <!-- Pending Drives -->
+            @if($drives->count() > 0)
+
+@foreach($drives as $drive)
+
+<div class="approval-card 
+    {{ $drive->status == 1 ? 'border-high' : '' }}
+    {{ $drive->status == 2 ? 'border-success' : '' }}
+    {{ $drive->status == 3 ? 'border-urgent' : '' }}">
+
+    <div class="d-flex justify-content-between align-items-start mb-2">
+        <div>
+            <span class="tag-badge tag-mentor">MENTOR DRIVE</span>
+
+            @if($drive->status == 1)
+                <span class="badge bg-warning">Pending Approval</span>
+            @elseif($drive->status == 2)
+                <span class="badge bg-success">Approved / Live</span>
+            @elseif($drive->status == 3)
+                <span class="badge bg-danger">Rejected</span>
+            @endif
+        </div>
+
+        <small>{{ $drive->created_at->diffForHumans() }}</small>
+    </div>
+
+    <h5 class="fw-bold text-main mb-1">{{ $drive->drive_title }}</h5>
+    <p class="small mb-2">
+        {{ $drive->location }} • {{ $drive->drive_type }} • {{ $drive->positions }} Positions
+    </p>
+
+    <div class="row g-2 mt-3">
+
+        <!-- View Button -->
+        <div class="col-4">
+            <button class="btn-card-action btn-view"
+                onclick="viewDrive({{ $drive->drive_id }})">
+                Details
+            </button>
+        </div>
+
+        <!-- Pending Buttons -->
+        @if($drive->status == 1)
+            <div class="col-4">
+                <button class="btn-card-action btn-approve"
+                    onclick="approveDrive({{ $drive->drive_id }})">
+                    Approve
+                </button>
             </div>
 
-            <div class="approval-card border-high">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <div>
-                        <span class="tag-badge tag-mentor">MENTOR DRIVE</span>
-                        <span class="tag-badge tag-high">HIGH</span>
-                    </div>
-                    <small class="--text-muted">2h ago</small>
-                </div>
-                <h5 class="fw-bold text-main mb-1">Senior Flutter Developer Internship</h5>
-                <p class="--text-muted small mb-2">TechCorp Solutions • Submitted by John Smith</p>
-                <div class="mb-3">
-                    <span class="badge bg-warning text-dark" style="font-size: 0.65rem;">Missing background verification</span>
-                </div>
-                <div class="row g-2 mt-3">
-                    <div class="col-4"><button class="btn-card-action btn-view"><i class="bi bi-eye me-1"></i> Details</button></div>
-                    <div class="col-4"><button class="btn-card-action btn-approve"><i class="bi bi-check-lg me-1"></i> Approve</button></div>
-                    <div class="col-4"><button class="btn-card-action btn-reject"><i class="bi bi-x-lg me-1"></i> Reject</button></div>
+            <div class="col-4">
+                <button class="btn-card-action btn-reject"
+                    onclick="rejectDrive({{ $drive->drive_id }})">
+                    Reject
+                </button>
+            </div>
+        @endif
+
+        <!-- Approved -->
+        @if($drive->status == 2)
+            <div class="col-8">
+                <div class="btn-card-action" style="background:#10b98120; color:#10b981;">
+                    Drive Approved & Live
                 </div>
             </div>
+        @endif
+
+        <!-- Rejected -->
+        @if($drive->status == 3)
+            <div class="col-8">
+                <div class="btn-card-action" style="background:#ef444420; color:#ef4444;">
+                    Drive Rejected
+                </div>
+            </div>
+        @endif
+
+    </div>
+
+</div>
+
+@endforeach
+
+@else
+
+    @if(request('status') == 'pending')
+        <div class="content-card text-center py-5">
+            <i class="bi bi-clock-history fs-1 text-warning mb-3"></i>
+            <h5 class="fw-bold">No Pending Drives</h5>
+            <p class="--text-muted">All drives are approved or rejected.</p>
+        </div>
+
+    @elseif(request('status') == 'approved')
+        <div class="content-card text-center py-5">
+            <i class="bi bi-check-circle fs-1 text-success mb-3"></i>
+            <h5 class="fw-bold">No Approved Drives</h5>
+            <p class="--text-muted">No drives have been approved yet.</p>
+        </div>
+
+    @elseif(request('status') == 'rejected')
+        <div class="content-card text-center py-5">
+            <i class="bi bi-x-circle fs-1 text-danger mb-3"></i>
+            <h5 class="fw-bold">No Rejected Drives</h5>
+            <p class="--text-muted">No drives have been rejected.</p>
+        </div>
+
+    @else
+        <div class="content-card text-center py-5">
+            <i class="bi bi-folder fs-1 text-secondary mb-3"></i>
+            <h5 class="fw-bold">No Drives Found</h5>
+            <p class="--text-muted">No drives available in the system.</p>
+        </div>
+    @endif
+
+@endif
+
         </div>
 
         <div id="main-tab-analytics" class="main-content-block d-none">
@@ -284,7 +555,9 @@
                             <span class="text-main fw-bold">Flutter</span>
                             <span class="text-success small"><i class="bi bi-arrow-up"></i> +32.4%</span>
                         </div>
-                        <div class="progress" style="height: 6px;"><div class="progress-bar bg-success" style="width: 85%"></div></div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-success" style="width: 85%"></div>
+                        </div>
                         <small class="--text-muted" style="font-size: 0.7rem;">156 drives requiring this skill</small>
                     </div>
 
@@ -293,7 +566,9 @@
                             <span class="text-main fw-bold">AI/ML</span>
                             <span class="text-success small"><i class="bi bi-arrow-up"></i> +28.7%</span>
                         </div>
-                        <div class="progress" style="height: 6px;"><div class="progress-bar bg-success" style="width: 75%"></div></div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-success" style="width: 75%"></div>
+                        </div>
                         <small class="--text-muted" style="font-size: 0.7rem;">134 drives requiring this skill</small>
                     </div>
 
@@ -302,7 +577,9 @@
                             <span class="text-main fw-bold">React Native</span>
                             <span class="text-success small"><i class="bi bi-arrow-up"></i> +18.5%</span>
                         </div>
-                        <div class="progress" style="height: 6px;"><div class="progress-bar bg-success" style="width: 60%"></div></div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-success" style="width: 60%"></div>
+                        </div>
                         <small class="--text-muted" style="font-size: 0.7rem;">98 drives requiring this skill</small>
                     </div>
                 </div>
@@ -348,9 +625,15 @@
                             <div class="text-warning small"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
                         </div>
                         <div class="d-flex justify-content-between mt-2 text-center">
-                            <div><div class="text-danger fw-bold">45</div><small class="--text-muted" style="font-size: 0.7rem;">Active Drives</small></div>
-                            <div><div class="text-danger fw-bold">234</div><small class="--text-muted" style="font-size: 0.7rem;">Total Hires</small></div>
-                            <div><div class="text-danger fw-bold">78.5%</div><small class="--text-muted" style="font-size: 0.7rem;">Success Rate</small></div>
+                            <div>
+                                <div class="text-danger fw-bold">45</div><small class="--text-muted" style="font-size: 0.7rem;">Active Drives</small>
+                            </div>
+                            <div>
+                                <div class="text-danger fw-bold">234</div><small class="--text-muted" style="font-size: 0.7rem;">Total Hires</small>
+                            </div>
+                            <div>
+                                <div class="text-danger fw-bold">78.5%</div><small class="--text-muted" style="font-size: 0.7rem;">Success Rate</small>
+                            </div>
                         </div>
                     </div>
 
@@ -360,9 +643,15 @@
                             <div class="text-warning small"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
                         </div>
                         <div class="d-flex justify-content-between mt-2 text-center">
-                            <div><div class="text-danger fw-bold">32</div><small class="--text-muted" style="font-size: 0.7rem;">Active Drives</small></div>
-                            <div><div class="text-danger fw-bold">167</div><small class="--text-muted" style="font-size: 0.7rem;">Total Hires</small></div>
-                            <div><div class="text-danger fw-bold">82.1%</div><small class="--text-muted" style="font-size: 0.7rem;">Success Rate</small></div>
+                            <div>
+                                <div class="text-danger fw-bold">32</div><small class="--text-muted" style="font-size: 0.7rem;">Active Drives</small>
+                            </div>
+                            <div>
+                                <div class="text-danger fw-bold">167</div><small class="--text-muted" style="font-size: 0.7rem;">Total Hires</small>
+                            </div>
+                            <div>
+                                <div class="text-danger fw-bold">82.1%</div><small class="--text-muted" style="font-size: 0.7rem;">Success Rate</small>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -372,7 +661,9 @@
         <div id="main-tab-companies" class="main-content-block d-none">
             <div class="d-flex gap-3 mb-4">
                 <input type="text" class="search-input-drive" placeholder="Search companies...">
-                <select class="form-select w-auto bg-body border-secondary text-main"><option>All Organizations</option></select>
+                <select class="form-select w-auto bg-body border-secondary text-main">
+                    <option>All Organizations</option>
+                </select>
             </div>
 
             <div class="content-card">
@@ -441,14 +732,20 @@
     <div class="col-12 col-lg-4">
         <div class="widget-card">
             <h6 class="fw-bold text-main mb-4"><i class="bi bi-pie-chart me-2 text-danger"></i> Platform Distribution</h6>
-            <div class="dist-label"><span>Mentor Drives</span> <span class="text-danger">453</span></div>
-            <div class="progress progress-thin mb-3"><div class="progress-bar bg-danger" style="width: 45%"></div></div>
+            <div class="dist-label"><span>Mentor Drives</span> <span class="text-danger">{{ $mentorDrives }}</span></div>
+            <div class="progress progress-thin mb-3">
+                <div class="progress-bar bg-danger" style="width: 45%"></div>
+            </div>
 
             <div class="dist-label"><span>HR Drives</span> <span class="text-danger">672</span></div>
-            <div class="progress progress-thin mb-3"><div class="progress-bar bg-danger" style="width: 65%"></div></div>
+            <div class="progress progress-thin mb-3">
+                <div class="progress-bar bg-danger" style="width: 65%"></div>
+            </div>
 
             <div class="dist-label"><span>Company Drives</span> <span class="text-danger">322</span></div>
-            <div class="progress progress-thin mb-3"><div class="progress-bar bg-danger" style="width: 30%"></div></div>
+            <div class="progress progress-thin mb-3">
+                <div class="progress-bar bg-danger" style="width: 30%"></div>
+            </div>
         </div>
 
         <div class="widget-card">
@@ -463,6 +760,68 @@
             </div>
         </div>
     </div>
+
+<!-- Drive Details Modal -->
+<div class="modal fade" id="driveDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content glass-modal">
+
+            <div class="modal-header">
+                <h6 class="modal-title">Drive Details</h6>
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="modal-label">Drive Title</div>
+                        <div class="modal-value" id="modal_drive_title"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="modal-label">Drive Type</div>
+                        <div class="modal-value" id="modal_drive_type"></div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="modal-label">Location</div>
+                        <div class="modal-value" id="modal_location"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="modal-label">Positions</div>
+                        <div class="modal-value" id="modal_positions"></div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="modal-label">Description</div>
+                    <div class="modal-value" id="modal_description"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="modal-label">Created At</div>
+                        <div class="modal-value" id="modal_created_at"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="modal-label">Status</div>
+                        <div class="modal-value" id="modal_status"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 </div>
 
 <script>
@@ -481,6 +840,58 @@
         document.querySelectorAll('.analytics-sub-block').forEach(el => el.classList.add('d-none'));
         document.getElementById('sub-tab-' + subTabName).classList.remove('d-none');
     }
+
+    function approveDrive(id) {
+        fetch("/admin/drives/approve/" + id, {
+            method: "POST",
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        }).then(() => {
+            location.reload();
+        });
+    }
+
+    function rejectDrive(id) {
+        let reason = prompt("Enter rejection reason:");
+
+        fetch("/admin/drives/reject/" + id, {
+            method: "POST",
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                reason: reason
+            })
+        }).then(() => {
+            location.reload();
+        });
+    }
+
+    function viewDrive(id) {
+    fetch("/admin/drives/get/" + id)
+        .then(res => res.json())
+        .then(data => {
+
+            document.getElementById('modal_drive_title').innerText = data.drive_title;
+            document.getElementById('modal_drive_type').innerText = data.drive_type;
+            document.getElementById('modal_location').innerText = data.location;
+            document.getElementById('modal_positions').innerText = data.positions;
+            document.getElementById('modal_description').innerText = data.drive_description;
+            document.getElementById('modal_created_at').innerText = data.created_at;
+
+            let statusText = '';
+            if(data.status == 1) statusText = 'Pending Approval';
+            if(data.status == 2) statusText = 'Approved / Live';
+            if(data.status == 3) statusText = 'Rejected';
+
+            document.getElementById('modal_status').innerText = statusText;
+
+            let modal = new bootstrap.Modal(document.getElementById('driveDetailsModal'));
+            modal.show();
+        });
+}
 </script>
 
 @endsection

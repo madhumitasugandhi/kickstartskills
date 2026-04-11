@@ -4,6 +4,7 @@ namespace App\Models\Institution;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Mentor\Drive;
 
 class InstitutionDepartment extends Model
 {
@@ -37,5 +38,15 @@ class InstitutionDepartment extends Model
     public function faculties()
 {
     return $this->hasMany(Faculty::class, 'department_id');
+}
+
+public function drives()
+{
+    return $this->belongsToMany(
+        Drive::class,
+        'drive_departments',
+        'department_id',
+        'drive_id'
+    );
 }
 }

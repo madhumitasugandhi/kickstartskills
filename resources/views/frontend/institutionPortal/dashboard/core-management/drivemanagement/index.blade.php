@@ -22,47 +22,47 @@
     <!-- ================= KPI GRID ================= -->
     <div class="row g-3 mb-4">
         <div class="col-md-4">
-            <div class="glass-card d-flex align-items-center gap-3">
+            <div class="ui-section d-flex align-items-center gap-3">
                 <div class="stat-icon success"><i class="bi bi-briefcase"></i></div>
                 <div>
                     <small>Total Drives</small>
-                    <h4 class="mb-0 text-teal">5</h4>
+                    <h4 class="mb-0 text-teal">{{ $total }}</h4>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="glass-card d-flex align-items-center gap-3">
+            <div class="ui-section d-flex align-items-center gap-3">
                 <div class="stat-icon success"><i class="bi bi-check-circle"></i></div>
                 <div>
                     <small>Approved</small>
-                    <h4 class="mb-0 text-teal">3</h4>
+                    <h4 class="mb-0 text-teal">{{ $approved }}</h4>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="glass-card d-flex align-items-center gap-3">
+            <div class="ui-section d-flex align-items-center gap-3">
                 <div class="stat-icon warning"><i class="bi bi-clock"></i></div>
                 <div>
                     <small>Pending</small>
-                    <h4 class="mb-0 text-warning">1</h4>
+                    <h4 class="mb-0 text-warning">{{ $pending }}</h4>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="glass-card d-flex align-items-center gap-3">
+            <div class="ui-section d-flex align-items-center gap-3">
                 <div class="stat-icon danger"><i class="bi bi-x-circle"></i></div>
                 <div>
                     <small>Blocked</small>
-                    <h4 class="mb-0 text-danger">1</h4>
+                    <h4 class="mb-0 text-danger">{{ $blocked }}</h4>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="glass-card d-flex align-items-center gap-3">
+            <div class="ui-section d-flex align-items-center gap-3">
                 <div class="stat-icon info"><i class="bi bi-file-earmark-text"></i></div>
                 <div>
                     <small>Applications</small>
@@ -72,7 +72,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="glass-card d-flex align-items-center gap-3">
+            <div class="ui-section d-flex align-items-center gap-3">
                 <div class="stat-icon success"><i class="bi bi-people"></i></div>
                 <div>
                     <small>Eligible Students</small>
@@ -83,7 +83,7 @@
     </div>
 
     <!-- ================= SEARCH & FILTER ================= -->
-    <div class="glass-card mb-4">
+    <div class="ui-section mb-4">
         <h6 class="fw-semibold mb-3">Search & Filter Drives</h6>
 
         <div class="mb-3">
@@ -109,12 +109,12 @@
                 </select>
             </div>
 
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
                 <label class="small">Package Range</label>
                 <select class="form-select">
                     <option>All Packages</option>
                 </select>
-            </div>
+            </div> -->
 
             <div class="col-md-3">
                 <label class="small">Sort By</label>
@@ -126,20 +126,20 @@
     </div>
 
     <!-- ================= TABS ================= -->
-    <div class="course-tabs mb-4 shadow-sm">
-        <button class="tab-btn active" data-tab="all-drives">
-            <i class="bi bi-grid"></i> All Drives
-        </button>
-        <button class="tab-btn" data-tab="approvals">
-            <i class="bi bi-check2-square"></i> Approvals
-        </button>
-        <button class="tab-btn" data-tab="recommendations">
-            <i class="bi bi-stars"></i> Recommendations
-        </button>
-        <button class="tab-btn" data-tab="analytics">
-            <i class="bi bi-bar-chart"></i> Analytics
-        </button>
-    </div>
+    <div class="ui-tabs mb-4">
+    <button class="ui-tab active" data-tab="all-drives">
+        <i class="bi bi-grid"></i> All Drives
+    </button>
+    <button class="ui-tab" data-tab="approvals">
+        <i class="bi bi-check2-square"></i> Approvals
+    </button>
+    <!-- <button class="ui-tab" data-tab="recommendations">
+        <i class="bi bi-stars"></i> Recommendations
+    </button> -->
+    <button class="ui-tab" data-tab="analytics">
+        <i class="bi bi-bar-chart"></i> Analytics
+    </button>
+</div>
 
     <!-- ================= TAB CONTENT ================= -->
     <div class="course-tab-content">
@@ -150,10 +150,6 @@
 
         <div id="approvals" class="tab-pane">
         @include('frontend.institutionPortal.dashboard.core-management.drivemanagement.tabs.approvals')
-        </div>
-
-        <div id="recommendations" class="tab-pane">
-        @include('frontend.institutionPortal.dashboard.core-management.drivemanagement.tabs.recommendations')
         </div>
 
         <div id="analytics" class="tab-pane">
@@ -167,7 +163,9 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const tabButtons = document.querySelectorAll('.tab-btn');
+
+function initTabs(tabClass) {
+    const tabButtons = document.querySelectorAll(tabClass);
     const tabPanes = document.querySelectorAll('.tab-pane');
 
     tabButtons.forEach(btn => {
@@ -180,6 +178,10 @@ document.addEventListener('DOMContentLoaded', function () {
             if (target) target.classList.add('active');
         });
     });
+}
+
+initTabs('.ui-tab');
+
 });
 </script>
 @endpush

@@ -1,32 +1,33 @@
 {{-- SEARCH + ACTION --}}
-<div class="glass-card mb-4">
+<div class="ui-card mb-4">
     <div class="d-flex justify-content-between align-items-center gap-3">
         <div class="input-group-custom flex-grow-1">
             <i class="bi bi-search"></i>
-            <input class="form-control ps-5"
+            <input class="form-control"
                    placeholder="Search fee structures...">
         </div>
 
-        <button class="btn btn-success">
+        <button class="btn btn-teal">
             <i class="bi bi-plus"></i> Create Fee Structure
         </button>
     </div>
 </div>
 
+
 {{-- FEE STRUCTURE CARD --}}
-<div class="glass-card">
+<div class="ui-card">
 
     {{-- HEADER --}}
     <div class="d-flex justify-content-between align-items-start mb-3">
 
         <div class="d-flex gap-3">
-            <div class="stat-icon info">
+            <div class="ui-avatar">
                 <i class="bi bi-card-list"></i>
             </div>
 
             <div>
-                <h6 class="mb-1">B.Tech Computer Science</h6>
-                <small class="">Academic Year: 2024–25</small>
+                <div class="ui-card-title">B.Tech Computer Science</div>
+                <div class="ui-card-subtitle">Academic Year: 2024–25</div>
             </div>
         </div>
 
@@ -44,28 +45,30 @@
         </div>
     </div>
 
+
     {{-- META INFO --}}
-    <div class="row  small mb-3">
+    <div class="row small mb-3">
         <div class="col-md-3">
-            <div>Total Fee</div>
-            <strong class="text-white">₹1,80,000</strong>
+            <div class="ui-muted">Total Fee</div>
+            <strong>₹1,80,000</strong>
         </div>
         <div class="col-md-3">
-            <div>Students Enrolled</div>
-            <strong class="text-white">245</strong>
+            <div class="ui-muted">Students Enrolled</div>
+            <strong>245</strong>
         </div>
         <div class="col-md-3">
-            <div>Installments</div>
-            <strong class="text-white">4 payments</strong>
+            <div class="ui-muted">Installments</div>
+            <strong>4 payments</strong>
         </div>
         <div class="col-md-3">
-            <div>Per Installment</div>
-            <strong class="text-white">₹45,000</strong>
+            <div class="ui-muted">Per Installment</div>
+            <strong>₹45,000</strong>
         </div>
     </div>
 
+
     {{-- COMPONENTS --}}
-    <div class="small  mb-2">Fee Components</div>
+    <div class="small ui-muted mb-2">Fee Components</div>
 
     <div class="d-flex flex-column gap-2">
 
@@ -80,23 +83,22 @@
         @endphp
 
         @foreach($components as $c)
-            <div class="glass-card p-3 d-flex justify-content-between align-items-center">
+            <div class="ui-box d-flex justify-content-between align-items-center">
 
                 <div class="d-flex align-items-center gap-2">
-                    <span class="badge {{ $c['required'] ? 'bg-danger' : 'bg-info' }}"></span>
+                    <span class="ui-badge">
+                        {{ $c['required'] ? 'Required' : 'Optional' }}
+                    </span>
                     <span>{{ $c['name'] }}</span>
                 </div>
 
                 <div class="d-flex align-items-center gap-3">
-                    <span class="text-teal">{{ $c['amount'] }}</span>
-
-                    @if($c['required'])
-                        <span class="badge bg-danger-soft text-danger">Required</span>
-                    @endif
+                    <strong>{{ $c['amount'] }}</strong>
                 </div>
 
             </div>
         @endforeach
 
     </div>
+
 </div>

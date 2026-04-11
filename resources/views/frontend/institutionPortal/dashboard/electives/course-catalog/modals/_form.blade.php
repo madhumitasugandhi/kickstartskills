@@ -1,9 +1,8 @@
 <form id="{{ $formId ?? 'courseForm' }}">
-    <div class="row g-4">
+<div class="row g-4">
 
-    <input type="hidden" name="elective_id" id="edit_id">
-
-    <div class="row g-4">
+    <!-- Hidden ID (for edit) -->
+    <input type="hidden" name="elective_id" id="elective_id">
 
     <!-- Course Title -->
     <div class="col-md-6 floating-field">
@@ -12,8 +11,7 @@
     </div>
 
     <!-- Faculty -->
-    <div class="col-md-6">
-        <label class="form-label small">Faculty *</label>
+    <div class="col-md-6 floating-field">
         <select name="faculty_id" id="faculty_id" class="form-select">
             <option value="">Select Faculty</option>
             @foreach($faculties as $faculty)
@@ -22,12 +20,12 @@
                 </option>
             @endforeach
         </select>
+        <label>Faculty *</label>
     </div>
 
     <!-- Category -->
-    <div class="col-md-4">
-        <label class="form-label small">Category *</label>
-        <select name="category_id" id="category_id" class="form-select" >
+    <div class="col-md-4 floating-field">
+        <select name="category_id" id="category_id" class="form-select">
             <option value="">Select Category</option>
             @foreach($categories as $category)
                 <option value="{{ $category->id }}">
@@ -35,6 +33,7 @@
                 </option>
             @endforeach
         </select>
+        <label>Category *</label>
     </div>
 
     <!-- Duration -->
@@ -66,8 +65,6 @@
         <textarea rows="3" name="description" id="description" class="form-control" placeholder=" "></textarea>
         <label>Description</label>
     </div>
-
-</div>
 
 </div>
 </form>

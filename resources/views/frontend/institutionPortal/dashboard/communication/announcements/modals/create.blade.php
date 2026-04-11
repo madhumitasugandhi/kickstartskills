@@ -1,100 +1,101 @@
 <div class="modal fade" id="createAnnouncementModal" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content glass-modal">
+        <div class="modal-content ui-modal">
 
             <!-- HEADER -->
-            <div class="modal-header">
+            <div class="modal-header ui-modal-header">
                 <h5 class="modal-title">New Announcement</h5>
-
-                <!-- Theme-safe close button -->
-                <button type="button"
-                        class="btn btn-sm icon-btn"
-                        data-bs-dismiss="modal"
-                        aria-label="Close">
-                    <i class="bi bi-x-lg"></i>
-                </button>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <!-- FORM -->
             <form>
-                <div class="modal-body">
-                    <div class="row g-3">
+                <div class="modal-body p-4">
 
-                        <!-- TITLE -->
-                        <div class="col-12">
-                            <label class="form-label">Title *</label>
-                            <input type="text"
-                                   class="form-control form-control-custom"
-                                   placeholder="Enter announcement title"
-                                   required>
+                    <div class="ui-section">
+                        <div class="ui-section-title">ANNOUNCEMENT DETAILS</div>
+
+                        <div class="row g-3">
+
+                            <!-- TITLE -->
+                            <div class="col-12">
+                                <div class="ui-floating">
+                                    <input type="text"
+                                           class="form-control"
+                                           placeholder=" "
+                                           required>
+                                    <label>Title *</label>
+                                </div>
+                            </div>
+
+                            <!-- PRIORITY -->
+                            <div class="col-md-4">
+                                <label class="ui-label">Priority *</label>
+                                <select class="form-select" required>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+
+                            <!-- STATUS -->
+                            <div class="col-md-4">
+                                <label class="ui-label">Status *</label>
+                                <select class="form-select"
+                                        id="announcementStatus"
+                                        required>
+                                    <option value="published">Published</option>
+                                    <option value="draft">Draft</option>
+                                    <option value="scheduled">Scheduled</option>
+                                </select>
+                            </div>
+
+                            <!-- AUDIENCE -->
+                            <div class="col-md-4">
+                                <label class="ui-label">Audience *</label>
+                                <select class="form-select" required>
+                                    <option>Students</option>
+                                    <option>Faculty</option>
+                                    <option>Staff</option>
+                                </select>
+                            </div>
+
+                            <!-- SCHEDULE DATE -->
+                            <div class="col-md-6 d-none" id="scheduleDateWrapper">
+                                <label class="ui-label">Publish Date *</label>
+                                <input type="datetime-local"
+                                       class="form-control">
+                            </div>
+
+                            <!-- MESSAGE -->
+                            <div class="col-12">
+                                <label class="ui-label">Message *</label>
+                                <textarea rows="4"
+                                          class="form-control"
+                                          placeholder="Write announcement message..."
+                                          required></textarea>
+                            </div>
+
+                            <!-- ATTACHMENTS -->
+                            <div class="col-12">
+                                <label class="ui-label">Attachments</label>
+                                <input type="file"
+                                       class="form-control"
+                                       multiple>
+                                <small class="ui-muted">
+                                    PDF, DOC, images supported
+                                </small>
+                            </div>
+
                         </div>
-
-                        <!-- PRIORITY -->
-                        <div class="col-md-4">
-                            <label class="form-label">Priority *</label>
-                            <select class="form-select form-select-custom" required>
-                                <option value="high">High</option>
-                                <option value="medium">Medium</option>
-                                <option value="low">Low</option>
-                            </select>
-                        </div>
-
-                        <!-- STATUS -->
-                        <div class="col-md-4">
-                            <label class="form-label">Status *</label>
-                            <select class="form-select form-select-custom"
-                                    id="announcementStatus"
-                                    required>
-                                <option value="published">Published</option>
-                                <option value="draft">Draft</option>
-                                <option value="scheduled">Scheduled</option>
-                            </select>
-                        </div>
-
-                        <!-- AUDIENCE -->
-                        <div class="col-md-4">
-                            <label class="form-label">Audience *</label>
-                            <select class="form-select form-select-custom" required>
-                                <option>Students</option>
-                                <option>Faculty</option>
-                                <option>Staff</option>
-                            </select>
-                        </div>
-
-                        <!-- SCHEDULE DATE -->
-                        <div class="col-md-6 d-none" id="scheduleDateWrapper">
-                            <label class="form-label">Publish Date *</label>
-                            <input type="datetime-local"
-                                   class="form-control form-control-custom">
-                        </div>
-
-                        <!-- MESSAGE -->
-                        <div class="col-12">
-                            <label class="form-label">Message *</label>
-                            <textarea rows="4"
-                                      class="form-control form-control-custom"
-                                      placeholder="Write announcement message..."
-                                      required></textarea>
-                        </div>
-
-                        <!-- ATTACHMENTS -->
-                        <div class="col-12">
-                            <label class="form-label">Attachments</label>
-                            <input type="file"
-                                   class="form-control form-control-custom"
-                                   multiple>
-                            <small class="text-muted">
-                                PDF, DOC, images supported
-                            </small>
-                        </div>
-
                     </div>
+
                 </div>
 
                 <!-- FOOTER -->
-                <div class="modal-footer">
+                <div class="modal-footer ui-modal-footer">
                     <button type="button"
-                            class="btn muted-btn"
+                            class="btn ui-btn-muted"
                             data-bs-dismiss="modal">
                         Cancel
                     </button>

@@ -1,169 +1,136 @@
-<div class="setup-step" id="documentStep">
+<div id="documentStep">
 
-    <!-- ================= HEADER ================= -->
-    <div class="mb-4">
-        <h6 class="section-title-custom mb-1">Document Verification</h6>
-        <p class="small">
+    <!-- HEADER -->
+    <div class="mb-3">
+        <div class="ui-section-title">DOCUMENT VERIFICATION</div>
+        <small class="">
             Upload required documents for institutional verification
-        </p>
+        </small>
     </div>
 
-    <div class="config-card p-4">
+    <div class="ui-section">
 
-        <!-- ================= DOCUMENT ITEM ================= -->
-        <div class="document-card mb-3">
-            <div class="d-flex justify-content-between align-items-start">
-                <div class="d-flex gap-3">
-                    <div class="doc-icon danger">
-                        <i class="bi bi-file-earmark-text"></i>
-                    </div>
-                    <div>
-                        <div class="fw-semibold mb-1">Institution Registration Certificate</div>
-                        <small>Official registration document from the registrar</small>
-                    </div>
-                </div>
-                <span class="doc-badge danger">Required</span>
-            </div>
+        <!-- DOCUMENT -->
+        <div class="ui-list-item mb-3">
+            <div>
+                <div class="fw-semibold">Institution Registration Certificate</div>
+                <small class="">
+                    Official registration document from the registrar
+                </small>
+                <div class="mt-2">
+                    <input type="file"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        id="doc1"
+                        hidden
+                        onchange="uploadDoc(this, 'registration_certificate')">
 
-            <form enctype="multipart/form-data">
-                <input type="file"
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    id="doc1"
-                    hidden
-                    onchange="uploadDoc(this, 'registration_certificate')">
-
-                <label for="doc1" class="btn btn-outline-secondary btn-sm mt-3">
-                    @if(isset($documents['registration_certificate']))
-                    <i class="bi bi-check-circle text-success me-1"></i> Uploaded (Replace)
-                    @else
-                    <i class="bi bi-upload me-1"></i> Upload Document
-                    @endif
-                </label>
-            </form>
-        </div>
-
-        <!-- ================= DOCUMENT ITEM ================= -->
-        <div class="document-card mb-3">
-            <div class="d-flex justify-content-between align-items-start">
-                <div class="d-flex gap-3">
-                    <div class="doc-icon danger">
-                    <i class="bi bi-file-earmark-text"></i>
-                    </div>
-                    <div>
-                        <div class="fw-semibold mb-1">AISHE Certificate</div>
-                        <small class="">
-                            All India Survey on Higher Education certificate
-                        </small>
-                    </div>
-                </div>
-                <span class="doc-badge danger">Required</span>
-            </div>
-
-            <form enctype="multipart/form-data">
-
-                <input type="file"
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    id="doc2"
-                    hidden
-                    onchange="uploadDoc(this, 'aishe_certificate')">
-
-                <label for="doc2" class="btn btn-outline-secondary btn-sm mt-3">
-                    @if(isset($documents['aishe_certificate']))
-                    <i class="bi bi-check-circle text-success me-1"></i> Uploaded (Replace)
-                    @else
-                    <i class="bi bi-upload me-1"></i> Upload Document
-                    @endif
-                </label>
-            </form>
-        </div>
-
-        <!-- ================= DOCUMENT ITEM ================= -->
-        <div class="document-card mb-3">
-            <div class="d-flex justify-content-between align-items-start">
-                <div class="d-flex gap-3">
-                    <div class="doc-icon info">
-                    <i class="bi bi-file-earmark-text"></i>
-                    </div>
-                    <div>
-                        <div class="fw-semibold mb-1">AICTE Approval Letter</div>
-                        <small class="">
-                            Required for technical/engineering institutions
-                        </small>
-                    </div>
+                    <label for="doc1" class="btn btn-outline-secondary btn-sm">
+                        @if(isset($documents['registration_certificate']))
+                        <i class="bi bi-check-circle text-success me-1"></i> Uploaded (Replace)
+                        @else
+                        <i class="bi bi-upload me-1"></i> Upload Document
+                        @endif
+                    </label>
                 </div>
             </div>
 
-            <form enctype="multipart/form-data">
-                <input type="file"
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    id="doc3"
-                    hidden
-                    onchange="uploadDoc(this, 'aicte_approval_letter')">
-
-                <label for="doc3" class="btn btn-outline-secondary btn-sm mt-3">
-                    @if(isset($documents['aicte_approval_letter']))
-                    <i class="bi bi-check-circle text-success me-1"></i> Uploaded (Replace)
-                    @else
-                    <i class="bi bi-upload me-1"></i> Upload Document
-                    @endif
-                </label>
-            </form>
+            <span class="ui-badge">Required</span>
         </div>
 
-        <!-- ================= DOCUMENT ITEM ================= -->
-        <div class="document-card mb-4">
-            <div class="d-flex gap-3">
-                <div class="doc-icon info">
-                    <i class="bi bi-building"></i>
-                </div>
-                <div>
-                    <div class="fw-semibold mb-1">Infrastructure Documents</div>
-                    <small class="">
-                        Building plans, facility details, etc.
-                    </small>
+        <!-- DOCUMENT -->
+        <div class="ui-list-item mb-3">
+            <div>
+                <div class="fw-semibold">AISHE Certificate</div>
+                <small class="">
+                    All India Survey on Higher Education certificate
+                </small>
+                <div class="mt-2">
+                    <input type="file"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        id="doc2"
+                        hidden
+                        onchange="uploadDoc(this, 'aishe_certificate')">
+
+                    <label for="doc2" class="btn btn-outline-secondary btn-sm">
+                        @if(isset($documents['aishe_certificate']))
+                        <i class="bi bi-check-circle text-success me-1"></i> Uploaded (Replace)
+                        @else
+                        <i class="bi bi-upload me-1"></i> Upload Document
+                        @endif
+                    </label>
                 </div>
             </div>
 
-            <form enctype="multipart/form-data">
-                <input type="file"
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    id="doc4"
-                    hidden
-                    onchange="uploadDoc(this, 'infrastructure_documents')"> 
-
-                <label for="doc4" class="btn btn-outline-secondary btn-sm mt-3">
-                    @if(isset($documents['infrastructure_documents']))
-                    <i class="bi bi-check-circle text-success me-1"></i> Uploaded (Replace)
-                    @else
-                    <i class="bi bi-upload me-1"></i> Upload Document
-                    @endif
-                </label>
-            </form>
+            <span class="ui-badge">Required</span>
         </div>
 
-        <!-- ================= VERIFICATION PROCESS ================= -->
-        <div class="academic-warning academic-warning--info mt-4">
+        <!-- DOCUMENT -->
+        <div class="ui-list-item mb-3">
+            <div>
+                <div class="fw-semibold">AICTE Approval Letter</div>
+                <small class="">
+                    Required for technical/engineering institutions
+                </small>
+                <div class="mt-2">
+                    <input type="file"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        id="doc3"
+                        hidden
+                        onchange="uploadDoc(this, 'aicte_approval_letter')">
 
-            <div class="d-flex align-items-center gap-2 mb-3">
-                <div class="doc-icon info">
-                    <i class="bi bi-clock-history"></i>
+                    <label for="doc3" class="btn btn-outline-secondary btn-sm">
+                        @if(isset($documents['aicte_approval_letter']))
+                        <i class="bi bi-check-circle text-success me-1"></i> Uploaded (Replace)
+                        @else
+                        <i class="bi bi-upload me-1"></i> Upload Document
+                        @endif
+                    </label>
                 </div>
-                <div class="fw-semibold">Verification Process</div>
             </div>
-
-            <p class="small opacity-75 mb-2">
-                After submitting your documents, our verification team will:
-            </p>
-
-            <ul class="mb-0 ps-3">
-                <li>Verify regulatory codes with AICTE / UGC / AISHE</li>
-                <li>Review uploaded documents for authenticity</li>
-                <li>Cross-check institution details with official databases</li>
-                <li>Conduct final approval review (2–3 business days)</li>
-                <li>Send verification completion email with institution code</li>
-            </ul>
-
         </div>
+
+        <!-- DOCUMENT -->
+        <div class="ui-list-item mb-3">
+            <div>
+                <div class="fw-semibold">Infrastructure Documents</div>
+                <small class="">
+                    Building plans, facility details, etc.
+                </small>
+                <div class="mt-2">
+                    <input type="file"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        id="doc4"
+                        hidden
+                        onchange="uploadDoc(this, 'infrastructure_documents')">
+
+                    <label for="doc4" class="btn btn-outline-secondary btn-sm">
+                        @if(isset($documents['infrastructure_documents']))
+                        <i class="bi bi-check-circle text-success me-1"></i> Uploaded (Replace)
+                        @else
+                        <i class="bi bi-upload me-1"></i> Upload Document
+                        @endif
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui-divider"></div>
+
+        <!-- VERIFICATION PROCESS -->
+        <div class="ui-alert">
+            <i class="bi bi-clock-history"></i>
+            <div>
+                <strong>Verification Process</strong>
+                <ul class="mb-0 mt-2">
+                    <li>Verify regulatory codes with AICTE / UGC / AISHE</li>
+                    <li>Review uploaded documents for authenticity</li>
+                    <li>Cross-check institution details with official databases</li>
+                    <li>Final approval review (2–3 business days)</li>
+                    <li>Verification completion email with institution code</li>
+                </ul>
+            </div>
+        </div>
+
     </div>
 </div>
 

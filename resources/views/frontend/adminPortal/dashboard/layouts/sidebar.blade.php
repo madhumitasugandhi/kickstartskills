@@ -41,8 +41,8 @@
             </a>
 
 
-            <a class="nav-link {{ request()->routeIs('admin.drives') ? 'active' : '' }} d-flex align-items-center"
-                href="{{ route('admin.drives') }}">
+            <a class="nav-link {{ request()->routeIs('admin.drives.index') ? 'active' : '' }} d-flex align-items-center"
+                href="{{ route('admin.drives.index') }}">
                 <i class="bi bi-activity fs-5"></i>
                 <span class="nav-label ms-3">Drive Oversight</span>
                 <span class="badge bg-danger ms-auto" style="font-size: 0.65rem;">New</span>

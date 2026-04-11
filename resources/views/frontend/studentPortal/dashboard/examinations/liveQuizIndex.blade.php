@@ -8,6 +8,7 @@
     <div class="row">
         <div class="col-lg-9">
             <div class="card-custom border-0 shadow-sm p-4">
+            <h4>{{ isset($drive) ? 'Drive Test' : 'Skill Test' }}</h4>
                 <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
                     <div>
                         <span class="--text-muted small d-block">Time Remaining</span>
@@ -19,10 +20,13 @@
                     </div>
                 </div>
 
-                <form id="quiz-form" action="{{ route('student.exam.submit') }}" method="POST">
+                <form id="quiz-form" action="{{ isset($drive) ? route('student.exam.drive.submit') : route('student.exam.submit') }}" method="POST">
                     @csrf
-                    <input type="hidden" name="exam_id" value="{{ $exam->id }}">
-                    <input type="hidden" name="time_taken" id="time_taken">
+                    @if(isset($exam))
+    <input type="hidden" name="exam_id" value="{{ $exam->id }}">
+@elseif(isset($drive))
+    <input type="hidden" name="drive_id" value="{{ $drive->id }}">
+@endif                    <input type="hidden" name="time_taken" id="time_taken">
 
                     <div id="questions-container">
                     @php $stepIndex = 0; @endphp
@@ -49,7 +53,7 @@
                             class="d-none">
 
                         <div class="option-box p-3 border rounded-3 border-secondary">
-                            <span class="me-2 fw-bold">{{ chr(65 + $index) }})</span>
+                            <span class="me-2 fw-bold">{{ chr(65 + $index) }}</span>
                             {{ $opt->option_text }}
                         </div>
                     </label>
@@ -145,8 +149,8 @@
 <script>
     let currentStep = 0;
     const totalSteps = {{ $groupedQuestions->flatten()->count() }};
-    let timeLeft = {{$exam -> duration_minutes * 60}};
-    let formSubmitting = false;
+    let timeLeft = {{ ($exam->duration_minutes ?? $drive->duration_minutes) * 60 }};
+        let formSubmitting = false;
     let startTime = Date.now();
 
     // Step Navigation
@@ -188,20 +192,22 @@
         timerDisplay.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 
         if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            Swal.fire({
-                icon: 'info',
-                title: 'Time Up!',
-                text: 'Your test is being submitted automatically.',
-                showConfirmButton: false,
-                timer: 2000
-            }).then(() => {
-                formSubmitting = true;
-                submitQuizAjax();
-            });
-            formSubmitting = true;
+    clearInterval(timerInterval);
+
+    if (!formSubmitting) {
+        formSubmitting = true;
+
+        Swal.fire({
+            icon: 'info',
+            title: 'Time Up!',
+            text: 'Your test is being submitted automatically.',
+            showConfirmButton: false,
+            timer: 1500
+        }).then(() => {
             submitQuizAjax();
-        }
+        });
+    }
+}
         timeLeft--;
     }, 1000);
 
@@ -238,6 +244,7 @@
     showStep(0);
 
     function confirmSubmit() {
+        if (formSubmitting) return; // STOP DOUBLE CLICK
         Swal.fire({
             title: 'Submit Test?',
             text: "You won't be able to change answers after submission.",
@@ -272,8 +279,15 @@
                 },
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => {
+            .then(async response => {
+    if (!response.ok) {
+        let text = await response.text();
+        console.error("SERVER ERROR:", text);
+        alert("Server error check console");
+        return;
+    }
+    return response.json();
+})            .then(data => {
                 Swal.fire({
                     title: 'Test Submitted!',
                     html: `

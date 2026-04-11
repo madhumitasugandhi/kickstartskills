@@ -1,8 +1,8 @@
 <div class="row g-4">
 
-    <!-- ================= KPI STATS ================= -->
+    <!-- KPI -->
     <div class="col-md-3">
-        <div class="glass-card d-flex align-items-center gap-3">
+        <div class="ui-stats-card">
             <div class="stat-icon info">
                 <i class="bi bi-diagram-3"></i>
             </div>
@@ -14,7 +14,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="glass-card d-flex align-items-center gap-3">
+        <div class="ui-stats-card">
             <div class="stat-icon success">
                 <i class="bi bi-journal-bookmark"></i>
             </div>
@@ -26,7 +26,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="glass-card d-flex align-items-center gap-3">
+        <div class="ui-stats-card">
             <div class="stat-icon info">
                 <i class="bi bi-people"></i>
             </div>
@@ -38,7 +38,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="glass-card d-flex align-items-center gap-3">
+        <div class="ui-stats-card">
             <div class="stat-icon success">
                 <i class="bi bi-mortarboard"></i>
             </div>
@@ -49,9 +49,9 @@
         </div>
     </div>
 
-    <!-- ================= DEPARTMENT DISTRIBUTION ================= -->
+    <!-- Department Distribution -->
     <div class="col-lg-8">
-        <div class="glass-card">
+        <div class="ui-section">
             <h6 class="mb-3">Department Distribution</h6>
 
             @php
@@ -64,52 +64,43 @@
                 ];
             @endphp
 
-            @foreach($departments as $dept)
-                <div class="configured-item mb-2 p-3 d-flex justify-content-between align-items-center">
-                    <div>
-                        <strong class="d-block">{{ $dept['name'] }}</strong>
-                        <small class="text-muted">
-                            Students {{ $dept['students'] }}
-                        </small>
-                    </div>
-
-                    <div class="meta-row">
-                        <span><i class="bi bi-people"></i>{{ $dept['faculty'] }}</span>
-                        <span><i class="bi bi-journal"></i>{{ $dept['programs'] }}</span>
-                    </div>
+@foreach($departments as $dept)
+            <div class="ui-list-item">
+                <div>
+                    <strong>{{ $dept['name'] }}</strong>
+                    <div class="small">Students {{ $dept['students'] }}</div>
                 </div>
-            @endforeach
 
-            <div class="text-center mt-3">
-                <a href="{{ route('institution.core.academic-structure', ['tab'=>'departments']) }}"
-                   class="btn btn-outline-primary btn-sm">
-                    View All Departments
-                </a>
+                <div class="ui-meta">
+                    <span><i class="bi bi-people"></i>{{ $dept['faculty'] }}</span>
+                    <span><i class="bi bi-journal"></i>{{ $dept['programs'] }}</span>
+                </div>
             </div>
+            @endforeach
         </div>
     </div>
 
-    <!-- ================= QUICK STATS ================= -->
+    <!-- Quick Stats -->
     <div class="col-lg-4">
-        <div class="glass-card">
+        <div class="ui-section">
             <h6 class="mb-3">Quick Stats</h6>
 
-            <div class="configured-item mb-2 p-3 d-flex justify-content-between">
+            <div class="ui-list-item">
                 <span>Faculty–Student Ratio</span>
                 <strong>1:18</strong>
             </div>
 
-            <div class="configured-item mb-2 p-3 d-flex justify-content-between">
+            <div class="ui-list-item">
                 <span>Active Semesters</span>
                 <strong>6</strong>
             </div>
 
-            <div class="configured-item mb-2 p-3 d-flex justify-content-between">
+            <div class="ui-list-item">
                 <span>Accreditation</span>
                 <strong>NAAC A+</strong>
             </div>
 
-            <div class="configured-item p-3 d-flex justify-content-between">
+            <div class="ui-list-item">
                 <span>Total Students</span>
                 <strong>2847</strong>
             </div>

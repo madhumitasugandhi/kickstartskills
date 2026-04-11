@@ -1,38 +1,44 @@
 <div class="modal fade" id="enterGradesModal" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content glass-modal">
+        <div class="modal-content">
 
             <!-- HEADER -->
             <div class="modal-header">
-                <h6 class="modal-title">Enter Grades</h6>
+                <h5 class="modal-title">Enter Grades</h5>
                 <button class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <!-- BODY -->
-            <div class="modal-body p-4 p-md-5">
+            <div class="modal-body">
                 <div class="row g-4">
 
+                    <!-- Student -->
                     <div class="col-md-6">
-                        <label class="form-label small ">Student *</label>
+                        <label class="ui-label">Student *</label>
                         <select class="form-select">
                             <option>Alice Johnson</option>
                         </select>
                     </div>
 
+                    <!-- Course -->
                     <div class="col-md-6">
-                        <label class="form-label small ">Course *</label>
+                        <label class="ui-label">Course *</label>
                         <select class="form-select">
                             <option>Full Stack Web Development</option>
                         </select>
                     </div>
 
-                    <div class="col-md-4 floating-field">
-                        <input type="number" class="form-control" placeholder=" " required>
-                        <label>Credits *</label>
+                    <!-- Credits -->
+                    <div class="col-md-4">
+                        <div class="ui-floating">
+                            <input type="number" class="form-control" placeholder=" " required>
+                            <label>Credits *</label>
+                        </div>
                     </div>
 
+                    <!-- Grade -->
                     <div class="col-md-4">
-                        <label class="form-label small ">Grade *</label>
+                        <label class="ui-label">Grade *</label>
                         <select class="form-select">
                             <option>A</option>
                             <option>B</option>
@@ -40,9 +46,12 @@
                         </select>
                     </div>
 
-                    <div class="col-md-4 floating-field">
-                        <input type="number" step="0.01" class="form-control" placeholder=" " required>
-                        <label>GPA *</label>
+                    <!-- GPA -->
+                    <div class="col-md-4">
+                        <div class="ui-floating">
+                            <input type="number" step="0.01" class="form-control" placeholder=" " required>
+                            <label>GPA *</label>
+                        </div>
                     </div>
 
                 </div>
@@ -50,8 +59,12 @@
 
             <!-- FOOTER -->
             <div class="modal-footer">
-                <button class="btn muted-btn" data-bs-dismiss="modal">Cancel</button>
-                <button class="btn btn-teal">Save Grades</button>
+                <button class="btn ui-btn-muted" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+                <button class="btn btn-teal">
+                    Save Grades
+                </button>
             </div>
 
         </div>

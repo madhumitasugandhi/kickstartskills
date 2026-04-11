@@ -102,7 +102,7 @@ function loadDrives() {
         let html = '';
 
         if (data.length === 0) {
-            html = `<div class="glass-card text-center p-4">
+            html = `<div class="ui-card text-center p-4">
                         No Internship Drives Found
                     </div>`;
         }
@@ -112,44 +112,54 @@ function loadDrives() {
             let initials = drive.company_name.substring(0, 2).toUpperCase();
 
             html += `
-<div class="drive-card">
-    <div class="drive-left">
+<div class="ui-card">
+    <div class="ui-split">
 
-        <div class="drive-header">
-            <div class="company-avatar">${initials}</div>
-            <div>
-                <h6 class="mb-0 fw-semibold">${drive.drive_name}</h6>
-                <small class="">${drive.company_name}</small>
+        <div class="ui-split-left">
+
+            <div class="d-flex align-items-center gap-2">
+                <div class="ui-avatar">${initials}</div>
+
+                <div>
+                    <div class="ui-card-title">${drive.drive_name}</div>
+                    <div class="ui-card-subtitle">${drive.company_name}</div>
+                </div>
             </div>
+
+            <div class="ui-meta">
+                <span><i class="bi bi-cash"></i> ₹${drive.stipend ?? 0}</span>
+                <span><i class="bi bi-geo-alt"></i> ${drive.location ?? ''}</span>
+                <span><i class="bi bi-calendar"></i> ${drive.drive_date ?? ''}</span>
+            </div>
+
+            <div class="ui-actions">
+                <span class="ui-muted">
+                    ${drive.description ?? ''}
+                </span>
+            </div>
+
         </div>
 
-         <div class="drive-description">
-            <span><i class="bi bi-pencil"></i> ${drive.description ?? ''}</span>
+        <div class="ui-split-right student-actions">
+
+            <span class="status-pill">
+                ${drive.status}
+            </span>
+
+            <button class="icon-btn kebab-toggle">
+                <i class="bi bi-three-dots-vertical"></i>
+            </button>
+
+            <ul class="kebab-menu">
+                <li class="edit-drive-btn" data-id="${drive.id}">
+                    <i class="bi bi-pencil"></i> Edit
+                </li>
+                <li class="danger delete-drive-btn" data-id="${drive.id}">
+                    <i class="bi bi-trash"></i> Delete
+                </li>
+            </ul>
+
         </div>
-
-        <div class="meta-row mb-2">
-            <span><i class="bi bi-cash"></i>Stiphend: ₹${drive.stipend ?? 0}</span>
-            <span><i class="bi bi-geo-alt"></i>Location: ${drive.location ?? ''}</span>
-        </div>
-
-    </div>
-
-    <div class="drive-right student-actions">
-
-        <span class="status-pill active">${drive.status}</span>
-
-        <button class="icon-btn kebab-toggle">
-            <i class="bi bi-three-dots-vertical"></i>
-        </button>
-
-        <ul class="kebab-menu">
-            <li class="edit-drive-btn" data-id="${drive.id}">
-                <i class="bi bi-pencil"></i> Edit
-            </li>
-            <li class="danger delete-drive-btn" data-id="${drive.id}">
-                <i class="bi bi-trash"></i> Delete
-            </li>
-        </ul>
 
     </div>
 </div>

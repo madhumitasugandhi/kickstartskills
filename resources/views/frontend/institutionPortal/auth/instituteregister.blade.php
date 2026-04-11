@@ -617,21 +617,20 @@
             // Initialize UI
             switchStep(1);
 
-            const countryDropdown = document.getElementById('country');
-            const stateDropdown = document.getElementById('state');
-            const cityDropdown = document.getElementById('city');
+            const countryId = document.getElementById('country').value;
+    const stateDropdown = document.getElementById('state');
+    const cityDropdown = document.getElementById('city');
 
-            countryDropdown?.addEventListener('change', function() {
-                fetch(`/api/states/${this.value}`)
-                    .then(res => res.json())
-                    .then(states => {
-                        stateDropdown.innerHTML = '<option value="">Select State</option>';
-                        cityDropdown.innerHTML = '<option value="">Select City</option>';
-                        states.forEach(s => {
-                            stateDropdown.innerHTML += `<option value="${s.id}">${s.name}</option>`;
-                        });
-                    });
+    // Load states directly for India
+    fetch(`/api/states/${countryId}`)
+        .then(res => res.json())
+        .then(states => {
+            stateDropdown.innerHTML = '<option value="">Select State</option>';
+
+            states.forEach(s => {
+                stateDropdown.innerHTML += `<option value="${s.id}">${s.name}</option>`;
             });
+        });
 
             stateDropdown?.addEventListener('change', function() {
                 fetch(`/api/cities/${this.value}`)
@@ -786,11 +785,6 @@
 
             clearErrors();
 
-            if (country.value === "") {
-                showError(country, "country-error", "Please select a country");
-                valid = false;
-            }
-
             if (phone.value.trim() === "") {
                 showError(phone, "phone-error", "Phone number is required");
                 valid = false;
@@ -835,21 +829,6 @@ let valid = true;
 
 if (type.value === "") {
     showError(type, "type-error", "Please select institution type");
-    valid = false;
-}
-
-if (aishe.value.trim() === "") {
-    showError(aishe, "aishe-error", "AISHE code required");
-    valid = false;
-}
-
-if (aicte.value.trim() === "") {
-    showError(aicte, "aicte-error", "AICTE ID required");
-    valid = false;
-}
-
-if (ugc.value.trim() === "") {
-    showError(ugc, "ugc-error", "UGC number required");
     valid = false;
 }
 

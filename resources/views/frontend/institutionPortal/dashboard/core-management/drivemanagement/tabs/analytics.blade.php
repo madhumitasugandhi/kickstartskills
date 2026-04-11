@@ -1,7 +1,7 @@
 <h6 class="fw-semibold mb-3">Drive Analytics & Insights</h6>
 
 <!-- ================= PACKAGE DISTRIBUTION ================= -->
-<div class="glass-card mb-4">
+<!-- <div class="ui-section mb-4">
     <h6 class="mb-3">Package Distribution</h6>
 
     @php
@@ -28,10 +28,10 @@
             </div>
         </div>
     @endforeach
-</div>
+</div> -->
 
 <!-- ================= INDUSTRY BREAKDOWN ================= -->
-<div class="glass-card mb-4">
+<div class="ui-section mb-4">
     <h6 class="mb-3">Industry Breakdown</h6>
 
     @php
@@ -55,7 +55,7 @@
 </div>
 
 <!-- ================= APPLICATION PERFORMANCE ================= -->
-<div class="glass-card">
+<div class="ui-section">
     <h6 class="mb-3">Application Performance</h6>
 
     @php
@@ -78,8 +78,8 @@
                 <span>{{ $item['count'] }}/45 ({{ round($width) }}%)</span>
             </div>
 
-            <div class="progress-track">
-                <div class="progress-fill"
+            <div class="ui-progress">
+            <div class="ui-progress-fill"
                      style="width: {{ $width }}%"></div>
             </div>
         </div>

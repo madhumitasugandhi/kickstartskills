@@ -1,203 +1,83 @@
-<div class="financial-tabs-wrapper mb-4">
+<div class="ui-card mb-4">
 
-    <!-- DESKTOP TABS -->
-    <div class="course-tabs financial-tabs desktop-tabs">
-        <a class="tab-btn {{ $tab === 'overview' ? 'active' : '' }}"
+    <!-- Desktop Tabs -->
+    <div class="ui-tabs desktop-tabs">
+        <a class="ui-tab {{ $tab === 'overview' ? 'active' : '' }}"
            href="{{ route('institution.core.financial-management', 'overview') }}">
-            <i class="bi bi-pie-chart"></i> Overview
+            <i class="bi bi-pie-chart me-1"></i> Overview
         </a>
 
-        <a class="tab-btn {{ $tab === 'fee-structure' ? 'active' : '' }}"
+        <a class="ui-tab {{ $tab === 'fee-structure' ? 'active' : '' }}"
            href="{{ route('institution.core.financial-management', 'fee-structure') }}">
-            <i class="bi bi-card-list"></i> Fee Structures
+            <i class="bi bi-card-list me-1"></i> Fee Structures
         </a>
 
-        <a class="tab-btn {{ $tab === 'payments' ? 'active' : '' }}"
+        <a class="ui-tab {{ $tab === 'payments' ? 'active' : '' }}"
            href="{{ route('institution.core.financial-management', 'payments') }}">
-            <i class="bi bi-cash-stack"></i> Payments
+            <i class="bi bi-cash-stack me-1"></i> Payments
         </a>
 
-        <a class="tab-btn {{ $tab === 'expenses' ? 'active' : '' }}"
+        <a class="ui-tab {{ $tab === 'expenses' ? 'active' : '' }}"
            href="{{ route('institution.core.financial-management', 'expenses') }}">
-            <i class="bi bi-receipt"></i> Expenses
+            <i class="bi bi-receipt me-1"></i> Expenses
         </a>
 
-        <a class="tab-btn {{ $tab === 'reports' ? 'active' : '' }}"
+        <a class="ui-tab {{ $tab === 'reports' ? 'active' : '' }}"
            href="{{ route('institution.core.financial-management', 'reports') }}">
-            <i class="bi bi-file-earmark-text"></i> Reports
+            <i class="bi bi-file-earmark-text me-1"></i> Reports
         </a>
     </div>
 
-    <!-- MOBILE DROPDOWN -->
-    <!-- MOBILE DROPDOWN -->
-<div class="mobile-tabs d-none">
+    <!-- Mobile Dropdown -->
+    <div class="mobile-tabs d-none mt-2">
 
-<div class="financial-dropdown">
-    <button class="dropdown-trigger" id="financeTabBtn">
-        <span>
-            <i class="bi bi-grid"></i>
-            {{ ucfirst(str_replace('-', ' ', $tab)) }}
-        </span>
-        <i class="bi bi-chevron-down"></i>
-    </button>
+        <div class="ui-dropdown">
+            <button class="dropdown-trigger w-100" id="financeTabBtn">
+                <span>
+                    <i class="bi bi-grid"></i>
+                    {{ ucfirst(str_replace('-', ' ', $tab)) }}
+                </span>
+                <i class="bi bi-chevron-down"></i>
+            </button>
 
-    <ul class="dropdown-menu-custom" id="financeTabMenu">
-        <li>
-            <a href="{{ route('institution.core.financial-management','overview') }}"
-               class="{{ $tab==='overview'?'active':'' }}">
-                <i class="bi bi-pie-chart"></i> Overview
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('institution.core.financial-management','fee-structure') }}"
-               class="{{ $tab==='fee-structure'?'active':'' }}">
-                <i class="bi bi-card-list"></i> Fee Structures
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('institution.core.financial-management','payments') }}"
-               class="{{ $tab==='payments'?'active':'' }}">
-                <i class="bi bi-cash-stack"></i> Payments
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('institution.core.financial-management','expenses') }}"
-               class="{{ $tab==='expenses'?'active':'' }}">
-                <i class="bi bi-receipt"></i> Expenses
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('institution.core.financial-management','reports') }}"
-               class="{{ $tab==='reports'?'active':'' }}">
-                <i class="bi bi-file-earmark-text"></i> Reports
-            </a>
-        </li>
-    </ul>
-</div>
+            <ul class="dropdown-menu" id="financeTabMenu">
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ route('institution.core.financial-management','overview') }}">
+                        Overview
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ route('institution.core.financial-management','fee-structure') }}">
+                        Fee Structures
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ route('institution.core.financial-management','payments') }}">
+                        Payments
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ route('institution.core.financial-management','expenses') }}">
+                        Expenses
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="{{ route('institution.core.financial-management','reports') }}">
+                        Reports
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-</div>
-
+    </div>
 
 </div>
-<style>
-    /* ==========================================
-   FINANCIAL TABS – RESPONSIVE DROPDOWN
-========================================== */
 
-.financial-tabs-wrapper {
-    width: 100%;
-}
-
-/* Mobile default hidden */
-.mobile-tabs {
-    width: 100%;
-}
-
-/* Dropdown styling */
-.financial-tab-select {
-    background: var(--bg-input);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 12px 14px;
-    color: var(--text-main);
-    font-weight: 500;
-}
-
-/* Icon spacing inside select (optional) */
-.financial-tab-select option {
-    padding: 6px;
-}
-
-/* =====================
-   RESPONSIVE SWITCH
-===================== */
-@media (max-width: 768px) {
-
-    .desktop-tabs {
-        display: none !important;
-    }
-
-    .mobile-tabs {
-        display: block !important;
-    }
-
-}
-/* ===============================
-   MOBILE FINANCIAL DROPDOWN
-================================ */
-
-.financial-dropdown {
-    position: relative;
-    width: 100%;
-}
-
-.dropdown-trigger {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 14px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    color: var(--text-main);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-weight: 600;
-}
-
-.dropdown-trigger i {
-    font-size: 1rem;
-    color: var(--text-muted);
-}
-
-.dropdown-trigger span {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-/* Menu */
-.financial-dropdown .dropdown-menu-custom {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: -30px;
-    width: 100%;
-    background: var(--bg-sidebar);
-    border: 1px solid var(--border-color);
-    border-radius: 14px;
-    padding: 8px;
-    list-style: none;
-    display: none;
-    z-index: 1000;
-    box-shadow: var(--shadow-sm);
-}
-
-.financial-dropdown .dropdown-menu-custom li a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    color: var(--text-main);
-    text-decoration: none;
-}
-
-.financial-dropdown .dropdown-menu-custom li a:hover {
-    background: rgba(255,255,255,0.06);
-}
-
-.financial-dropdown .dropdown-menu-custom li a.active {
-    background: rgba(45,212,191,0.18);
-    color: var(--primary-teal);
-    font-weight: 600;
-}
-
-/* Show */
-.financial-dropdown.open .dropdown-menu-custom {
-    display: block;
-}
-
-</style>
 <script>
 document.addEventListener('click', function (e) {
     const dropdown = document.querySelector('.financial-dropdown');

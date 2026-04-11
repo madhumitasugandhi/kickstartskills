@@ -57,6 +57,14 @@
             </a>
 
             <div class="collapse {{ $isExamActive ? 'show' : '' }} ps-3 mb-1" id="examSubmenu">
+
+            <a href="{{ route('student.exam.approved-drives') }}"
+    class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.exam.approved-drives') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
+    <i class="bi bi-check-circle"></i>
+    <span class="nav-label ms-3">Approved Drives</span>
+</a>
+
+
                 <a href="{{ route('student.exam.take') }}"
                     class="nav-link small py-2 mb-1 rounded-2 {{ request()->routeIs('student.exam.take') ? 'bg-soft-blue text-primary fw-bold' : '--text-muted' }} d-flex align-items-center">
                     <i class="bi bi-play-circle"></i> <span class="nav-label ms-3">Take Test</span>

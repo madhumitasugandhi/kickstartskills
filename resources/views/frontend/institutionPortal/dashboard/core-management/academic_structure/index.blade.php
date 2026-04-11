@@ -5,10 +5,10 @@
     $tab = request('tab', 'overview');
 @endphp
 
-<div class="container-fluid py-4 academic-structure">
+<div class="container-fluid py-4">
 
-    <!-- ================= HEADER ================= -->
-    <div class="glass-card mb-4">
+    <!-- HEADER -->
+    <div class="ui-section mb-4">
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-3">
                 <div class="stat-icon info">
@@ -16,7 +16,7 @@
                 </div>
                 <div>
                     <h5 class="fw-semibold mb-1">Academic Management</h5>
-                    <p class="small mb-0 ">
+                    <p class="small mb-0">
                         Manage departments, programs, faculty, and academic structure
                     </p>
                 </div>
@@ -29,33 +29,29 @@
         </div>
     </div>
 
-    <!-- ================= TABS ================= -->
-    <div class="glass-card mb-4">
-        <div class="course-tabs">
+    <!-- TABS -->
+    <div class="ui-tabs mb-4">
+        @php
+            $tabs = [
+                'overview'     => ['icon' => 'pie-chart', 'label' => 'Overview'],
+                'departments'  => ['icon' => 'layers', 'label' => 'Departments'],
+                'programs'     => ['icon' => 'book', 'label' => 'Programs'],
+                'faculty'      => ['icon' => 'people', 'label' => 'Faculty'],
+                'curriculum'   => ['icon' => 'file-earmark-text', 'label' => 'Curriculum'],
+            ];
+        @endphp
 
-            @php
-                $tabs = [
-                    'overview'     => ['icon' => 'pie-chart', 'label' => 'Overview'],
-                    'departments'  => ['icon' => 'layers', 'label' => 'Departments'],
-                    'programs'     => ['icon' => 'book', 'label' => 'Programs'],
-                    'faculty'      => ['icon' => 'people', 'label' => 'Faculty'],
-                    'curriculum'   => ['icon' => 'file-earmark-text', 'label' => 'Curriculum'],
-                ];
-            @endphp
-
-            @foreach($tabs as $key => $t)
-                <a href="{{ route('institution.core.academic-structure', ['tab' => $key]) }}"
-                   class="tab-btn {{ $tab === $key ? 'active' : '' }}">
-                    <i class="bi bi-{{ $t['icon'] }}"></i>
-                    {{ $t['label'] }}
-                </a>
-            @endforeach
-
-        </div>
+        @foreach($tabs as $key => $t)
+            <a href="{{ route('institution.core.academic-structure', ['tab' => $key]) }}"
+               class="ui-tab {{ $tab === $key ? 'active' : '' }}">
+                <i class="bi bi-{{ $t['icon'] }}"></i>
+                {{ $t['label'] }}
+            </a>
+        @endforeach
     </div>
 
-    <!-- ================= TAB CONTENT ================= -->
-    <div class="course-tab-content">
+    <!-- TAB CONTENT -->
+    <div>
         @includeIf(
             'frontend.institutionPortal.dashboard.core-management.academic_structure.' . $tab
         )

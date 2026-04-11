@@ -1,15 +1,18 @@
 {{-- ================= CUSTOM ANALYTICS REPORTS ================= --}}
-<div class="d-flex justify-content-between align-items-center mb-4">
-
-    <h6 class="fw-semibold d-flex align-items-center gap-2">
-        <i class="bi bi-file-earmark-text text-teal"></i>
-        Custom Analytics Reports
-    </h6>
+<div class="ui-page-header d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex gap-3 align-items-center">
+        <div class="ui-icon-box">
+            <i class="bi bi-file-earmark-text"></i>
+        </div>
+        <div>
+            <h5 class="mb-0">Custom Analytics Reports</h5>
+            <small class="ui-muted">Create and manage advanced analytics reports</small>
+        </div>
+    </div>
 
     <button class="btn btn-teal btn-sm">
         <i class="bi bi-plus-lg me-1"></i> Create Report
     </button>
-
 </div>
 
 {{-- ================= REPORT TYPES ================= --}}
@@ -24,22 +27,21 @@
         ];
     @endphp
 
-    @foreach($types as $type)
-        <div class="col-lg-3 col-md-6">
-            <div class="glass-card h-100">
-                <div class="stat-icon info mb-3">
-                    <i class="bi {{ $type['icon'] }}"></i>
-                </div>
-                <strong class="d-block mb-1">{{ $type['title'] }}</strong>
-                <small class="">{{ $type['desc'] }}</small>
+@foreach($types as $type)
+    <div class="col-lg-3 col-md-6">
+        <div class="ui-card h-100">
+            <div class="stats-icon info mb-3">
+                <i class="bi {{ $type['icon'] }}"></i>
             </div>
+            <div class="ui-card-title">{{ $type['title'] }}</div>
+            <div class="ui-card-subtitle">{{ $type['desc'] }}</div>
         </div>
-    @endforeach
-
+    </div>
+@endforeach
 </div>
 
 {{-- ================= RECENT REPORTS ================= --}}
-<h6 class="section-title mb-3">Recent Reports</h6>
+<div class="ui-section-title mb-3">RECENT REPORTS</div>
 
 <div class="drive-list">
 
@@ -70,21 +72,21 @@ $reports = [
 @endphp
 
 @foreach($reports as $report)
-<div class="glass-card position-relative mb-3">
+<div class="ui-card position-relative mb-3">
 
     <div class="d-flex justify-content-between align-items-start">
 
-        {{-- LEFT --}}
+        <!-- LEFT -->
         <div class="d-flex gap-3">
-            <div class="stat-icon {{ $report['status'] }}">
+            <div class="stats-icon {{ $report['status'] }}">
                 <i class="bi bi-check-circle"></i>
             </div>
 
             <div>
-                <strong class="d-block">{{ $report['title'] }}</strong>
-                <small class="">
+                <div class="ui-card-title">{{ $report['title'] }}</div>
+                <div class="ui-card-subtitle">
                     {{ $report['category'] }} • Created {{ $report['date'] }}
-                </small>
+                </div>
 
                 @if($report['insights'])
                     <div class="small text-success mt-1">
@@ -94,14 +96,13 @@ $reports = [
             </div>
         </div>
 
-        {{-- RIGHT --}}
+        <!-- RIGHT -->
         <div class="student-actions">
-
             <button class="icon-btn kebab-toggle">
                 <i class="bi bi-three-dots-vertical"></i>
             </button>
 
-            <ul class="kebab-menu">
+            <ul class="kebab-menu ui-dropdown">
                 <li>
                     <i class="bi bi-eye me-2"></i> View Report
                 </li>
@@ -111,11 +112,10 @@ $reports = [
                 <li>
                     <i class="bi bi-pencil me-2"></i> Edit
                 </li>
-                <li class="danger">
+                <li class="text-danger">
                     <i class="bi bi-trash me-2"></i> Delete
                 </li>
             </ul>
-
         </div>
 
     </div>

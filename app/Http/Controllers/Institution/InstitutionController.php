@@ -70,9 +70,9 @@ class InstitutionController extends Controller
             'address_line1' => 'required|max:255',
             'zip' => 'required|max:20',
 
-            'aishe_code' => 'required',
-            'aicte_id' => 'required',
-            'ugc_number' => 'required',
+            'aishe_code',
+            'aicte_id',
+            'ugc_number',
             'institution_type_id' => 'required',
             'terms_accepted' => 'accepted'
         ]);

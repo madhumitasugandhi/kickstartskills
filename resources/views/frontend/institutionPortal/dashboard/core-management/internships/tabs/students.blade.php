@@ -1,30 +1,28 @@
-<div class="glass-card mb-4">
+<div class="ui-card mb-4">
 
-    <!-- SEARCH + FILTER -->
     <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap mb-3">
         <div class="input-group-custom flex-grow-1">
             <i class="bi bi-search"></i>
-            <input class="form-control ps-5"
+            <input class="form-control"
                    placeholder="Search students by name, program, mentor...">
         </div>
 
-        <button class="btn btn-outline-success btn-sm">
+        <button class="btn btn-outline-secondary btn-sm">
             <i class="bi bi-download"></i> Export
         </button>
     </div>
 
-    <!-- PHASE FILTERS -->
-    <div class="d-flex gap-2 flex-wrap">
-        <button class="tab-btn active">✓ All Phases</button>
-        <button class="tab-btn">Foundation</button>
-        <button class="tab-btn">Advanced Learning</button>
-        <button class="tab-btn">Mini-Project</button>
-        <button class="tab-btn">Client Project</button>
+    <div class="ui-tabs">
+        <button class="ui-tab active">All Phases</button>
+        <button class="ui-tab">Foundation</button>
+        <button class="ui-tab">Advanced Learning</button>
+        <button class="ui-tab">Mini-Project</button>
+        <button class="ui-tab">Client Project</button>
     </div>
 </div>
 
 <!-- ================= STUDENT LIST ================= -->
-<div class="drive-list">
+<div class="ui-card">
 
     {{-- STUDENT CARD --}}
     @foreach([
@@ -41,101 +39,72 @@
             'activity'=>'2 hours ago',
             'skills'=>['React','Node.js','JavaScript']
         ],
-        [
-            'name'=>'Priya Patel',
-            'program'=>'Data Science & Analytics',
-            'company'=>'DataMind Analytics',
-            'mentor'=>'Michael Chen',
-            'phase'=>'Advanced Learning Phase',
-            'status'=>'Excellent',
-            'day'=>'45/120',
-            'progress'=>37.5,
-            'attendance'=>98.2,
-            'activity'=>'1 hour ago',
-            'skills'=>['Python','Machine Learning','SQL']
-        ]
+       
     ] as $s)
 
-    <div class="drive-card drive-approval-card">
+    <div class="ui-split">
 
-        <!-- LEFT -->
-        <div class="drive-left">
+<div class="ui-split-left">
 
-            <div class="drive-header">
-                <div class="company-avatar">
-                    {{ strtoupper(substr($s['name'],0,2)) }}
-                </div>
-
-                <div>
-                    <h6 class="mb-1">{{ $s['name'] }}</h6>
-                    <small class="">
-                        {{ $s['program'] }} <br>
-                        {{ $s['company'] }} • Mentor: {{ $s['mentor'] }}
-                    </small>
-                </div>
-            </div>
-
-            <span class="package-badge">
-                {{ $s['phase'] }}
-            </span>
-
-            <div class="mt-3 small ">
-                Overall Progress
-            </div>
-
-            <div class="progress-track mt-1">
-                <div class="progress-fill"
-                     style="width: {{ $s['progress'] }}%">
-                </div>
-            </div>
-
-            <div class="d-flex gap-4 mt-3 small ">
-                <span>Attendance: <b>{{ $s['attendance'] }}%</b></span>
-                <span>Last Activity: {{ $s['activity'] }}</span>
-            </div>
-
-            <div class="skill-chips mt-3">
-                @foreach($s['skills'] as $skill)
-                    <span class="skill-chip">{{ $skill }}</span>
-                @endforeach
-            </div>
-        </div>
-
-        <div class="drive-right">
-
-    <!-- STATUS + KEBAB (INLINE) -->
     <div class="d-flex align-items-center gap-2">
-
-        <span class="status-pill {{ $s['status']==='Excellent' ? 'active' : 'warning' }}">
-            {{ $s['status'] }}
-        </span>
-
-        <div class="student-actions">
-            <button class="icon-btn kebab-btn">
-                <i class="bi bi-three-dots-vertical"></i>
-            </button>
-
-            <ul class="kebab-menu">
-                <li><i class="bi bi-graph-up"></i> View Progress</li>
-                <li><i class="bi bi-person-plus"></i> Assign Mentor</li>
-                <li><i class="bi bi-chat-left-text"></i> Add Feedback</li>
-                <li class="danger">
-                    <i class="bi bi-award"></i> Generate Certificate
-                </li>
-            </ul>
+        <div class="ui-avatar">
+            {{ strtoupper(substr($s['name'],0,2)) }}
         </div>
 
+        <div>
+            <div class="ui-card-title">{{ $s['name'] }}</div>
+            <div class="ui-card-subtitle">
+                {{ $s['program'] }} • {{ $s['company'] }}
+            </div>
+        </div>
     </div>
 
-    <!-- DAY INFO -->
+    <div class="ui-meta">
+        <span>Mentor: {{ $s['mentor'] }}</span>
+        <span>Attendance: {{ $s['attendance'] }}%</span>
+        <span>Last Activity: {{ $s['activity'] }}</span>
+    </div>
+
+    <div class="mt-2 small">Progress</div>
+    <div class="ui-progress">
+        <div class="ui-progress-fill"
+             style="width: {{ $s['progress'] }}%"></div>
+    </div>
+
+    <div class="ui-chips mt-2">
+        @foreach($s['skills'] as $skill)
+            <span class="ui-chip">{{ $skill }}</span>
+        @endforeach
+    </div>
+
+</div>
+
+<div class="ui-split-right student-actions">
+
+    <span class="status-pill">
+        {{ $s['status'] }}
+    </span>
+
+    <button class="icon-btn kebab-btn">
+        <i class="bi bi-three-dots-vertical"></i>
+    </button>
+
+    <ul class="kebab-menu">
+        <li>View Progress</li>
+        <li>Assign Mentor</li>
+        <li>Add Feedback</li>
+        <li class="danger">Generate Certificate</li>
+    </ul>
+
     <div class="small mt-2">
         Day {{ $s['day'] }}
     </div>
 
 </div>
 
-    </div>
+</div>
 
+</div>
     @endforeach
 </div>
 <script>

@@ -39,8 +39,8 @@
                         <i class="bi bi-book me-2"></i> Course Management
                     </a>
 
-                    <a href="{{ route('institution.core.drive-management') }}"
-                        class="nav-item-custom sub-item {{ request()->routeIs('institution.core.drive-management*') ? 'active' : '' }}">
+                    <a href="{{ route('institution.core.drive-management.index') }}"
+                        class="nav-item-custom sub-item {{ request()->routeIs('institution.core.drive-management.index*') ? 'active' : '' }}">
                         <i class="bi bi-hdd-network me-2"></i> Drive Management
                     </a>
 

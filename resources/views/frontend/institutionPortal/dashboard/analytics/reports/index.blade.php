@@ -4,110 +4,30 @@
 @section('title', 'Institutional Reports')
 
 @section('content')
-<style>
-    .report-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    padding: 18px;
-    border-radius: 14px;
-    background: rgba(255,255,255,0.03);
-    margin-bottom: 14px;
-}
 
-.progress-thin {
-    height: 6px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.1);
-}
-
-.badge-soft {
-    background: rgba(16,185,129,0.12);
-    color: #10b981;
-    font-size: 11px;
-}
-/* ===============================
-   REPORTS MODULE (MATCH UI)
-================================ */
-
-.report-card {
-    background: linear-gradient(
-        180deg,
-        rgba(255,255,255,0.04),
-        rgba(255,255,255,0.02)
-    );
-    border: 1px solid var(--glass-border);
-    border-radius: 18px;
-    padding: 22px;
-    margin-bottom: 16px;
-}
-
-.report-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 10px 0;
-}
-
-.report-tag {
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: rgba(16,185,129,0.12);
-    color: #10b981;
-}
-
-.report-status {
-    font-size: 12px;
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-weight: 500;
-}
-
-.report-status.available {
-    background: rgba(16,185,129,0.15);
-    color: #10b981;
-}
-
-.report-status.generating {
-    background: rgba(245,158,11,0.15);
-    color: #f59e0b;
-}
-
-.report-progress {
-    height: 6px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.1);
-    overflow: hidden;
-    margin: 8px 0;
-}
-
-.report-progress > div {
-    height: 100%;
-    background: linear-gradient(90deg, #f59e0b, #fbbf24);
-}
-
-
-</style>
 <div class="container-fluid p-4 p-md-5">
 
     {{-- ================= HEADER ================= --}}
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
-        <div>
-            <h4 class="fw-semibold mb-1">Institutional Reports</h4>
-            <p class=" small mb-0">
-                Generate, manage, and download institutional reports and analytics
-            </p>
+    <div class="ui-page-header d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex gap-3 align-items-center">
+        <div class="ui-icon-box">
+            <i class="bi bi-file-earmark-text"></i>
         </div>
-
-        <button class="btn btn-success btn-sm">
-            <i class="bi bi-plus-lg me-1"></i> Create Report
-        </button>
+        <div>
+            <h5 class="mb-0">Institutional Reports</h5>
+            <small class="ui-muted">
+                Generate, manage, and download institutional reports and analytics
+            </small>
+        </div>
     </div>
 
-    {{-- ================= FILTER BAR ================= --}}
-    <div class="glass-card p-4 mb-4">
+    <button class="btn btn-teal btn-sm">
+        <i class="bi bi-plus-lg me-1"></i> Create Report
+    </button>
+</div>
 
+    {{-- ================= FILTER BAR ================= --}}
+    <div class="ui-card mb-4">
     <div class="input-group-custom mb-3">
         <i class="bi bi-search"></i>
         <input type="text"
@@ -117,7 +37,7 @@
 
     <div class="row g-3 align-items-end">
         <div class="col-md-4">
-            <label class="form-label small ">Category</label>
+            <label class="ui-label ">Category</label>
             <select class="form-select">
                 <option>All Categories</option>
                 <option>Academic</option>
@@ -127,7 +47,7 @@
         </div>
 
         <div class="col-md-4">
-            <label class="form-label small ">Status</label>
+            <label class="ui-label ">Status</label>
             <select class="form-select">
                 <option>All Status</option>
                 <option>Available</option>
@@ -137,7 +57,7 @@
         </div>
 
         <div class="col-md-3">
-            <label class="form-label small ">Format</label>
+            <label class="ui-label ">Format</label>
             <select class="form-select">
                 <option>PDF</option>
                 <option>Excel</option>
@@ -169,56 +89,58 @@
             ];
         @endphp
 
-        @foreach($stats as $stat)
-        <div class="col-md-3">
-        <div class="glass-card p-4 position-relative">
-    <div class="stat-icon mb-3">
-        <i class="bi {{ $stat['icon'] }}"></i>
+@foreach($stats as $stat)
+<div class="col-md-3">
+    <div class="ui-stats-card">
+        <div class="stats-icon">
+            <i class="bi {{ $stat['icon'] }}"></i>
+        </div>
+        <div>
+            <h4>{{ $stat['value'] }}</h4>
+            <small class="ui-muted">{{ $stat['label'] }}</small>
+        </div>
     </div>
-
-    <h4 class="fw-bold mb-1">{{ $stat['value'] }}</h4>
-    <small class="">{{ $stat['label'] }}</small>
-
-    <i class="bi bi-graph-up-right position-absolute top-0 end-0 m-3 text-teal"></i>
+</div>
+@endforeach
 </div>
 
-        </div>
-        @endforeach
-    </div>
-
     {{-- ================= REPORT LIST ================= --}}
-    <div class="report-card d-flex justify-content-between gap-4">
+    <div class="ui-report-card">
     <div>
-        <h6 class="fw-semibold mb-1">Student Performance Report</h6>
-        <p class=" small mb-2">
+        <div class="ui-card-title">Student Performance Report</div>
+        <div class="ui-card-subtitle">
             Comprehensive analysis of student academic performance, grades, and progress tracking
-        </p>
-
-        <div class="report-meta">
-            <span class="report-tag">Academic</span>
-            <span class="report-tag">Performance</span>
-            <span class="report-tag">Monthly</span>
-            <span class="report-tag">PDF</span>
         </div>
 
-        <small class="">
-            <i class="bi bi-building"></i> Academic Office &nbsp; • &nbsp;
-            <i class="bi bi-clock"></i> 28/06/2024 &nbsp; • &nbsp;
+        <div class="ui-ui-report-meta">
+            <span class="ui-report-tag">Academic</span>
+            <span class="ui-report-tag">Performance</span>
+            <span class="ui-report-tag">Monthly</span>
+            <span class="ui-report-tag">PDF</span>
+        </div>
+
+        <small class="ui-muted">
+            <i class="bi bi-building"></i> Academic Office •
+            <i class="bi bi-clock"></i> 28/06/2024 •
             <i class="bi bi-download"></i> 156 downloads
         </small>
     </div>
 
-    <div class="text-end">
-        <span class="report-status available">Available</span>
+    <div class="ui-muted">
+        <span class="ui-report-status available">Available</span>
         <button class="btn btn-link ms-2">
             <i class="bi bi-three-dots-vertical"></i>
         </button>
     </div>
-    </div>
-    <div class="report-card d-flex justify-content-between gap-4">
+</div>
+
+   
+
+
+    <div class="ui-report-card d-flex justify-content-between gap-4">
     <div class="flex-grow-1">
-        <h6 class="fw-semibold mb-1">Faculty Workload Analysis</h6>
-        <p class=" small mb-2">
+        <h6 class="ui-card-title">Faculty Workload Analysis</h6>
+        <p class="ui-card-subtitle">
             Detailed breakdown of faculty teaching loads, research activities, and administrative duties
         </p>
 
@@ -230,22 +152,24 @@
         <small class="">HR Department • Last: 25/06/2024</small>
     </div>
 
-    <div class="text-end">
+    <div class="ui-muted">
         <span class="report-status generating">Generating</span>
         <div class="small  mt-1">ETA: 5 min</div>
     </div>
 </div>
-<div class="report-card d-flex justify-content-between gap-4">
+
+
+<div class="ui-report-card d-flex justify-content-between gap-4">
     <div>
-        <h6 class="fw-semibold mb-1">Financial Summary Report</h6>
-        <p class=" small mb-2">
+        <h6 class="ui-card-title">Financial Summary Report</h6>
+        <p class="ui-card-subtitle">
             Complete financial overview including revenue, expenses, and budget allocation
         </p>
 
-        <div class="report-meta">
-            <span class="report-tag">Financial</span>
-            <span class="report-tag">Summary</span>
-            <span class="report-tag">PDF</span>
+        <div class="ui-report-meta">
+            <span class="ui-report-tag">Financial</span>
+            <span class="ui-report-tag">Summary</span>
+            <span class="ui-report-tag">PDF</span>
         </div>
 
         <small class="">
@@ -254,7 +178,7 @@
     </div>
 
     <div class="text-end">
-        <span class="report-status available">Available</span>
+        <span class="ui-report-status available">Available</span>
         <button class="btn btn-link ms-2">
             <i class="bi bi-three-dots-vertical"></i>
         </button>

@@ -1,53 +1,56 @@
-<div class="modal fade" id="editProgramModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="editProgramModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content glass-modal">
+        <div class="modal-content">
 
-            <div class="modal-header px-4 pt-4 pb-2">
+            <div class="modal-header">
                 <h5 class="modal-title">Edit Program</h5>
-                <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
-            <div class="modal-body px-4 pb-4">
+            <div class="modal-body">
                 <form id="editProgramForm">
+                    @csrf
+                    <input type="hidden" name="program_id" id="edit_program_id">
 
-                    <input type="hidden" id="edit_program_id">
-
-                    <div class="floating-field mb-4">
-                        <input type="text" id="edit_program_name" class="form-control" placeholder=" ">
+                    <div class="ui-floating mb-3">
+                        <input type="text" name="name" id="edit_name" class="form-control" placeholder=" ">
                         <label>Program Name *</label>
                     </div>
 
-                    <div class="floating-field mb-4">
-                        <select id="edit_department_id" class="form-select"></select>
+                    <div class="ui-floating mb-3">
+                        <select class="form-select" name="department_id" id="edit_dept"></select>
                         <label>Department *</label>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="floating-field mb-4">
-                                <input type="text" id="edit_duration" class="form-control" placeholder=" ">
+                            <div class="ui-floating mb-3">
+                                <input type="text" name="duration" id="edit_duration" class="form-control" placeholder=" ">
                                 <label>Duration *</label>
                             </div>
                         </div>
+
                         <div class="col-md-6">
-                            <div class="floating-field mb-4">
-                                <input type="number" id="edit_fees" class="form-control" placeholder=" ">
-                                <label>Fees *</label>
+                            <div class="ui-floating mb-3">
+                                <input type="number" name="fees" id="edit_fees" class="form-control" placeholder=" ">
+                                <label>Fees (₹) *</label>
                             </div>
                         </div>
                     </div>
 
-                    <div class="floating-field mb-4">
-                        <textarea id="edit_description" class="form-control" rows="4" placeholder=" "></textarea>
+                    <div class="ui-floating mb-3">
+                        <textarea name="description" id="edit_description" class="form-control" rows="4" placeholder=" "></textarea>
                         <label>Description *</label>
                     </div>
 
-                    <div class="d-flex justify-content-end gap-3">
-                        <button type="button" class="muted-btn" data-bs-dismiss="modal">
+                    <div class="modal-footer border-0 px-0 pb-0">
+                        <button type="button" class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">
                             Cancel
                         </button>
+
                         <button type="submit" class="btn btn-teal px-4">
-                            Save Changes
+                            Update Program
                         </button>
                     </div>
 

@@ -1,10 +1,10 @@
-<div class="glass-card">
+<div class="ui-section">
 
 <div class="d-flex justify-content-between align-items-center mb-4">
 
 <div>
     <h6 class="mb-0 fw-semibold">Departments</h6>
-    <small class="">
+    <small>
         {{ count($departments ?? []) }} departments configured
     </small>
 </div>
@@ -29,13 +29,13 @@
 
 </div>
 
-    <!-- ================= DEPARTMENT LIST ================= -->
-    <div class="d-flex flex-column gap-3">
+<!-- ================= DEPARTMENT LIST ================= -->
+<div class="d-flex flex-column gap-3">
 
-    @forelse($departments ?? [] as $dept)
-    <div class="configured-item p-4">
+@forelse($departments ?? [] as $dept)
+<div class="ui-list-item p-4">
 
-<div class="d-flex justify-content-between align-items-start">
+<div class="d-flex justify-content-between align-items-start w-100">
 
     <div class="d-flex gap-3">
         <div class="stat-icon info">
@@ -44,9 +44,6 @@
 
         <div>
             <h6 class="mb-1">{{ $dept->department_name }}</h6>
-            <!-- <small class="">
-                Department ID: {{ $dept->department_id }}
-            </small> -->
         </div>
     </div>
 
@@ -68,30 +65,31 @@
 </div>
 
 </div>
-        @empty
-        <div class="text-center p-5 empty-state">
+@empty
+<div class="text-center p-5 ui-preview-box">
     <i class="bi bi-building" style="font-size: 2rem;"></i>
     <p class="mt-2 mb-0">No departments added yet</p>
-    <small class="">Click Add Department to create one</small>
+    <small>Click Add Department to create one</small>
 </div>
 @endforelse
-    </div>
+</div>
 
 </div>
 
+<!-- MODAL -->
 <div class="modal fade" id="addDepartmentModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
 
         <form method="POST" action="{{route('institution.core.academic-structure.departments.store') }}">
             @csrf
 
-            <div class="modal-content glass-modal p-1">
+            <div class="modal-content ui-modal p-1">
 
                 <!-- HEADER -->
                 <div class="modal-header border-0 pb-0">
                     <div>
                         <h6 class="modal-title mb-0">Add Department</h6>
-                        <small class="">Create a new academic department</small>
+                        <small>Create a new academic department</small>
                     </div>
 
                     <button type="button" class="icon-btn" data-bs-dismiss="modal">
@@ -102,7 +100,7 @@
                 <!-- BODY -->
                 <div class="modal-body pt-2">
 
-                    <div class="floating-field mb-3">
+                    <div class="ui-floating mb-3">
                         <input type="text"
                                name="department_name"
                                class="form-control"
@@ -115,7 +113,7 @@
 
                 <!-- FOOTER -->
                 <div class="modal-footer border-0 pt-0">
-                    <button type="button" class="btn muted-btn" data-bs-dismiss="modal">
+                    <button type="button" class="btn ui-btn-muted" data-bs-dismiss="modal">
                         Cancel
                     </button>
                     <button type="submit" class="btn btn-teal">
@@ -128,30 +126,59 @@
         </form>
     </div>
 </div>
-<script>
-    document.querySelectorAll('.editDeptBtn').forEach(btn => {
-    btn.addEventListener('click', function () {
 
-        let id = this.dataset.id;
+<script>
+document.addEventListener('click', function(e) {
+
+    /* ================= EDIT ================= */
+    let editBtn = e.target.closest('.editDeptBtn');
+    if (editBtn) {
+        let id = editBtn.dataset.id;
 
         fetch(`/institution/core-management/academic-structure/departments/edit/${id}`)
             .then(res => res.json())
             .then(data => {
-                console.log(data); 
+                console.log(data);
+                // open edit modal later
             });
+    }
 
-    });
-});
+    /* ================= DELETE ================= */
+    let deleteBtn = e.target.closest('.deleteDeptBtn');
+    if (deleteBtn) {
+        let id = deleteBtn.dataset.id;
 
-document.querySelectorAll('.kebab-toggle').forEach(btn => {
-    btn.addEventListener('click', function (e) {
+        if (!confirm('Delete this department?')) return;
+
+        let form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/institution/core-management/academic-structure/departments/delete/${id}`;
+
+        let csrf = document.createElement('input');
+        csrf.type = 'hidden';
+        csrf.name = '_token';
+        csrf.value = '{{ csrf_token() }}';
+
+        let method = document.createElement('input');
+        method.type = 'hidden';
+        method.name = '_method';
+        method.value = 'DELETE';
+
+        form.appendChild(csrf);
+        form.appendChild(method);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    /* ================= KEBAB MENU ================= */
+    let kebab = e.target.closest('.kebab-toggle');
+    if (kebab) {
         e.stopPropagation();
         document.querySelectorAll('.kebab-menu').forEach(m => m.classList.remove('show'));
-        this.nextElementSibling.classList.toggle('show');
-    });
-});
+        kebab.nextElementSibling.classList.toggle('show');
+    } else {
+        document.querySelectorAll('.kebab-menu').forEach(m => m.classList.remove('show'));
+    }
 
-document.addEventListener('click', () => {
-    document.querySelectorAll('.kebab-menu').forEach(m => m.classList.remove('show'));
 });
 </script>

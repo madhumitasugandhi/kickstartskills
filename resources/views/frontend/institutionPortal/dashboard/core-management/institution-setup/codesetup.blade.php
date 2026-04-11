@@ -7,7 +7,7 @@
     <!-- HEADER -->
     <div class="mb-3">
         <div class="ui-section-title">INSTITUTION CODE CONFIGURATION</div>
-        <small class="text-muted">
+        <small class="">
             Configure how student institution codes will be generated
         </small>
     </div>
@@ -29,7 +29,7 @@
                     value="{{ $sessionData['code']['prefix'] ?? $institution->institution_code_prefix ?? '' }}"
                     style="text-transform:uppercase;">
             </div>
-            <small class="text-muted">
+            <small class="">
                 This will be the beginning of all student codes
             </small>
         </div>
@@ -50,7 +50,7 @@
         <div class="ui-list-item mb-3">
             <div>
                 <div class="fw-semibold">Include Year In Code</div>
-                <small class="text-muted">
+                <small class="">
                     Include enrollment year (e.g., 2024)
                 </small>
             </div>
@@ -64,13 +64,13 @@
 
         <!-- Preview -->
         <div class="ui-preview-box text-center">
-            <div class="mb-2 text-muted small">
+            <div class="mb-2  small">
                 Live Preview
             </div>
 
             <div class="ui-preview-badge mb-2" id="liveCodePreview"></div>
 
-            <div class="small text-muted">
+            <div class="small ">
                 Format Structure:
                 <code>{PREFIX}-{COURSE}-{YEAR}-{NUMBER}</code>
             </div>
@@ -128,7 +128,7 @@
             exampleContainer.innerHTML = '';
 
             if (courseData.length === 0) {
-                exampleContainer.innerHTML = '<div class="small text-muted">No courses found</div>';
+                exampleContainer.innerHTML = '<div class="small ">No courses found</div>';
                 return;
             }
 

@@ -4,6 +4,8 @@ namespace App\Models\Institution;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Mentor\Drive;
+
 
 class CourseType extends Model
 {
@@ -57,6 +59,16 @@ public function faculties()
         'faculty_courses',
         'course_type_id',
         'faculty_id'
+    );
+}
+
+public function drives()
+{
+    return $this->belongsToMany(
+        Drive::class,
+        'drive_courses',
+        'course_type_id',
+        'drive_id'
     );
 }
 }

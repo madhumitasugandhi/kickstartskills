@@ -29,6 +29,42 @@ class StudentExaminationController extends Controller
         return view('frontend.studentPortal.dashboard.examinations.takeTestIndex', compact('availableExams', 'user'));
     }
 
+    public function approvedDrives()
+{
+    $studentId = auth()->id();
+
+    $drives = DB::table('drives as d')
+    ->whereIn('d.drive_id', function($q) use ($studentId){
+        $q->select('drive_id')
+          ->from('drive_visible_students')
+          ->where('is_visible', 1)
+->whereJsonContains('student_id', (string)$studentId);
+
+})
+    ->leftJoin('drive_assessments as da','da.drive_id','=','d.drive_id')
+    ->leftJoin('student_drive_payments as sdp', function($join){
+        $join->on('sdp.drive_id','=','d.drive_id')
+             ->where('sdp.student_id','=',auth()->id());
+    })
+
+    
+    ->select(
+        'd.drive_id',
+        'd.drive_title',
+        'd.location',
+        'd.drive_type',
+        'da.exam_date',
+        'da.start_time',
+        'da.end_time',
+        'sdp.status as payment_status'
+    )
+    ->get();
+
+    return view(
+        'frontend.studentPortal.dashboard.examinations.approvedDrives',
+        compact('drives')
+    );
+}
     public function startTest($id)
     {
         $user = Auth::user();
@@ -306,4 +342,119 @@ public function submitQuiz(Request $request)
 
         return view('frontend.studentPortal.dashboard.examinations.practiceTestsIndex', compact('practiceExams', 'user'));
     }
+
+    public function combinedResults(Request $request)
+{
+    $user = Auth::user();
+
+    // ================= EXAM RESULTS =================
+    $examResults = DB::table('student_exam_attempts as sea')
+        ->join('exams as e', 'sea.exam_id', '=', 'e.id')
+        ->leftJoin('skills_categories as sc', 'e.skill_category_id', '=', 'sc.id')
+        ->where('sea.user_id', $user->id)
+        ->select(
+            'sea.id',
+            'sea.score',
+            'sea.correct_answers',
+            'sea.total_questions',
+            'sea.status',
+            'sea.time_taken',
+            'sea.attempt_no',
+            'sea.created_at',
+            'e.exam_title as title',
+            'e.duration_minutes as total_time',
+            'sc.name as skill_name',
+            DB::raw("'exam' as type"),
+            DB::raw('NULL as drive_id')
+        )
+        ->get();
+
+    // ================= DRIVE RESULTS =================
+    $driveResults = DB::table('student_results as sr')
+        ->leftJoin('drives as d', 'sr.drive_id', '=', 'd.drive_id')
+        ->where('sr.user_id', $user->id)
+        ->where('sr.type', 'drive')
+        ->select(
+            'sr.id',
+            'sr.score',
+            'sr.correct_answers',
+            'sr.total_questions',
+            'sr.status',
+            'sr.time_taken',
+            DB::raw('1 as attempt_no'),
+            'sr.created_at',
+            'd.drive_title as title',
+            DB::raw('NULL as total_time'),
+            DB::raw("'Drive' as skill_name"),
+            DB::raw("'drive' as type"),
+            'sr.drive_id'
+        )
+        ->get();
+
+    // ================= MERGE =================
+    $results = $examResults->merge($driveResults);
+
+    // ================= TAB FILTER (🔥 FIXED) =================
+    if ($request->tab == 'exam') {
+        $results = $results->where('type', 'exam');
+    } elseif ($request->tab == 'drive') {
+        $results = $results->where('type', 'drive');
+    }
+
+    // ================= SORT =================
+    $results = $request->sort == 'oldest'
+        ? $results->sortBy('created_at')
+        : $results->sortByDesc('created_at');
+
+    $results = $results->values(); // reset keys
+
+    // ================= STATS =================
+    $avgScore = $results->avg('score') ?? 0;
+    $highScore = $results->max('score') ?? 0;
+    $passRate = $results->count() > 0
+        ? ($results->where('status', 'Passed')->count() / $results->count()) * 100
+        : 0;
+
+    // Subjects
+    $subjects = DB::table('skills_categories')->pluck('name');
+
+    // Subject performance
+    $subjectPerformance = DB::table('student_question_attempts')
+        ->join('skills_categories', 'student_question_attempts.skills_category_id', '=', 'skills_categories.id')
+        ->where('student_question_attempts.user_id', $user->id)
+        ->select(
+            'skills_categories.name as subject',
+            DB::raw('COUNT(*) as total_questions'),
+            DB::raw('SUM(is_correct) as correct_answers'),
+            DB::raw('(SUM(is_correct)/COUNT(*))*100 as accuracy')
+        )
+        ->groupBy('skills_categories.name')
+        ->get();
+
+    // Recommendations
+    $recommendations = [];
+    foreach ($subjectPerformance as $sub) {
+        if ($sub->accuracy < 40) {
+            $recommendations[] = "Focus on {$sub->subject}";
+        } elseif ($sub->accuracy < 70) {
+            $recommendations[] = "Practice more {$sub->subject}";
+        } else {
+            $recommendations[] = "Good performance in {$sub->subject}";
+        }
+    }
+
+    return view(
+        'frontend.studentPortal.dashboard.examinations.resultsIndex',
+        compact(
+            'results',
+            'user',
+            'avgScore',
+            'highScore',
+            'passRate',
+            'subjects',
+            'subjectPerformance',
+            'recommendations'
+        )
+    );
+}
 }

@@ -1,18 +1,20 @@
-<div class="glass-card d-flex justify-content-between align-items-center mb-4">
+<div class="ui-page-header d-flex justify-content-between align-items-center">
+
     <div class="d-flex align-items-center gap-3">
-        <div class="stat-icon success">
+        <div class="ui-icon-box">
             <i class="bi bi-briefcase"></i>
         </div>
+
         <div>
-            <h5 class="fw-semibold mb-1">Internship Management</h5>
-            <p class="small mb-0">
+            <h5 class="mb-1">Internship Management</h5>
+            <small class="ui-muted">
                 Manage 120-day structured internship programs and student progress
-            </p>
+            </small>
         </div>
     </div>
-   
 
-    <a href="#" class="btn btn-success btn-sm" id="createDriveBtn">
+    <button class="btn btn-teal btn-sm" id="createDriveBtn">
         <i class="bi bi-plus-lg me-1"></i> Create Drive
-    </a>
+    </button>
+
 </div>

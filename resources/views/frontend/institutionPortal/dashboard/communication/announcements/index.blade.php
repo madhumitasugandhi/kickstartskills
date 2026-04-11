@@ -7,24 +7,28 @@
 <div class="container-fluid p-3 p-md-5">
 
     <!-- ================= HEADER ================= -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
-        <div>
-            <h1 class="h3 fw-bold mb-1">Announcements</h1>
-            <p class="mb-0">
-                Create, manage, and publish institutional announcements
-            </p>
+    <div class="ui-page-header d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex gap-3 align-items-center">
+        <div class="ui-icon-box">
+            <i class="bi bi-megaphone"></i>
         </div>
-
-        <button class="btn btn-teal"
-                data-bs-toggle="modal"
-                data-bs-target="#createAnnouncementModal">
-            <i class="bi bi-plus-lg me-2"></i> New Announcement
-        </button>
+        <div>
+            <h5 class="mb-0">Announcements</h5>
+            <small class="ui-muted">
+                Create, manage, and publish institutional announcements
+            </small>
+        </div>
     </div>
 
-    <!-- ================= SEARCH & FILTERS ================= -->
-    <div class="glass-card p-4 mb-4">
+    <button class="btn btn-teal"
+            data-bs-toggle="modal"
+            data-bs-target="#createAnnouncementModal">
+        <i class="bi bi-plus-lg me-2"></i> New Announcement
+    </button>
+</div>
 
+    <!-- ================= SEARCH & FILTERS ================= -->
+    <div class="ui-card mb-4">
 <div class="input-group-custom mb-3">
     <i class="bi bi-search"></i>
     <input type="text"
@@ -34,7 +38,7 @@
 
 <div class="row g-3 align-items-end">
     <div class="col-md-4">
-        <label class="form-label small text-muted">Priority</label>
+        <label class="ui-label">Priority</label>
         <select class="form-select">
             <option>All Priorities</option>
             <option>High</option>
@@ -44,7 +48,7 @@
     </div>
 
     <div class="col-md-4">
-        <label class="form-label small text-muted">Status</label>
+        <label class="ui-label">Status</label>
         <select class="form-select">
             <option>All Status</option>
             <option>Published</option>
@@ -54,7 +58,7 @@
     </div>
 
     <div class="col-md-3">
-        <label class="form-label small text-muted">Audience</label>
+        <label class="ui-label">Audience</label>
         <select class="form-select">
             <option>All Audiences</option>
             <option>Students</option>
@@ -91,64 +95,62 @@
         @endphp
 
 <div class="row g-3 mb-5">
-    @foreach($stats as $stat)
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="glass-card p-4 position-relative">
-
-            <div class="stat-icon mb-3">
-                <i class="bi {{ $stat['icon'] }}"></i>
-            </div>
-
-            <h4 class="fw-bold mb-1">{{ $stat['value'] }}</h4>
-            <small class="text-muted">{{ $stat['label'] }}</small>
-
-            <i class="bi bi-graph-up-right position-absolute top-0 end-0 m-3 text-teal"></i>
+@foreach($stats as $stat)
+<div class="col-12 col-md-6 col-xl-3">
+    <div class="ui-stats-card">
+        <div class="stats-icon">
+            <i class="bi {{ $stat['icon'] }}"></i>
+        </div>
+        <div>
+            <h4>{{ $stat['value'] }}</h4>
+            <small class="ui-muted">{{ $stat['label'] }}</small>
         </div>
     </div>
-    @endforeach
+</div>
+@endforeach
 </div>
 
     </div>
 
     <!-- ================= LIST HEADER ================= -->
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h6 class="fw-semibold mb-0">Announcements (6)</h6>
-        <a href="#" class="small text-info">Bulk Actions</a>
-    </div>
+    <div class="ui-card-title">Announcements (6)</div>
+    <a href="#" class="ui-link">Bulk Actions</a>
+</div>
 
     <!-- ================= ANNOUNCEMENT CARD ================= -->
-    <div class="announcement-card d-flex justify-content-between gap-4 mb-4">
+    <div class="ui-announcement-card">
 
     <div>
         <div class="d-flex align-items-center gap-2 mb-1">
             <i class="bi bi-star-fill text-warning"></i>
-            <h6 class="fw-semibold mb-0">
+            <div class="ui-card-title">
                 Academic Year 2024–25 Registration Open
-            </h6>
+            </div>
         </div>
 
-        <p class="text-muted mb-2">
+        <div class="ui-card-subtitle">
             Registration for Academic Year 2024–25 is now open. Complete your enrollment
             through the registration portal.
-        </p>
-
-        <div class="announcement-meta">
-            <span class="announcement-tag">Category: Academic</span>
-            <span class="announcement-tag">Author: Academic Office</span>
-            <span class="announcement-tag">Attachments: 2</span>
-            <span class="announcement-tag">Audience: Students, Faculty</span>
         </div>
 
-        <small class="text-muted">
-            <i class="bi bi-calendar"></i> 28/06/2024 &nbsp; • &nbsp;
-            <i class="bi bi-eye"></i> 1247 views &nbsp; • &nbsp;
+        <div class="ui-announcement-meta">
+            <span class="ui-announcement-tag">Category: Academic</span>
+            <span class="ui-announcement-tag">Author: Academic Office</span>
+            <span class="ui-announcement-tag">Attachments: 2</span>
+            <span class="ui-announcement-tag">Audience: Students, Faculty</span>
+        </div>
+
+        <small class="ui-muted">
+            <i class="bi bi-calendar"></i> 28/06/2024 •
+            <i class="bi bi-eye"></i> 1247 views •
             <i class="bi bi-chat"></i> 23 comments
         </small>
     </div>
 
     <div class="text-end">
-        <span class="announcement-status priority-high">High</span>
-        <span class="announcement-status status-published ms-2">Published</span>
+        <span class="ui-announcement-status high">High</span>
+        <span class="ui-announcement-status published ms-2">Published</span>
         <button class="btn btn-link ms-2">
             <i class="bi bi-three-dots-vertical"></i>
         </button>

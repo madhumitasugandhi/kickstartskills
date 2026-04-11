@@ -1,55 +1,18 @@
-<style>
-    /* ===============================
-   PERFORMANCE ANALYTICS UI
-================================ */
+<div class="ui-card ui-analytics-card mb-4">
 
-/* Top performers list */
-.top-performers {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.performer-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.performer-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.performer-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--primary-teal);
-}
-
-.performer-right {
-    font-size: 0.8rem;
-    color: var(--primary-teal);
-}
-
-/* Slight divider spacing */
-.analytics-row {
-    padding-bottom: 6px;
-}
-
-</style>
-<div class="glass-card analytics-card mb-4">
-
-    <h6 class="fw-semibold mb-4">Performance Analytics</h6>
+    <div class="ui-card-header">
+        <div>
+            <div class="ui-card-title">Performance Analytics</div>
+            <div class="ui-card-subtitle">Top performers & course averages</div>
+        </div>
+    </div>
 
     {{-- ================= TOP PERFORMERS ================= --}}
-    <div class="mb-4">
+    <div class="ui-section">
 
-        <small class="d-block mb-3">
+        <div class="ui-section-title">
             Top Performers by CGPA
-        </small>
+        </div>
 
         <div class="top-performers">
 
@@ -66,14 +29,14 @@
                 <div class="performer-row">
 
                     <div class="performer-left">
-                        <span class="performer-dot"></span>
+                        <span class="dot success"></span>
                         <div>
                             <div class="fw-semibold small">{{ $p['name'] }}</div>
-                            <div class="small">{{ $p['program'] }}</div>
+                            <div class="small text-muted">{{ $p['program'] }}</div>
                         </div>
                     </div>
 
-                    <div class="performer-right">
+                    <div class="ui-badge">
                         CGPA: {{ number_format($p['cgpa'], 2) }}
                     </div>
 
@@ -85,11 +48,11 @@
     </div>
 
     {{-- ================= AVERAGE PERFORMANCE ================= --}}
-    <div>
+    <div class="ui-section">
 
-        <small class="d-block mb-3">
+        <div class="ui-section-title">
             Average Performance by Course
-        </small>
+        </div>
 
         @php
             $courses = [

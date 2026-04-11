@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Institution;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Institution\InstitutionDrive;
+use App\Models\Institution\Internship;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
-class InstitutionDriveController extends Controller
+class InternshipController extends Controller
 {
     /**
      * List all drives
@@ -17,7 +17,7 @@ class InstitutionDriveController extends Controller
 {
     $institutionId = session('institution_id');
 
-    $drives = InstitutionDrive::where('institution_id', $institutionId)
+    $drives = Internship::where('institution_id', $institutionId)
                 ->orderBy('id', 'desc')
                 ->get();
 
@@ -52,7 +52,7 @@ class InstitutionDriveController extends Controller
         DB::beginTransaction();
         try {
 
-            InstitutionDrive::create([
+            Internship::create([
                 'drive_name' => $request->drive_name,
                 'description' => $request->description,
                 'company_name' => $request->company_name,
@@ -88,7 +88,7 @@ class InstitutionDriveController extends Controller
      */
     public function edit($id)
 {
-    $drive = InstitutionDrive::find($id);
+    $drive = Internship::find($id);
 
     return response()->json([
         'id' => $drive->id,
@@ -109,7 +109,7 @@ class InstitutionDriveController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $drive = InstitutionDrive::find($id);
+        $drive = Internship::find($id);
     
         if (!$drive) {
             return response()->json([
@@ -141,7 +141,7 @@ class InstitutionDriveController extends Controller
      */
     public function destroy($id)
     {
-        $drive = InstitutionDrive::find($id);
+        $drive = Internship::find($id);
 
         if (!$drive) {
             return response()->json([
@@ -163,7 +163,7 @@ class InstitutionDriveController extends Controller
      */
     public function changeStatus(Request $request)
     {
-        $drive = InstitutionDrive::find($request->id);
+        $drive = Internship::find($request->id);
 
         if (!$drive) {
             return response()->json([

@@ -5,11 +5,11 @@ namespace App\Models\Institution;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class InstitutionDrive extends Model
+class Internship extends Model
 {
     use HasFactory;
 
-    protected $table = 'institutions_drive';
+    protected $table = 'internship';
 
     public const STATUS_DRAFT = 'draft';
     public const STATUS_OPEN = 'open';

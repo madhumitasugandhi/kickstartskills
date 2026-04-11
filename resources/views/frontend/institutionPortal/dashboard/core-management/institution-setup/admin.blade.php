@@ -1,64 +1,72 @@
-<div class="setup-step" id="adminStep">
+<div id="adminStep">
 
     <!-- SESSION DATA -->
     <div id="adminData"
          data-session='@json($sessionData["admin"] ?? [])'>
     </div>
 
-    <!-- ================= HEADER ================= -->
-    <div class="mb-4">
-        <h6 class="section-title-custom mb-1">Administrator Setup</h6>
-        <p class="small">
+    <!-- HEADER -->
+    <div class="mb-3">
+        <div class="ui-section-title">ADMINISTRATOR SETUP</div>
+        <small class="">
             Configure the primary administrator account for your institution
-        </p>
+        </small>
     </div>
 
-    <div class="config-card p-4">
+    <div class="ui-section">
 
-        <!-- ================= ADMIN DETAILS ================= -->
-        <div class="mb-4">
-            <div class="row g-3">
+        <!-- ADMIN DETAILS -->
+        <div class="row g-3 mb-3">
 
-                <div class="col-md-6">
-                    <label class="form-label-custom">Admin Full Name *</label>
-                    <input type="text" name="name" class="form-control"
-                        value="{{ $sessionData['admin']['name'] ?? ($admin->name ?? '') }}">
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label-custom">Admin Email *</label>
-                    <input type="email" name="email" class="form-control"
-                        value="{{ $sessionData['admin']['email'] ?? ($admin->email ?? '') }}">
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label-custom">Phone Number *</label>
-                    <input type="text" name="phone" class="form-control"
-                        value="{{ $sessionData['admin']['phone'] ?? ($admin->phone ?? '') }}">
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label-custom">Designation *</label>
-                    <input type="text" name="designation" class="form-control"
-                        value="{{ $sessionData['admin']['designation'] ?? ($admin->designation ?? '') }}">
-                </div>
-
+            <div class="col-md-6">
+                <label class="ui-label">Admin Full Name *</label>
+                <input type="text" name="name" class="form-control"
+                    value="{{ $sessionData['admin']['name'] ?? ($admin->name ?? '') }}">
             </div>
+
+            <div class="col-md-6">
+                <label class="ui-label">Admin Email *</label>
+                <input type="email" name="email" class="form-control"
+                    value="{{ $sessionData['admin']['email'] ?? ($admin->email ?? '') }}">
+            </div>
+
+            <div class="col-md-6">
+                <label class="ui-label">Phone Number *</label>
+                <input type="text" name="phone" class="form-control"
+                    value="{{ $sessionData['admin']['phone'] ?? ($admin->phone ?? '') }}">
+            </div>
+
+            <div class="col-md-6">
+                <label class="ui-label">Designation *</label>
+                <input type="text" name="designation" class="form-control"
+                    value="{{ $sessionData['admin']['designation'] ?? ($admin->designation ?? '') }}">
+            </div>
+
         </div>
 
+        <div class="ui-divider"></div>
+
         <!-- PASSWORD -->
-        <div class="mb-4">
-            <label class="form-label-custom">Initial Password *</label>
-            <div class="input-group-custom">
+        <div class="mb-2">
+            <label class="ui-label">Initial Password *</label>
+            <div class="ui-input-icon">
                 <i class="bi bi-lock"></i>
                 <input type="password" name="password"
-                    class="form-control ps-5"
+                    class="form-control"
                     placeholder="Enter initial password">
             </div>
 
-            <small class="small">
+            <small class="">
                 Minimum 8 characters with uppercase, lowercase, number & special character
             </small>
+        </div>
+
+        <div class="ui-alert mt-3">
+            <i class="bi bi-info-circle-fill"></i>
+            <div>
+                This administrator will manage departments, courses, students,
+                and institution settings.
+            </div>
         </div>
 
     </div>

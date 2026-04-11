@@ -1,24 +1,4 @@
 <script>
-function openCreateProgram() {
-    showModal('createProgramModal');
-}
-
-function openEditProgram(id) {
-    // later: fetch program data via AJAX
-    showModal('editProgramModal');
-}
-
-function openViewProgram(id) {
-    showModal('viewProgramModal');
-}
-
-function showModal(id) {
-    document.getElementById(id).classList.remove('hidden');
-}
-
-function closeModal(id) {
-    document.getElementById(id).classList.add('hidden');
-}
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -103,65 +83,57 @@ function loadPrograms() {
             data.forEach(program => {
 
                 let card = `
-                <div class="course-type-card program-card"
-                     data-name="${program.name.toLowerCase()}"
-                     data-department="${program.department_id}"
-                     data-status="${program.status ? 1 : 0}">
+<div class="ui-card program-card"
+     data-name="${program.name.toLowerCase()}"
+     data-department="${program.department_id}"
+     data-status="${program.status ? 1 : 0}">
 
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <div>
-                            <h6 class="fw-semibold mb-1">${program.name}</h6>
-                            <small>${program.department?.department_name ?? ''} • ${program.duration}</small>
-                        </div>
+    <div class="ui-card-header">
+        <div>
+            <div class="ui-card-title">${program.name}</div>
+            <div class="ui-card-subtitle">
+                ${program.department?.department_name ?? ''} • ${program.duration}
+            </div>
+        </div>
 
-                        <div class="d-flex align-items-center gap-2">
-                            <span class="status-pill ${program.status ? 'active' : 'inactive'}">
-                                ${program.status ? 'Active' : 'Inactive'}
-                            </span>
+        <div class="d-flex align-items-center gap-2 student-actions">
+            <span class="status-pill ${program.status ? 'active' : 'inactive'}">
+                ${program.status ? 'Active' : 'Inactive'}
+            </span>
 
-                            <div class="student-actions">
-                                <button class="icon-btn kebab-toggle">
-                                    <i class="bi bi-three-dots-vertical"></i>
-                                </button>
+            <button class="icon-btn kebab-toggle">
+                <i class="bi bi-three-dots-vertical"></i>
+            </button>
 
-                                <ul class="kebab-menu">
-                                    <li onclick="viewProgram(${program.id})">
-                                        <i class="bi bi-eye"></i> View
-                                    </li>
-                                    <li onclick="editProgram(${program.id})">
-                                        <i class="bi bi-pencil"></i> Edit
-                                    </li>
-                                     <li onclick="toggleStatus(${program.id}, ${program.status ? 1 : 0})">
-        <i class="bi bi-toggle-on"></i>
-        ${program.status ? 'Set Inactive' : 'Set Active'}
-    </li>
-                                    <li class="danger" onclick="deleteProgram(${program.id})">
-                                        <i class="bi bi-trash"></i> Delete
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+            <ul class="kebab-menu">
+                <li onclick="viewProgram(${program.id})">
+                    <i class="bi bi-eye"></i> View
+                </li>
+                <li onclick="editProgram(${program.id})">
+                    <i class="bi bi-pencil"></i> Edit
+                </li>
+                <li onclick="toggleStatus(${program.id}, ${program.status ? 1 : 0})">
+                    <i class="bi bi-toggle-on"></i>
+                    ${program.status ? 'Set Inactive' : 'Set Active'}
+                </li>
+                <li class="danger" onclick="deleteProgram(${program.id})">
+                    <i class="bi bi-trash"></i> Delete
+                </li>
+            </ul>
+        </div>
+    </div>
 
-                    <p class="small mb-3">${program.description ?? ''}</p>
+    <div class="ui-meta mt-2">
+        <span>Fees: <strong>₹${program.fees ?? 0}</strong></span>
+        <span>Duration: <strong>${program.duration}</strong></span>
+    </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <small>Fees</small>
-                            <strong>₹${program.fees ?? 0}</strong>
-                        </div>
-                        <div class="col-md-3">
-                            <small>Duration</small>
-                            <strong>${program.duration}</strong>
-                        </div>
-                    </div>
-                </div>
-                `;
-
-                container.innerHTML += card;
+    <p class="small mt-2">${program.description ?? ''}</p>
+</div>
+`;                container.innerHTML += card;
             });
 
-            attachKebab();
+            
             initFilters();
         });
 }
@@ -169,20 +141,23 @@ function loadPrograms() {
 /* =============================
    KEBAB MENU
 ============================= */
-function attachKebab(){
-    document.querySelectorAll('.kebab-toggle').forEach(btn => {
-        btn.addEventListener('click', function(e){
-            e.stopPropagation();
-            this.nextElementSibling.classList.toggle('show');
-        });
-    });
+document.addEventListener('click', function(e){
 
-    document.addEventListener('click', function(){
-        document.querySelectorAll('.kebab-menu').forEach(menu=>{
-            menu.classList.remove('show');
-        });
-    });
+if(e.target.closest('.kebab-toggle')){
+    e.stopPropagation();
+
+    document.querySelectorAll('.kebab-menu')
+        .forEach(m => m.classList.remove('show'));
+
+    e.target.closest('.student-actions')
+        .querySelector('.kebab-menu')
+        .classList.toggle('show');
+} else {
+    document.querySelectorAll('.kebab-menu')
+        .forEach(m => m.classList.remove('show'));
 }
+
+});
 
 /* =============================
    FILTERS
@@ -246,7 +221,7 @@ function editProgram(id){
     .then(data=>{
 
         document.getElementById('edit_program_id').value = data.id;
-        document.getElementById('edit_program_name').value = data.name;
+        document.getElementById('edit_name').value = data.name;
         document.getElementById('edit_duration').value = data.duration;
         document.getElementById('edit_fees').value = data.fees;
         document.getElementById('edit_description').value = data.description;
@@ -255,7 +230,7 @@ function editProgram(id){
         fetch('/institution/electives/program-management/departments')
         .then(res=>res.json())
         .then(depts=>{
-            let select = document.getElementById('edit_department_id');
+            let select = document.getElementById('edit_dept');
             select.innerHTML = '';
 
             depts.forEach(d=>{
@@ -317,8 +292,8 @@ if(e.target && e.target.id === 'editProgramForm'){
     let id = document.getElementById('edit_program_id').value;
 
     let formData = new FormData();
-    formData.append('name', document.getElementById('edit_program_name').value);
-    formData.append('department_id', document.getElementById('edit_department_id').value);
+    formData.append('name', document.getElementById('edit_name').value);
+    formData.append('department_id', document.getElementById('edit_dept').value);
     formData.append('duration', document.getElementById('edit_duration').value);
     formData.append('fees', document.getElementById('edit_fees').value);
     formData.append('description', document.getElementById('edit_description').value);

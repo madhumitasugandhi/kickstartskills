@@ -162,8 +162,8 @@
     </div>
 
     <!-- 2. Filters -->
-    <form method="GET" action="{{ route('student.exam.results') }}">
-<div class="mb-4">
+    <form method="GET" action="{{ route('student.exam.results.all') }}">
+        <div class="mb-4">
     <h6 class="fw-bold text-main mb-3">
         <i class="bi bi-funnel me-2 text-primary"></i>Filters & Sorting
     </h6>
@@ -213,7 +213,7 @@
         <button type="submit" class="btn btn-primary">
             Apply Filters
         </button>
-        <a href="{{ route('student.exam.results') }}" class="btn btn-light">
+        <a href="{{ route('student.exam.results.all') }}" class="btn btn-light">
             Reset
         </a>
     </div>
@@ -281,6 +281,20 @@
         </div>
     </div>
 
+    <div class="mb-4 d-flex gap-2">
+    <a href="{{ route('student.exam.results.all') }}" 
+       class="btn {{ request('tab') == null ? 'btn-primary' : 'btn-light' }}">
+        All
+    </a>
+
+    <a href="{{ route('student.exam.results.all', array_merge(request()->all(), ['tab' => 'exam'])) }}"       class="btn {{ request('tab') == 'exam' ? 'btn-primary' : 'btn-light' }}">
+        Exams
+    </a>
+
+    <a href="{{ route('student.exam.results.all', array_merge(request()->all(), ['tab' => 'drive'])) }}"       class="btn {{ request('tab') == 'drive' ? 'btn-primary' : 'btn-light' }}">
+        Drives
+    </a>
+</div>
     <!-- 4. Recent Results List -->
     <h6 class="fw-bold text-main mb-3">Recent Test Results</h6>
 
@@ -294,10 +308,12 @@
                 <i class="bi bi-file-earmark-text"></i>
             </div>
             <div>
-                <h6 class="fw-bold text-main m-0">{{ $res->exam_title }}</h6>
+                <h6 class="fw-bold text-main m-0">{{ $res->title ?? $res->exam_title ?? $res->drive_title ?? 'Test' }}</h6>
                 <div class="d-flex gap-2 mt-1">
-                    <span class="badge bg-primary bg-opacity-10 text-primary">{{ $res->skill_name ?? 'General' }}</span>
-                </div>
+                <span class="badge 
+    {{ $res->type == 'drive' ? 'bg-success bg-opacity-10 text-success' : 'bg-primary bg-opacity-10 text-primary' }}">
+    {{ ucfirst($res->type) }}
+</span>         </div>
             </div>
         </div>
 
@@ -325,8 +341,9 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold">{{ $res->exam_title }}</h5>
-                    <button type="button" class="btn-close border border-primary" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title fw-bold">
+    {{ $res->title ?? 'Test Details' }}
+</h5>                    <button type="button" class="btn-close border border-primary" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
 
@@ -372,7 +389,7 @@
                             <div class="stat-row">
                                 <span>Exam Duration</span>
                                 <span class="fw-bold">
-                                    {{ $res->total_time }} mins
+{{ $res->total_time ?? '-' }} mins
                                 </span>
                             </div>
                         </div>

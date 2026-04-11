@@ -1,77 +1,15 @@
-<style>
-    /* ===============================
-   BENCHMARKING HELPERS
-================================ */
-
-.dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.dot.success {
-    background: #10b981;
-}
-/* ===============================
-   BENCHMARK TABLE – DARK MODE
-================================ */
-
-.benchmark-table {
-    color: var(--text-main);
-    margin: 0;
-}
-
-/* Header */
-.benchmark-table thead th {
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    border-bottom: 1px solid var(--border-color);
-    background: transparent;
-}
-
-/* Rows */
-.benchmark-table tbody tr {
-    background: transparent;
-}
-
-/* Cells */
-.benchmark-table td {
-    padding: 14px 12px;
-    border-bottom: 1px solid var(--border-color);
-    color: var(--text-muted);
-    vertical-align: middle;
-    background: transparent;
-}
-
-/* Remove last border */
-.benchmark-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-/* Highlight current institution */
-.benchmark-table .current-row td {
-    background: rgba(45, 212, 191, 0.06);
-}
-
-/* Numbers */
-.benchmark-table td.text-success {
-    font-weight: 600;
-}
-
-/* Dot alignment */
-.benchmark-table .dot {
-    position: relative;
-    top: -1px;
-}
-
-</style>
 
 {{-- ================= BENCHMARKING & COMPARATIVE ANALYSIS ================= --}}
-<div class="d-flex align-items-center gap-2 mb-4">
-    <i class="bi bi-bar-chart-line text-teal"></i>
-    <h6 class="fw-semibold mb-0">Benchmarking & Comparative Analysis</h6>
+<div class="ui-page-header mb-3">
+    <div class="d-flex gap-3 align-items-center">
+        <div class="ui-icon-box">
+            <i class="bi bi-bar-chart-line"></i>
+        </div>
+        <div>
+            <h5 class="mb-0">Benchmarking & Comparative Analysis</h5>
+            <small class="ui-muted">Performance comparison with industry benchmarks</small>
+        </div>
+    </div>
 </div>
 
 {{-- ================= INDUSTRY BENCHMARKS ================= --}}
@@ -105,46 +43,49 @@
         ];
     @endphp
 
-    @foreach($benchmarks as $item)
-        <div class="col-lg-4 col-md-6">
-            <div class="glass-card h-100">
+@foreach($benchmarks as $item)
+    <div class="col-lg-4 col-md-6">
+        <div class="ui-card h-100">
 
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <strong class="text-capitalize">{{ $item['label'] }}</strong>
-                    <span class="badge bg-success bg-opacity-10 text-success">
-                        {{ $item['percentile'] }} %ile
-                    </span>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <small class="text-muted">Our Value</small>
-                        <h6 class="fw-semibold text-success">{{ $item['our'] }}</h6>
-                    </div>
-                    <div class="col-6">
-                        <small class="text-muted">Industry Avg</small>
-                        <h6 class="fw-semibold">{{ $item['avg'] }}</h6>
-                    </div>
-                </div>
-
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <strong>{{ $item['label'] }}</strong>
+                <span class="ui-badge">
+                    {{ $item['percentile'] }} %ile
+                </span>
             </div>
-        </div>
-    @endforeach
 
+            <div class="row mt-3">
+                <div class="col-6">
+                    <small class="ui-muted">Our Value</small>
+                    <h6 class="fw-semibold text-success">{{ $item['our'] }}</h6>
+                </div>
+                <div class="col-6">
+                    <small class="ui-muted">Industry Avg</small>
+                    <h6 class="fw-semibold">{{ $item['avg'] }}</h6>
+                </div>
+            </div>
+
+        </div>
+    </div>
+@endforeach
 </div>
 
 {{-- ================= PEER INSTITUTION COMPARISON ================= --}}
 <h6 class="section-title mb-3">Peer Institution Comparison</h6>
 
-<div class="glass-card">
+<div class="ui-card">
 
-    <h6 class="fw-semibold mb-3">Top Performing Institutions</h6>
+    <div class="ui-card-header">
+        <div>
+            <div class="ui-card-title">Top Performing Institutions</div>
+            <div class="ui-card-subtitle">Peer comparison metrics</div>
+        </div>
+    </div>
 
     <div class="table-responsive">
-    <table class="table align-middle mb-0 benchmark-table">
-
-            <thead class="border-bottom">
-                <tr class="small ">
+        <table class="ui-table">
+            <thead>
+                <tr>
                     <th>Institution</th>
                     <th>Rank</th>
                     <th>Enrollment</th>
@@ -154,13 +95,13 @@
                 </tr>
             </thead>
 
-            <tbody class="small">
+            <tbody>
 
-                <tr class="border-bottom">
+                <tr class="highlight-row">
                     <td>
-                        <span class="dot success me-2"></span>
+                        <span class="ui-dot success me-2"></span>
                         <strong>Our Institution</strong>
-                        <small class="">(Current)</small>
+                        <small class="ui-muted">(Current)</small>
                     </td>
                     <td>#3</td>
                     <td>2,847</td>
@@ -169,7 +110,7 @@
                     <td class="text-success">94.3%</td>
                 </tr>
 
-                <tr class="border-bottom">
+                <tr>
                     <td>ABC Technical University</td>
                     <td>#2</td>
                     <td>3,200</td>
@@ -188,7 +129,6 @@
                 </tr>
 
             </tbody>
-
         </table>
     </div>
 
