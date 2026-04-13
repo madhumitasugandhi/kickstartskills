@@ -156,7 +156,7 @@ function initCourseStep(){
 
         const activeReqs = [];
 
-        document.querySelectorAll('.requirement-btn.active').forEach(btn => {
+        document.querySelectorAll('.selectable-chip.active').forEach(btn => {
             activeReqs.push({
                 id: btn.dataset.id,
                 name: btn.innerText.trim()
@@ -251,7 +251,7 @@ function initCourseStep(){
         monthsInput.value = '';
         codeInput.value = '';
 
-        document.querySelectorAll('.requirement-btn.active')
+        document.querySelectorAll('.selectable-chip.active')
             .forEach(btn => btn.classList.remove('active'));
     }
 

@@ -290,10 +290,10 @@
                     });
                 }
                 if (currentStep === 1) {
-                    const departments = [...document.querySelectorAll('#deptList .chip-item span')]
+                    const departments = [...document.querySelectorAll('#deptList .ui-chip span')]
                         .map(el => el.innerText);
 
-                    const programs = [...document.querySelectorAll('#programList .chip-item span')]
+                    const programs = [...document.querySelectorAll('#programList .ui-chip span')]
                         .map(el => el.innerText);
 
                     if (!departments.length || !programs.length) {

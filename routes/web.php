@@ -326,9 +326,14 @@ Route::post('/institution-login', [InstitutionAuthController::class, 'login'])
 Route::post('/institution/logout', [InstitutionAuthController::class, 'logout'])
     ->name('institution.logout');
 
+    // Route::post('/institution/send-otp', [InstitutionAuthController::class, 'sendOtp']);
+    // Route::post('/institution/verify-otp', [InstitutionAuthController::class, 'verifyOtp']);
+    // Route::post('/institution/reset-password', [InstitutionAuthController::class, 'resetPassword']);
+
 Route::get('/institution/forgot-password', function () {
     return view('frontend.institutionPortal.auth.institutefrgt-password');
 });
+
 Route::match(['get', 'post'], '/institution/register', [InstitutionController::class, 'register'])
     ->name('institution.register');
 

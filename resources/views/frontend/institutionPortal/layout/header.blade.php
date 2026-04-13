@@ -35,10 +35,10 @@
 
             <ul class="dropdown-menu dropdown-menu-end">
                 <li class="px-3 py-2">
-                    <small class="text-muted">Logged in as</small><br>
-                    <strong>{{ session('institution_name') }}</strong>
+                    <small style="color: var(--text-main)">Logged in as</small><br>
+                    <strong style="color: var(--text-main)">{{ session('institution_name') }}</strong>
                 </li>
-                <li><hr class="dropdown-divider"></li>
+                <li><hr class="dropdown-divider" style="color: var(--text-main)"></li>
                 <li>
                     <form method="POST" action="{{ url('/institution/logout') }}">
                         @csrf

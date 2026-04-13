@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password - Student Portal | KickStartSkills</title>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -15,7 +15,7 @@
         /* ------------------ THEME CONFIGURATION ------------------ */
         :root {
             /* LIGHT MODE (Vibrant Blue) */
-            --bg-gradient: linear-gradient(135deg, #099B6D 0%, #05805C 100%);
+            --bg-gradient: linear-gradient(135deg, #099B6D 0%, #0a966d 100%);
             --text-main: #ffffff;
             --card-bg: rgba(255, 255, 255, 0.15);
             --card-border: rgba(255, 255, 255, 0.3);
@@ -23,7 +23,9 @@
             --input-bg: rgba(255, 255, 255, 0.9);
             --input-text: #1e293b;
             --input-placeholder: #64748b;
-            --btn-bg: #059166; --btn-hover: #1A9E75; --btn-text: #ffffff;
+            --btn-bg: #059166;
+            --btn-hover: #1A9E75;
+            --btn-text: #ffffff;
             --review-bg: rgba(0, 0, 0, 0.2);
             --circle-color-1: rgba(255, 255, 255, 0.15);
         }
@@ -38,10 +40,12 @@
             --input-bg: rgba(15, 23, 42, 0.6);
             --input-text: #f1f5f9;
             --input-placeholder: #94a3b8;
-            --btn-bg: #059166; --btn-hover: #1A9E75;
+            --btn-bg: #059166;
+            --btn-hover: #1A9E75;
             --review-bg: rgba(255, 255, 255, 0.05);
             --circle-color-1: rgba(70, 150, 255, 0.1);
         }
+
 
 
         /* ------------------ BASE STYLES ------------------ */
@@ -74,13 +78,13 @@
         .back-btn { left: 25px; } .theme-btn { right: 25px; }
 
         .auth-container { width: 100%; max-width: 460px; padding: 15px; z-index: 10; display: flex; flex-direction: column; align-items: center; }
-        .icon-box { width: 64px; height: 64px; background: #1A9E75; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; color: #fff; margin-bottom: 1.5rem; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4); }
+        .icon-box { width: 64px; height: 64px; background: #1A9E75; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; color: #fff; margin-bottom: 1.5rem; }
 
         /* Steps */
         .steps-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 2rem; }
         .step { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.9rem; border: 2px solid rgba(255, 255, 255, 0.3); color: rgba(255, 255, 255, 0.7); cursor: pointer; transition: all 0.3s ease; }
         .step:hover { background: rgba(255,255,255,0.2); color: white; border-color: white; }
-        .step.active { background: #1A9E75; border-color: #3b82f6; color: white; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); transform: scale(1.1); }
+        .step.active { background: #1A9E75; border-color: #059166; color: white; transform: scale(1.1); }
         .step-line { width: 40px; height: 2px; background: rgba(255, 255, 255, 0.2); }
 
         /* Shared Styles for Included Forms */
@@ -91,8 +95,8 @@
         .custom-input:focus { outline: none; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); border-color: #3b82f6; }
         .input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--input-placeholder); font-size: 1.1rem; z-index: 5; }
 
-        .btn-action { background-color: var(--btn-bg); color: var(--btn-text); font-weight: 600; padding: 14px; border-radius: 12px; border: none; width: 100%; margin-top: 1.5rem; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); transition: all 0.2s; font-size: 1rem; }
-        .btn-action:hover { background-color: var(--btn-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); }
+        .btn-action { background-color: var(--btn-bg); color: var(--btn-text); font-weight: 600; padding: 14px; border-radius: 12px; border: none; width: 100%; margin-top: 1.5rem;transition: all 0.2s; font-size: 1rem; }
+        .btn-action:hover { transform: translateY(-2px);  }
         .link-back { color: var(--text-main); font-weight: 500; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-top: 1.5rem; transition: opacity 0.2s; opacity: 0.8; }
         .link-back:hover { opacity: 1; }
     </style>
@@ -138,6 +142,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         // --- STEP SWITCHING LOGIC ---
@@ -180,6 +185,140 @@
                 themeIcon.className = 'bi bi-moon';
             }
         }
+
+        let timer = 30;
+let interval;
+
+function startTimer() {
+    const el = document.getElementById('resendText');
+
+    el.innerText = `Resend (${timer}s)`;
+
+    interval = setInterval(() => {
+        timer--;
+
+        el.innerText = `Resend (${timer}s)`;
+
+        if (timer <= 0) {
+            clearInterval(interval);
+            el.innerText = 'Resend';
+            timer = 30;
+        }
+    }, 1000);
+}
+
+
+        async function sendOtp(e) {
+    e.preventDefault();
+
+    const email = document.getElementById('email').value;
+
+    const res = await fetch('/institution/send-otp', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ email })
+    });
+
+    const data = await res.json();
+
+    if (data.status === 'success') {
+        window.userEmail = email;
+        Swal.fire({
+            icon: 'success',
+            title: 'OTP Sent',
+            text: 'Check your email'
+        });
+        startTimer();
+
+        switchStep(2);
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: data.message
+        });
+    }
+}
+
+async function verifyOtp(e) {
+    e.preventDefault();
+
+    const otp = document.getElementById('otp').value;
+
+    const res = await fetch('/institution/verify-otp', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+            email: window.userEmail,
+            otp
+        })
+    });
+
+    const data = await res.json();
+
+    if (data.status === 'success') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Verified'
+        });
+
+        switchStep(3);
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: data.message
+        });
+    }
+}
+
+async function resetPassword(e) {
+    e.preventDefault();
+
+    const password = document.getElementById('password').value;
+    const confirm = document.getElementById('confirm_password').value;
+
+    if (password !== confirm) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Passwords do not match'
+        });
+        return;
+    }
+
+    const res = await fetch('/institution/reset-password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+            email: window.userEmail,
+            password,
+            password_confirmation: confirm
+        })
+    });
+
+    const data = await res.json();
+
+    if (data.status === 'success') {
+        await Swal.fire({
+            icon: 'success',
+            title: 'Password Reset Successful'
+        });
+
+        window.location.href = '/institution-login';
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: data.message
+        });
+    }
+}
     </script>
 </body>
 </html>

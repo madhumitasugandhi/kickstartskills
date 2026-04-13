@@ -38,6 +38,7 @@ class Institution extends Model
         'ugc_number',
         'affiliated_university',
 
+
     ];
 
     protected $casts = [
