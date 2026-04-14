@@ -79,6 +79,16 @@ Route::get('/get-skills/{id}', [DriveController::class, 'getSkills']);
 Route::get('/', function () {
     return view('frontend.index');
 });
+Route::get('/{portal}/forgot-password', function ($portal) {
+
+    $allowed = ['student','admin','mentor','hr','institution'];
+
+    if (!in_array($portal, $allowed)) {
+        abort(404);
+    }
+
+    return view('frontend.auth.forgot-password', compact('portal'));
+})->name('forgot.password');
 
 // Common Password Reset Routes for Admin, Student, Mentor, Institution
 Route::post('/auth/password/send-otp', [ForgotPasswordController::class, 'sendOtp'])->name('auth.password.sendOtp');
@@ -96,9 +106,6 @@ Route::post('/student-logout', [StudentAuthController::class, 'logout'])->name('
 // Register
 Route::get('/student/register', [StudentAuthController::class, 'showRegister'])->name('student.register');
 Route::post('/student/register', [StudentAuthController::class, 'register'])->name('student.register.submit');
-
-// Forgot Password - Step Logic (Public)
-Route::get('/student/forgot-password', [StudentAuthController::class, 'showForgotPassword'])->name('student.forgot_password');
 
 /* Student Portal (Protected) */
 Route::prefix('student')->middleware(['auth', 'student'])->group(function () {
@@ -325,14 +332,6 @@ Route::post('/institution-login', [InstitutionAuthController::class, 'login'])
 
 Route::post('/institution/logout', [InstitutionAuthController::class, 'logout'])
     ->name('institution.logout');
-
-    // Route::post('/institution/send-otp', [InstitutionAuthController::class, 'sendOtp']);
-    // Route::post('/institution/verify-otp', [InstitutionAuthController::class, 'verifyOtp']);
-    // Route::post('/institution/reset-password', [InstitutionAuthController::class, 'resetPassword']);
-
-Route::get('/institution/forgot-password', function () {
-    return view('frontend.institutionPortal.auth.institutefrgt-password');
-});
 
 Route::match(['get', 'post'], '/institution/register', [InstitutionController::class, 'register'])
     ->name('institution.register');
@@ -602,9 +601,6 @@ Route::middleware('institution.auth')->prefix('institution')->name('institution.
 Route::get('/mentor-login', [MentorAuthController::class, 'showLogin'])->name('mentor.login');
 Route::post('/mentor-login', [MentorAuthController::class, 'login'])->name('mentor.login.submit');
 
-//forgot password
-Route::get('/mentor/forgot-password', [MentorAuthController::class, 'showForgotPassword'])->name('mentor.forgot_password');
-
 //register
 Route::get('/mentor/register', function () {
     return view('frontend.mentorPortal.auth.register');
@@ -748,8 +744,6 @@ Route::prefix('mentor')->name('mentor.')->middleware(['auth', 'mentor'])->group(
 //login
 Route::get('/hr-login', [HRAuthController::class, 'showLoginForm'])->name('hr.login');
 Route::post('/hr-login', [HRAuthController::class, 'login'])->name('hr.login.submit');
-// HR Forgot Password
-Route::get('/hr/forgot-password', [HRAuthController::class, 'showForgotPassword'])->name('hr.forgot_password');
 
 // Protected HR Portal Routes (Sirf Login ke baad access honge)
  Route::middleware(['is_hr'])->prefix('hr')->name('hr.')->group(function () {
@@ -814,13 +808,6 @@ Route::get('/hr/forgot-password', [HRAuthController::class, 'showForgotPassword'
 /* ----------------------- Public Admin Routes (No Auth) ----------------------- */
 Route::get('/admin-login', [AuthController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin-login', [AuthController::class, 'login'])->name('admin.login.submit');
-
-// Forgot Password Routes
-Route::get('/admin/forgot-password', [AuthController::class, 'showForgotPassword'])->name('admin.forgot_password');
-
-Route::post('/admin/forgot-password/send-otp', [ForgotPasswordController::class, 'sendOtp'])->name('admin.otp.send');
-Route::post('/admin/forgot-password/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('admin.otp.verify');
-Route::post('/admin/forgot-password/reset', [ForgotPasswordController::class, 'resetPassword'])->name('admin.password.update');
 
 
 /* ----------------------- Protected Admin Routes (With Auth & Admin Middleware) ----------------------- */

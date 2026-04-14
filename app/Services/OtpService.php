@@ -12,8 +12,7 @@ class OtpService
 
     public function generateOtp(string $email): array
     {
-        $otp = rand(100000, 999999);
-
+        $otp = random_int(100000, 999999);
         $key = $this->getKey($email);
         $cooldownKey = $this->getCooldownKey($email);
 

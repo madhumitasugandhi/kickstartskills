@@ -4,69 +4,131 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Services\EmailService;
+use App\Services\OtpService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Institution\Institution;
 use App\Models\User;
-use Carbon\Carbon;
 
 class ForgotPasswordController extends Controller
 {
-    // Step 1: Send OTP
-    public function sendOtp(Request $request, EmailService $emailService)
+    // 🔥 portal mapping
+    private function getModel($portal)
     {
-        $request->validate(['email' => 'required|email|exists:users,email'], [
-            'email.exists' => 'This email address is not registered.'
+        return match ($portal) {
+            'admin' => User::class,
+            'mentor' => User::class,
+            'student' => User::class,
+            'hr' => User::class,
+            'institution' => Institution::class,
+            default => User::class,
+        };
+    }
+
+    // ✅ SEND OTP
+    public function sendOtp(Request $request, EmailService $emailService, OtpService $otpService)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'portal' => 'required|string'
         ]);
 
-        $otp = rand(100000, 999999);
-        $email = $request->email;
+        $model = $this->getModel($request->portal);
 
-        DB::table('password_reset_otps')->updateOrInsert(
-            ['email' => $email],
-            ['otp' => $otp, 'created_at' => now()]
+        $user = $model::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Email not registered'
+            ]);
+        }
+
+        // 🔥 OTP generate from cache service
+        $otpData = $otpService->generateOtp($request->email);
+
+        if (!$otpData['success']) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $otpData['message']
+            ]);
+        }
+
+        $otp = $otpData['otp'];
+
+        // 📩 Email content
+        $html = "
+        <div style='font-family: sans-serif; padding:20px'>
+            <h2>Password Reset</h2>
+            <p>Your OTP:</p>
+            <h1 style='letter-spacing:5px'>$otp</h1>
+            <p>Valid for 5 minutes</p>
+        </div>
+        ";
+
+        $emailService->sendRawHtmlEmail(
+            $request->email,
+            'Password Reset OTP',
+            $html
         );
 
-        $htmlContent = "
-            <div style='font-family: sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 10px;'>
-                <h2 style='color: #2563eb;'>Verification Code</h2>
-                <p>Hello, use the following OTP to reset your password:</p>
-                <h1 style='background: #f4f4f4; padding: 10px; text-align: center; letter-spacing: 5px;'>$otp</h1>
-                <p>Valid for 10 minutes only.</p>
-            </div>";
-
-        $emailService->sendRawHtmlEmail($email, 'Password Reset OTP', $htmlContent);
-
-        return response()->json(['success' => true, 'message' => 'OTP sent to your email.']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'OTP sent successfully'
+        ]);
     }
 
-    // Step 2: Verify OTP
-    public function verifyOtp(Request $request)
+    // ✅ VERIFY OTP
+    public function verifyOtp(Request $request, OtpService $otpService)
     {
-        $otpData = DB::table('password_reset_otps')
-            ->where('email', $request->email)
-            ->where('otp', $request->otp)
-            ->first();
+        $request->validate([
+            'email' => 'required|email',
+            'otp' => 'required',
+            'portal' => 'required|string'
+        ]);
 
-        if (!$otpData || Carbon::parse($otpData->created_at)->addMinutes(10)->isPast()) {
-            return response()->json(['success' => false, 'message' => 'Invalid or expired OTP.']);
+        $valid = $otpService->verifyOtp($request->email, $request->otp);
+
+        if (!$valid) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid or expired OTP'
+            ]);
         }
 
-        return response()->json(['success' => true, 'message' => 'OTP Verified.']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'OTP verified'
+        ]);
     }
 
-    // Step 3: Reset Password
+    // ✅ RESET PASSWORD
     public function resetPassword(Request $request)
     {
-        $request->validate(['password' => 'required|min:8|confirmed']);
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+            'portal' => 'required|string'
+        ]);
 
-        $user = User::where('email', $request->email)->first();
-        if ($user) {
-            $user->update(['password' => Hash::make($request->password)]);
-            DB::table('password_reset_otps')->where('email', $request->email)->delete();
-            return response()->json(['success' => true, 'message' => 'Password reset successfully.']);
+        $model = $this->getModel($request->portal);
+
+        $user = $model::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not found'
+            ]);
         }
 
-        return response()->json(['success' => false, 'message' => 'User not found.']);
+        $user->update([
+            'password' => Hash::make($request->password)
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Password reset successful'
+        ]);
     }
 }

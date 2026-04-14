@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Mail\GeneralMail;
 use Exception;
+use GrahamCampbell\ResultType\Success;
 
 class EmailService
 {
@@ -22,10 +23,10 @@ class EmailService
             Mail::to($to)->send(new GeneralMail($subject, $view, $data));
             Log::info("Email sent to {$to} with subject: {$subject}");
 
-            return ['success' => true, 'message' => 'Email sent successfully'];
+            return ['status' => 'success', 'message' => 'Email sent successfully'];
         } catch (Exception $e) {
             Log::error("EmailService Error: " . $e->getMessage());
-            return ['success' => false, 'error' => 'Mail delivery failed: ' . $e->getMessage()];
+            return ['status' => 'error', 'message' => 'Mail delivery failed: ' . $e->getMessage()];
         }
     }
 
@@ -36,7 +37,7 @@ class EmailService
     {
         try {
             if (empty($to) || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
-                return ['success' => false, 'error' => 'Invalid email address'];
+                return ['status' => 'error', 'message' => 'Invalid email address'];
             }
 
             // Seedha HTML string bhej raha hai
@@ -45,10 +46,10 @@ class EmailService
             });
 
             Log::info("Raw HTML Email sent to {$to}");
-            return ['success' => true, 'message' => 'OTP Email sent successfully'];
+            return ['status' => 'success', 'message' => 'OTP Email sent successfully'];
         } catch (Exception $e) {
             Log::error("Raw Email Error: " . $e->getMessage());
-            return ['success' => false, 'error' => 'Mail delivery failed'];
+            return ['status' => 'error', 'message' => 'Mail delivery failed'];
         }
     }
 }

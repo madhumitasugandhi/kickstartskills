@@ -146,9 +146,4 @@ class StudentAuthController extends Controller
         return redirect()->route('student.login');
     }
 
-    public function showForgotPassword()
-    {
-        // Check kar lena ki path sahi hai (resources/views/frontend/studentPortal/auth/forget_password.blade.php)
-        return view('frontend.studentPortal.auth.forgot_password');
-    }
 }

@@ -415,8 +415,9 @@
                         <input class="form-check-input" type="checkbox" id="remember" name="remember">
                         <label class="form-check-label small text-muted-custom" for="remember">Remember me</label>
                     </div>
-                    <a href="{{ route('student.forgot_password') }}" class="small link-custom">Forgot password?</a>
-                </div>
+                    <a href="{{ route('forgot.password', ['portal' => 'student']) }}" class="small link-custom">
+    Forgot password?
+</a>                </div>
 
                 <button type="submit" class="btn-login">Sign in to Student Portal</button>
             </form>

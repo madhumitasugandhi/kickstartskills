@@ -490,8 +490,9 @@
                             {{ Cookie::get('institution_email') ? 'checked' : '' }}>
                         <label class="form-check-label small text-muted-custom" for="remember">Remember me</label>
                     </div>
-                    <a href="/institution/forgot-password" class="small link-custom">Forgot password?</a>
-                </div>
+                    <a href="{{ route('forgot.password', ['portal' => 'institution']) }}" class="small link-custom">
+    Forgot password?
+</a>                </div>
                 <button type="submit" class="btn-login" id="loginBtn">
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     <span class="btn-text">Access Institution Portal</span>

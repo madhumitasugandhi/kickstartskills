@@ -34,7 +34,7 @@ class AuthController extends Controller
 
                 // --- PERMANENT COOKIE (1 Year) ---
                 if ($remember) {
-                    \Cookie::queue('admin_permanent_login', $user->id, 525600);
+                    Cookie::queue('admin_permanent_login', $user->id, 525600);
                 }
 
                 $request->session()->regenerate();
@@ -56,8 +56,4 @@ class AuthController extends Controller
         return redirect('/admin-login');
     }
 
-    public function showForgotPassword()
-{
-    return view('frontend.adminPortal.auth.forgot_password');
-}
 }

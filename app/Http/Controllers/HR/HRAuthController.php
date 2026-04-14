@@ -54,9 +54,4 @@ class HRAuthController extends Controller
         return redirect()->route('hr.login');
     }
 
-    // Show Forgot Password Page
-    public function showForgotPassword()
-    {
-        return view('frontend.hrPortal.auth.forgot_password');
-    }
 }
