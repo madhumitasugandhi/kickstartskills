@@ -30,6 +30,7 @@ class MentorProfileController extends Controller
     {
         $user = Auth::user();
 
+        $imageName = $profile->profile_image ?? null;
         // 1. Validation
         $request->validate([
             'first_name' => 'required|string|max:255',
@@ -48,26 +49,25 @@ class MentorProfileController extends Controller
 
         // 3. Handle Resume Path logic
         $profile = DB::table('mentor_profiles')->where('user_id', $user->id)->first();
-        $resumePath = $profile ? $profile->resume_url : null;
+        $resumePath = $profile->resume_url ?? null;
+        if ($request->hasFile('profile_image')) {
+            $file = $request->file('profile_image');
+            $imageName = 'mentor_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
 
-        if ($request->hasFile('resume')) {
-            // Purani file delete karna (Optional but good practice)
-            if ($resumePath && File::exists(public_path($resumePath))) {
-                File::delete(public_path($resumePath));
+            // Public folder path
+            $destinationPath = public_path('uploads/mentor_profiles');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
             }
 
-            $file = $request->file('resume');
-            $fileName = 'resume_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-
-            // Public folder mein save kar rahe hain (Taaki access aasaan ho)
-            $file->move(public_path('uploads/resumes'), $fileName);
-            $resumePath = 'uploads/resumes/' . $fileName;
+            $file->move($destinationPath, $imageName);
         }
 
         // 4. Update or Insert Mentor Profile
         DB::table('mentor_profiles')->updateOrInsert(
             ['user_id' => $user->id],
             [
+                'profile_image' => $imageName,
                 'phone' => $request->phone,
                 'bio' => $request->bio,
                 'resume_url' => $resumePath,
@@ -76,9 +76,12 @@ class MentorProfileController extends Controller
                 'max_students' => $request->max_students,
                 'linkedin_url' => $request->linkedin_url,
                 'github_url' => $request->github_url,
+                'specializations' => $request->specializations ? json_encode($request->specializations) : null,
+                'technical_skills' => $request->technical_skills ? json_encode($request->technical_skills) : null,
+                'certifications' => $request->certifications ? json_encode($request->certifications) : null,
+                'timezone' => $request->timezone,
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
-                'expertise_area' => $request->expertise_area,
                 'available_days' => $request->available_days ? json_encode($request->available_days) : null,
                 'updated_at' => now(),
             ]
