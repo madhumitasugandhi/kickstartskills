@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Mail\GeneralMail;
 use Exception;
-use GrahamCampbell\ResultType\Success;
 
 class EmailService
 {
