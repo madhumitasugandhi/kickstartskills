@@ -1,11 +1,26 @@
 @php
-    $themes = [
-        'student' => ['bg' => '#099B6D', 'btn' => '#059166'],
-        'admin' => ['bg' => '#2563eb', 'btn' => '#1d4ed8'],
-        'mentor' => ['bg' => '#7c3aed', 'btn' => '#6d28d9'],
-        'hr' => ['bg' => '#ea580c', 'btn' => '#c2410c'],
-        'institution' => ['bg' => '#059669', 'btn' => '#047857'],
-    ];
+$themes = [
+    'student' => [
+        'bg' => '#2563eb',   // 🔵 BLUE
+        'btn' => '#1d4ed8'
+    ],
+    'institution' => [
+        'bg' => '#059669',   // 🟢 GREEN
+        'btn' => '#047857'
+    ],
+    'mentor' => [
+        'bg' => '#ea580c',   // 🟠 ORANGE
+        'btn' => '#c2410c'
+    ],
+    'hr' => [
+        'bg' => '#7c3aed',   // 🟣 PURPLE
+        'btn' => '#6d28d9'
+    ],
+    'admin' => [
+        'bg' => '#dc2626',   // 🔴 RED
+        'btn' => '#b91c1c'
+    ],
+];
 
     $theme = $themes[$portal] ?? $themes['student'];
 @endphp
