@@ -15,6 +15,9 @@ class MentorProfile extends Model
     protected $casts = [
         'available_days' => 'array',
         'time_preferences' => 'array',
+        'specializations' => 'array',
+        'technical_skills' => 'array',
+        'certifications' => 'array',
     ];
 
     public function user()
