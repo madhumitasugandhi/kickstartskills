@@ -28,39 +28,69 @@ class StudentProfileController extends Controller
     }
 
     public function update(Request $request)
-    {
-        $user = User::find(Auth::id());
+{
+    $user = User::find(Auth::id());
 
-        // Validation wahi rahegi
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:15',
-            'gender' => 'nullable|string',
-            'dob' => 'nullable|date',
-            'blood_group' => 'nullable|string',
-        ]);
+    // 1. Purana profile data fetch karo image check karne ke liye
+    $profile = DB::table('student_profiles')->where('user_id', $user->id)->first();
 
-        // PART 1: Core details ko 'users' table mein update karo
-        $user->update([
-            'full_name' => $request->first_name . ' ' . $request->last_name,
-            'email' => $request->email,
-        ]);
+    // Default image purani wali rakho, agar naya upload nahi hota toh yehi rahegi
+    $imageName = $profile->profile_image ?? null;
 
-        DB::table('student_profiles')->updateOrInsert(
-            ['user_id' => $user->id], // Is ID ke bande ka data update karo
-            [
-                'phone' => $request->phone,
-                'gender' => $request->gender,
-                'dob' => $request->dob,
-                'blood_group' => $request->blood_group,
-                'updated_at' => now(),
-            ]
-        );
+    // 2. Validation
+    $request->validate([
+        'first_name'    => 'required|string|max:255',
+        'last_name'     => 'required|string|max:255',
+        'email'         => 'required|email|unique:users,email,' . $user->id,
+        'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // image validation added
+        'phone'         => 'nullable|string|max:15',
+        'gender'        => 'nullable|string',
+        'dob'           => 'nullable|date',
+        'blood_group'   => 'nullable|string',
+    ]);
 
-        return back()->with('success', 'Profile updated successfully!');
+    // 3. User table update (Full Name aur Email)
+    $user->update([
+        'full_name' => $request->first_name . ' ' . $request->last_name,
+        'email'     => $request->email,
+    ]);
+
+    // 4. Image Upload Handling
+    if ($request->hasFile('profile_image')) {
+        $file = $request->file('profile_image');
+        $imageName = 'student_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+
+        $destinationPath = public_path('uploads/student_profiles');
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0777, true);
+        }
+
+        // Purani image delete karne ka logic (Optional but clean)
+        if ($profile && $profile->profile_image && file_exists($destinationPath . '/' . $profile->profile_image)) {
+            @unlink($destinationPath . '/' . $profile->profile_image);
+        }
+
+        $file->move($destinationPath, $imageName);
     }
+
+    // 5. Profile Table Update
+    // Humne 'profile_image' ko array mein yahan rakha hai taaki state maintain rahe
+    $profileData = [
+        'phone'         => $request->phone,
+        'gender'        => $request->gender,
+        'dob'           => $request->dob,
+        'blood_group'   => $request->blood_group,
+        'profile_image' => $imageName, // Nayi ho ya purani, ye value save hogi
+        'updated_at'    => now(),
+    ];
+
+    DB::table('student_profiles')->updateOrInsert(
+        ['user_id' => $user->id],
+        $profileData
+    );
+
+    return back()->with('success', 'Profile updated successfully!');
+}
 
     public function academicIndex()
     {
@@ -176,16 +206,21 @@ class StudentProfileController extends Controller
         if ($request->hasFile('resume_file')) {
             $file = $request->file('resume_file');
             $fileName = 'resume_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-
             $destinationPath = public_path('uploads/resumes');
+
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0777, true);
             }
 
             $file->move($destinationPath, $fileName);
-
-            // This line actually puts the filename into the database update
             $data['resume_url'] = $fileName;
+        }
+
+        if ($request->hasFile('profile_image')) {
+            $file = $request->file('profile_image');
+            $imageName = 'student_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/student_profiles'), $imageName);
+            $data['profile_image'] = $imageName;
         }
 
         DB::table('student_profiles')->updateOrInsert(
