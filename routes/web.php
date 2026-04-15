@@ -44,6 +44,7 @@ use App\Http\Controllers\Student\StudentPaymentController;
 use App\Http\Controllers\Student\StudentDriveController;
 
 use App\Http\Controllers\HR\HRAuthController;
+use App\Http\Controllers\HR\HrProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,7 +82,7 @@ Route::get('/', function () {
 });
 Route::get('/{portal}/forgot-password', function ($portal) {
 
-    $allowed = ['student','admin','mentor','hr','institution'];
+    $allowed = ['student', 'admin', 'mentor', 'hr', 'institution'];
 
     if (!in_array($portal, $allowed)) {
         abort(404);
@@ -148,14 +149,14 @@ Route::prefix('student')->middleware(['auth', 'student'])->group(function () {
 
         // 0th Option: Approved Drives
         Route::get('/approved-drives', [StudentExaminationController::class, 'approvedDrives'])
-        ->name('approved-drives');
+            ->name('approved-drives');
 
         // payment gateway
         Route::post('/payment/create/{driveId}', [StudentPaymentController::class, 'createOrder'])
-        ->name('payment.create');
+            ->name('payment.create');
 
         Route::post('/payment/success', [StudentPaymentController::class, 'paymentSuccess'])
-         ->name('payment.success');
+            ->name('payment.success');
 
         // 1st Option: Take Test (The Instruction Hub)
         Route::get('/take-test', [StudentExaminationController::class, 'takeTestIndex'])->name('take');
@@ -164,14 +165,14 @@ Route::prefix('student')->middleware(['auth', 'student'])->group(function () {
         Route::get('/start-test/{id}', [StudentExaminationController::class, 'startTest'])->name('start');
 
         // start tast for drive
-        Route::get('/drive/start/{id}', [StudentDriveController::class,'start'])->name('startDrive');
+        Route::get('/drive/start/{id}', [StudentDriveController::class, 'start'])->name('startDrive');
 
-        Route::post('/drive/submit', [StudentDriveController::class,'submit'])->name('drive.submit');
+        Route::post('/drive/submit', [StudentDriveController::class, 'submit'])->name('drive.submit');
 
         Route::get('/drive/results', [StudentDriveController::class, 'results'])->name('drive.results');
 
         Route::get('/results/all', [StudentExaminationController::class, 'combinedResults'])
-    ->name('results.all');
+            ->name('results.all');
 
         // 2nd Option: Test History
         Route::get('/history', [StudentExaminationController::class, 'testHistory'])->name('history');
@@ -746,7 +747,7 @@ Route::get('/hr-login', [HRAuthController::class, 'showLoginForm'])->name('hr.lo
 Route::post('/hr-login', [HRAuthController::class, 'login'])->name('hr.login.submit');
 
 // Protected HR Portal Routes (Sirf Login ke baad access honge)
- Route::middleware(['is_hr'])->prefix('hr')->name('hr.')->group(function () {
+Route::middleware(['is_hr'])->prefix('hr')->name('hr.')->group(function () {
 
     // 1. Dashboard
     Route::get('/dashboard', function () {
@@ -797,6 +798,10 @@ Route::post('/hr-login', [HRAuthController::class, 'login'])->name('hr.login.sub
     Route::get('/settings', function () {
         return view('frontend.hrPortal.dashboard.settings');
     })->name('settings');
+
+    // 11. HR Profile Management
+    Route::get('/profile', [HrProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile/update', [HrProfileController::class, 'update'])->name('profile.update');
 
     // Logout Route (Recommended to be inside protected group)
     Route::post('/logout', [HRAuthController::class, 'logout'])->name('logout');
