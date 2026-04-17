@@ -16,9 +16,24 @@ class HRMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->admin_role_id == 2) {
-            return $next($request);
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // 1. Check Role
+            if ($user->admin_role_id == 2) {
+
+                // 🔥 2. Check Account Status
+                if ($user->account_status !== 'active') {
+                    Auth::logout();
+                    return redirect()->route('hr.login')->withErrors([
+                        'email' => 'Your account status is no longer active. Please login again or contact Admin.'
+                    ]);
+                }
+
+                return $next($request);
+            }
         }
+
         return redirect()->route('hr.login')->with('error', 'Unauthorized access! Please login as HR.');
     }
 }

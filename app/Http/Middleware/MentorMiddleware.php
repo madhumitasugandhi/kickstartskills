@@ -15,8 +15,22 @@ class MentorMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->check() && auth()->user()->admin_role_id == 3) {
-            return $next($request);
+        if (auth()->check()) {
+            $user = auth()->user();
+
+            // 1. Check if user is a Mentor (Role 3)
+            if ($user->admin_role_id == 3) {
+
+                // 🔥 2. Check Account Status
+                if ($user->account_status !== 'active') {
+                    auth()->logout();
+                    return redirect()->route('mentor.login')->withErrors([
+                        'email' => 'Your account status is no longer active. Contact Admin for details.'
+                    ]);
+                }
+
+                return $next($request);
+            }
         }
 
         // If they aren't a mentor, kick them to the login page
