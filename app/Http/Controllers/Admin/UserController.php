@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Services\EmailService;
 use Illuminate\Support\Facades\Log;
+use App\Models\Institution\Institution;
 
 class UserController extends Controller
 {
@@ -35,7 +36,7 @@ class UserController extends Controller
             $query->where('account_status', $request->status);
         }
 
-        $users = $query->get();
+        $users = $query->with('institution')->get();
         $allUsersCount = User::count();
 
         // 4. Calculate Stats
@@ -47,18 +48,18 @@ class UserController extends Controller
             'pending' => User::where('account_status', 'pending')->count(),
             'new_this_month' => User::whereMonth('created_at', date('m'))->count(),
             'online_now' => rand(2, 8),
-
+        
             'admin_count' => User::where('admin_role_id', 1)->count(),
             'hr_count' => User::where('admin_role_id', 2)->count(),
-            'mentor_count' => User::where('admin_role_id', 3)->count(),
-            'inst_count' => User::where('admin_role_id', 4)->count(),
-            'student_count' => User::where('admin_role_id', 5)->count(),
-
+            'student_count' => User::where('admin_role_id', 3)->count(),
+            'inst_count' => User::where('admin_role_id', 4)->count(), 
+            'mentor_count' => User::where('admin_role_id', 5)->count(),
+        
             'admin_pct' => $allUsersCount > 0 ? (User::where('admin_role_id', 1)->count() / $allUsersCount) * 100 : 0,
             'hr_pct' => $allUsersCount > 0 ? (User::where('admin_role_id', 2)->count() / $allUsersCount) * 100 : 0,
-            'mentor_pct' => $allUsersCount > 0 ? (User::where('admin_role_id', 3)->count() / $allUsersCount) * 100 : 0,
+            'student_pct' => $allUsersCount > 0 ? (User::where('admin_role_id', 3)->count() / $allUsersCount) * 100 : 0,
             'inst_pct' => $allUsersCount > 0 ? (User::where('admin_role_id', 4)->count() / $allUsersCount) * 100 : 0,
-            'student_pct' => $allUsersCount > 0 ? (User::where('admin_role_id', 5)->count() / $allUsersCount) * 100 : 0,
+            'mentor_pct' => $allUsersCount > 0 ? (User::where('admin_role_id', 5)->count() / $allUsersCount) * 100 : 0,
         ];
 
         $recentActivities = User::latest()->take(5)->get();
@@ -75,6 +76,7 @@ class UserController extends Controller
             'admin_role_id' => 'required|integer',
             'account_status' => 'required|in:active,deactivated,suspended,pending',
             'mentor_id' => 'nullable|exists:users,id',
+            'institution_id' => 'nullable|integer',
         ]);
 
         // FIX: Variable assign kiya $user mein
@@ -85,6 +87,7 @@ class UserController extends Controller
             'admin_role_id' => $request->admin_role_id,
             'account_status' => $request->account_status,
             'mentor_id' => $request->mentor_id,
+            'institution_id' => $request->institution_id,
         ]);
 
         $roles = [
@@ -120,29 +123,39 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-
+    
         $request->validate([
             'full_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'admin_role_id' => 'required|integer',
             'account_status' => 'required|in:active,deactivated,suspended,pending',
         ]);
-
-        $user->full_name = $request->full_name;
-        $user->email = $request->email;
-        $user->admin_role_id = $request->admin_role_id;
-        $user->account_status = $request->account_status;
-        $user->mentor_id = $request->mentor_id;
-
+    
+        $user->update([
+            'full_name' => $request->full_name,
+            'email' => $request->email,
+            'admin_role_id' => $request->admin_role_id,
+            'account_status' => $request->account_status,
+            'mentor_id' => $request->mentor_id,
+        ]);
+    
         if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
+            $user->update([
+                'password' => Hash::make($request->password)
+            ]);
         }
-
-        $user->save();
-
+    
+        // 🔥 FULL SYNC FOR INSTITUTION
+        if ($user->admin_role_id == 4 && $user->institution) {
+            $user->institution->update([
+                'status' => $request->account_status,
+                'email' => $request->email,
+                'institution_name' => $request->full_name
+            ]);
+        }
+    
         return redirect()->route('admin.users')->with('success', 'User updated successfully!');
     }
-
     public function destroy($id)
     {
         $user = User::findOrFail($id);

@@ -26,6 +26,12 @@ class InstitutionAuth
             return redirect('/institution-login');
         }
 
+        if ($institution->status != 'active') {
+            session()->flush();
+            return redirect('/institution-login')
+                ->with('error', 'Your account is not active');
+        }
+
         // Share institution with ALL views
         View::share('institution', $institution);
 

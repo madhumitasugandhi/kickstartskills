@@ -39,6 +39,24 @@ class InstitutionAuthController extends Controller
         //  Check password (password_hash column)
         if ($institution && Hash::check($request->password, $institution->password_hash)) {
 
+            // Check status
+
+            if ($institution->status == 'pending') {
+                return back()->with('error', 'Your account is pending approval');
+            }
+        
+            if ($institution->status == 'suspended') {
+                return back()->with('error', 'Your account is suspended');
+            }
+        
+            if ($institution->status == 'rejected') {
+                return back()->with('error', 'Your account has been rejected');
+            }
+        
+            if ($institution->status != 'active') {
+                return back()->with('error', 'Access denied');
+            }
+
             // Session set
             Session::put('institution_id', $institution->institution_id);
             Session::put('institution_name', $institution->institution_name);

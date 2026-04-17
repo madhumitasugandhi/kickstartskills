@@ -403,14 +403,23 @@
             <div class="user-list-item">
                 <div class="d-flex align-items-center">
                     <span class="--text-muted me-3 fw-bold small" style="min-width: 30px;">
-                        {{ $loop->iteration }})
+                        {{ $loop->iteration }}
                     </span>
                     <div class="user-avatar bg-soft-danger text-danger">
-                        {{ strtoupper(substr($user->full_name, 0, 2)) }}
-                    </div>
+@php
+    $name = ($user->admin_role_id == 4 && $user->institution)
+        ? $user->institution->institution_name
+        : $user->full_name;
+@endphp
+
+{{ strtoupper(substr($name, 0, 2)) }}                    </div>
                     <div>
-                        <h6 class="fw-bold mb-0 text-main">
-                            {{ $user->full_name }}
+                    <h6 class="fw-bold mb-0 text-main">
+    @if($user->admin_role_id == 4)
+        {{ $user->institution->institution_name ?? $user->full_name }}
+    @else
+        {{ $user->full_name }}
+    @endif
                             @if($user->account_status == 'active')
                             <i class="bi bi-patch-check-fill text-success small ms-1"></i>
                             @endif
@@ -420,16 +429,17 @@
                 </div>
                 <div class="text-end d-none d-sm-block">
                     <span class="role-badge-sm text-danger">
-                        @if($user->admin_role_id == 1)
-                        ADMIN
-                        @elseif($user->admin_role_id == 2)
-                        HR
-                        @elseif($user->admin_role_id == 3)
-                        MENTOR
-                        @elseif($user->admin_role_id == 4)
-                        INSTITUTION
-                        @elseif($user->admin_role_id == 5)
-                        STUDENT
+                    @if($user->admin_role_id == 1)
+ADMIN
+@elseif($user->admin_role_id == 2)
+HR
+@elseif($user->admin_role_id == 3)
+STUDENT
+@elseif($user->admin_role_id == 4)
+INSTITUTION
+@elseif($user->admin_role_id == 5)
+MENTOR
+
                         @else
                         STAFF
                         @endif
@@ -607,8 +617,8 @@
                             <label class="form-label --text-muted small fw-bold">ASSIGN MENTOR (OPTIONAL)</label>
                             <select name="mentor_id" class="search-input-drive" style="appearance: auto;">
                                 <option value="">Choose a Mentor...</option>
-                                @foreach($users->where('admin_role_id', 3) as $mentor)
-                                <option value="{{ $mentor->id }}">{{ $mentor->full_name }}</option>
+                                @foreach($users->where('admin_role_id', 4) as $mentor)
+                                                                <option value="{{ $mentor->id }}">{{ $mentor->full_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -662,9 +672,9 @@
                                 style="appearance: auto;">
                                 <option value="1">Admin</option>
                                 <option value="2">HR</option>
-                                <option value="3">Mentor</option>
+                                <option value="3">Student</option>
                                 <option value="4">Institution</option>
-                                <option value="5">Student</option>
+                                <option value="5">Mentor</option>
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -672,7 +682,7 @@
                             <select name="mentor_id" id="edit_mentor_id" class="search-input-drive"
                                 style="appearance: auto;">
                                 <option value="">No Mentor</option>
-                                @foreach($users->where('admin_role_id', 3) as $mentor)
+                                @foreach($users->where('admin_role_id', 4) as $mentor)
                                 <option value="{{ $mentor->id }}">{{ $mentor->full_name }}</option>
                                 @endforeach
                             </select>

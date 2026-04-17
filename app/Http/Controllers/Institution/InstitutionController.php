@@ -26,6 +26,7 @@ use App\Models\Institution\InstitutionSetupProgress;
 use App\Models\Country;
 use App\Models\State;
 use App\Models\City;
+use App\Models\User;
 
 class InstitutionController extends Controller
 {
@@ -83,7 +84,16 @@ class InstitutionController extends Controller
         try {
 
 
+            $user = User::create([
+                'full_name' => $formData['institution_name'],
+                'email' => $formData['email'],
+                'password' => Hash::make($formData['password']),
+                'admin_role_id' => 4, // institution role
+                'account_status' => 'pending'
+            ]);
+
             $institution = Institution::create([
+                'user_id' => $user->id,
                 'institution_name' => $formData['institution_name'],
                 'representative_name' => $formData['representative_name'],
                 'email' => $formData['email'],

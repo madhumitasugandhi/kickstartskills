@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Admin\AdminProfile;
+use App\Models\Institution\Institution;
 
 class User extends Authenticatable
 {
@@ -15,8 +16,8 @@ class User extends Authenticatable
     const ROLE_SUPER_ADMIN = 1;
     const ROLE_ADMIN_STAFF = 2;
     const ROLE_STUDENT = 3;
-    const ROLE_MENTOR = 4;
-    const ROLE_HR = 5;
+    const ROLE_INSTITUTION = 4; 
+    const ROLE_MENTOR = 5;
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
@@ -79,5 +80,10 @@ class User extends Authenticatable
     public function hrProfile()
     {
         return $this->hasOne(HrProfile::class);
+    }
+
+    public function institution()
+    {
+        return $this->hasOne(Institution::class, 'user_id');
     }
 }

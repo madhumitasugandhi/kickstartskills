@@ -5,6 +5,7 @@ namespace App\Models\Institution;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Mentor\Drive;
+use App\Models\User;
 
 class Institution extends Model
 {
@@ -17,6 +18,7 @@ class Institution extends Model
     public $timestamps = true;
 
     protected $fillable = [
+        'user_id',
         'institution_name',
         'institution_code_prefix',
         'email',
@@ -51,6 +53,11 @@ class Institution extends Model
     | Relationships
     |--------------------------------------------------------------------------
     */
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function institutionType()
     {
