@@ -29,19 +29,37 @@ class StudentAuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials, $request->filled('remember'))) {
-            // Role 5 is Student
-            if (Auth::user()->admin_role_id == 5) {
+            $user = Auth::user();
+
+            // Check if role is Student (5)
+            if ($user->admin_role_id == 5) {
+
+                // 🔥 Status Check Logic
+                if ($user->account_status !== 'active') {
+                    Auth::logout(); // Logout user if not active
+
+                    $status = ucfirst($user->account_status);
+                    $message = "Your account is currently $status. Please contact support.";
+
+                    if ($user->account_status == 'pending') {
+                        $message = "Your account is pending verification. Please wait for admin approval.";
+                    }
+
+                    return back()->withErrors(['email' => $message]);
+                }
+
                 $request->session()->regenerate();
                 return redirect()->route('student.dashboard');
             }
 
-            // Not a student? Kill session and kick back
+            // Not a student? Kill session
             Auth::logout();
             return back()->withErrors(['email' => 'Access denied. Use the correct portal.']);
         }
 
         return back()->withErrors(['email' => 'The provided credentials do not match.']);
     }
+
     public function register(Request $request, \App\Services\EmailService $emailService)
     {
         try {

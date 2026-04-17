@@ -29,18 +29,32 @@ class MentorAuthController extends Controller
         ]);
 
         // 2. Attempt to log the user in
-        // The 'remember' checkbox logic is handled here
         if (Auth::attempt($credentials, $request->filled('remember'))) {
+            $user = Auth::user();
 
-            // 3. Role Verification (Only allow Mentor role ID: 3)
-            if (Auth::user()->admin_role_id == 3) {
+            // 3. Role Verification (Mentor role ID: 3)
+            if ($user->admin_role_id == 3) {
+
+                // 🔥 4. Account Status Check
+                if ($user->account_status !== 'active') {
+                    Auth::logout();
+
+                    $status = ucfirst($user->account_status);
+                    $message = "Your Mentor account is currently $status. Please reach out to the Admin.";
+
+                    if ($user->account_status == 'suspended') {
+                        $message = "Access Revoked: Your mentor profile has been suspended.";
+                    }
+
+                    return back()->withErrors(['email' => $message])->onlyInput('email');
+                }
+
                 $request->session()->regenerate();
-
                 return redirect()->intended(route('mentor.dashboard'))
                     ->with('success', 'Welcome back to your Mentor Portal!');
             }
 
-            // 4. If they aren't a mentor, log them out and block access
+            // Not a mentor? logout
             Auth::logout();
             return back()->withErrors([
                 'email' => 'Access denied. This portal is strictly for authorized Mentors.',

@@ -31,13 +31,28 @@ class HRAuthController extends Controller
         if (Auth::attempt($request->only('email', 'password'), $remember)) {
             $user = Auth::user();
 
-            // ROLE ID 2 CHECK
+            // 1. Role Check (Role 2 = HR)
             if ($user->admin_role_id == 2) {
+
+                // 🔥 2. Status Check Logic
+                if ($user->account_status !== 'active') {
+                    Auth::logout();
+
+                    $status = ucfirst($user->account_status);
+                    $message = "Your HR account is $status. Please contact the System Admin.";
+
+                    if ($user->account_status == 'suspended') {
+                        $message = "Access Denied: Your HR access has been suspended.";
+                    }
+
+                    return back()->withErrors(['email' => $message]);
+                }
+
                 $request->session()->regenerate();
                 return redirect()->intended(route('hr.dashboard'));
             }
 
-            // Agar role match nahi hota toh logout
+            // Role match nahi hua toh kick out
             Auth::logout();
             return back()->withErrors(['email' => 'Unauthorized: This portal is for HR only.']);
         }
