@@ -15,9 +15,9 @@ class User extends Authenticatable
     public $timestamps = false;
     const ROLE_SUPER_ADMIN = 1;
     const ROLE_ADMIN_STAFF = 2;
-    const ROLE_STUDENT = 3;
-    const ROLE_INSTITUTION = 4; 
-    const ROLE_MENTOR = 5;
+    const ROLE_MENTOR = 3;
+const ROLE_INSTITUTION = 4;
+const ROLE_STUDENT = 5;
     use HasApiTokens, HasFactory, Notifiable;
 
     /**

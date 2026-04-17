@@ -406,20 +406,21 @@
                         {{ $loop->iteration }}
                     </span>
                     <div class="user-avatar bg-soft-danger text-danger">
-@php
-    $name = ($user->admin_role_id == 4 && $user->institution)
-        ? $user->institution->institution_name
-        : $user->full_name;
-@endphp
+                        @php
+                        $name = ($user->admin_role_id == 4 && $user->institution)
+                        ? $user->institution->institution_name
+                        : $user->full_name;
+                        @endphp
 
-{{ strtoupper(substr($name, 0, 2)) }}                    </div>
+                        {{ strtoupper(substr($name, 0, 2)) }}
+                    </div>
                     <div>
-                    <h6 class="fw-bold mb-0 text-main">
-    @if($user->admin_role_id == 4)
-        {{ $user->institution->institution_name ?? $user->full_name }}
-    @else
-        {{ $user->full_name }}
-    @endif
+                        <h6 class="fw-bold mb-0 text-main">
+                            @if($user->admin_role_id == 4)
+                            {{ $user->institution->institution_name ?? $user->full_name }}
+                            @else
+                            {{ $user->full_name }}
+                            @endif
                             @if($user->account_status == 'active')
                             <i class="bi bi-patch-check-fill text-success small ms-1"></i>
                             @endif
@@ -429,16 +430,16 @@
                 </div>
                 <div class="text-end d-none d-sm-block">
                     <span class="role-badge-sm text-danger">
-                    @if($user->admin_role_id == 1)
-ADMIN
-@elseif($user->admin_role_id == 2)
-HR
-@elseif($user->admin_role_id == 3)
-STUDENT
-@elseif($user->admin_role_id == 4)
-INSTITUTION
-@elseif($user->admin_role_id == 5)
-MENTOR
+                        @if($user->admin_role_id == 1)
+                        ADMIN
+                        @elseif($user->admin_role_id == 2)
+                        HR
+                        @elseif($user->admin_role_id == 3)
+                        MENTOR
+                        @elseif($user->admin_role_id == 4)
+                        INSTITUTION
+                        @elseif($user->admin_role_id == 5)
+                        STUDENT
 
                         @else
                         STAFF
@@ -617,8 +618,8 @@ MENTOR
                             <label class="form-label --text-muted small fw-bold">ASSIGN MENTOR (OPTIONAL)</label>
                             <select name="mentor_id" class="search-input-drive" style="appearance: auto;">
                                 <option value="">Choose a Mentor...</option>
-                                @foreach($users->where('admin_role_id', 4) as $mentor)
-                                                                <option value="{{ $mentor->id }}">{{ $mentor->full_name }}</option>
+                                @foreach($users->where('admin_role_id', 3) as $mentor)
+                                <option value="{{ $mentor->id }}">{{ $mentor->full_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -672,9 +673,9 @@ MENTOR
                                 style="appearance: auto;">
                                 <option value="1">Admin</option>
                                 <option value="2">HR</option>
-                                <option value="3">Student</option>
+                                <option value="3">Mentor</option>
                                 <option value="4">Institution</option>
-                                <option value="5">Mentor</option>
+                                <option value="5">Student</option>
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -682,7 +683,7 @@ MENTOR
                             <select name="mentor_id" id="edit_mentor_id" class="search-input-drive"
                                 style="appearance: auto;">
                                 <option value="">No Mentor</option>
-                                @foreach($users->where('admin_role_id', 4) as $mentor)
+                                @foreach($users->where('admin_role_id', 3) as $mentor)
                                 <option value="{{ $mentor->id }}">{{ $mentor->full_name }}</option>
                                 @endforeach
                             </select>
@@ -715,36 +716,37 @@ MENTOR
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    // Select all buttons with the class 'edit-user-btn'
-    const editButtons = document.querySelectorAll('.edit-user-btn');
+        // Select all buttons with the class 'edit-user-btn'
+        const editButtons = document.querySelectorAll('.edit-user-btn');
 
-    editButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // 1. Get data from attributes
-            const id = this.getAttribute('data-id');
-            const name = this.getAttribute('data-name');
-            const email = this.getAttribute('data-email');
-            const role = this.getAttribute('data-role');
-            const status = this.getAttribute('data-status');
-            const mentor = this.getAttribute('data-mentor');
+        editButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // 1. Get data from attributes
+                const id = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+                const email = this.getAttribute('data-email');
+                const role = this.getAttribute('data-role');
+                const status = this.getAttribute('data-status');
+                const mentor = this.getAttribute('data-mentor');
 
-            // 2. Set the form action
-            const form = document.getElementById('editUserForm');
-            form.action = `/admin/users/update/${id}`;
+                // 2. Set the form action
+                const form = document.getElementById('editUserForm');
+                form.action = `/admin/users/update/${id}`;
 
-            // 3. Fill the inputs
-            document.getElementById('edit_full_name').value = name;
-            document.getElementById('edit_email').value = email;
-            document.getElementById('edit_admin_role_id').value = role;
-            document.getElementById('edit_account_status').value = status;
-            document.getElementById('edit_mentor_id').value = mentor || '';
+                // 3. Fill the inputs
+                document.getElementById('edit_full_name').value = name;
+                document.getElementById('edit_email').value = email;
+                document.getElementById('edit_admin_role_id').value = role;
+                document.getElementById('edit_account_status').value = status;
+                document.getElementById('edit_mentor_id').value = mentor || '';
 
-            // 4. Show the modal
-            const editModal = new bootstrap.Modal(document.getElementById('editUserModal'));
-            editModal.show();
+                // 4. Show the modal
+                const editModal = new bootstrap.Modal(document.getElementById('editUserModal'));
+                editModal.show();
+            });
         });
     });
-});
+
     function switchUserTab(tabName) {
         document.querySelectorAll('.user-tab-btn').forEach(btn => btn.classList.remove('active'));
         event.currentTarget.classList.add('active');
@@ -754,25 +756,24 @@ MENTOR
     }
 
     function openEditModal(user) {
-    const form = document.getElementById('editUserForm');
+        const form = document.getElementById('editUserForm');
 
-    // Use a clean template literal for the URL
-    form.action = `/admin/users/update/${user.id}`;
+        // Use a clean template literal for the URL
+        form.action = `/admin/users/update/${user.id}`;
 
-    // IMPORTANT: Manually refresh the CSRF token input from the meta tag
-    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    form.querySelector('input[name="_token"]').value = token;
+        // IMPORTANT: Manually refresh the CSRF token input from the meta tag
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        form.querySelector('input[name="_token"]').value = token;
 
-    // ... your existing value assignments ...
-    document.getElementById('edit_full_name').value = user.full_name;
-    document.getElementById('edit_email').value = user.email;
-    document.getElementById('edit_admin_role_id').value = user.admin_role_id;
-    document.getElementById('edit_account_status').value = user.account_status;
-    document.getElementById('edit_mentor_id').value = user.mentor_id || '';
+        // ... your existing value assignments ...
+        document.getElementById('edit_full_name').value = user.full_name;
+        document.getElementById('edit_email').value = user.email;
+        document.getElementById('edit_admin_role_id').value = user.admin_role_id;
+        document.getElementById('edit_account_status').value = user.account_status;
+        document.getElementById('edit_mentor_id').value = user.mentor_id || '';
 
-    const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
-    modal.show();
-}
-
+        const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
+        modal.show();
+    }
 </script>
 @endsection
