@@ -224,7 +224,7 @@
                 <div class="small fw-bold mt-2" style="color: #10b981;">Package: ₹25,000/monthly</div>
             </div>
             <div class="col-12 col-md-4 text-start text-md-end">
-                <span class="text-muted small">Created 17/12/2025</span>
+                <span class="--text-muted small">Created 17/12/2025</span>
             </div>
         </div>
     </div>
@@ -257,7 +257,7 @@
                 <div class="small fw-bold mt-2" style="color: #10b981;">Package: ₹30,000/monthly</div>
             </div>
             <div class="col-12 col-md-4 text-start text-md-end">
-                <span class="text-muted small">Created 15/12/2025</span>
+                <span class="--text-muted small">Created 15/12/2025</span>
             </div>
         </div>
     </div>

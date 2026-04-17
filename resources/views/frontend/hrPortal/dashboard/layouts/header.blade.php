@@ -9,7 +9,7 @@
         </div>
         <div>
             <h5 class="fw-bold m-0">@yield('title', 'HR Dashboard')</h5>
-            <small class="text-muted">Welcome back, {{ explode(' ', Auth::user()->full_name)[0] }}!</small>
+            <small class="--text-muted">Welcome back, {{ explode(' ', Auth::user()->full_name)[0] }}!</small>
         </div>
     </div>
 
@@ -38,7 +38,7 @@
             <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 py-2"
                 style="border-radius: 12px; min-width: 180px;">
                 <li>
-                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{{ route('hr.settings') }}">
+                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{{ route('hr.profile.index') }}">
                         <i class="bi bi-person text-primary"></i> My Profile
                     </a>
                 </li>
