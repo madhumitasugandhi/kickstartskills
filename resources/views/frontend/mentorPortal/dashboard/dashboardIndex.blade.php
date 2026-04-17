@@ -162,7 +162,7 @@
                 </div>
                 @empty
                 <div class="text-center p-4">
-                    <p class="text-muted small">No students found.</p>
+                    <p class="--text-muted small">No students found.</p>
                 </div>
                 @endforelse
             </div>
@@ -205,7 +205,7 @@
                 </div>
                 @empty
                 <div class="text-center py-3">
-                    <p class="text-muted small mb-0">No upcoming sessions.</p>
+                    <p class="--text-muted small mb-0">No upcoming sessions.</p>
                 </div>
                 @endforelse
             </div>

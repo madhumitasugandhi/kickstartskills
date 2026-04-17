@@ -36,6 +36,8 @@ const ROLE_STUDENT = 5;
         'admin_role_id',
         'account_status',
         'remember_token',
+        'mentor_id',
+        'institution_id',
     ];
 
     /**
