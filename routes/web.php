@@ -96,6 +96,11 @@ Route::post('/auth/password/send-otp', [ForgotPasswordController::class, 'sendOt
 Route::post('/auth/password/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('auth.password.verifyOtp');
 Route::post('/auth/password/update', [ForgotPasswordController::class, 'resetPassword'])->name('auth.password.update');
 
+/*|------------------------------------------------Legal page Routes--------------------------------------------------|*/
+Route::get('/privacy-policy', function () { return view('frontend.legal.privacy'); })->name('privacy');
+Route::get('/terms-conditions', function () { return view('frontend.legal.terms'); })->name('terms');
+Route::get('/return-policy', function () { return view('frontend.legal.return'); })->name('return');
+
 /*|------------------------------------------------Student Portal Auth--------------------------------------------------|*/
 // Student Login
 Route::get('/student-login', [StudentAuthController::class, 'showLogin'])->name('student.login');
