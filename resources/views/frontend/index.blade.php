@@ -528,6 +528,25 @@
             background: rgba(0, 0, 0, 0.3);
             border-color: rgba(255, 255, 255, 0.15);
         }
+
+        .footer-links {
+            margin-top: 50px;
+            padding-bottom: 0px;
+            border-top: 1px solid var(--card-border);
+            padding-top: 25px;
+        }
+
+        .footer-link-item {
+            color: var(--txt-sub);
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin: 0 15px;
+            transition: 0.3s;
+        }
+
+        .footer-link-item:hover {
+            color: var(--text-blue);
+        }
     </style>
 </head>
 
@@ -556,7 +575,7 @@
         <li></li>
     </ul>
 
-    <div class="container">
+    <div class="container mb-0">
 
         <div class="text-center mb-5">
             <div class="main-icon">
@@ -595,13 +614,15 @@
 
             <div class="col-md-4">
                 <div class="portal-card">
-                    <div class="portal-icon text-orange" style="color: #ff4500"><i class="bi bi-person-check-fill"></i></div>
+                    <div class="portal-icon text-orange" style="color: #ff4500"><i class="bi bi-person-check-fill"></i>
+                    </div>
 
                     <div class="portal-title text-orange" style="color: #ff4500">Mentor Portal</div>
                     <div class="portal-sub">Guide and inspire talent</div>
                     <div class="portal-desc">Provide guidance and mentorship to students.</div>
 
-                    <a href="/mentor-login" class="login-btn text-orange btn-warning" style="color: #ff4500">mentor-login</a>
+                    <a href="/mentor-login" class="login-btn text-orange btn-warning"
+                        style="color: #ff4500">mentor-login</a>
                 </div>
             </div>
 
@@ -645,6 +666,12 @@
             <button id="toggleMode" class="toggle-btn"><i class="bi bi-moon"></i> Dark Mode</button>
         </div>
 
+        <div class="footer-links text-center">
+            <a href="/privacy-policy" class="footer-link-item">Privacy Policy</a>
+            <a href="/terms-conditions" class="footer-link-item">Terms & Conditions</a>
+            <a href="/return-policy" class="footer-link-item">Return Policy</a>
+            <p class="mt-3 mb-0 --text-muted small">© 2026 KickStartSkills. All rights reserved.</p>
+        </div>
     </div>
 
     <script>
