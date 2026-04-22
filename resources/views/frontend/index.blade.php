@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KickStartSkills Portals</title>
+    <link rel="icon" href="{{ asset('assets/../kickstart_logo.png') }}" type="image/png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -612,7 +613,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            {{-- <div class="col-md-4">
                 <div class="portal-card">
                     <div class="portal-icon text-orange" style="color: #ff4500"><i class="bi bi-person-check-fill"></i>
                     </div>
@@ -655,7 +656,7 @@
                 </div>
             </div>
 
-        </div>
+        </div> --}}
 
         <div class="info-bar mt-4">
             <i class="bi bi-info-circle me-2"></i>
