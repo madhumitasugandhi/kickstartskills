@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Services\EmailService;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -21,46 +22,15 @@ class StudentAuthController extends Controller
     }
 
     // Handle Login logic
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+     // Login Logic
+     public function login(Request $request)
+     {
+         return app(AuthController::class)
+             ->login($request, 5); // student role
+     }
+     
 
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
-            $user = Auth::user();
-
-            // Check if role is Student (5)
-            if ($user->admin_role_id == 5) {
-
-                // 🔥 Status Check Logic
-                if ($user->account_status !== 'active') {
-                    Auth::logout(); // Logout user if not active
-
-                    $status = ucfirst($user->account_status);
-                    $message = "Your account is currently $status. Please contact support.";
-
-                    if ($user->account_status == 'pending') {
-                        $message = "Your account is pending verification. Please wait for admin approval.";
-                    }
-
-                    return back()->withErrors(['email' => $message]);
-                }
-
-                $request->session()->regenerate();
-                return redirect()->route('student.dashboard');
-            }
-
-            // Not a student? Kill session
-            Auth::logout();
-            return back()->withErrors(['email' => 'Access denied. Use the correct portal.']);
-        }
-
-        return back()->withErrors(['email' => 'The provided credentials do not match.']);
-    }
-
-    public function register(Request $request, \App\Services\EmailService $emailService)
+    public function register(Request $request, EmailService $emailService)
     {
         try {
             // 1. Validation
@@ -83,7 +53,7 @@ class StudentAuthController extends Controller
             $user = User::create([
                 'full_name' => $request->first_name . ' ' . $request->last_name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password),
+                'password' => $request->password,
                 'phone' => $request->phone,
                 'country' => $request->country,
                 'institution_code' => $request->institution_code,

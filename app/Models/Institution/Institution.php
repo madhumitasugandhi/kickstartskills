@@ -22,25 +22,21 @@ class Institution extends Model
         'institution_name',
         'institution_code_prefix',
         'email',
-        'status',
         'setup_status',
         'legal_name',
         'institution_type_id',
         'representative_name',
         'phone',
-        'password_hash',
         'terms_accepted',
         'remember_token',
         'website',
         'established_year',
-
+    
         // regulatory fields
         'aishe_code',
         'aicte_id',
         'ugc_number',
         'affiliated_university',
-
-
     ];
 
     protected $casts = [

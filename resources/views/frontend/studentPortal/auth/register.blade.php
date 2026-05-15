@@ -327,8 +327,9 @@
         <li></li>
     </ul>
 
-    <a href="{{ route('student.login')}}" class="nav-btn back-btn"><i class="bi bi-arrow-left"></i></a>
-    <button onclick="toggleTheme()" class="nav-btn theme-btn"><i id="theme-icon" class="bi bi-moon"></i></button>
+    <a href="{{ route('login.dynamic', 'student') }}" class="nav-btn back-btn">
+    <i class="bi bi-arrow-left"></i>
+</a>    <button onclick="toggleTheme()" class="nav-btn theme-btn"><i id="theme-icon" class="bi bi-moon"></i></button>
 
     <div class="auth-container">
         <div class="icon-box"><i class="fas fa-user-plus"></i></div>

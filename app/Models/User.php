@@ -12,7 +12,7 @@ use App\Models\Institution\Institution;
 
 class User extends Authenticatable
 {
-    public $timestamps = false;
+    public $timestamps = true;
     const ROLE_SUPER_ADMIN = 1;
     const ROLE_ADMIN_STAFF = 2;
     const ROLE_MENTOR = 3;
@@ -37,7 +37,7 @@ const ROLE_STUDENT = 5;
         'account_status',
         'remember_token',
         'mentor_id',
-        'institution_id',
+        
     ];
 
     /**
@@ -62,7 +62,7 @@ const ROLE_STUDENT = 5;
         'updated_at' => 'datetime',
     ];
 
-    // Inside app/Models/User.php
+    
 
     public function adminProfile()
     {
@@ -84,8 +84,52 @@ const ROLE_STUDENT = 5;
         return $this->hasOne(HrProfile::class);
     }
 
+    protected static function booted()
+{
+    static::created(function ($user) {
+
+        // Create Institution automatically
+        if ($user->admin_role_id == self::ROLE_INSTITUTION) {
+
+            if (!$user->institution) {
+
+                Institution::create([
+                    'user_id' => $user->id,
+                    'institution_name' => $user->full_name,
+                    'email' => $user->email,
+                    'status' => $user->account_status,
+                    'setup_status' => 'registered',
+                    'password_hash' => $user->password
+                ]);
+            }
+        }
+    });
+
+    static::updated(function ($user) {
+
+        // Sync Institution on update
+        if ($user->admin_role_id == self::ROLE_INSTITUTION && $user->institution) {
+
+            $user->institution->update([
+                'institution_name' => $user->full_name,
+                'email' => $user->email,
+                'status' => $user->account_status,
+            ]);
+        }
+    });
+
+    static::deleting(function ($user) {
+
+        // Delete institution if user deleted
+        if ($user->admin_role_id == self::ROLE_INSTITUTION && $user->institution) {
+            $user->institution->delete();
+        }
+    });
+}
     public function institution()
     {
         return $this->hasOne(Institution::class, 'user_id');
     }
+
+
 }

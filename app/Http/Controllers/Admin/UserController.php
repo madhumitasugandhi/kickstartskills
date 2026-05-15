@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use App\Services\EmailService;
 use Illuminate\Support\Facades\Log;
 use App\Models\Institution\Institution;
@@ -35,9 +35,9 @@ class UserController extends Controller
         if ($request->filled('status') && $request->status !== 'All') {
             $query->where('account_status', $request->status);
         }
+        $users = $query->with('institution:institution_id,user_id,institution_name')->get();
 
-        $users = $query->with('institution')->get();
-        $allUsersCount = User::count();
+        $allUsersCount = $query->count();
 
         // 4. Calculate Stats
         $stats = [
@@ -69,28 +69,32 @@ class UserController extends Controller
     }
 
     public function store(Request $request, EmailService $emailService)
-    {
-        $request->validate([
-            'full_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8',
-            'admin_role_id' => 'required|integer',
-            'account_status' => 'required|in:active,deactivated,suspended,pending',
-            'mentor_id' => 'nullable|exists:users,id',
-            'institution_id' => 'nullable|integer',
-        ]);
+{
+    $request->validate([
+        'full_name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email|unique:institutions,email',
+        'password' => 'required|min:8',
+        'admin_role_id' => 'required|integer',
+        'account_status' => 'required|in:active,deactivated,suspended,pending',
+        'mentor_id' => 'nullable|exists:users,id',
+    ]);
 
-        // FIX: Variable assign kiya $user mein
+    DB::beginTransaction();
+
+    try {
+
+        // ✅ Create User
         $user = User::create([
             'full_name' => $request->full_name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
             'admin_role_id' => $request->admin_role_id,
             'account_status' => $request->account_status,
             'mentor_id' => $request->mentor_id,
-            'institution_id' => $request->institution_id,
         ]);
 
+
+        // ✅ Role Mapping
         $roles = [
             1 => 'Admin',
             2 => 'HR/Staff',
@@ -101,6 +105,7 @@ class UserController extends Controller
 
         $roleName = $roles[$user->admin_role_id] ?? 'User';
 
+        // ✅ Send Email
         try {
             $emailService->sendHtmlEmail(
                 $user->email,
@@ -109,17 +114,28 @@ class UserController extends Controller
                 [
                     'name' => $user->full_name,
                     'email' => $user->email,
-                    'password' => $request->password, // Plain password email ke liye
+                    'password' => $request->password,
                     'role' => $roleName
                 ]
             );
         } catch (\Exception $e) {
             Log::error("Mail Error: " . $e->getMessage());
-            // Mail fail bhi ho jaye toh registration na ruke
         }
 
-        return redirect()->route('admin.users')->with('success', 'User added successfully and credentials sent!');
+        DB::commit();
+
+        return redirect()->route('admin.users')
+            ->with('success', 'User added successfully and credentials sent!');
+
+    } catch (\Exception $e) {
+
+        DB::rollback();
+
+        Log::error("User Create Error: " . $e->getMessage());
+
+        return back()->with('error', 'Something went wrong!')->withInput();
     }
+}
 
     public function update(Request $request, $id)
     {
@@ -149,7 +165,7 @@ class UserController extends Controller
             ]);
         }
 
-        // 🔥 FULL SYNC FOR INSTITUTION
+        
         if ($user->admin_role_id == 4 && $user->institution) {
             $user->institution->update([
                 'status' => $request->account_status,

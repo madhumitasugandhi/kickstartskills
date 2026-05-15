@@ -34,20 +34,29 @@ class StudentExaminationController extends Controller
     $studentId = auth()->id();
 
     $drives = DB::table('drives as d')
-    ->whereIn('d.drive_id', function($q) use ($studentId){
+    ->whereIn('d.drive_id', function ($q) use ($studentId) {
         $q->select('drive_id')
-          ->from('drive_visible_students')
-          ->where('is_visible', 1)
-->whereJsonContains('student_id', (string)$studentId);
+            ->from('drive_visible_students')
+            ->where('is_visible', 1)
+            ->whereJsonContains('student_id', (string)$studentId);
+    })
+    ->leftJoin('drive_assessments as da', 'da.drive_id', '=', 'd.drive_id')
 
-})
-    ->leftJoin('drive_assessments as da','da.drive_id','=','d.drive_id')
-    ->leftJoin('student_drive_payments as sdp', function($join){
-        $join->on('sdp.drive_id','=','d.drive_id')
-             ->where('sdp.student_id','=',auth()->id());
+    // ✅ ONLY ONE JOIN
+    ->leftJoin('student_drive_payments as sdp', function ($join) use ($studentId) {
+        $join->on('sdp.drive_id', '=', 'd.drive_id')
+            ->where('sdp.student_id', '=', $studentId);
     })
 
-    
+    ->leftJoin('platform_payments as pp', function ($join) use ($studentId) {
+        $join->on('pp.reference_id', '=', 'd.drive_id')
+             ->where('pp.user_id', '=', $studentId)
+             ->whereRaw('pp.id = (
+                 SELECT MAX(id) FROM platform_payments 
+                 WHERE reference_id = d.drive_id 
+                 AND user_id = '.$studentId.'
+             )');
+    })
     ->select(
         'd.drive_id',
         'd.drive_title',
@@ -56,15 +65,39 @@ class StudentExaminationController extends Controller
         'da.exam_date',
         'da.start_time',
         'da.end_time',
-        'sdp.status as payment_status'
+    
+        'pp.base_amount',
+        'pp.convenience_fee',
+        'pp.gst_amount',
+        'pp.total_amount',
+    
+        DB::raw("COALESCE(pp.status, 'not_paid') as payment_status")
     )
     ->get();
+
+    // 🔥 ADD THIS LOOP (IMPORTANT)
+    foreach ($drives as $drive) {
+
+        // Attempt check
+        $drive->already_attempted = DB::table('student_exam_attempts')
+            ->where('user_id', $studentId)
+            ->where('drive_id', $drive->drive_id)
+            ->exists();
+
+        // Expiry check
+        $endDateTime = \Carbon\Carbon::parse(
+            $drive->exam_date . ' ' . $drive->end_time
+        );
+
+        $drive->is_expired = now()->gt($endDateTime);
+    }
 
     return view(
         'frontend.studentPortal.dashboard.examinations.approvedDrives',
         compact('drives')
     );
-}
+    }
+  
     public function startTest($id)
     {
         $user = Auth::user();
@@ -103,7 +136,7 @@ class StudentExaminationController extends Controller
         );
     }
 
-public function submitQuiz(Request $request)
+    public function submitQuiz(Request $request)
 {
     $user = Auth::user();
     $answers = $request->input('answer') ?? [];
@@ -224,21 +257,32 @@ public function submitQuiz(Request $request)
             'message' => $e->getMessage()
         ], 500);
     }
-}
+    }
 
-    public function testHistory()
-    {
-        $user = Auth::user();
+   public function testHistory()
+{
+    $user = Auth::user();
 
-        // Fetching from consistent table 'student_results'
-        $examHistory = DB::table('student_results')
-            ->join('exams', 'student_results.exam_id', '=', 'exams.id')
-            ->where('student_results.user_id', $user->id)
-            ->select('student_results.*', 'exams.exam_title', 'exams.duration_minutes')
-            ->orderBy('student_results.created_at', 'desc')
-            ->get();
+    $examHistory = DB::table('student_exam_attempts as sea')
+        ->leftJoin('exams as e', 'sea.exam_id', '=', 'e.id')
+        ->leftJoin('drives as d', 'sea.drive_id', '=', 'd.drive_id')
+        ->where('sea.user_id', $user->id)
+        ->select(
+            'sea.*',
+            DB::raw("COALESCE(e.exam_title, d.drive_title) as title"),
+            DB::raw("CASE 
+                WHEN sea.type = 'exam' THEN 'Exam'
+                WHEN sea.type = 'drive' THEN 'Drive'
+                ELSE 'Test'
+            END as type_label")
+        )
+        ->orderBy('sea.created_at', 'desc')
+        ->get();
 
-        return view('frontend.studentPortal.dashboard.examinations.testHistoryIndex', compact('examHistory', 'user'));
+    return view(
+        'frontend.studentPortal.dashboard.examinations.testHistoryIndex',
+        compact('examHistory', 'user')
+    );
     }
 
     public function results(Request $request)
@@ -246,36 +290,40 @@ public function submitQuiz(Request $request)
         $user = Auth::user();
     
         // ================= RESULTS LIST =================
-        $query = DB::table('student_exam_attempts')
-            ->join('exams', 'student_exam_attempts.exam_id', '=', 'exams.id')
-            ->leftJoin('skills_categories', 'exams.skill_category_id', '=', 'skills_categories.id')
-            ->where('student_exam_attempts.user_id', $user->id)
-            ->select(
-                'student_exam_attempts.*',
-                'exams.exam_title',
-                'exams.duration_minutes as total_time',
-                'exams.passing_score',
-                'skills_categories.name as skill_name',
-            );
+        $query = DB::table('student_exam_attempts as sea')
+    ->leftJoin('exams as e', 'sea.exam_id', '=', 'e.id')
+    ->leftJoin('drives as d', 'sea.drive_id', '=', 'd.drive_id')
+    ->leftJoin('skills_categories as sc', 'e.skill_category_id', '=', 'sc.id')
+    ->where('sea.user_id', $user->id)
+    ->select(
+        'sea.*',
+        DB::raw("COALESCE(e.exam_title, d.drive_title) as title"),
+        DB::raw("CASE 
+            WHEN sea.type = 'exam' THEN 'Exam'
+            WHEN sea.type = 'drive' THEN 'Drive'
+        END as type_label"),
+        'e.duration_minutes as exam_time',
+        'sc.name as skill_name'
+    );
     
         // Subject Filter
         if ($request->subject && $request->subject != 'All') {
-            $query->where('skills_categories.name', $request->subject);
+            $query->where('sc.name', $request->subject);
         }
     
         // Time Filter
         if ($request->time == 'month') {
-            $query->where('student_exam_attempts.created_at', '>=', now()->subMonth());
+            $query->where('sea.created_at', '>=', now()->subMonth());
         }
         if ($request->time == 'week') {
-            $query->where('student_exam_attempts.created_at', '>=', now()->subWeek());
+            $query->where('sea.created_at', '>=', now()->subWeek());
         }
     
         // Sorting
         if ($request->sort == 'oldest') {
-            $query->orderBy('student_exam_attempts.created_at', 'asc');
+            $query->orderBy('sea.created_at', 'asc');
         } else {
-            $query->orderBy('student_exam_attempts.created_at', 'desc');
+            $query->orderBy('sea.created_at', 'desc');
         }
     
         $results = $query->get();
@@ -288,17 +336,38 @@ public function submitQuiz(Request $request)
             : 0;
     
         // ================= SUBJECT PERFORMANCE =================
-        $subjectPerformance = DB::table('student_question_attempts')
-            ->join('skills_categories', 'student_question_attempts.skills_category_id', '=', 'skills_categories.id')
-            ->where('student_question_attempts.user_id', $user->id)
-            ->select(
-                'skills_categories.name as subject',
-                DB::raw('COUNT(*) as total_questions'),
-                DB::raw('SUM(is_correct) as correct_answers'),
-                DB::raw('(SUM(is_correct)/COUNT(*))*100 as accuracy')
-            )
-            ->groupBy('skills_categories.name')
-            ->get();
+        $examPerformance = DB::table('student_question_attempts')
+    ->join('skills_categories', 'student_question_attempts.skills_category_id', '=', 'skills_categories.id')
+    ->where('student_question_attempts.user_id', $user->id)
+    ->select(
+        'skills_categories.name as subject',
+        DB::raw('COUNT(*) as total_questions'),
+        DB::raw('SUM(is_correct) as correct_answers')
+    )
+    ->groupBy('skills_categories.name');
+
+$drivePerformance = DB::table('student_drive_question_attempts')
+    ->join('skills_categories', 'student_drive_question_attempts.skills_category_id', '=', 'skills_categories.id')
+    ->where('student_drive_question_attempts.user_id', $user->id)
+    ->select(
+        'skills_categories.name as subject',
+        DB::raw('COUNT(*) as total_questions'),
+        DB::raw('SUM(is_correct) as correct_answers')
+    )
+    ->groupBy('skills_categories.name');
+
+$combined = $examPerformance->unionAll($drivePerformance);
+
+$subjectPerformance = DB::table(DB::raw("({$combined->toSql()}) as combined"))
+    ->mergeBindings($combined)
+    ->select(
+        'subject',
+        DB::raw('SUM(total_questions) as total_questions'),
+        DB::raw('SUM(correct_answers) as correct_answers'),
+        DB::raw('(SUM(correct_answers)/SUM(total_questions))*100 as accuracy')
+    )
+    ->groupBy('subject')
+    ->get();
     
         // ================= RECOMMENDATIONS =================
         $recommendations = [];
@@ -329,6 +398,7 @@ public function submitQuiz(Request $request)
             )
         );
     }
+   
     public function practiceIndex()
     {
         $user = Auth::user();
@@ -369,30 +439,27 @@ public function submitQuiz(Request $request)
         )
         ->get();
 
-    // ================= DRIVE RESULTS =================
-    $driveResults = DB::table('student_results as sr')
-        ->leftJoin('drives as d', 'sr.drive_id', '=', 'd.drive_id')
-        ->where('sr.user_id', $user->id)
-        ->where('sr.type', 'drive')
+   
+        $results = DB::table('student_exam_attempts as sea')
+        ->leftJoin('exams as e', 'sea.exam_id', '=', 'e.id')
+        ->leftJoin('drives as d', 'sea.drive_id', '=', 'd.drive_id')
+        ->where('sea.user_id', $user->id)
         ->select(
-            'sr.id',
-            'sr.score',
-            'sr.correct_answers',
-            'sr.total_questions',
-            'sr.status',
-            'sr.time_taken',
-            DB::raw('1 as attempt_no'),
-            'sr.created_at',
-            'd.drive_title as title',
-            DB::raw('NULL as total_time'),
-            DB::raw("'Drive' as skill_name"),
-            DB::raw("'drive' as type"),
-            'sr.drive_id'
+            'sea.id',
+            'sea.score',
+            'sea.correct_answers',
+            'sea.total_questions',
+            'sea.status',
+            'sea.time_taken',
+            'sea.attempt_no',
+            'sea.created_at',
+            DB::raw("COALESCE(e.exam_title, d.drive_title) as title"),
+            DB::raw("CASE 
+                WHEN sea.type = 'exam' THEN 'exam'
+                WHEN sea.type = 'drive' THEN 'drive'
+            END as type")
         )
         ->get();
-
-    // ================= MERGE =================
-    $results = $examResults->merge($driveResults);
 
     // ================= TAB FILTER (🔥 FIXED) =================
     if ($request->tab == 'exam') {
@@ -456,5 +523,7 @@ public function submitQuiz(Request $request)
             'recommendations'
         )
     );
-}
+   }
+
+
 }

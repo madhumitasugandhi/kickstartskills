@@ -31,4 +31,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'ablepay' => [
+    'api_key' => env('ABLEPAY_API_KEY'),
+    'salt_key' => env('ABLEPAY_SALT_KEY'),
+    'base_url' => env('ABLEPAY_BASE_URL'),
+    'callback_url' => env('ABLEPAY_CALLBACK_URL'),
+    'webhook_url' => env('ABLEPAY_WEBHOOK_URL'),
+],
+
 ];

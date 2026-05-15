@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -25,16 +26,32 @@ class DashboardController extends Controller
         // 4. Security/Moderation
         $suspendedUsers = User::where('account_status', 'suspended')->count();
 
-        // 5. Fetch the 5 most recent user registrations
-        $recentActivities = User::orderBy('created_at', 'desc')->take(5)->get();
+        // 🔥 5. INSTITUTION STATS (FROM USERS ONLY)
+        $totalInstitutions = User::where('admin_role_id', 4)->count();
 
-        // 6. Fetch suspended users for the "Security Alerts" section
+        $activeInstitutions = User::where('admin_role_id', 4)
+            ->where('account_status', 'active')
+            ->count();
+
+        $pendingInstitutions = User::where('admin_role_id', 4)
+            ->where('account_status', 'pending')
+            ->count();
+
+        // 🔥 6. Recent Institution Users
+        $recentInstitutions = User::where('admin_role_id', 4)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // 7. Recent Users
+        $recentActivities = User::latest()->take(5)->get();
+
+        // 8. Security Alerts
         $securityAlerts = User::where('account_status', 'suspended')
-            ->orderBy('created_at', 'desc') // Changed 'updated_at' to 'created_at'
+            ->latest()
             ->take(2)
             ->get();
 
-        // ONLY ONE RETURN AT THE END
         return view('frontend.adminPortal.dashboard.dashboardIndex', compact(
             'totalUsers',
             'activeUsers',
@@ -42,7 +59,13 @@ class DashboardController extends Controller
             'activeSessions',
             'suspendedUsers',
             'recentActivities',
-            'securityAlerts'
+            'securityAlerts',
+
+            // 🔥 Institution Data
+            'totalInstitutions',
+            'activeInstitutions',
+            'pendingInstitutions',
+            'recentInstitutions'
         ));
     }
 }

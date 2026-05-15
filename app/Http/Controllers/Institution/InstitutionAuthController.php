@@ -4,94 +4,33 @@ namespace App\Http\Controllers\Institution;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Str;
-use App\Services\OtpService;
-use App\Services\EmailService;
-
-use App\Models\Institution\Institution;
+use App\Http\Controllers\Auth\AuthController;
 
 class InstitutionAuthController extends Controller
 {
 
     public function showLogin(Request $request)
     {
-        if (Session::has('institution_id')) {
+        if (auth()->check() && auth()->user()->admin_role_id == 4) {
             return redirect('/institution/dashboard');
         }
-
+    
         return view('frontend.institutionPortal.auth.institutelogin');
     }
-
+    
     public function login(Request $request)
     {
-        // Validate
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
-        // Correct Model (Institution)
-        $institution = Institution::where('email', $request->email)->first();
-
-        //  Check password (password_hash column)
-        if ($institution && Hash::check($request->password, $institution->password_hash)) {
-
-            // Check status
-
-            if ($institution->status == 'pending') {
-                return back()->with('error', 'Your account is pending approval');
-            }
-        
-            if ($institution->status == 'suspended') {
-                return back()->with('error', 'Your account is suspended');
-            }
-        
-            if ($institution->status == 'rejected') {
-                return back()->with('error', 'Your account has been rejected');
-            }
-        
-            if ($institution->status != 'active') {
-                return back()->with('error', 'Access denied');
-            }
-
-            // Session set
-            Session::put('institution_id', $institution->institution_id);
-            Session::put('institution_name', $institution->institution_name);
-
-            // Remember Me
-            if ($request->remember) {
-                $token = Str::random(60);
-
-                $institution->update([
-                    'remember_token' => $token
-                ]);
-
-                Cookie::queue('institution_remember', $token, 525600); // 1 year
-            }
-
-            return redirect('/institution/dashboard');
-        }
-
-        //  Login failed
-        return back()->with('error', 'Invalid email or password');
+        return app(AuthController::class)
+            ->login($request, 4);
     }
-
-    public function logout()
+    
+    public function logout(Request $request)
     {
-        $token = Cookie::get('institution_remember');
-
-        if ($token) {
-            Institution::where('remember_token', $token)
-                ->update(['remember_token' => null]);
-        }
-
-        Session::forget('institution_id');
-
-        Cookie::queue(Cookie::forget('institution_remember'));
-
+        auth()->logout();
+    
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+    
         return redirect('/institution-login');
     }
 

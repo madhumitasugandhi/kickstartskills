@@ -431,7 +431,8 @@
             border: 1px solid var(--card-border);
             box-shadow: 0 8px 32px var(--card-bg);
             border-radius: 28px;
-            height: 420px;
+            min-height: 420px;
+            height: auto;
             padding: 45px;
             transition: all 0.3s ease;
             cursor: pointer;
@@ -547,6 +548,48 @@
         .footer-link-item:hover {
             color: var(--text-blue);
         }
+
+        @media (max-width: 992px) {
+    body {
+        padding: 40px 15px;
+    }
+
+    .portal-card {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .portal-card {
+        padding: 25px;
+        border-radius: 22px;
+    }
+
+    .portal-title {
+        font-size: 1.4rem;
+    }
+
+    .portal-sub {
+        font-size: 1rem;
+    }
+
+    .portal-desc {
+        font-size: 0.9rem;
+    }
+
+    .portal-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .portal-card {
+        min-height: 380px;
+        padding: 28px;
+    }
+}
     </style>
 </head>
 
@@ -587,7 +630,7 @@
 
         <div class="row g-4">
 
-            <div class="col-md-4">
+            <div class="col-12 col-sm-6 col-lg-4">
                 <div class="portal-card">
                     <div class="portal-icon text-primary"><i class="bi bi-book-fill"></i></div>
 
@@ -595,12 +638,12 @@
                     <div class="portal-sub">Continue your learning journey</div>
                     <div class="portal-desc">Access courses, track progress, and develop your skills.</div>
 
-                    <a href="{{ url('/student-login') }}" class="login-btn btn-primary">
+                    <a href="{{ url('/login/student') }}" class="login-btn btn-primary">
                         student-login
                     </a>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-12 col-sm-6 col-lg-4">
                 <div class="portal-card">
                     <div class="portal-icon text-success"><i class="bi bi-house-door-fill"></i></div>
 
@@ -608,11 +651,11 @@
                     <div class="portal-sub">Manage your educational programs</div>
                     <div class="portal-desc">Oversee student programs and institutional analytics.</div>
 
-                    <a href="/institution-login" class="login-btn text-success btn-success">institution-login</a>
+                    <a href="{{ url('/login/institution') }}" class="login-btn text-success btn-success">institution-login</a>
                 </div>
             </div>
 
-            {{-- <div class="col-md-4">
+            {{--<div class="col-12 col-sm-6 col-lg-4">
                 <div class="portal-card">
                     <div class="portal-icon text-orange" style="color: #ff4500"><i class="bi bi-person-check-fill"></i>
                     </div>
@@ -626,11 +669,7 @@
                 </div>
             </div>
 
-        </div>
-
-        <div class="row g-4 mt-2">
-
-            <div class="col-md-4">
+            <div class="col-12 col-sm-6 col-lg-4">
                 <div class="portal-card">
                     <div class="portal-icon text-purple"><i class="bi bi-briefcase-fill" style="color:#9c4fd9"></i>
                     </div>
@@ -643,7 +682,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-12 col-sm-6 col-lg-4">
                 <div class="portal-card">
                     <div class="portal-icon text-danger"><i class="bi bi-gear-fill"></i></div>
 
@@ -653,9 +692,9 @@
 
                     <a href="/admin-login" class="login-btn text-danger btn-danger">admin-login</a>
                 </div>
-            </div>
+            </div>--}}
 
-        </div> --}}
+        </div> 
 
         <div class="info-bar mt-4">
             <i class="bi bi-info-circle me-2"></i>

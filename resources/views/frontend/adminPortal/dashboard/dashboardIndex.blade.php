@@ -230,9 +230,11 @@
                 </div>
                 <span class="badge bg-soft-green text-green">+3.2%</span>
             </div>
-            <h2 class="fw-bold text-main mb-1">128</h2>
-            <p class="--text-muted small mb-0">Institutions</p>
-            <small class="--text-muted" style="font-size: 0.75rem;">95 active</small>
+            <h2 class="fw-bold text-main mb-1">{{ number_format($totalInstitutions) }}</h2>
+             <p class="--text-muted small mb-0">Institutions</p>
+            <small class="--text-muted" style="font-size: 0.75rem;">
+                  {{ $activeInstitutions }} active • {{ $pendingInstitutions }} pending
+            </small>
         </div>
     </div>
 
@@ -244,7 +246,7 @@
                 </div>
                 <span class="badge bg-soft-green text-green">+8.7%</span>
             </div>
-            <h2 class="fw-bold text-main mb-1">1,205</h2>
+            <h2 class="fw-bold text-main mb-1">{{ number_format($activeSessions) }}</h2>
             <p class="--text-muted small mb-0">Active Sessions</p>
             <small class="--text-muted" style="font-size: 0.75rem;">Real-time connections</small>
         </div>
@@ -349,13 +351,21 @@
                 <span class="badge bg-soft-red text-red rounded-pill">2 New</span>
             </div>
 
-            <div class="alert-item">
-                <div class="d-flex justify-content-between">
-                    <span class="fw-bold text-main small">Failed Login Attempts</span>
-                    <small class="--text-muted" style="font-size: 0.7rem;">2 minutes ago</small>
-                </div>
-                <p class="mb-0 --text-muted small mt-1">15 failed login attempts from IP 192.168.1.100</p>
-            </div>
+            @forelse($securityAlerts as $alert)
+          <div class="alert-item">
+           <div class="d-flex justify-content-between">
+        <span class="fw-bold text-main small">Suspended User</span>
+        <small class="--text-muted" style="font-size: 0.7rem;">
+            {{ $alert->created_at->diffForHumans() }}
+        </small>
+        </div>
+    <p class="mb-0 --text-muted small mt-1">
+        {{ $alert->full_name }} ({{ $alert->email }}) is suspended
+    </p>
+   </div>
+@empty
+<p class="text-muted small">No security alerts</p>
+@endforelse
 
             <div class="alert-item">
                 <div class="d-flex justify-content-between">

@@ -50,7 +50,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        Cookie::queue(Cookie::forget('admin_permanent_login')); // Chabi fenk do
+        Cookie::queue(Cookie::forget('admin_permanent_login'));
         Auth::logout();
         $request->session()->invalidate();
         return redirect('/admin-login');

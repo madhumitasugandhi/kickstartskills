@@ -33,22 +33,35 @@
     [data-theme="dark"] .btn-start:hover {
         background-color: #4a505e;
     }
+
     .paid-badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: var(--soft-green);
-    color: var(--text-green);
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: var(--soft-green);
+        color: var(--text-green);
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
 </style>
 <div class="content-body">
+
+    @if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    @if(session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+
+    @if(session('info'))
+    <div class="alert alert-info">{{ session('info') }}</div>
+    @endif
 
     @forelse($drives as $drive)
     <div class="card-custom mb-4 p-4 position-relative">
@@ -67,11 +80,7 @@
             </div>
         </div>
 
-        @if($drive->payment_status == 'paid')
-    <div class="paid-badge">
-        <i class="bi bi-check-circle-fill me-1"></i> Paid
-    </div>
-@endif
+
 
         <!-- META INFO -->
         <div class="d-flex flex-wrap gap-4 mb-3 pb-3 border-bottom"
@@ -103,17 +112,45 @@
         <!-- ACTION -->
         <div class="d-flex justify-content-end">
 
-        @if($drive->payment_status == 'paid')
-    <a href="{{ route('student.exam.startDrive', $drive->drive_id) }}"
-       class="btn-start">
-        <i class="bi bi-play-fill"></i> Start Exam
-    </a>
-@else
-    <button class="btn-start pay-btn"
-            data-drive="{{ $drive->drive_id }}">
-        Pay ₹100 & Unlock Exam
-    </button>
-@endif
+            {{-- Already Attempted --}}
+            @if($drive->already_attempted)
+            <button class="btn-start" disabled>
+                <i class="bi bi-check-circle"></i> Attempted
+            </button>
+
+            {{-- Expired --}}
+            @elseif($drive->is_expired)
+            <button class="btn-start" disabled>
+                <i class="bi bi-x-circle"></i> Expired
+            </button>
+
+            {{-- ✅ SUCCESS --}}
+            @elseif($drive->payment_status == 'success')
+            <a href="{{ route('student.exam.startDrive', $drive->drive_id) }}"
+                class="btn-start">
+                <i class="bi bi-play-fill"></i> Start Exam
+            </a>
+
+            {{-- ⏳ PENDING --}}
+            @elseif($drive->payment_status == 'pending')
+            <button class="btn-start" disabled>
+                <i class="bi bi-hourglass-split"></i> Processing...
+            </button>
+
+            {{-- ❌ FAILED --}}
+            @elseif($drive->payment_status == 'failed')
+            <button class="btn-start retry-btn"
+                data-drive="{{ $drive->drive_id }}">
+                Retry Payment
+            </button>
+
+            {{-- 💰 DEFAULT --}}
+            @else
+            <button class="btn-start pay-btn"
+                data-drive="{{ $drive->drive_id }}">
+                Pay & Unlock Exam
+            </button>
+            @endif
 
         </div>
 
@@ -136,76 +173,81 @@
 
 </div>
 @push('scripts')
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
 <script>
-    document.querySelectorAll('.pay-btn').forEach(btn => {
+    const ABLEPAY_URL = "{{ config('services.ablepay.base_url') }}v2/paymentrequest";
+</script>
+<script>
+    document.querySelectorAll('.pay-btn, .retry-btn').forEach(btn => {
 
         btn.addEventListener('click', function() {
 
             let driveId = this.dataset.drive;
-            console.log(driveId);
+
+            this.disabled = true;
+            this.innerText = "Processing...";
+
             fetch('/student/dashboard/examinations/payment/create/' + driveId, {
-    method: 'POST',
-    headers: {
-        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-        'Accept': 'application/json'
-    }
-})
-.then(res => {
-    if (!res.ok) throw new Error("Server error");
-    return res.json();
-})
-.then(data => {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
 
-    if (data.error) {
-        alert(data.error);
-        return;
-    }
+                    if (!data.payment_data) {
+                        alert("Payment init failed");
+                        this.disabled = false;
+                        this.innerText = this.classList.contains('retry-btn') ?
+                            "Retry Payment" :
+                            "Pay ₹10 & Unlock Exam";
+                        return;
+                    }
 
-    var options = {
-        key: data.key,
-        amount: data.amount * 100,
-        currency: "INR",
-        name: "Platform Fee",
-        description: "Drive Exam Access",
-        order_id: data.order_id,
+                    let form = document.createElement('form');
+                    form.method = "POST";
+                    form.action = ABLEPAY_URL;
 
-        handler: function(response) {
+                    Object.keys(data.payment_data).forEach(key => {
+                        let input = document.createElement('input');
+                        input.type = "hidden";
+                        input.name = key;
+                        input.value = data.payment_data[key];
+                        form.appendChild(input);
+                    });
 
-            fetch('/student/dashboard/examinations/payment/success', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify(response)
-            })
-            .then(res => res.json())
-            .then(data => {
-    Swal.fire({
-        icon: 'success',
-        title: 'Payment Successful!',
-        text: 'You can now start your exam.',
-        confirmButtonText: 'Start Now'
-    }).then(() => {
-        location.reload(); 
-    });
-});
-        }
-    };
-
-    var rzp = new Razorpay(options);
-    rzp.open();
-})
-.catch(err => {
-    console.error(err);
-    alert("Something went wrong");
-});
+                    document.body.appendChild(form);
+                    form.submit();
+                })
+                .catch(() => {
+                    alert("Something went wrong");
+                    this.disabled = false;
+                    this.innerText = this.classList.contains('retry-btn') ?
+                        "Retry Payment" :
+                        "Pay ₹10 & Unlock Exam";
+                });
 
         });
 
     });
+
+    window.addEventListener("pageshow", function () {
+    resetButtons();
+});
+
+function resetButtons() {
+    document.querySelectorAll('.pay-btn, .retry-btn').forEach(btn => {
+        btn.disabled = false;
+
+        if (btn.classList.contains('retry-btn')) {
+            btn.innerText = "Retry Payment";
+        } else {
+            btn.innerText = "Pay & Unlock Exam";
+        }
+    });
+}
+
 </script>
 @endpush
 @endsection

@@ -15,11 +15,12 @@ class StudentDriveController extends Controller
         $user = Auth::user();
 
         // 1️⃣ Payment check
-        $payment = DB::table('student_drive_payments')
-            ->where('student_id', $user->id)
-            ->where('drive_id', $driveId)
-            ->where('status', 'paid')
-            ->first();
+        $payment = DB::table('student_drive_payments as sdp')
+        ->join('platform_payments as pp', 'pp.id', '=', 'sdp.platform_payment_id')
+        ->where('sdp.student_id', $user->id)
+        ->where('sdp.drive_id', $driveId)
+        ->where('pp.status', 'success') 
+        ->first();
 
         if (!$payment) {
             return back()->with('error','Please complete payment first');
@@ -112,94 +113,97 @@ class StudentDriveController extends Controller
         ]);
     }
 
-
-    public function submit(Request $request)
+public function submitDriveQuiz(Request $request)
 {
+    $user = Auth::user();
+    $answers = $request->input('answer') ?? [];
+    $drive_id = $request->input('drive_id');
+    $time_taken = $request->input('time_taken');
+
+    $questionIds = DB::table('student_drive_question_attempts')
+    ->where('user_id', $user->id)
+    ->where('drive_id', $drive_id)
+    ->pluck('question_id')
+    ->toArray();
+
+    $totalQuestions = count($questionIds);
+
+    $attemptNumber = DB::table('student_exam_attempts')
+        ->where('user_id', $user->id)
+        ->where('drive_id', $drive_id)
+        ->count() + 1;
+
+    $correctAnswers = 0;
+    $wrongAnswers = 0;
+    $skipped = 0;
+
+    DB::beginTransaction();
+
     try {
 
-        $user = Auth::user();
-        $answers = $request->answer ?? [];
-        $driveId = $request->drive_id;
-        $timeTaken = $request->time_taken;
+        foreach ($questionIds as $questionId) {
 
-        $questions = DB::table('student_drive_question_attempts')
-            ->where('user_id', $user->id)
-            ->where('drive_id', $driveId)
-            ->get();
+            $selectedOptionId = $answers[$questionId] ?? null;
 
-        if ($questions->isEmpty()) {
-            return response()->json(['error' => 'No attempt found']);
-        }
-
-        $correct = 0;
-        $wrong = 0;
-        $skipped = 0;
-
-        foreach ($questions as $q) {
-
-            $selected = $answers[$q->question_id] ?? null;
+            $question = DB::table('questions')->where('id', $questionId)->first();
 
             $correctOption = DB::table('question_options')
-                ->where('question_id', $q->question_id)
+                ->where('question_id', $questionId)
                 ->where('is_correct', 1)
                 ->first();
 
-            if ($selected) {
-                if ($correctOption && $selected == $correctOption->id) {
-                    $correct++;
+            if ($selectedOptionId) {
+                if ($correctOption && $selectedOptionId == $correctOption->id) {
+                    $correctAnswers++;
                 } else {
-                    $wrong++;
+                    $wrongAnswers++;
                 }
             } else {
                 $skipped++;
             }
         }
 
-        $total = $questions->count();
-        $score = $total ? ($correct / $total) * 100 : 0;
+        $scorePercentage = $totalQuestions > 0
+            ? ($correctAnswers / $totalQuestions) * 100
+            : 0;
 
-        // 🔥 IMPORTANT FIX (check before insert)
-        $exists = DB::table('student_results')
-            ->where('user_id', $user->id)
-            ->where('drive_id', $driveId)
-            ->where('type', 'drive')
-            ->exists();
+        $status = $scorePercentage >= 50 ? 'Passed' : 'Failed';
 
-        if (!$exists) {
-            DB::table('student_results')->insert([
-                'user_id' => $user->id,
-                'drive_id' => $driveId,
-                'type' => 'drive',
-                'total_questions' => $total,
-                'correct_answers' => $correct,
-                'score' => $score,
-                'status' => $score >= 50 ? 'Passed' : 'Failed',
-                'time_taken' => $timeTaken,
-                'created_at' => now()
-            ]);
-        }
+        DB::table('student_exam_attempts')->insert([
+            'user_id' => $user->id,
+            'drive_id' => $drive_id,
+            'type' => 'drive', 
+            'attempt_no' => $attemptNumber,
+            'total_questions' => $totalQuestions,
+            'correct_answers' => $correctAnswers,
+            'wrong_answers' => $wrongAnswers,
+            'skipped_answers' => $skipped,
+            'score' => $scorePercentage,
+            'status' => $status,
+            'time_taken' => $time_taken,
+            'created_at' => now()
+        ]);
+
+        DB::commit();
 
         return response()->json([
-            'score' => round($score, 2),
-            'correct' => $correct,
-            'wrong' => $wrong,
+            'score' => round($scorePercentage, 2),
+            'correct' => $correctAnswers,
+            'wrong' => $wrongAnswers,
             'skipped' => $skipped,
-            'total' => $total,
-            'status' => $score >= 50 ? 'Passed' : 'Failed',
-            'time_taken' => $timeTaken,
-            'attempt' => 1
+            'total' => $totalQuestions,
+            'status' => $status,
+            'time_taken' => $time_taken,
+            'attempt' => $attemptNumber
         ]);
 
     } catch (\Exception $e) {
-
+        DB::rollback();
         return response()->json([
-            'error' => true,
-            'message' => $e->getMessage(),
-            'line' => $e->getLine()
+            'error' => 'Something went wrong',
+            'message' => $e->getMessage()
         ], 500);
     }
 }
-
-
    
 }

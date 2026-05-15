@@ -213,7 +213,7 @@ body {
 
     <!-- BACK -->
     <div class="d-flex align-items-center mb-3">
-    <a href="{{ url('/'.$portal.'-login') }}" class="back-btn">
+    <a href="{{ url('/login/'.$portal) }}" class="back-btn">
         <i class="bi bi-arrow-left"></i>
     </a>
     </div>

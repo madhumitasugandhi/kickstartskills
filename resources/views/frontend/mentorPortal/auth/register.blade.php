@@ -140,7 +140,8 @@
 <body>
     <ul class="circles"><li></li><li></li><li></li><li></li><li></li><li></li></ul>
 
-    <a href="{{ url('/mentor-login') }}" class="nav-btn back-btn"><i class="fas fa-arrow-left"></i></a>
+    <a href="{{ route('login.dynamic', 'mentor') }}" class="nav-btn back-btn">
+    <i class="fas fa-arrow-left"></i></a>
 
     <button onclick="toggleTheme()" class="nav-btn theme-btn">
         <i id="theme-icon" class="bi bi-moon"></i>

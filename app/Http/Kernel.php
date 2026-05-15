@@ -55,8 +55,6 @@ class Kernel extends HttpKernel
      */
     protected $middlewareAliases = [
         'auth' => \App\Http\Middleware\Authenticate::class,
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
-        'institution.auth' => \App\Http\Middleware\InstitutionAuth::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
@@ -67,8 +65,8 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'mentor' => \App\Http\Middleware\MentorMiddleware::class,
-        'student' => \App\Http\Middleware\StudentMiddleware::class,
-        'is_hr' => \App\Http\Middleware\HRMiddleware::class,
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
+        'institution.setup' => \App\Http\Middleware\InstitutionSetupMiddleware::class,
+        'auto.login' => \App\Http\Middleware\AutoLoginMiddleware::class,
     ];
 }

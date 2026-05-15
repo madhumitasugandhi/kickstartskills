@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-lg-9">
             <div class="card-custom border-0 shadow-sm p-4">
-            <h4>{{ isset($drive) ? 'Drive Test' : 'Skill Test' }}</h4>
+                <h4>{{ isset($drive) ? 'Drive Test' : 'Skill Test' }}</h4>
                 <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
                     <div>
                         <span class="--text-muted small d-block">Time Remaining</span>
@@ -16,57 +16,57 @@
                     </div>
                     <div class="text-end">
                         <span class="badge bg-soft-blue text-blue px-3 py-2 fs-6">
-                        Question <span id="current-q-num">1</span> of {{ $groupedQuestions->flatten()->count() }}                        </span>
+                            Question <span id="current-q-num">1</span> of {{ $groupedQuestions->flatten()->count() }} </span>
                     </div>
                 </div>
 
                 <form id="quiz-form" action="{{ isset($drive) ? route('student.exam.drive.submit') : route('student.exam.submit') }}" method="POST">
                     @csrf
                     @if(isset($exam))
-    <input type="hidden" name="exam_id" value="{{ $exam->id }}">
-@elseif(isset($drive))
-    <input type="hidden" name="drive_id" value="{{ $drive->id }}">
-@endif                    <input type="hidden" name="time_taken" id="time_taken">
+                    <input type="hidden" name="exam_id" value="{{ $exam->id }}">
+                    @elseif(isset($drive))
+                    <input type="hidden" name="drive_id" value="{{ $drive->id }}">
+                    @endif <input type="hidden" name="time_taken" id="time_taken">
 
                     <div id="questions-container">
-                    @php $stepIndex = 0; @endphp
+                        @php $stepIndex = 0; @endphp
 
-@foreach($groupedQuestions as $subcategory => $sectionQuestions)
-    @foreach($sectionQuestions as $question)
-        <div class="question-step" id="step-{{ $stepIndex }}"
-            style="display: {{ $stepIndex == 0 ? 'block' : 'none' }};">
+                        @foreach($groupedQuestions as $subcategory => $sectionQuestions)
+                        @foreach($sectionQuestions as $question)
+                        <div class="question-step" id="step-{{ $stepIndex }}"
+                            style="display: {{ $stepIndex == 0 ? 'block' : 'none' }};">
 
-            <div class="mb-2 text-primary fw-bold">
-                Section: {{ $subcategory ?? 'General' }}
-            </div>
+                            <div class="mb-2 text-primary fw-bold">
+                                Section: {{ $subcategory ?? 'General' }}
+                            </div>
 
-            <h5 class="fw-bold mb-4 text-main">
-                {{ $stepIndex + 1 }}. {{ $question->question_text }}
-            </h5>
+                            <h5 class="fw-bold mb-4 text-main">
+                                {{ $stepIndex + 1 }}. {{ $question->question_text }}
+                            </h5>
 
-            <div class="options-list d-grid gap-3">
-                @foreach($question->options as $index => $opt)
-                    <label class="option-item">
-                        <input type="radio"
-                            name="answer[{{ $question->id }}]"
-                            value="{{ $opt->id }}"
-                            class="d-none">
+                            <div class="options-list d-grid gap-3">
+                                @foreach($question->options as $index => $opt)
+                                <label class="option-item">
+                                    <input type="radio"
+                                        name="answer[{{ $question->id }}]"
+                                        value="{{ $opt->id }}"
+                                        class="d-none">
 
-                        <div class="option-box p-3 border rounded-3 border-secondary">
-                            <span class="me-2 fw-bold">{{ chr(65 + $index) }}</span>
-                            {{ $opt->option_text }}
-                        </div>
-                    </label>
-                @endforeach
-            </div>
-        </div>
-
-        @php $stepIndex++; @endphp
-    @endforeach
-@endforeach
+                                    <div class="option-box p-3 border rounded-3 border-secondary">
+                                        <span class="me-2 fw-bold">{{ chr(65 + $index) }}</span>
+                                        {{ $opt->option_text }}
+                                    </div>
+                                </label>
+                                @endforeach
+                            </div>
                         </div>
 
-                      
+                        @php $stepIndex++; @endphp
+                        @endforeach
+                        @endforeach
+                    </div>
+
+
 
                     <div class="d-flex justify-content-between mt-5 pt-4 border-top">
                         <button type="button" class="btn btn-outline-secondary px-4" id="prev-btn"
@@ -90,25 +90,25 @@
 
                 @php $globalIndex = 0; @endphp
 
-@foreach($groupedQuestions as $subcategory => $sectionQuestions)
-    <div class="mb-3">
-        <div class="fw-bold text-primary mb-2">
-            {{ $subcategory ?? 'General' }}
-        </div>
+                @foreach($groupedQuestions as $subcategory => $sectionQuestions)
+                <div class="mb-3">
+                    <div class="fw-bold text-primary mb-2">
+                        {{ $subcategory ?? 'General' }}
+                    </div>
 
-        <div class="d-flex flex-wrap gap-2">
-            @foreach($sectionQuestions as $q)
-                <div class="palette-item border rounded text-center"
-                    id="palette-{{ $globalIndex }}"
-                    style="width:35px;height:35px;line-height:35px;cursor:pointer;"
-                    onclick="goToStep({{ $globalIndex }})">
-                    {{ $globalIndex + 1 }}
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach($sectionQuestions as $q)
+                        <div class="palette-item border rounded text-center"
+                            id="palette-{{ $globalIndex }}"
+                            style="width:35px;height:35px;line-height:35px;cursor:pointer;"
+                            onclick="goToStep({{ $globalIndex }})">
+                            {{ $globalIndex + 1 }}
+                        </div>
+                        @php $globalIndex++; @endphp
+                        @endforeach
+                    </div>
                 </div>
-                @php $globalIndex++; @endphp
-            @endforeach
-        </div>
-    </div>
-@endforeach
+                @endforeach
             </div>
         </div>
     </div>
@@ -147,11 +147,11 @@
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    let currentStep = 0;
-    const totalSteps = {{ $groupedQuestions->flatten()->count() }};
-    let timeLeft = {{ ($exam->duration_minutes ?? $drive->duration_minutes) * 60 }};
-        let formSubmitting = false;
-    let startTime = Date.now();
+let currentStep = 0;
+const totalSteps = {{ $groupedQuestions->flatten()->count() }};
+let timeLeft = {{ ($exam->duration_minutes ?? $drive->duration_minutes) * 60 }};
+let formSubmitting = false;
+let startTime = Date.now();
 
     // Step Navigation
     function changeStep(n) {
@@ -192,22 +192,22 @@
         timerDisplay.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 
         if (timeLeft <= 0) {
-    clearInterval(timerInterval);
+            clearInterval(timerInterval);
 
-    if (!formSubmitting) {
-        formSubmitting = true;
+            if (!formSubmitting) {
+                formSubmitting = true;
 
-        Swal.fire({
-            icon: 'info',
-            title: 'Time Up!',
-            text: 'Your test is being submitted automatically.',
-            showConfirmButton: false,
-            timer: 1500
-        }).then(() => {
-            submitQuizAjax();
-        });
-    }
-}
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Time Up!',
+                    text: 'Your test is being submitted automatically.',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    submitQuizAjax();
+                });
+            }
+        }
         timeLeft--;
     }, 1000);
 
@@ -273,40 +273,63 @@
         let formData = new FormData(form);
 
         fetch(form.action, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('input[name=_token]').value
-                },
-                body: formData
-            })
-            .then(async response => {
-    if (!response.ok) {
-        let text = await response.text();
-        console.error("SERVER ERROR:", text);
-        alert("Server error check console");
+    method: 'POST',
+    headers: {
+        'X-CSRF-TOKEN': document.querySelector('input[name=_token]').value
+    },
+    body: formData
+})
+.then(async response => {
+
+    let text = await response.text();
+
+    try {
+        let data = JSON.parse(text);
+
+        if (!response.ok) {
+            console.error("SERVER ERROR:", data);
+            alert(data.message || "Server error");
+            throw new Error("Server error");
+        }
+
+        return data;
+
+    } catch (e) {
+        console.error("INVALID JSON:", text);
+        alert("Invalid server response");
+        throw new Error("Invalid JSON");
+    }
+})
+.then(data => {
+
+    if (!data) {
+        alert("No data received");
         return;
     }
-    return response.json();
-})            .then(data => {
-                Swal.fire({
-                    title: 'Test Submitted!',
-                    html: `
-                <div style="text-align:left;font-size:15px">
-                    <p><b>Score:</b> ${data.score}%</p>
-                    <p><b>Status:</b> ${data.status}</p>
-                    <p><b>Correct:</b> ${data.correct}</p>
-                    <p><b>Wrong:</b> ${data.wrong}</p>
-                    <p><b>Skipped:</b> ${data.skipped}</p>
-                    <p><b>Time Taken:</b> ${Math.floor(data.time_taken/60)}m ${data.time_taken%60}s</p>
-                    <p><b>Attempt:</b> ${data.attempt}</p>
-                </div>
-            `,
-                    icon: data.status === 'Passed' ? 'success' : 'error',
-                    confirmButtonText: 'View Results'
-                }).then(() => {
-                    window.location.href = "{{ route('student.exam.results') }}";
-                });
-            });
+
+    Swal.fire({
+        title: 'Test Submitted!',
+        html: `
+            <div style="text-align:left;font-size:15px">
+                <p><b>Score:</b> ${data.score}%</p>
+                <p><b>Status:</b> ${data.status}</p>
+                <p><b>Correct:</b> ${data.correct}</p>
+                <p><b>Wrong:</b> ${data.wrong}</p>
+                <p><b>Skipped:</b> ${data.skipped}</p>
+                <p><b>Time Taken:</b> ${Math.floor(data.time_taken/60)}m ${data.time_taken%60}s</p>
+                <p><b>Attempt:</b> ${data.attempt}</p>
+            </div>
+        `,
+        icon: data.status === 'Passed' ? 'success' : 'error',
+        confirmButtonText: 'View Results'
+    }).then(() => {
+        window.location.href = "{{ route('student.exam.results') }}";
+    });
+
+})
+.catch(err => {
+    console.error("FINAL ERROR:", err);
+});
     }
 </script>
 @endsection
