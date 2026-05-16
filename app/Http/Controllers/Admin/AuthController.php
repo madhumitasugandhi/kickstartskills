@@ -1,59 +1,83 @@
 <?php
 
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
-    public function showLoginForm()
-    {
-        return view('frontend.adminPortal.auth.admin_login');
-    }
+    public function login(Request $request, $role)
+{     
+    $credentials = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+    // 🔹 Step 1: Attempt login
+    if (!Auth::attempt($credentials, $request->filled('remember'))) {
+        return back()->withErrors([
+            'email' => 'Invalid email or password'
         ]);
-
-        $remember = $request->has('remember');
-
-        if (Auth::attempt($credentials, $remember)) {
-            $user = Auth::user();
-
-            if ($user->admin_role_id == 1 || $user->admin_role_id == 2) {
-
-                // --- INSTITUTION STYLE MANUAL SESSION ---
-                session(['admin_id' => $user->id]);
-
-                // --- PERMANENT COOKIE (1 Year) ---
-                if ($remember) {
-                    Cookie::queue('admin_permanent_login', $user->id, 525600);
-                }
-
-                $request->session()->regenerate();
-                return redirect()->intended(route('admin.dashboard'));
-            }
-
-            Auth::logout();
-            return back()->withErrors(['email' => 'Unauthorized access.']);
-        }
-
-        return back()->withErrors(['email' => 'Invalid credentials.']);
     }
+
+    $user = Auth::user();
+
+    // 🔹 Normalize role (VERY IMPORTANT)
+    $role = strtolower(trim($role));
+
+    // 🔹 Role Map
+    $roleMap = [
+        'admin' => 1,
+        'hr' => 2,
+        'mentor' => 3,
+        'institution' => 4,
+        'student' => 5,
+    ];
+
+    // 🔥 DEBUG BLOCK (THIS WILL SHOW REAL ISSUE)
+    
+
+    // ✅ Account status check
+    if ($user->account_status !== 'active') {
+        Auth::logout();
+        return back()->withErrors([
+            'email' => "Your account is {$user->account_status}."
+        ]);
+    }
+
+    // ✅ Role validation
+    if (!isset($roleMap[$role]) || (int)$user->admin_role_id !== $roleMap[$role]) {
+        Auth::logout();
+
+        return back()->withErrors([
+            'email' => 'You are not authorized for this portal.'
+        ]);
+    }
+
+    $request->session()->regenerate();
+
+    return $this->redirectUser($user);
+}
+private function redirectUser($user)
+{
+    return match ($user->admin_role_id) {
+        1 => redirect()->route('admin.dashboard'),
+        2 => redirect()->route('hr.dashboard'),
+        3 => redirect()->route('mentor.dashboard'),
+        4 => redirect()->route('institution.dashboard'),
+        5 => redirect()->route('student.dashboard'),
+        default => redirect('/login'),
+    };
+}
 
     public function logout(Request $request)
     {
-        Cookie::queue(Cookie::forget('admin_permanent_login'));
         Auth::logout();
         $request->session()->invalidate();
-        return redirect('/admin-login');
+        $request->session()->regenerateToken();
+        return redirect('/login');
     }
-
 }

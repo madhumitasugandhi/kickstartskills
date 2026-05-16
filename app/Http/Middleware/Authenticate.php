@@ -16,29 +16,12 @@ class Authenticate extends Middleware
 
         $path = $request->path();
 
-        // STUDENT
-        if (str_starts_with($path, 'student')) {
-            return route('student.login');
-        }
+        // first segment = role
+        $role = explode('/', $path)[0];
 
-        // ADMIN
-        if (str_starts_with($path, 'admin')) {
-            return route('admin.login');
-        }
-
-        // MENTOR
-        if (str_starts_with($path, 'mentor')) {
-            return route('mentor.login');
-        }
-
-        // HR
-        if (str_starts_with($path, 'hr')) {
-            return route('hr.login');
-        }
-
-        // INSTITUTION
-        if (str_starts_with($path, 'institution')) {
-            return route('institution.login');
+        // check if valid role from config
+        if (config("roles.$role")) {
+            return route('login.dynamic', $role);
         }
 
         // fallback
