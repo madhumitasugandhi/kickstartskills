@@ -317,6 +317,10 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+        .form-control::placeholder {
+            color: var(--text-muted) !important;
+            opacity: 0.6;
+        }
     </style>
 
     <script>

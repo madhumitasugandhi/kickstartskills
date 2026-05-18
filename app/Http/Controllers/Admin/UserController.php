@@ -147,7 +147,7 @@ class UserController extends Controller
             'admin_role_id' => 'required|integer',
             'account_status' => 'required|in:active,deactivated,suspended,pending',
             'mentor_id' => 'nullable|exists:users,id',
-            
+
         ]);
 
         $user->update([
@@ -165,7 +165,7 @@ class UserController extends Controller
             ]);
         }
 
-        
+
         if ($user->admin_role_id == 4 && $user->institution) {
             $user->institution->update([
                 'status' => $request->account_status,
