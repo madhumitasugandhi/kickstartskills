@@ -174,7 +174,7 @@ body.dark-mode .logo-box i {
     left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: #64748b; 
+    color: #64748b;
     z-index: 5;
 }
 
@@ -191,6 +191,7 @@ body.dark-mode .logo-box i {
     background: var(--btn-bg);
     color: #fff;
     padding: 12px;
+    border: none;
     border-radius: 12px;
     width: 100%;
     font-weight: 600;
