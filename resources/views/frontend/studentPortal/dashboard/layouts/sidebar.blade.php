@@ -277,7 +277,7 @@
                 <div class="--text-muted small" style="font-size: 0.7rem;">ID: STU-00{{ Auth::user()->id }}</div>
             </div>
 
-            <form action="{{ route('student.logout') }}" method="POST" class="m-0">
+            <form action="{{ route('logout') }}" method="POST" class="m-0">
                 @csrf
                 <button type="submit" class="btn btn-link p-0 text-danger" title="Logout">
                     <i class="bi bi-power"></i>

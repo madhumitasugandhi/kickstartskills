@@ -45,9 +45,9 @@
             themeToggles.forEach(btn => {
                 const icon = btn.querySelector('i');
                 if (isLight) {
-                    icon.classList.replace('bi-moon', 'bi-brightness-high');
+                    icon.classList.replace('bi-moon-stars', 'bi-brightness-high');
                 } else {
-                    icon.classList.replace('bi-brightness-high', 'bi-moon');
+                    icon.classList.replace('bi-brightness-high', 'bi-moon-stars');
                 }
             });
         }

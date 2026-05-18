@@ -125,13 +125,4 @@ class StudentAuthController extends Controller
         $skillsCategories = SkillsCategory::with('subcategories')->get();
         return view('frontend.studentPortal.auth.register', compact('skillsCategories'));
     }
-
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('student.login');
-    }
-
 }

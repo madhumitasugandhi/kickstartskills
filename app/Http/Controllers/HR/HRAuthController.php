@@ -26,13 +26,5 @@ class HRAuthController extends Controller
         ->login($request, 2); // HR role
 }
 
-    // Logout
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('hr.login');
-    }
 
 }

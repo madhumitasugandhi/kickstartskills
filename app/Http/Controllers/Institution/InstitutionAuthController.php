@@ -24,15 +24,6 @@ class InstitutionAuthController extends Controller
             ->login($request, 4);
     }
     
-    public function logout(Request $request)
-    {
-        auth()->logout();
-    
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-    
-        return redirect('/institution-login');
-    }
 
 
 }

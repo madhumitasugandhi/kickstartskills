@@ -40,7 +40,7 @@
                 </li>
                 <li><hr class="dropdown-divider opacity-50"></li>
                 <li>
-                    <form action="{{ route('student.logout') }}" method="POST" class="m-0">
+                    <form action="{{ route('logout') }}" method="POST" class="m-0">
                         @csrf
                         <button type="submit" class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger fw-bold">
                             <i class="bi bi-box-arrow-right"></i> Logout

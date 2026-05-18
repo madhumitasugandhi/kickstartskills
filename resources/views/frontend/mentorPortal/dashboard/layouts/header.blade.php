@@ -43,7 +43,7 @@
                     <hr class="dropdown-divider">
                 </li>
                 <li>
-                    <form action="{{ route('mentor.logout') }}" method="POST">
+                    <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="dropdown-item text-danger">
                             <i class="bi bi-box-arrow-right me-2"></i> Logout

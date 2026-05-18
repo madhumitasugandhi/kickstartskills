@@ -448,7 +448,7 @@
         <li></li>
     </ul>
 
-    <    <a href="{{ route('login.dynamic', 'institution') }}" class="nav-btn back-btn">
+   <a href="{{ route('login.dynamic', 'institution') }}" class="nav-btn back-btn">
     <i class="fas fa-arrow-left"></i></a>
 
     <button onclick="toggleTheme()" class="nav-btn theme-btn">

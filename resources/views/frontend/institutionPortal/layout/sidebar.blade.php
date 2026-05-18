@@ -3,7 +3,7 @@
     <!-- ================= HEADER (FIXED) ================= -->
     <div class="px-3 py-3 d-flex align-items-center" style="border-bottom:1px solid var(--border-color);">
         <i class="bi bi-buildings fs-4 me-2 text-teal"></i>
-        <span class="fw-bold menu-text">Institution Portal</span>
+        <span class="fw-bold text-teal">Institution Portal</span>
     </div>
 
     <!-- ================= SCROLLABLE MENU ================= -->
@@ -202,7 +202,7 @@
             </div>
         </div>
 
-        <button class="btn btn-link p-0 theme-toggle-btn">
+        <button class="btn btn-link p-0 icon-btn theme-toggle-btn">
             <i class="bi bi-moon-stars fs-5"></i>
         </button>
     </div>

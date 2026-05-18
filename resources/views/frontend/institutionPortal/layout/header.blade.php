@@ -23,24 +23,23 @@
         </button>
 
         <button id="themeToggle" class="icon-btn theme-toggle-btn">
-            <i class="bi bi-moon"></i>
+            <i class="bi bi-moon-stars"></i>
         </button>
 
         <div class="dropdown">
             <button class="icon-btn" data-bs-toggle="dropdown">
                 <div class="profile-circle">
-                    {{ strtoupper(substr(session('institution_name'), 0, 1)) }}
-                </div>
+{{ strtoupper(substr(auth()->user()->institution->institution_name ?? 'I', 0, 1)) }}                </div>
             </button>
 
             <ul class="dropdown-menu dropdown-menu-end">
                 <li class="px-3 py-2">
                     <small style="color: var(--text-main)">Logged in as</small><br>
-                    <strong style="color: var(--text-main)">{{ session('institution_name') }}</strong>
+                    <strong style="color: var(--text-main)">{{ auth()->user()->institution->institution_name ?? 'Institution' }}</strong>
                 </li>
                 <li><hr class="dropdown-divider" style="color: var(--text-main)"></li>
                 <li>
-                    <form method="POST" action="{{ url('/institution/logout') }}">
+                    <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="dropdown-item text-danger">
                             <i class="bi bi-box-arrow-right me-2"></i> Logout

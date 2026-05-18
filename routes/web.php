@@ -96,6 +96,8 @@ Route::get('/login/{role}', function ($role) {
 Route::post('/login/{role}', [AuthController::class, 'login'])
     ->name('login.submit');
 
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 /*|------------------------------------------------Common Password Reset Routes--------------------------------------------------|*/
 Route::get('/{portal}/forgot-password', function ($portal) {
@@ -120,9 +122,6 @@ Route::get('/terms-conditions', function () { return view('frontend.legal.terms'
 Route::get('/return-policy', function () { return view('frontend.legal.return'); })->name('return');
 
 /*|------------------------------------------------Student Portal Auth--------------------------------------------------|*/
-
-// Student Logout (Inside your protected group or standalone)
-Route::post('/student-logout', [StudentAuthController::class, 'logout'])->name('student.logout');
 
 // Register
 Route::get('/student/register', [StudentAuthController::class, 'showRegister'])->name('student.register');
@@ -347,8 +346,6 @@ Route::prefix('student')
 
 /*|------------------------------------------------Start Institution Portal Routes--------------------------------------------------|*/
 
-Route::post('/institution/logout', [InstitutionAuthController::class, 'logout'])
-    ->name('institution.logout');
 
 Route::match(['get', 'post'], '/institution/register', [InstitutionController::class, 'register'])
     ->name('institution.register');
@@ -628,8 +625,6 @@ Route::prefix('mentor')
     ->middleware(['auth', 'role:3'])
     ->group(function () {
 
-    Route::post('/logout', [MentorAuthController::class, 'logout'])->name('logout');
-
     Route::get('/dashboard', [MentorDashboardController::class, 'index'])->name('dashboard');
 
     Route::post('/sessions/store', [MentorSessionController::class, 'store'])->name('sessions.store');
@@ -790,8 +785,6 @@ Route::prefix('hr')
 
     Route::get('/profile', [HrProfileController::class, 'index'])->name('profile.index');
     Route::put('/profile/update', [HrProfileController::class, 'update'])->name('profile.update');
-
-    Route::post('/logout', [HRAuthController::class, 'logout'])->name('logout');
 });
 
 /*|------------------------------------------------End HR Portal Routes--------------------------------------------------|*/
@@ -803,8 +796,6 @@ Route::prefix('admin')
     ->name('admin.')
     ->middleware(['auto.login', 'auth', 'role:1,2'])
     ->group(function () {
-
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // 1. Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

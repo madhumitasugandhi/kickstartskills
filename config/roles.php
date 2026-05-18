@@ -38,7 +38,7 @@ return [
         'heading' => 'Welcome, Institution',
         'description' => 'Manage your institution',
         'theme' => 'green',
-        'icon' => 'bi-building',
+        'icon' => 'bi-bank',
         'role_id' => 4,
     ],
     
